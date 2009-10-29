@@ -1,0 +1,41 @@
+body{
+	background :#000000;
+}
+#logo{
+	margin-left: 2em;
+	margin-top: 2em;
+	float: left;
+}
+#login{
+	margin-top: -7em;
+	padding-left: 30em;
+	background : white;
+	font-size :14px;
+}
+#cabecalho{
+	margin-left: 5em;
+	margin-top: 2em;
+}
+#principal{
+	margin-top:0em;
+	margin-left:5em;
+	margin-bottom:0em;
+	margin-right: 5em;
+	padding-top: 12em;
+	padding-left: 2em;
+	padding-bottom: 10em;
+	padding-right: 7em;
+	background :white;
+//	width: 45.2em;
+}
+#rodape{
+	background: #1C4EA3;
+	margin-left: 5em;
+	margin-right: 5em;
+//	width: 48.2em;
+	text-align: center;
+	color: #DF7417;
+}
+#rodape a{
+	color :#DF7427;
+}

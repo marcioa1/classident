@@ -9,7 +9,16 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20091028183216) do
+ActiveRecord::Schema.define(:version => 20091029121809) do
+
+  create_table "clinicas", :force => true do |t|
+    t.string   "nome"
+    t.string   "sigla"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "clinicas", ["id"], :name => "index_clinicas_on_id"
 
   create_table "tipo_usuarios", :force => true do |t|
     t.string   "nome"
@@ -22,13 +31,13 @@ ActiveRecord::Schema.define(:version => 20091028183216) do
   add_index "tipo_usuarios", ["id"], :name => "index_tipo_usuarios_on_id"
 
   create_table "users", :force => true do |t|
-    t.string   "login",                             :null => false
-    t.string   "email",                             :null => false
-    t.string   "crypted_password",                  :null => false
-    t.string   "password_salt",                     :null => false
-    t.string   "persistence_token",                 :null => false
-    t.integer  "login_count",        :default => 0, :null => false
-    t.integer  "failed_login_count", :default => 0, :null => false
+    t.string   "login",                                :null => false
+    t.string   "email",                                :null => false
+    t.string   "crypted_password",                     :null => false
+    t.string   "password_salt",                        :null => false
+    t.string   "persistence_token",                    :null => false
+    t.integer  "login_count",        :default => 0,    :null => false
+    t.integer  "failed_login_count", :default => 0,    :null => false
     t.datetime "last_request_at"
     t.datetime "current_login_at"
     t.datetime "last_login_at"
@@ -37,6 +46,9 @@ ActiveRecord::Schema.define(:version => 20091028183216) do
     t.integer  "tipo_usuario_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "clinica_id"
+    t.string   "nome"
+    t.boolean  "ativo",              :default => true
   end
 
   add_index "users", ["id"], :name => "index_users_on_id"

@@ -2,8 +2,9 @@ ActionController::Routing::Routes.draw do |map|
   
   map.resource :user_sessions
   map.root :controller => "user_sessions", :action => "new" # optional, this just sets the root route
-  map.resource :account, :controller => "users"
-  map.resources :users
+  map.resources :users, :member =>[:troca_senha=>:get]
+  map.logout "logout", :controller=>:user_sessions, :action=>:destroy
+#  map.resource :account, :controller => "users"
   
   # The priority is based upon order of creation: first created -> highest priority.
 

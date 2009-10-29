@@ -2,6 +2,6 @@
 log/*.log
 tmp/**/*
 config/database.yml
-db/classident_development
-db/classident_test
-db/classident_production
+db/development.sqlite3
+db/test.sqlite3
+db/production.sqlite3

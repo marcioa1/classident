@@ -1,0 +1,27 @@
+<% content_for :main do %>
+current_user : <%= current_user.login %>
+<h2>Usuários por nome</h2>
+<table border="1">
+  <tr>
+  	<th width="200px">Nome</th>
+    <th width="100px">login</th>
+    <th width="100px">Tipo usuário</th>
+    <th width="50px">Clinica</th>
+    <th width="100px">email</th>
+    <th>&nbsp;</th>
+  </tr>
+  <% @users.each() do |user| %>
+  <tr>
+  	<td><%= user.nome %></td>
+    <td><%= user.login %></td>
+    <td><%= user.tipo_usuario.nome%></td>
+    <td><%= user.clinica.nome unless user.clinica.nil? %></td>
+    <td><%= user.email %></td>
+    <td><%= link_to "editar", edit_user_path(user.id)%></td>
+  </tr>
+  <% end %>
+</table>
+<br/>
+<%= link_to "Novo", new_user_path() %>
+
+<% end %>
