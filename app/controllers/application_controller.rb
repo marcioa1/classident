@@ -53,3 +53,4 @@ class ApplicationController < ActionController::Base
     end
     
 end
+#TODO não permitir que usuarios comums criem novos users

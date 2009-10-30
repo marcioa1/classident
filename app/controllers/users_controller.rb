@@ -5,19 +5,21 @@ class UsersController < ApplicationController
   before_filter :require_user#, :only => [:show, :edit, :update]
 
   def index
+    redirect_to logout_path unless current_user.pode_incluir_user
     @users = User.ativos.por_nome
   end
 
   def new
+    redirect_to users_path unless current_user.pode_incluir_user
     @user = User.new
     @tipos_usuario = TipoUsuario.all(:order=>:nome).collect{|obj| [obj.nome,obj.id]}
   end
 
   def create
-    @user = User.new(params[:user])
+    @user = User.new(params[:id])
     if @user.save
       flash[:notice] = "Account registered!"
-      redirect_back_or_default show_user_path(user.id)
+      redirect_back_or_default show_user_path(@user.id)
     else
       render :action => :new
     end
@@ -28,7 +30,7 @@ class UsersController < ApplicationController
   end
 
   def edit
-    @user = @current_user
+    @user = User.find(params[:id])
     @tipos_usuario = TipoUsuario.all(:order=>:nome).collect{|obj| [obj.nome,obj.id]}
   end
 

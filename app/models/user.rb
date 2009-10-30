@@ -6,4 +6,8 @@ class User < ActiveRecord::Base
   
   named_scope :ativos, :conditions=>["ativo = 't'"]
   named_scope :por_nome, :order=>:nome
+  
+  def pode_incluir_user
+    tipo_usuario.nivel < 2
+  end
 end

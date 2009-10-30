@@ -2,7 +2,10 @@ require 'test_helper'
 
 class UserTest < ActiveSupport::TestCase
   # Replace this with your real tests.
-  test "the truth" do
-    assert true
+  def test_pode_incluir_user
+    fabiana = users(:fabiana)
+    assert fabiana.pode_incluir_user
+    sandra = users(:sandra)
+    assert sandra.pode_incluir_user==false
   end
 end

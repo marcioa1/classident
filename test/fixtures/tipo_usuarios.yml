@@ -1,11 +1,17 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
-one:
+master:
   nome: MyString
   descricao: MyString
   nivel: 1
 
-two:
+adm:
   nome: MyString
   descricao: MyString
   nivel: 1
+
+secretaria:
+  nome: secretaria
+  descricao: Secretaria das clinicas
+  nivel: 2
+  
