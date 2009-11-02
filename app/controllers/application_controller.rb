@@ -14,7 +14,7 @@ class ApplicationController < ActionController::Base
       unless current_user
         store_location
         flash[:notice] = "You must be logged in to access this page"
-        redirect_to new_user_session_url
+        redirect_to new_user_sessions_url
         return false
       end
     end
@@ -53,4 +53,5 @@ class ApplicationController < ActionController::Base
     end
     
 end
-#TODO não permitir que usuarios comums criem novos users
+#TODO não permitir que uma secrtária de uma clica se logue em outra clínica. Na verdade isto se dará naturalmente.
+#TODO não permitir tiopo adm alterar tipo de usuario para master

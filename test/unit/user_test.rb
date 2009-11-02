@@ -8,4 +8,11 @@ class UserTest < ActiveSupport::TestCase
     sandra = users(:sandra)
     assert sandra.pode_incluir_user==false
   end
+  
+  def test_pode_incluir_tabela
+    fabiana = users(:fabiana)
+    assert fabiana.pode_incluir_tabela
+    sandra = users(:sandra)
+    assert sandra.pode_incluir_tabela==false
+  end
 end

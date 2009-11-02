@@ -15,7 +15,7 @@ class UserSessionsController < ApplicationController
         if current_user.password == "1234"
           redirect_to troca_senha_user_path
         else
-          redirect_to users_path
+          redirect_to tabelas_path
         end
       else
         flash[:error] = " Usuário não encontrato. Por favor verifique email e senha."

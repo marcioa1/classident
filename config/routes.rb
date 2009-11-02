@@ -1,4 +1,6 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :tabelas
+
   
   map.resource :user_sessions
   map.root :controller => "user_sessions", :action => "new" # optional, this just sets the root route

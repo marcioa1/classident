@@ -1,0 +1,17 @@
+<h1>Editing tabela</h1>
+
+<% form_for(@tabela) do |f| %>
+  <%= f.error_messages %>
+  <p>Nome : 
+  	<%= f.text_field :nome, :size=>20%>
+  </p>
+  <p>
+  	<%= f.check_box :ativa %> ativa
+  </p>
+  <p>
+    <%= f.submit 'Alterar' %>
+  </p>
+<% end %>
+
+<%= link_to 'Mostrar', @tabela %> |
+<%= link_to 'Voltar', tabelas_path %>

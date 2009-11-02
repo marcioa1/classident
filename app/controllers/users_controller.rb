@@ -13,6 +13,10 @@ class UsersController < ApplicationController
     redirect_to users_path unless current_user.pode_incluir_user
     @user = User.new
     @tipos_usuario = TipoUsuario.all(:order=>:nome).collect{|obj| [obj.nome,obj.id]}
+    #TODO fazer o que com isto ? res.p: não permitir tipo adm alterar tipo_usuario para master
+    if current_user.tipo_usuario.nivel>1
+      @usuarios_master = TipoUsuario.master
+    end
   end
 
   def create

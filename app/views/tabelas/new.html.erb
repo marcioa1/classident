@@ -1,0 +1,16 @@
+<h1>New tabela</h1>
+
+<% form_for(@tabela) do |f| %>
+  <%= f.error_messages %>
+  <p>Nome : 
+  	<%= f.text_field :nome, :size=>20%>
+  </p>
+  <p>
+  	<%= f.check_box :ativa %> ativa
+  </p>
+  <p>
+    <%= f.submit 'Criar' %>
+  </p>
+<% end %>
+
+<%= link_to 'voltar', tabelas_path %>

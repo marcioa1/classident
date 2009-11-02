@@ -1,0 +1,22 @@
+<h1>Listando tabelas</h1>
+
+<table>
+  <tr>
+	<th>Tabela</th>
+	<th>Ativa</th>
+  </tr>
+
+<% @tabelas.each do |tabela| %>
+  <tr>
+	<td><%= tabela.nome %></td>
+	<td><%= tabela.ativa %></td>
+    <td><%= link_to 'Mostrar', tabela %></td>
+    <td><%= link_to 'Editar', edit_tabela_path(tabela) if current_user.pode_incluir_tabela %></td>
+    <td><%= link_to 'Excluir', tabela, :confirm => 'Tem certeza ?', :method => :delete if current_user.pode_incluir_tabela%></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'Nova tabela', new_tabela_path if current_user.pode_incluir_tabela %>
