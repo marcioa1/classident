@@ -49,9 +49,7 @@ class ApplicationController < ActionController::Base
     
     
     def busca_clinicas
-      @clinicas = Clinica.all(:order=>:nome).collect{|obj| [obj.nome,obj.id]}
+      @clinicas = Clinica.all(:order=>:nome).collect{|obj| [obj.nome,obj.id]}.insert(0,"Administração")
     end
     
 end
-#TODO não permitir que uma secrtária de uma clica se logue em outra clínica. Na verdade isto se dará naturalmente.
-#TODO não permitir tiopo adm alterar tipo de usuario para master

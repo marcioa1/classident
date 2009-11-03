@@ -1,5 +1,7 @@
+<% content_for :main do %>
 Nome : <%= @tabela.nome%><br/>
 Ativa : <%= @tabela.ativa %><br/>
 <br/>
 <%= link_to 'Editar', edit_tabela_path(@tabela) if current_user.pode_incluir_tabela %> |
 <%= link_to 'Voltar', tabelas_path %>
+<% end %>

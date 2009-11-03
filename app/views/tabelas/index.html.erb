@@ -1,15 +1,20 @@
+<% content_for :main do %>
 <h1>Listando tabelas</h1>
 
 <table>
   <tr>
-	<th>Tabela</th>
-	<th>Ativa</th>
+    <th width="150px">Tabela</th>
+    <th>Ativa</th>
+    <th>&nbsp;</th>
+    <th>&nbsp;</th>
+    <th>&nbsp;</th>
+    <th>&nbsp;</th>
   </tr>
-
 <% @tabelas.each do |tabela| %>
   <tr>
-	<td><%= tabela.nome %></td>
-	<td><%= tabela.ativa %></td>
+    <td><%= tabela.nome %></td>
+    <td><%= tabela.ativa %></td>
+    <td><%= link_to "Items", item_tabelas_path(:tabela_id=>tabela.id) %></td>
     <td><%= link_to 'Mostrar', tabela %></td>
     <td><%= link_to 'Editar', edit_tabela_path(tabela) if current_user.pode_incluir_tabela %></td>
     <td><%= link_to 'Excluir', tabela, :confirm => 'Tem certeza ?', :method => :delete if current_user.pode_incluir_tabela%></td>
@@ -20,3 +25,4 @@
 <br />
 
 <%= link_to 'Nova tabela', new_tabela_path if current_user.pode_incluir_tabela %>
+<% end %>

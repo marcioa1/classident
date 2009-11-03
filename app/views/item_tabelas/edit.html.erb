@@ -1,0 +1,26 @@
+<% content_for :main do %>
+<h3>Editando item da tabela  <%= @tabela.nome %></h3>
+<fieldset>
+<% form_for(@item_tabela) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :codigo %><br />
+    <%= f.text_field :codigo, :size=>9 %>
+  </p>
+  <p>
+    <%= f.label :descricao %><br />
+    <%= f.text_field :descricao, :size=>30 %>
+  </p>
+  <p>
+    <%= f.label :ativo %><br />
+    <%= f.check_box :ativo %>
+  </p>
+  <p>
+    <%= f.submit 'alterar' %>
+  </p>
+<% end %>
+</fieldset>
+<%= link_to 'voltar', item_tabelas_path(:tabela_id=>@tabela.id) %>
+
+<% end %>

@@ -1,7 +1,10 @@
 ActionController::Routing::Routes.draw do |map|
-  map.resources :tabelas
+  map.resources :tabelas do |item|
+     item.resources :item_tabelas
+  end
+  map.resources :item_tabelas
 
-  
+  map.selecionou_clinica "selecionou_clinica", :controller=>:clinicas, :action=>:selecionou_clinica
   map.resource :user_sessions
   map.root :controller => "user_sessions", :action => "new" # optional, this just sets the root route
   map.resources :users, :member =>[:troca_senha=>:get]

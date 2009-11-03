@@ -1,5 +1,5 @@
 class TabelasController < ApplicationController
-  
+  layout "adm"
   before_filter :require_user
   # GET /tabelas
   # GET /tabelas.xml

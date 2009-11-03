@@ -1,0 +1,23 @@
+<p>
+  <b>Tabela:</b>
+  <%=h @item_tabela.tabela_id %>
+</p>
+
+<p>
+  <b>Codigo:</b>
+  <%=h @item_tabela.codigo %>
+</p>
+
+<p>
+  <b>Descricao:</b>
+  <%=h @item_tabela.descricao %>
+</p>
+
+<p>
+  <b>Ativo:</b>
+  <%=h @item_tabela.ativo %>
+</p>
+
+
+<%= link_to 'Edit', edit_item_tabela_path(@item_tabela) %> |
+<%= link_to 'Back', item_tabelas_path %>

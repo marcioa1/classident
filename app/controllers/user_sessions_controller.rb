@@ -11,10 +11,14 @@ class UserSessionsController < ApplicationController
       @user_session = UserSession.new(params[:user_session])
       if @user_session.save
         flash[:notice] = "Login successful!"
-        debugger
         if current_user.password == "1234"
           redirect_to troca_senha_user_path
         else
+          if current_user.clinica.nil?
+            session[:clinica] = "administracao"
+          else
+            session[:clinica] = current_user.clinica.nome
+          end
           redirect_to tabelas_path
         end
       else
@@ -29,4 +33,6 @@ class UserSessionsController < ApplicationController
       flash[:notice] = "Obrigado pela visita !"
       redirect_to root_path
     end
+    
+    
 end

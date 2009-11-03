@@ -3,7 +3,7 @@
 master:
   nome: MyString
   descricao: MyString
-  nivel: 1
+  nivel: 0
 
 adm:
   nome: MyString

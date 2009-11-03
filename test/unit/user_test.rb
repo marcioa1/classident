@@ -15,4 +15,11 @@ class UserTest < ActiveSupport::TestCase
     sandra = users(:sandra)
     assert sandra.pode_incluir_tabela==false
   end
+  
+  def test_master
+    fabiana = users(:fabiana)
+    assert fabiana.master==false
+    ricardo = users(:ricardo)    
+    assert ricardo.master==true
+  end
 end

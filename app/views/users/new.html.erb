@@ -1,9 +1,29 @@
 <% content_for :main do %>
-<% form_for(@user) do |f| %>
-  <%= f.error_messages %>
-  <%= render :partial => "form", :object => f %>
+<% form_for(@user) do |form| %>
+  <%= form.error_messages %>
+  <%= form.label :login %><br/>
+<%= form.text_field :login , :size=>10%><br/><br/>
+<%= form.label :senha, form.object.new_record? ? nil : "Nova senha" %><br />
+<%= form.password_field :password, :size=>8 %><br />
+<%= form.label :confirmação_da_senha %><br />
+<%= form.password_field :password_confirmation, :size=>8 %><br /><br />
+<%= form.label :nome %><br/>
+<%= form.text_field :nome%><br/>
+<br/>
+
+<%= form.label :email %><br/>
+<%= form.text_field :email%><br/>
+<br/>
+<%= form.label :tipo_usuario %><br/>
+<%= form.select :tipo_usuario_id, @tipos_usuario %>
+<br/><br/>
+<%= form.label :clinicas %><br/>
+<%= form.select :clinica_id, @clinicas, :include_blank=>true %>
+<br/><br/>
+<%= form.check_box :ativo %>
+<%= form.label :ativo %>
   <br/>  
-  <%= f.submit "Salvar" %>
+  <%= form.submit "Salvar" %>
 <% end %>
 <br/>
 <%= link_to "Voltar", users_path %>

@@ -10,12 +10,13 @@ class UsersController < ApplicationController
   end
 
   def new
+    # TODO não está inserindo user
     redirect_to users_path unless current_user.pode_incluir_user
     @user = User.new
     @tipos_usuario = TipoUsuario.all(:order=>:nome).collect{|obj| [obj.nome,obj.id]}
-    #TODO fazer o que com isto ? res.p: não permitir tipo adm alterar tipo_usuario para master
-    if current_user.tipo_usuario.nivel>1
-      @usuarios_master = TipoUsuario.master
+    if !current_user.master
+       master = TipoUsuario.master.collect{|obj| [obj.nome,obj.id]}
+       @tipos_usuario = @tipos_usuario - master
     end
   end
 
@@ -24,7 +25,11 @@ class UsersController < ApplicationController
     if @user.save
       flash[:notice] = "Account registered!"
       redirect_back_or_default show_user_path(@user.id)
-    else
+    else  @tipos_usuario = TipoUsuario.all(:order=>:nome).collect{|obj| [obj.nome,obj.id]}
+      if !current_user.master
+         master = TipoUsuario.master.collect{|obj| [obj.nome,obj.id]}
+         @tipos_usuario = @tipos_usuario - master
+      end
       render :action => :new
     end
   end
@@ -36,14 +41,23 @@ class UsersController < ApplicationController
   def edit
     @user = User.find(params[:id])
     @tipos_usuario = TipoUsuario.all(:order=>:nome).collect{|obj| [obj.nome,obj.id]}
+    if !current_user.master
+       master = TipoUsuario.master.collect{|obj| [obj.nome,obj.id]}
+       @tipos_usuario = @tipos_usuario - master
+    end
   end
 
   def update
-    @user = @current_user # makes our views "cleaner" and more consistent
+    @user = User.find(params[:id])
     if @user.update_attributes(params[:user])
       flash[:notice] = "Account updated!"
       redirect_to users_path
     else
+       @tipos_usuario = TipoUsuario.all(:order=>:nome).collect{|obj| [obj.nome,obj.id]}
+          if !current_user.master
+             master = TipoUsuario.master
+             @tipos_usuario = @tipos_usuario - master
+          end
       render :action => :edit
     end
   end

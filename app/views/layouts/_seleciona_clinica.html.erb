@@ -1,0 +1,5 @@
+<% form_tag selecionou_clinica_path do  %>
+    Clínica : 
+    <%= select_tag :clinica_id, options_for_select(@clinicas), :include_blank=>true %>
+    <%= submit_tag "entrar"%>
+<% end %>
