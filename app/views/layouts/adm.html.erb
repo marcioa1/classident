@@ -25,6 +25,7 @@
     <% if current_user.tipo_usuario.nivel < 2 %>
      | <a href="#" onClick='outra_clinica();'> outra clinica</a>
     <div id="seleciona_clinica" style="display:none;">
+	  <%= render :partial=>"layouts/seleciona_clinica" %>
     </div>
     <% end %>
       | <%= link_to "logout", logout_path %></div>
@@ -33,7 +34,6 @@
     
     <div id="principal">
         <div class="pd_menu_01">
-	<%= session[:clinica]%>
             <% if session[:clinica]=="administracao"%>
               <%= render :partial=>"layouts/menu_adm" %>
             <% else %>
