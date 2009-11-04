@@ -1,5 +1,6 @@
-<h1>New tabela</h1>
-
+<% content_for :main do%>
+<fieldset>
+	<legend>Nova tabela</legend>
 <% form_for(@tabela) do |f| %>
   <%= f.error_messages %>
   <p>Nome : 
@@ -14,3 +15,5 @@
 <% end %>
 
 <%= link_to 'voltar', tabelas_path %>
+</fieldset>
+<% end %>

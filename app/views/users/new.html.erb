@@ -1,4 +1,6 @@
 <% content_for :main do %>
+<fieldset>
+<legend>Novo usuário</legend>
 <% form_for(@user) do |form| %>
   <%= form.error_messages %>
   <%= form.label :login %><br/>
@@ -27,4 +29,5 @@
 <% end %>
 <br/>
 <%= link_to "Voltar", users_path %>
+</fieldset>
 <% end %>

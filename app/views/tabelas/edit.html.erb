@@ -1,5 +1,6 @@
-<h1>Editing tabela</h1>
-
+<% content_for :main do%>
+<fieldset>
+	<legend> Editando a tabela </legend>
 <% form_for(@tabela) do |f| %>
   <%= f.error_messages %>
   <p>Nome : 
@@ -15,3 +16,5 @@
 
 <%= link_to 'Mostrar', @tabela %> |
 <%= link_to 'Voltar', tabelas_path %>
+</fieldset>
+<% end %>

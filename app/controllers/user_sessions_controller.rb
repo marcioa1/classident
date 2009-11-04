@@ -15,7 +15,7 @@ class UserSessionsController < ApplicationController
           redirect_to troca_senha_user_path
         else
           if current_user.clinica.nil?
-            session[:clinica] = "administracao"
+            session[:clinica] = "Administração"
           else
             session[:clinica] = current_user.clinica.nome
           end

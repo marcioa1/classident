@@ -1,15 +1,16 @@
+<% content_for :main do %>
 <p>
   <b>Tabela:</b>
-  <%=h @item_tabela.tabela_id %>
+  <%=h @item_tabela.tabela.nome %>
 </p>
 
 <p>
-  <b>Codigo:</b>
+  <b>Código:</b>
   <%=h @item_tabela.codigo %>
 </p>
 
 <p>
-  <b>Descricao:</b>
+  <b>Descrição:</b>
   <%=h @item_tabela.descricao %>
 </p>
 
@@ -19,5 +20,21 @@
 </p>
 
 
-<%= link_to 'Edit', edit_item_tabela_path(@item_tabela) %> |
-<%= link_to 'Back', item_tabelas_path %>
+<%= link_to 'Editar', edit_item_tabela_path(@item_tabela) %> |
+<%= link_to 'Voltar', item_tabelas_path(:tabela_id=>@item_tabela.tabela.id) %>
+<p>
+<table>
+<% form_tag grava_precos_path do %>
+  <%= hidden_field_tag :item_tabela_id, @item_tabela.id %>
+  <% @clinicas.each do |clinica| %>
+    <tr>
+      <td><%= clinica.nome %></td>
+      <td>R$ <%= text_field_tag "preco_" + clinica.id.to_s, @preco[clinica.id].real
+  %></td>
+    </tr>
+  <% end %>
+  <tr><td>&nbsp;</td><td align="center"><%= submit_tag "gravar valores"%></td></tr>
+<% end %>
+</table>
+</p>
+<% end %>

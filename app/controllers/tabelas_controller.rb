@@ -4,7 +4,7 @@ class TabelasController < ApplicationController
   # GET /tabelas
   # GET /tabelas.xml
   def index
-    @tabelas = Tabela.all
+    @tabelas = Tabela.all(:order=>:nome)
 
     respond_to do |format|
       format.html # index.html.erb

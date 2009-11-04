@@ -1,16 +1,16 @@
 <% content_for :main do %>
-<h3>Novo item da tabela <%= @tabela.nome %></h3>
 <fieldset>
+    <legend>Novo item da tabela <%= @tabela.nome %></legend>
 <% form_for(@item_tabela) do |f| %>
   <%= f.error_messages %>
 
     <%= f.hidden_field :tabela_id %>
   <p>
-    <%= f.label :codigo %><br />
+    <%= f.label :código %><br />
     <%= f.text_field :codigo, :size=>9 %>
   </p>
   <p>
-    <%= f.label :descricao %><br />
+    <%= f.label :descrição %><br />
     <%= f.text_field :descricao, :size=>30 %>
   </p>
   <p>
@@ -18,10 +18,9 @@
     <%= f.check_box :ativo %>
   </p>
   <p>
-    <%= f.submit 'Create' %>
+    <%= f.submit 'Criar' %>
   </p>
 <% end %>
-</fieldset>
-
 <%= link_to 'Voltar', item_tabelas_path(:tabela_id=>@tabela.id) %>
+</fieldset>
 <% end %>

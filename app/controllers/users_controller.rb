@@ -65,5 +65,5 @@ class UsersController < ApplicationController
   def troca_senha
     
   end
-  
+  #TODO troca de senha  
 end

@@ -1,6 +1,9 @@
 body{
 	background :#000000;
 }
+fieldset{
+	width: 30em;
+}
 #logo{
 	margin-left: 2em;
 	margin-top: 2em;
@@ -15,13 +18,14 @@ body{
 #cabecalho{
 	margin-left: 5em;
 	margin-top: 2em;
+	background-color: red;
 }
 #principal{
 	margin-top:0em;
 	margin-left:5em;
 	margin-bottom:0em;
 	margin-right: 5em;
-	padding-top: 12em;
+	padding-top: 9em;
 	padding-left: 2em;
 	padding-bottom: 10em;
 	padding-right: 7em;
@@ -40,31 +44,7 @@ body{
 	color :#DF7427;
 }
 
-#menu { 
-  border-top: 1px solid #b9d2e3; 
-  border-bottom: 1px solid #b9d2e3; 
-  background: ##DF7427;
-} 
-#menu ul {
-  margin: 0;
-  padding: 0.5em;
-list-style: none;
-}
- 
-#menu li {
-  display: inline;
-}
 
-#menu li li {
-	display: inline;
-}
- 
-#menu a:link, #menu a:visited {
-  text-decoration: none;
-  //background-color: #fdf8f2;
- background: #92b724;
-  color: #050845;
-}
 
 .pd_menu_01 {float:left; padding:0; margin:0;color: #FFFFFF;background: #455A79;
   width:108%;
