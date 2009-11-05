@@ -44,7 +44,7 @@ class PacientesController < ApplicationController
   # POST /pacientes.xml
   def create
     @paciente = Paciente.new(params[:paciente])
-
+    @paciente.clinica_id = session[:clinica_id]
     respond_to do |format|
       if @paciente.save
         flash[:notice] = 'Paciente was successfully created.'
@@ -88,7 +88,7 @@ class PacientesController < ApplicationController
   
   def pesquisa
     if params[:nome]
-      @pacientes = Paciente.all(:conditions=>["nome like ?", params[:nome] + '%'])
+      @pacientes = Paciente.all(:conditions=>["clinica_id= ? and nome like ?", session[:clinica_id].to_i, params[:nome] + '%'])
     else
       @pacientes =[]
     end  
@@ -100,4 +100,3 @@ class PacientesController < ApplicationController
   end
   
 end
-#TODO mostrar lista de pacientes e escolher um da lista mostrando o cadsatro dentro de uma aba jquery

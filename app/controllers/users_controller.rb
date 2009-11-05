@@ -18,7 +18,7 @@ class UsersController < ApplicationController
        @tipos_usuario = @tipos_usuario - master
     end
   end
-#TODO esconder a senha no log
+
   def create
     debugger
     @user = User.new(params[:user])

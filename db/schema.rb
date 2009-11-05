@@ -20,6 +20,15 @@ ActiveRecord::Schema.define(:version => 20091105124615) do
 
   add_index "clinicas", ["id"], :name => "index_clinicas_on_id"
 
+  create_table "dentistas", :force => true do |t|
+    t.string   "nome"
+    t.string   "telefone"
+    t.string   "celular"
+    t.boolean  "ativo"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "item_tabelas", :force => true do |t|
     t.integer  "tabela_id"
     t.string   "codigo"
@@ -49,6 +58,7 @@ ActiveRecord::Schema.define(:version => 20091105124615) do
     t.string   "cep",               :limit => 8
     t.string   "cpf",               :limit => 14
     t.string   "sexo",              :limit => 1
+    t.integer  "clinica_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

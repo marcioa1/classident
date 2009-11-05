@@ -16,8 +16,10 @@ class UserSessionsController < ApplicationController
         else
           if current_user.clinica.nil?
             session[:clinica] = "Administração"
+            session[:clinica_id] = 0
           else
             session[:clinica] = current_user.clinica.nome
+            session[:clinica_id] = current_user.clinica.id
           end
           redirect_to tabelas_path
         end

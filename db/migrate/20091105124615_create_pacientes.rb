@@ -17,6 +17,7 @@ class CreatePacientes < ActiveRecord::Migration
       t.string :cep, :limit=>8
       t.string :cpf, :limit=>14
       t.string :sexo, :limit=> 1
+      t.integer :clinica_id
 
       t.timestamps
     end
