@@ -1,0 +1,72 @@
+<h1>Editing paciente</h1>
+
+<% form_for(@paciente) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :nome %><br />
+    <%= f.text_field :nome %>
+  </p>
+  <p>
+    <%= f.label :logradouro %><br />
+    <%= f.text_field :logradouro %>
+  </p>
+  <p>
+    <%= f.label :numero %><br />
+    <%= f.text_field :numero %>
+  </p>
+  <p>
+    <%= f.label :complemento %><br />
+    <%= f.text_field :complemento %>
+  </p>
+  <p>
+    <%= f.label :telefone %><br />
+    <%= f.text_field :telefone %>
+  </p>
+  <p>
+    <%= f.label :celular %><br />
+    <%= f.text_field :celular %>
+  </p>
+  <p>
+    <%= f.label :email %><br />
+    <%= f.text_field :email %>
+  </p>
+  <p>
+    <%= f.label :tabela_id %><br />
+    <%= f.text_field :tabela_id %>
+  </p>
+  <p>
+    <%= f.label :inicio_tratamento %><br />
+    <%= f.date_select :inicio_tratamento %>
+  </p>
+  <p>
+    <%= f.label :nascimento %><br />
+    <%= f.date_select :nascimento %>
+  </p>
+  <p>
+    <%= f.label :bairro %><br />
+    <%= f.text_field :bairro %>
+  </p>
+  <p>
+    <%= f.label :uf %><br />
+    <%= f.text_field :uf %>
+  </p>
+  <p>
+    <%= f.label :cep %><br />
+    <%= f.text_field :cep %>
+  </p>
+  <p>
+    <%= f.label :cpf %><br />
+    <%= f.text_field :cpf %>
+  </p>
+  <p>
+    <%= f.label :sexo %><br />
+    <%= f.text_field :sexo %>
+  </p>
+  <p>
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @paciente %> |
+<%= link_to 'Back', pacientes_path %>

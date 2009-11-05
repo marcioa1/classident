@@ -1,4 +1,7 @@
 ActionController::Routing::Routes.draw do |map|
+
+  map.resources :pacientes, :member=>{:abre=>:get}, :collection=>{:pesquisa=>:get}
+
   map.resources :tabelas do |item|
      item.resources :item_tabelas
   end
@@ -9,6 +12,7 @@ ActionController::Routing::Routes.draw do |map|
   map.root :controller => "user_sessions", :action => "new" # optional, this just sets the root route
   map.resources :users, :member =>[:troca_senha=>:get]
   map.logout "logout", :controller=>:user_sessions, :action=>:destroy
+  map.troca_senha "troca_senha", :controller=>:users, :action=>:troca_senha
   map.resources :precos
   map.grava_precos "grava_precos", :controller => "item_tabelas", :action=>"grava_precos"
 #  map.resource :account, :controller => "users"

@@ -4,26 +4,26 @@
 <% form_for(@user) do |form| %>
   <%= form.error_messages %>
   <%= form.label :login %><br/>
-<%= form.text_field :login , :size=>10%><br/><br/>
-<%= form.label :senha, form.object.new_record? ? nil : "Nova senha" %><br />
-<%= form.password_field :password, :size=>8 %><br />
-<%= form.label :confirmação_da_senha %><br />
-<%= form.password_field :password_confirmation, :size=>8 %><br /><br />
-<%= form.label :nome %><br/>
-<%= form.text_field :nome%><br/>
+  <%= form.text_field :login , :size=>10%><br/><br/>
+  <%= form.label :senha, form.object.new_record? ? nil : "Nova senha" %><br />
+  <%= form.password_field :password, :size=>8 %><br />
+  <%= form.label :confirmação_da_senha %><br />
+  <%= form.password_field :password_confirmation, :size=>8 %><br /><br />
+  <%= form.label :nome %><br/>
+  <%= form.text_field :nome%><br/>
 <br/>
 
-<%= form.label :email %><br/>
-<%= form.text_field :email%><br/>
+  <%= form.label :email %><br/>
+  <%= form.text_field :email%><br/>
 <br/>
-<%= form.label :tipo_usuario %><br/>
-<%= form.select :tipo_usuario_id, @tipos_usuario %>
+  <%= form.label :tipo_usuario %><br/>
+  <%= form.select :tipo_usuario_id, @tipos_usuario %>
 <br/><br/>
-<%= form.label :clinicas %><br/>
-<%= form.select :clinica_id, @clinicas, :include_blank=>true %>
+  <%= form.label :clinicas %><br/>
+  <%= form.select :clinica_id, @clinicas, :include_blank=>true %>
 <br/><br/>
-<%= form.check_box :ativo %>
-<%= form.label :ativo %>
+  <%= form.check_box :ativo %>
+  <%= form.label :ativo %>
   <br/>  
   <%= form.submit "Salvar" %>
 <% end %>

@@ -1,0 +1,80 @@
+<% content_for :main do %>
+<p>
+  <b>Nome:</b>
+  <%=h @paciente.nome %>
+</p>
+
+<p>
+  <b>Logradouro:</b>
+  <%=h @paciente.logradouro %>
+</p>
+
+<p>
+  <b>Numero:</b>
+  <%=h @paciente.numero %>
+</p>
+
+<p>
+  <b>Complemento:</b>
+  <%=h @paciente.complemento %>
+</p>
+
+<p>
+  <b>Telefone:</b>
+  <%=h @paciente.telefone %>
+</p>
+
+<p>
+  <b>Celular:</b>
+  <%=h @paciente.celular %>
+</p>
+
+<p>
+  <b>Email:</b>
+  <%=h @paciente.email %>
+</p>
+
+<p>
+  <b>Tabela:</b>
+  <%=h @paciente.tabela_id %>
+</p>
+
+<p>
+  <b>Inicio tratamento:</b>
+  <%=h @paciente.inicio_tratamento %>
+</p>
+
+<p>
+  <b>Nascimento:</b>
+  <%=h @paciente.nascimento %>
+</p>
+
+<p>
+  <b>Bairro:</b>
+  <%=h @paciente.bairro %>
+</p>
+
+<p>
+  <b>Uf:</b>
+  <%=h @paciente.uf %>
+</p>
+
+<p>
+  <b>Cep:</b>
+  <%=h @paciente.cep %>
+</p>
+
+<p>
+  <b>Cpf:</b>
+  <%=h @paciente.cpf %>
+</p>
+
+<p>
+  <b>Sexo:</b>
+  <%=h @paciente.sexo %>
+</p>
+
+
+<%= link_to 'Edit', edit_paciente_path(@paciente) %> |
+<%= link_to 'Back', pacientes_path %>
+<% end %>

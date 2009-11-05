@@ -4,6 +4,9 @@ body{
 fieldset{
 	width: 30em;
 }
+.fieldset_50{
+	width: 50em;
+}
 #logo{
 	margin-left: 2em;
 	margin-top: 2em;
@@ -71,3 +74,24 @@ fieldset{
 .pd_menu_01 ul li ul li a:visited { background-color:#455A79;  color:#FFFFFF;} /*Color subcells normal mode*/
 .pd_menu_01 ul li a:hover ul li a {display:block; width:12em; height:1px; line-height:1.3em; padding:4px 16px 4px 16px; border-left:solid 1px #455A79; border-bottom: solid 1px #455A79; background-color:#455A79;  color:#FFFFFF;} 
 .pd_menu_01 ul li a:hover ul li a:hover {background-color:#90b7e5; text-decoration:none;color:#F5F5F5;} /*Color subcells hovering mode*/
+
+.transparente{
+	padding:0;
+	margin:0;
+}
+.transparente table, tr, td{
+	border:0px; 
+	
+}
+.transparente, table , td{
+		border:0px; 
+}
+.transparente td{
+		border:0px; 
+	background: white;
+}
+.transparente , tr{
+	height: 10px;
+	margin: 0;
+	padding: 0;
+}

@@ -4,10 +4,12 @@ class ClinicasController < ApplicationController
     debugger
     if params[:clinica_id]=="Administração"
       session[:clinica] = "Administração"
+      redirect_to :back
     else
       session[:clinica] = Clinica.find(params[:clinica_id]).nome
+      redirect_to pesquisa_pacientes_path
     end
-    redirect_to :back
+    
 #    render => :nothing  
   end
   

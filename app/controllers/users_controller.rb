@@ -10,7 +10,6 @@ class UsersController < ApplicationController
   end
 
   def new
-    # TODO não está inserindo user
     redirect_to users_path unless current_user.pode_incluir_user
     @user = User.new
     @tipos_usuario = TipoUsuario.all(:order=>:nome).collect{|obj| [obj.nome,obj.id]}
@@ -19,12 +18,13 @@ class UsersController < ApplicationController
        @tipos_usuario = @tipos_usuario - master
     end
   end
-
+#TODO esconder a senha no log
   def create
-    @user = User.new(params[:id])
+    debugger
+    @user = User.new(params[:user])
     if @user.save
       flash[:notice] = "Account registered!"
-      redirect_back_or_default show_user_path(@user.id)
+      redirect_back_or_default @user
     else  @tipos_usuario = TipoUsuario.all(:order=>:nome).collect{|obj| [obj.nome,obj.id]}
       if !current_user.master
          master = TipoUsuario.master.collect{|obj| [obj.nome,obj.id]}
@@ -63,7 +63,7 @@ class UsersController < ApplicationController
   end
   
   def troca_senha
-    
+    @user = current_user
   end
-  #TODO troca de senha  
+
 end

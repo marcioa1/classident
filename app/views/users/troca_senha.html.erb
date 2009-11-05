@@ -1,14 +1,16 @@
 <% content_for :main do %>
-<h2>Troca de senha</h2>
+<fieldset>
+<legend>Troca de senha</legend>
 
 <% form_for(@user) do |f| %>
   <%= f.error_messages %>
   <br/>  
-  <%= f.label :senha %>
+  <%= f.label :senha %> : 
   <%= f.password_field :password, :size=>8 %><br />
-  <%= f.label :confirmação_da_senha %><br />
+  <%= f.label :confirmação_da_senha %> : 
   <%= f.password_field :password_confirmation, :size=>8 %>
   <br/><br/>
   <%= f.submit "Salvar" %>
 <% end %>
+</fieldset>
 <% end %>

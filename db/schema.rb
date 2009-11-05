@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20091104143219) do
+ActiveRecord::Schema.define(:version => 20091105124615) do
 
   create_table "clinicas", :force => true do |t|
     t.string   "nome"
@@ -31,6 +31,30 @@ ActiveRecord::Schema.define(:version => 20091104143219) do
 
   add_index "item_tabelas", ["id"], :name => "index_item_tabelas_on_id"
   add_index "item_tabelas", ["tabela_id"], :name => "index_item_tabelas_on_tabela_id"
+
+  create_table "pacientes", :force => true do |t|
+    t.string   "nome"
+    t.string   "logradouro"
+    t.string   "numero",            :limit => 10
+    t.string   "complemento",       :limit => 10
+    t.string   "telefone",          :limit => 50
+    t.string   "celular",           :limit => 50
+    t.string   "email",             :limit => 120
+    t.integer  "tabela_id"
+    t.date     "inicio_tratamento"
+    t.date     "nascimento"
+    t.string   "bairro",            :limit => 30
+    t.string   "cidade",            :limit => 30
+    t.string   "uf",                :limit => 2
+    t.string   "cep",               :limit => 8
+    t.string   "cpf",               :limit => 14
+    t.string   "sexo",              :limit => 1
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "pacientes", ["id"], :name => "index_pacientes_on_id"
+  add_index "pacientes", ["nome"], :name => "index_pacientes_on_nome"
 
   create_table "precos", :force => true do |t|
     t.integer  "clinica_id"

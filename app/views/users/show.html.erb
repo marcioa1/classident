@@ -1,3 +1,4 @@
+<% content_for :main do %>
 <h2>Usuário <%= @user.nome%></h2>
 <p>
   Login : <%= @user.login %><br/>	
@@ -6,3 +7,4 @@
   clínica : <%= @user.clinica.nome unless @user.clinica.nil?%><br/>
 </p>
 <%= link_to "voltar", users_path %> | <%= link_to  "editar", edit_user_path(@user.id)%>
+<% end %>

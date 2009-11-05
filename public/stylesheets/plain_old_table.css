@@ -1,7 +1,4 @@
-/* 
-	Plain old table styles
-	written by Chris Heilmann http://wait-till-i.com
-*/
+
 table,td,th{
 	border:1px solid #000;
 	border-collapse:collapse;
