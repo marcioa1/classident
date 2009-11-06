@@ -69,7 +69,7 @@ ActiveRecord::Schema.define(:version => 20091105124615) do
   create_table "precos", :force => true do |t|
     t.integer  "clinica_id"
     t.integer  "item_tabela_id"
-    t.decimal  "preco",          :precision => 2, :scale => 8
+    t.decimal  "preco",          :precision => 6, :scale => 2
     t.datetime "created_at"
     t.datetime "updated_at"
   end

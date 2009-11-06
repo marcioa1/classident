@@ -3,7 +3,7 @@ class CreatePrecos < ActiveRecord::Migration
     create_table :precos do |t|
       t.integer :clinica_id
       t.integer :item_tabela_id
-      t.decimal :preco, :precision=>2, :scale=>8
+      t.decimal :preco, :precision=>6, :scale=>2
 
       t.timestamps
     end
