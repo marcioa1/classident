@@ -1,7 +1,13 @@
 <ul>
-    <li>Cadastro
-        <ul>
-        <li><%= link_to "Tabelas", tabelas_path %></li>
-        </ul>
-        </li>
+  <li><a href= "#">Cadastro</a>
+    <ul>
+      <li><%= link_to "Tabelas", tabelas_path %></li>
+    </ul>
+  </li>
+  <li><a href="#">Paciente</a>
+    <ul>
+      <li><%= link_to "Novo paciente", new_paciente_path %></li>
+      <li><%= link_to "Pesquisa paciente", pesquisa_pacientes_path %></li>
+    </ul>
+  </li>
 </ul>

@@ -1,3 +1,4 @@
+<% content_for :main do %>
 <p>
   <b>Nome:</b>
   <%=h @dentista.nome %>
@@ -19,5 +20,7 @@
 </p>
 
 
-<%= link_to 'Edit', edit_dentista_path(@dentista) %> |
-<%= link_to 'Back', dentistas_path %>
+<%= link_to 'Editar', edit_dentista_path(@dentista) %> |
+<%= link_to 'Voltar', dentistas_path %>
+
+<% end %>

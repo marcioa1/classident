@@ -1,4 +1,5 @@
 class DentistasController < ApplicationController
+  layout "adm"
   # GET /dentistas
   # GET /dentistas.xml
   def index
@@ -62,7 +63,7 @@ class DentistasController < ApplicationController
     respond_to do |format|
       if @dentista.update_attributes(params[:dentista])
         flash[:notice] = 'Dentista was successfully updated.'
-        format.html { redirect_to(@dentista) }
+        format.html { redirect_to(dentistas_path) }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }
@@ -75,11 +76,17 @@ class DentistasController < ApplicationController
   # DELETE /dentistas/1.xml
   def destroy
     @dentista = Dentista.find(params[:id])
-    @dentista.destroy
+    @dentista.ativo = false
+    @dentista.save
 
     respond_to do |format|
       format.html { redirect_to(dentistas_url) }
       format.xml  { head :ok }
     end
   end
+
+  def abre
+    @dentista = Dentista.find(params[:id])  
+  end
+  
 end

@@ -1,20 +1,28 @@
 
 <% content_for :main do%>
-<%= session[:clinica_id]%>
-<p>
-<%= link_to "novo paciente" , new_paciente_path %>
-</p>
-
+ <div id= "notice"><%= flash[:notice]%></div>
   <% form_tag pesquisa_pacientes_path do %>
-  Paciente : <%= text_field_tag :nome , params[:nome], :size=>40, :onkeyup=>"conta_caracteres();" %>
-<%= submit_tag "pesquisar", :disabled=>true, :id=>"pesquisar_button" %>
-  <% end %>
-
+<table class="transparente">
+  <tr>
+    <td>Código : </td>
+    <td><%= text_field_tag :codigo, params[:codigo], :size=>8, :onblur=>"$('#pesquisar_button').attr('disabled',true); )" %></td>
+  </tr>
+  <tr>
+    <td>Paciente : </td>
+    <td><%= text_field_tag :nome , params[:nome], :size=>40, :onkeyup=>"conta_caracteres();" %></td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td><%= submit_tag "pesquisar", :disabled=>false, :id=>"pesquisar_button" %></td>
+  </tr>
+</table>
+<br/>
+<% end %>
 
 <p>
-	Resultado<br/>
-	<% @pacientes.each do |paciente| %>
-	  <%= link_to paciente.nome, abre_paciente_path(:id=>paciente.id) %><br/>
+   
+    <% @pacientes.each do |paciente| %>
+      <%= link_to paciente.nome, abre_paciente_path(:id=>paciente.id) %><br/>
     <% end %>
 </p>
 <% end %>

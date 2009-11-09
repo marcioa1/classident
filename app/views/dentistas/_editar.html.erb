@@ -1,32 +1,28 @@
-<% content_for :main do %>
 <fieldset>
-
-<legend>Novo dentista</legend>
 
 <% form_for(@dentista) do |f| %>
   <%= f.error_messages %>
 
   <p>
     <%= f.label :nome %><br />
-    <%= f.text_field :nome, :size=>45 %>
+    <%= f.text_field :nome %>
   </p>
   <p>
     <%= f.label :telefone %><br />
-    <%= f.text_field :telefone, :size=>25 %>
+    <%= f.text_field :telefone %>
   </p>
   <p>
     <%= f.label :celular %><br />
-    <%= f.text_field :celular, :size=>25 %>
+    <%= f.text_field :celular %>
   </p>
   <p>
-     <%= f.check_box :ativo %><%= f.label :ativo %>
-   
+    <%= f.label :ativo %><br />
+    <%= f.check_box :ativo %>
   </p>
   <p>
-    <%= f.submit 'Criar' %>
+    <%= f.submit 'alterar' %>
   </p>
 <% end %>
 
 <%= link_to 'voltar', dentistas_path %>
 </fieldset>
-<% end %>

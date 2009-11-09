@@ -1,6 +1,6 @@
 class PacientesController < ApplicationController
   layout "adm"
-  #Pensar em um layout para clinica e outro para adm
+  #TODO Pensar em um layout para clinica e outro para adm
   # GET /pacientes
   # GET /pacientes.xml
   def index
@@ -87,16 +87,29 @@ class PacientesController < ApplicationController
   end
   
   def pesquisa
-    if params[:nome]
-      @pacientes = Paciente.all(:conditions=>["clinica_id= ? and nome like ?", session[:clinica_id].to_i, params[:nome] + '%'])
+    if params[:codigo]
+      if session[:clinica_id] =="0"
+        @pacientes = Paciente.all(:conditions=>["id=?", params[:codigo]])
+      else
+        @pacientes = Paciente.all(:conditions=>["clinica_id=? and id=?", session[:clinica_id], params[:codigo]])
+      end
+      if !@pacientes.empty?
+        redirect_to abre_paciente_path(:id=>@pacientes.first.id)
+      else
+        flash[:notice] =  'Não foi encontrado paciente com o código ' + params[:codigo]
+        render :action=> "pesquisa"
+      end
     else
-      @pacientes =[]
-    end  
+      if params[:nome]
+        @pacientes = Paciente.all(:conditions=>["clinica_id= ? and nome like ?", session[:clinica_id].to_i, params[:nome] + '%'])
+      else
+        @pacientes =[]
+      end 
+    end 
   end
   
   def abre
     @paciente = Paciente.find(params[:id])
-    
   end
   
 end

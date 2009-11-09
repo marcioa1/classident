@@ -1,0 +1,22 @@
+<% content_for :main do %>
+
+ Ficha do dentista : <b><%= @dentista.nome %></b><br/>  
+
+<div id="tabs">
+    <ul>
+        <li><a href="#fragment-1"><span>Cadastro</span></a></li>
+        <li><a href="#fragment-2"><span>Produção</span></a></li>
+        <li><a href="#fragment-3"><span>Pagamento</span></a></li>
+    </ul>
+    <div id="fragment-1">
+	    <%= render :partial=>"editar" , :locals=>{:dentista=>@dentista} %>
+        
+    </div>
+    <div id="fragment-2">
+        Produção
+    </div>
+    <div id="fragment-3">
+        Pagamento
+    </div>
+</div>
+<% end %>

@@ -1,26 +1,32 @@
-<h1>Listing dentistas</h1>
+<% content_for :main do %>
+<h3>Listando dentistas</h3>
 
 <table>
   <tr>
-    <th>Nome</th>
-    <th>Telefone</th>
-    <th>Celular</th>
-    <th>Ativo</th>
+    <th width="200px">Nome</th>
+    <th width="80px">Telefone</th>
+    <th width="80px">Celular</th>
+    <th width="60px">Ativo</th>
+    <th>&nbsp;</th>
+    <th>&nbsp;</th>
+    <th>&nbsp;</th>
   </tr>
 
 <% @dentistas.each do |dentista| %>
   <tr>
-    <td><%=h dentista.nome %></td>
+    <td><%= link_to dentista.nome, abre_dentista_path(:id=>dentista.id) %></td>
     <td><%=h dentista.telefone %></td>
     <td><%=h dentista.celular %></td>
     <td><%=h dentista.ativo %></td>
-    <td><%= link_to 'Show', dentista %></td>
-    <td><%= link_to 'Edit', edit_dentista_path(dentista) %></td>
-    <td><%= link_to 'Destroy', dentista, :confirm => 'Are you sure?', :method => :delete %></td>
+    <td><%= link_to 'mostrar', dentista %></td>
+    <td><%= link_to 'editar', edit_dentista_path(dentista) %></td>
+    <td><%= link_to 'desativar', dentista, :confirm => 'Tem certeza ?', :method => :delete %></td>
   </tr>
 <% end %>
 </table>
 
 <br />
 
-<%= link_to 'New dentista', new_dentista_path %>
+<%= link_to 'Novo dentista', new_dentista_path %>
+
+<% end %>

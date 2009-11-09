@@ -10,7 +10,6 @@ class UserSessionsController < ApplicationController
     def create
       @user_session = UserSession.new(params[:user_session])
       if @user_session.save
-        flash[:notice] = "Login successful!"
         if current_user.password == "1234"
           redirect_to troca_senha_user_path
         else
@@ -21,7 +20,7 @@ class UserSessionsController < ApplicationController
             session[:clinica] = current_user.clinica.nome
             session[:clinica_id] = current_user.clinica.id
           end
-          redirect_to tabelas_path
+          redirect_to pesquisa_pacientes_path
         end
       else
         flash[:error] = " Usuário não encontrato. Por favor verifique email e senha."

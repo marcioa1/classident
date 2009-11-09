@@ -1,4 +1,6 @@
-<h1>Editing dentista</h1>
+<% content_for :main do %>
+<fieldset>
+<legend>Editing dentista</legend>
 
 <% form_for(@dentista) do |f| %>
   <%= f.error_messages %>
@@ -20,9 +22,11 @@
     <%= f.check_box :ativo %>
   </p>
   <p>
-    <%= f.submit 'Update' %>
+    <%= f.submit 'alterar' %>
   </p>
 <% end %>
 
-<%= link_to 'Show', @dentista %> |
-<%= link_to 'Back', dentistas_path %>
+<%= link_to 'mostrar', @dentista %> |
+<%= link_to 'voltar', dentistas_path %>
+</fieldset>
+<% end %>

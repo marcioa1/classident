@@ -95,3 +95,7 @@ fieldset{
 	margin: 0;
 	padding: 0;
 }
+
+#notice{
+	color:green;
+}
