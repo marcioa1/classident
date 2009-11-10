@@ -1,0 +1,39 @@
+<% content_for :main do %>
+<fieldset>
+<legend>Editando pagamento</legend>
+
+<% form_for(@pagamento) do |f| %>
+  <%= f.error_messages %>
+ <p><%= f.label :tipo_de_pagamento %> : 
+	<%= f.select :tipo_pagamento_id, @tipos_pagamento %>
+  </p>
+  <p>
+    <%= f.label :data_de_pagamento %><br />
+    <%= f.date_select :data_de_pagamento, :order=>[:day, :month, :year] %>
+  </p>
+  <p>
+    <%= f.label :valor %><br />
+    <%= f.text_field :valor %>
+  </p>
+  <p>
+    <%= f.label :valor_pago %><br />
+    <%= f.text_field :valor_pago %>
+  </p>
+  <p>
+    <%= f.label :observacao %><br />
+    <%= f.text_field :observacao %>
+  </p>
+  <p>
+    <%= f.label :nao_lancar_no_livro_caixa %><br />
+    <%= f.check_box :nao_lancar_no_livro_caixa %>
+  </p>
+  
+  <p>
+    <%= f.submit 'alterar' %>
+  </p>
+<% end %>
+
+<%= link_to 'mostrar', @pagamento %> |
+<%= link_to 'voltar', pagamentos_path %>
+</fieldset>
+<% end %>

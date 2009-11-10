@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20091105124615) do
+ActiveRecord::Schema.define(:version => 20091110184200) do
 
   create_table "clinicas", :force => true do |t|
     t.string   "nome"
@@ -66,6 +66,23 @@ ActiveRecord::Schema.define(:version => 20091105124615) do
   add_index "pacientes", ["id"], :name => "index_pacientes_on_id"
   add_index "pacientes", ["nome"], :name => "index_pacientes_on_nome"
 
+  create_table "pagamentos", :force => true do |t|
+    t.integer  "clinica_id"
+    t.integer  "tipo_pagamento_id"
+    t.date     "data_de_vencimento"
+    t.date     "data_de_pagamento"
+    t.decimal  "valor",                     :precision => 6, :scale => 2
+    t.decimal  "valor_pago",                :precision => 6, :scale => 2
+    t.string   "observacao"
+    t.boolean  "nao_lancar_no_livro_caixa",                               :default => false
+    t.datetime "data_de_exclusao"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "pagamentos", ["clinica_id"], :name => "index_pagamentos_on_clinica_id"
+  add_index "pagamentos", ["id"], :name => "index_pagamentos_on_id"
+
   create_table "precos", :force => true do |t|
     t.integer  "clinica_id"
     t.integer  "item_tabela_id"
@@ -85,6 +102,17 @@ ActiveRecord::Schema.define(:version => 20091105124615) do
   end
 
   add_index "tabelas", ["id"], :name => "index_tabelas_on_id"
+
+  create_table "tipo_pagamentos", :force => true do |t|
+    t.integer  "clinica_id"
+    t.string   "nome"
+    t.integer  "ativo",      :default => 0
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "tipo_pagamentos", ["clinica_id"], :name => "index_tipo_pagamentos_on_clinica_id"
+  add_index "tipo_pagamentos", ["id"], :name => "index_tipo_pagamentos_on_id"
 
   create_table "tipo_usuarios", :force => true do |t|
     t.string   "nome"

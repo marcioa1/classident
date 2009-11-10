@@ -7,9 +7,7 @@
     <th width="80px">Telefone</th>
     <th width="80px">Celular</th>
     <th width="60px">Ativo</th>
-    <th>&nbsp;</th>
-    <th>&nbsp;</th>
-    <th>&nbsp;</th>
+    
   </tr>
 
 <% @dentistas.each do |dentista| %>
@@ -18,9 +16,6 @@
     <td><%=h dentista.telefone %></td>
     <td><%=h dentista.celular %></td>
     <td><%=h dentista.ativo %></td>
-    <td><%= link_to 'mostrar', dentista %></td>
-    <td><%= link_to 'editar', edit_dentista_path(dentista) %></td>
-    <td><%= link_to 'desativar', dentista, :confirm => 'Tem certeza ?', :method => :delete %></td>
   </tr>
 <% end %>
 </table>

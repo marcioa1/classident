@@ -1,0 +1,27 @@
+<% content_for :main do %>
+<h3>Listando tipos de pagamento</h3>
+
+<table>
+  <tr>
+    <th width="200px">Nome</th>
+    <th>Ativo</th>
+    <th>&nbsp;</th>
+    <th>&nbsp;</th>
+    <th>&nbsp;</th>
+  </tr>
+
+<% @tipo_pagamentos.each do |tipo_pagamento| %>
+  <tr>
+    <td><%=h tipo_pagamento.nome %></td>
+    <td><%=h tipo_pagamento.ativo %></td>
+    <td><%= link_to 'mostrar', tipo_pagamento %></td>
+    <td><%= link_to 'editar', edit_tipo_pagamento_path(tipo_pagamento) %></td>
+    <td><%= link_to 'desativar', tipo_pagamento, :confirm => 'Tem certeza ?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'Novo tipo de pagamento', new_tipo_pagamento_path %>
+<% end %>

@@ -1,4 +1,8 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :pagamentos
+
+  map.resources :tipo_pagamentos
+
 
   map.resources :dentistas, :member=>{:abre=>:get}
   map.resources :pacientes, :member=>{:abre=>:get}, :collection=>{:pesquisa=>:get}

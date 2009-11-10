@@ -1,0 +1,39 @@
+<% content_for :main do %>
+<p>
+  <b>Tipo de pagamento</b>
+  <%=h @pagamento.tipo_pagamento.nome %>
+</p>
+<p>
+  <b>Data de pagamento:</b>
+  <%=h @pagamento.data_de_pagamento %>
+</p>
+
+<p>
+  <b>Valor:</b>
+  <%=h @pagamento.valor %>
+</p>
+
+<p>
+  <b>Valor pago:</b>
+  <%=h @pagamento.valor_pago %>
+</p>
+
+<p>
+  <b>Observacao:</b>
+  <%=h @pagamento.observacao %>
+</p>
+
+<p>
+  <b>Nao lancar no livro caixa:</b>
+  <%=h @pagamento.nao_lancar_no_livro_caixa %>
+</p>
+
+<p>
+  <b>Data de exclusao:</b>
+  <%=h @pagamento.data_de_exclusao %>
+</p>
+
+
+<%= link_to 'Eeditar', edit_pagamento_path(@pagamento) %> |
+<%= link_to 'voltar', pagamentos_path %>
+<% end %>

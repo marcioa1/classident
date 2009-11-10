@@ -1,0 +1,15 @@
+<% content_for :main do %>
+<p>
+  <b>Nome:</b>
+  <%=h @tipo_pagamento.nome %>
+</p>
+
+<p>
+  <b>Ativo:</b>
+  <%=h @tipo_pagamento.ativo %>
+</p>
+
+
+<%= link_to 'editar', edit_tipo_pagamento_path(@tipo_pagamento) %> |
+<%= link_to 'voltar', tipo_pagamentos_path %>
+<% end %>

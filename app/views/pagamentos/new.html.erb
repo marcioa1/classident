@@ -1,0 +1,38 @@
+<% content_for :main do %>
+<fieldset>
+<legend>New pagamento</legend>
+
+<% form_for(@pagamento) do |f| %>
+  <%= f.error_messages %>
+  <p><%= f.label :tipo_de_pagamento %> : 
+	<%= f.select :tipo_pagamento_id, @tipos_pagamento %>
+  </p>
+  <p>
+    <%= f.label :data_de_pagamento %><br />
+    <%= f.date_select :data_de_pagamento, :order=>[:day,:month,:year] %>
+  </p>
+  <p>
+    <%= f.label :valor %><br />
+    <%= f.text_field :valor, :size=>10 %>
+  </p>
+  <p>
+    <%= f.label :valor_pago %><br />
+    <%= f.text_field :valor_pago, :size=>10 %>
+  </p>
+  <p>
+    <%= f.label :observação %><br />
+    <%= f.text_field :observacao, :size=>40 %>
+  </p>
+  <p>
+    <%= f.check_box :nao_lancar_no_livro_caixa %>
+    <%= f.label :nao_lancar_no_livro_caixa %>
+  </p>
+  
+  <p>
+    <%= f.submit 'Criar' %>
+  </p>
+<% end %>
+
+<%= link_to 'voltar', pagamentos_path %>
+</fieldset>
+<% end %>

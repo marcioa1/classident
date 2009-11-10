@@ -87,8 +87,9 @@ class PacientesController < ApplicationController
   end
   
   def pesquisa
+    @pacientes =[]
     if params[:codigo]
-      if session[:clinica_id] =="0"
+      if session[:clinica_id] == 0
         @pacientes = Paciente.all(:conditions=>["id=?", params[:codigo]])
       else
         @pacientes = Paciente.all(:conditions=>["clinica_id=? and id=?", session[:clinica_id], params[:codigo]])
@@ -101,9 +102,11 @@ class PacientesController < ApplicationController
       end
     else
       if params[:nome]
-        @pacientes = Paciente.all(:conditions=>["clinica_id= ? and nome like ?", session[:clinica_id].to_i, params[:nome] + '%'])
-      else
-        @pacientes =[]
+        if session[:clinica_id] == 0
+          @pacientes = Paciente.all(:conditions=>["nome like ?", params[:nome] + '%'])
+        else
+          @pacientes = Paciente.all(:conditions=>["clinica_id= ? and nome like ?", session[:clinica_id].to_i, params[:nome] + '%'])
+        end
       end 
     end 
   end
