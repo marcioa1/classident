@@ -1,0 +1,43 @@
+<% content_for :main do %>
+<fieldset>
+    <legend>Relatório de pagamentos</legend>
+<% form_tag relatorio_pagamentos_path do %>
+<table class="transparente">
+    <tr><td>Início : </td><td><%= select_date  @data_inicial, :prefix=>"inicio", :order=>[:day,:month,:year] %> </td></tr>
+    <tr><td>Fim : </td><td><%= select_date  @data_final, :prefix=>"fim", :order=>[:day,:month,:year]%></td></tr>
+    </table>
+ <p>
+     Tipos de pagamento : <br/>
+   <%= select_tag :tipo_pagamento_id, options_for_select(@tipos_pagamento), :multiple=>true, :selected=>:all%>
+</p>
+  <%= submit_tag "pesquisar"%>
+<% end %>
+</fieldset>
+<br/>
+<table>
+  <tr>
+    <th>Data de pagamento</th>
+    <th>Valor pago</th>
+    <th width="220px">Observação</th>
+    <th>Tipo</th>
+    <th>Livro caixa</th>
+  </tr>
+
+<% @pagamentos.each do |pagamento| %>
+  <tr>
+    <td align="center"><%=h pagamento.data_de_pagamento.to_s_br %></td>
+    <td align="right"><%=h pagamento.valor_pago.real %></td>
+    <td><%=h pagamento.observacao %></td>
+    <td><%=h pagamento.tipo_pagamento.nome %></td>
+    <td><%=h pagamento.nao_lancar_no_livro_caixa %></td>
+    <td><%= link_to 'mostrar', pagamento %></td>
+    <td><%= link_to 'editar', edit_pagamento_path(pagamento) %></td>
+    <td><%= link_to 'excluir', pagamento, :confirm => 'Tem certeza ?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'novo pagamento', new_pagamento_path %>
+<% end %>

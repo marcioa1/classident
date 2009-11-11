@@ -4,9 +4,7 @@ class PagamentosController < ApplicationController
   # GET /pagamentos
   # GET /pagamentos.xml
   def index
-    #TODO colocar o relatorio aqui, com os parâmetros
     @pagamentos = Pagamento.all
-
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @pagamentos }
@@ -17,7 +15,6 @@ class PagamentosController < ApplicationController
   # GET /pagamentos/1.xml
   def show
     @pagamento = Pagamento.find(params[:id])
-
     respond_to do |format|
       format.html # show.html.erb
       format.xml  { render :xml => @pagamento }
@@ -88,4 +85,24 @@ class PagamentosController < ApplicationController
       format.xml  { head :ok }
     end
   end
+  
+   def relatorio
+     @tipos_pagamento = TipoPagamento.por_nome.collect{|obj| [obj.nome, obj.id]}
+     if params[:inicio]
+       @data_inicial = Date.new(params[:inicio][:year].to_i, 
+                 params[:inicio][:month].to_i, 
+                 params[:inicio][:day].to_i)
+       @data_final = Date.new(params[:fim][:year].to_i,
+                params[:fim][:month].to_i, 
+                params[:fim][:day].to_i)
+     else
+       @data_inicial = Date.today 
+       @data_final = Date.today
+     end
+     @pagamentos = Pagamento.por_data.entre_datas(@data_inicial, @data_final)
+     respond_to do |format|
+       format.html # index.html.erb
+       format.xml  { render :xml => @pagamentos }
+     end
+   end
 end

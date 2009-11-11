@@ -1,5 +1,11 @@
 <% content_for :main do %>
 <h3>Listando pagamentos</h3>
+INDEX
+<% form_tag :controller=>"pagamentos", :action=>"index" do %>
+  Entre : <%= date_select :inicio, @data_inicial %> e 
+  <%= date_select :fim, @data_final%>
+  <%= submit_tag "pesquisar"%>
+<% end %>
 
 <table>
   <tr>
@@ -12,7 +18,7 @@
 
 <% @pagamentos.each do |pagamento| %>
   <tr>
-    <td><%=h pagamento.data_de_pagamento.to_s %></td>
+    <td><%=h pagamento.data_de_pagamento.to_s_br %></td>
     <td><%=h pagamento.valor_pago.real %></td>
     <td><%=h pagamento.observacao %></td>
     <td><%=h pagamento.nao_lancar_no_livro_caixa %></td>

@@ -5,12 +5,12 @@
 </p>
 <p>
   <b>Data de pagamento:</b>
-  <%=h @pagamento.data_de_pagamento %>
+  <%=h @pagamento.data_de_pagamento.to_s_br %>
 </p>
 
 <p>
   <b>Valor:</b>
-  <%=h @pagamento.valor %>
+  <%=h @pagamento.valor.real %>
 </p>
 
 <p>
@@ -19,7 +19,7 @@
 </p>
 
 <p>
-  <b>Observacao:</b>
+  <b>Observação:</b>
   <%=h @pagamento.observacao %>
 </p>
 
@@ -34,6 +34,6 @@
 </p>
 
 
-<%= link_to 'Eeditar', edit_pagamento_path(@pagamento) %> |
-<%= link_to 'voltar', pagamentos_path %>
+<%= link_to 'editar', edit_pagamento_path(@pagamento) %> |
+<%= link_to 'voltar', relatorio_pagamentos_path %>
 <% end %>

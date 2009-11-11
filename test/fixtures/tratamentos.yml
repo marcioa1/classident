@@ -1,0 +1,19 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  paciente_id: 1
+  item_tabela_id: 1
+  dentista_id: 1
+  valor: 9.99
+  data: 2009-11-11
+  dente: MyString
+  orcamento_id: 1
+
+two:
+  paciente_id: 1
+  item_tabela_id: 1
+  dentista_id: 1
+  valor: 9.99
+  data: 2009-11-11
+  dente: MyString
+  orcamento_id: 1

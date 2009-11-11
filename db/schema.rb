@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20091110184200) do
+ActiveRecord::Schema.define(:version => 20091111161208) do
 
   create_table "clinicas", :force => true do |t|
     t.string   "nome"
@@ -123,6 +123,21 @@ ActiveRecord::Schema.define(:version => 20091110184200) do
   end
 
   add_index "tipo_usuarios", ["id"], :name => "index_tipo_usuarios_on_id"
+
+  create_table "tratamentos", :force => true do |t|
+    t.integer  "paciente_id"
+    t.integer  "item_tabela_id"
+    t.integer  "dentista_id"
+    t.decimal  "valor",          :precision => 2, :scale => 8
+    t.date     "data"
+    t.string   "dente"
+    t.integer  "orcamento_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "tratamentos", ["id"], :name => "index_tratamentos_on_id"
+  add_index "tratamentos", ["paciente_id"], :name => "index_tratamentos_on_paciente_id"
 
   create_table "users", :force => true do |t|
     t.string   "login",                                :null => false
