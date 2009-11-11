@@ -3,7 +3,7 @@ class CreateTipoPagamentos < ActiveRecord::Migration
     create_table :tipo_pagamentos do |t|
       t.integer :clinica_id
       t.string :nome, :size=>30
-      t.integer :ativo, :default=>true
+      t.integer :ativo
 
       t.timestamps
     end

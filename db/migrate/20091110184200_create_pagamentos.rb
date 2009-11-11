@@ -8,7 +8,7 @@ class CreatePagamentos < ActiveRecord::Migration
       t.decimal :valor, :precision=>6, :scale=>2
       t.decimal :valor_pago, :precision=>6, :scale=>2
       t.string :observacao
-      t.boolean :nao_lancar_no_livro_caixa, :default=>false
+      t.boolean :nao_lancar_no_livro_caixa
       t.datetime :data_de_exclusao
 
       t.timestamps
