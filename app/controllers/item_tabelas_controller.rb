@@ -123,4 +123,17 @@ class ItemTabelasController < ApplicationController
     end
     redirect_to item_tabelas_path(:tabela_id=>@item_tabela.tabela.id)
   end
+  
+  def busca_descricao
+    debugger
+    valor_item = Preco.valor(params[:id].to_i,params[:clinica_id].to_i)
+    if valor_item.empty?
+      preco_do_item = 0
+    else
+      preco_do_item = valor_item.first.preco
+    end
+    item_tabela = ItemTabela.find(params[:id])
+    result = item_tabela.descricao + "/" + preco_do_item.real.to_s
+    render :json => result.to_json
+  end
 end

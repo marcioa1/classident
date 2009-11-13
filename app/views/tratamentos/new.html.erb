@@ -1,0 +1,11 @@
+<% content_for :main do %>
+<% form_for(@tratamento) do |f| %>
+  <%= f.label :codigo %> : 
+  <%= select_tag :item_tabela_id, options_for_select(@items),  :onchange=>"selecionou_item_tabela(#{session[:clinica_id]});" %>
+<p>
+  <%= f.label :descrição %> : <span id="descricao_item_tabela">x</span>
+</p>
+<p><%= f.label :valor %> :
+	<%= f.text_field :valor %></p>
+<% end %>
+<% end %>

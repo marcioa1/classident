@@ -11,7 +11,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :tabelas do |item|
      item.resources :item_tabelas
   end
-  map.resources :item_tabelas
+  map.resources :item_tabelas, :collection=>{:busca_descricao=>:get}
 
   map.selecionou_clinica "selecionou_clinica", :controller=>:clinicas, :action=>:selecionou_clinica
   map.resource :user_sessions

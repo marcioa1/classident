@@ -16,3 +16,13 @@ function conta_caracteres(){
       $("#pesquisar_button").attr('disabled',true); 
     }
 }
+
+function selecionou_item_tabela(clinica_id){
+    $.getJSON('/item_tabelas/busca_descricao',{'id': $("#item_tabela_id").selectedValues(),
+          'clinica_id': clinica_id},
+      function(data){
+       resultado = data.split("/");
+       $("#descricao_item_tabela").text(resultado[0]);         
+       $("#tratamento_valor").val(resultado[1]);         
+  });
+}

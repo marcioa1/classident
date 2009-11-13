@@ -16,6 +16,6 @@ class CreateTratamentos < ActiveRecord::Migration
   end
 
   def self.down
-   # drop_table :tratamentos
+    drop_table :tratamentos
   end
 end
