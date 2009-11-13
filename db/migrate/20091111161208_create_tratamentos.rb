@@ -4,7 +4,7 @@ class CreateTratamentos < ActiveRecord::Migration
       t.integer :paciente_id
       t.integer :item_tabela_id
       t.integer :dentista_id
-      t.decimal :valor, :precision=>2, :scale=>8
+      t.decimal :valor, :precision=>6, :scale=>2
       t.date :data
       t.string :dente
       t.integer :orcamento_id
