@@ -1,8 +1,10 @@
 require 'test_helper'
 
 class DentistaTest < ActiveSupport::TestCase
-  # Replace this with your real tests.
-  test "the truth" do
-    assert true
+  
+  def test_clinica_dentista
+    joao = dentistas(:joao)
+    debugger
+    assert joao.clinicas.size==2
   end
 end

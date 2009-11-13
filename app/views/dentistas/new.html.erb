@@ -20,8 +20,14 @@
   </p>
   <p>
      <%= f.check_box :ativo %><%= f.label :ativo %>
-   
   </p>
+<fieldset>
+    <legend>Clínicas onde atua :</legend>
+    <% @clinicas.each() do |clinica| %>
+      <%= check_box_tag "clinica_#{clinica.id}", clinica.id, checked=@dentista.clinicas.include?(clinica) %>  
+    <%= clinica.nome %><br/>
+    <% end %>
+  </fieldset>
   <p>
     <%= f.submit 'Criar' %>
   </p>

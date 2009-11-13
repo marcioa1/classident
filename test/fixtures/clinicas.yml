@@ -1,9 +1,11 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
 centro:
+  id: 1
   nome: centro
   sigla: ce
   
 barra:
+  id: 2
   nome: barra da tijuca
-  sigla: barra
+  sigla: ba

@@ -1,0 +1,11 @@
+um:
+  dentista_id: 1
+  clinica_id: 1
+
+dois:
+  dentista_id: 1
+  clinica_id: 2
+  
+tres:
+  dentista_id: 2
+  clinica_id: 2

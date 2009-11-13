@@ -26,7 +26,7 @@ class DentistasController < ApplicationController
   # GET /dentistas/new.xml
   def new
     @dentista = Dentista.new
-
+    @clinicas = Clinica.all(:order=>:nome)
     respond_to do |format|
       format.html # new.html.erb
       format.xml  { render :xml => @dentista }
@@ -36,16 +36,22 @@ class DentistasController < ApplicationController
   # GET /dentistas/1/edit
   def edit
     @dentista = Dentista.find(params[:id])
+    @clinicas = Clinica.all(:order=>:nome)
   end
 
   # POST /dentistas
   # POST /dentistas.xml
   def create
     @dentista = Dentista.new(params[:dentista])
-
+    @dentista.clinicas = []
+    clinicas = Clinica.all
+    clinicas.each() do |clinica|
+      if params["clinica_#{clinica.id.to_s}"]
+        @dentista.clinicas << clinica
+      end      
+    end
     respond_to do |format|
       if @dentista.save
-        flash[:notice] = 'Dentista was successfully created.'
         format.html { redirect_to(@dentista) }
         format.xml  { render :xml => @dentista, :status => :created, :location => @dentista }
       else
@@ -59,10 +65,15 @@ class DentistasController < ApplicationController
   # PUT /dentistas/1.xml
   def update
     @dentista = Dentista.find(params[:id])
-
+    @dentista.clinicas = []
+    clinicas = Clinica.all
+    clinicas.each() do |clinica|
+      if params["clinica_#{clinica.id.to_s}"]
+        @dentista.clinicas << clinica
+      end      
+    end
     respond_to do |format|
       if @dentista.update_attributes(params[:dentista])
-        flash[:notice] = 'Dentista was successfully updated.'
         format.html { redirect_to(dentistas_path) }
         format.xml  { head :ok }
       else
@@ -87,6 +98,10 @@ class DentistasController < ApplicationController
 
   def abre
     @dentista = Dentista.find(params[:id])  
+    @clinicas = Clinica.all(:order=>:nome)
+    @clinica_1 = "1"
+    @inicio = Date.today
+    @fim = Date.today
   end
   
 end

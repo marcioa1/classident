@@ -9,12 +9,14 @@
         <li><a href="#fragment-3"><span>Extrato</span></a></li>
     </ul>
     <div id="fragment-1">
-	    <%= render :partial=>"cadastro" , :locals=>{:paciente=>@paciente} %>
+        <%= render :partial=>"cadastro" , :locals=>{:paciente=>@paciente} %>
         
     </div>
     <div id="fragment-2">
-	    <%= link_to "novo procedimento" , new_tratamento_path(:paciente_id=>@paciente.id) %><br/>
-	    <%= render :partial=>"tratamento" , :locals=>{:paciente=>@paciente} %>
+      <p>
+        <%= link_to "novo procedimento" , new_tratamento_path(:paciente_id=>@paciente.id) unless session[:clinica_id].to_i == 0 %>
+      </p>
+        <%= render :partial=>"tratamento" , :locals=>{:paciente=>@paciente} %>
     </div>
     <div id="fragment-3">
         Extrato

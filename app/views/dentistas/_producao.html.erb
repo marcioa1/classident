@@ -1,0 +1,28 @@
+<fieldset class="fieldset_50">
+
+<% form_tag producao_dentista_path do %>
+    Entre : <%= date_select :data_inicio, @inicio, :order=>[:day, :month, :year] %>
+    e : <%= date_select :data_fim, @fim , :order=>[:day,:month,:year] %><br/>
+    Clínicas :  
+    <% @dentista.clinicas.each() do |clinica| %>
+      <%= check_box_tag "clinica_#{clinica.id}", clinica.id, checked=true %>  
+    <%= clinica.nome %> &nbsp;&nbsp;
+    <% end %>
+  <p>
+    <%= submit_tag 'pesquisar' %>
+  </p>
+<% end %>
+</fieldset>
+<p>
+<table>
+  <tr>
+  	<th width="120px">Data</th>
+    <th width="220px">Paciente</th>
+    <th width="220px">Procedimento</th>
+    <th width="90px">Valor</th>
+  </tr>
+</table>
+</p>
+<br/>
+<%= link_to 'voltar', dentistas_path %>
+

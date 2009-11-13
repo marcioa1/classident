@@ -9,14 +9,14 @@
         <li><a href="#fragment-3"><span>Pagamento</span></a></li>
     </ul>
     <div id="fragment-1">
-	    <%= render :partial=>"editar" , :locals=>{:dentista=>@dentista} %>
+	    <%= render :partial=>"editar" , :locals=>{:dentista=>@dentista, :clinicas=>@clinicas} %>
         
     </div>
     <div id="fragment-2">
-        Produção
+        <%= render :partial=>"producao" , :locals=>{:dentista=>@dentista, :clinicas=>@clinicas} %>
     </div>
     <div id="fragment-3">
-        Pagamento
+       <%= render :partial=>"pagamento" , :locals=>{:dentista=>@dentista, :clinicas=>@clinicas} %>
     </div>
 </div>
 <% end %>

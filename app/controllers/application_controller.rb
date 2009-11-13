@@ -48,7 +48,7 @@ class ApplicationController < ActionController::Base
     
     
     def busca_clinicas
-      @clinicas = Clinica.all(:order=>:nome).collect{|obj| [obj.nome,obj.id]}.insert(0,"Administração")
+      @as_clinicas = Clinica.all(:order=>:nome).collect{|obj| [obj.nome,obj.id]}.insert(0,"Administração")
     end
     
 end

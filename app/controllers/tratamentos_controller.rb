@@ -5,6 +5,7 @@ class TratamentosController < ApplicationController
     @tratamento = Tratamento.new
     @items = ItemTabela.all(:conditions=>["tabela_id = ? ", @paciente.id]).
         collect{|obj| [obj.codigo + " - " + obj.descricao,obj.id]}
+    #@dentistas = Dentista.da_clinica
   end
   
 end

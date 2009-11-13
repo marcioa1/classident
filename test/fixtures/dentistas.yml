@@ -1,13 +1,22 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
-one:
-  nome: MyString
+joao:
+  id: 1
+  nome: Joao
   telefone: MyString
   celular: MyString
-  ativo: false
+  ativo: true
 
-two:
-  nome: MyString
+antonio:
+  id: 2
+  nome: Antonio
   telefone: MyString
   celular: MyString
+  ativo: true
+  
+manuel:
+  id: 3
+  nome: Manuel
+  telefone: xxx
+  celular: xxx
   ativo: false
