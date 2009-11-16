@@ -47,7 +47,8 @@
     <%= f.label :cpf %> :
     <%= f.text_field :cpf, :size=>12 %>
     <%= f.label :sexo %> :
-    <%= f.text_field :sexo %>
+    <%= f.radio_button :sexo, :m %> Masc
+    <%= f.radio_button :sexo, :f %> Fem
    </p>  
   <p>
     <%= f.submit 'Criar' %>
