@@ -49,7 +49,9 @@ class ApplicationController < ActionController::Base
     
     def busca_clinicas
       @as_clinicas = Clinica.all(:order=>:nome).collect{|obj| [obj.nome,obj.id]}.insert(0,"Administração")
-      @clinica = Clinica.find(session[:clinica_id]) unless session[:clinica_id] == 0
+      if !session[:clinica_id.nil]?
+        @clinica = Clinica.find(session[:clinica_id]) unless session[:clinica_id] == 0
+      end
     end
     
 end
