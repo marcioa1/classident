@@ -1,0 +1,23 @@
+<p>
+  <b>Paciente:</b>
+  <%=h @debito.paciente_id %>
+</p>
+
+<p>
+  <b>Tratamento:</b>
+  <%=h @debito.tratamento_id %>
+</p>
+
+<p>
+  <b>Valor:</b>
+  <%=h @debito.valor %>
+</p>
+
+<p>
+  <b>Descricao:</b>
+  <%=h @debito.descricao %>
+</p>
+
+
+<%= link_to 'Edit', edit_debito_path(@debito) %> |
+<%= link_to 'Back', debitos_path %>

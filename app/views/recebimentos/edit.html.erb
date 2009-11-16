@@ -1,0 +1,36 @@
+<h1>Editing recebimento</h1>
+
+<% form_for(@recebimento) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :paciente_id %><br />
+    <%= f.text_field :paciente_id %>
+  </p>
+  <p>
+    <%= f.label :clinica_id %><br />
+    <%= f.text_field :clinica_id %>
+  </p>
+  <p>
+    <%= f.label :data %><br />
+    <%= f.date_select :data %>
+  </p>
+  <p>
+    <%= f.label :forma_recebimento_id %><br />
+    <%= f.text_field :formas_recebimento_id %>
+  </p>
+  <p>
+    <%= f.label :valor %><br />
+    <%= f.text_field :valor, :size=>10 %>
+  </p>
+  <p>
+    <%= f.label :observacao %><br />
+    <%= f.text_field :observacao %>
+  </p>
+  <p>
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @recebimento %> |
+<%= link_to 'Back', recebimentos_path %>

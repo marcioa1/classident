@@ -1,0 +1,36 @@
+<p>
+  <%= link_to "novo recebimento",
+         new_recebimento_path(:paciente_id=>@paciente.id) %>
+</p>
+<table>
+  <tr>
+    <th>Data</th>
+    <th width="200px">Descrição</th>
+    <th width="70px">Débito</th>
+    <th width="70px">Crédito</th>
+    <th width="70px">Saldo</th>
+  </tr>
+  <% saldo = 0 %>
+<% @paciente.extrato.each do |lancamento| %>
+  <tr>
+    <td align="center"><%= lancamento.data.to_s_br%></td>
+    <% if lancamento.class == Debito %>
+      <td><%= lancamento.descricao %></td>
+      <td align="right"><%= lancamento.valor.real %></td>
+      <td>&nbsp;</td>
+      <% saldo -= lancamento.valor %>
+    <% else %>
+      <td><%= lancamento.observacao %></td>
+      <td>&nbsp;</td>
+      <td align="right"><%= lancamento.valor.real %></td>
+      <% saldo += lancamento.valor %>
+    <% end %>
+    <% if saldo >0 %>
+      <% cor = "black"%>
+    <% else %>
+      <% cor = "red" %>
+    <% end %>
+    <td align="right" style="color: <%= cor %>"><%= saldo.real %></td>
+  </tr>
+<% end %>
+</table>

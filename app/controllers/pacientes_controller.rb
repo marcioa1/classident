@@ -64,8 +64,7 @@ class PacientesController < ApplicationController
 
     respond_to do |format|
       if @paciente.update_attributes(params[:paciente])
-        flash[:notice] = 'Paciente was successfully updated.'
-        format.html { redirect_to(@paciente) }
+        format.html { redirect_to(abre_paciente_path(:id=>@paciente.id)) }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }
@@ -87,6 +86,11 @@ class PacientesController < ApplicationController
   end
   
   def pesquisa
+    if !session[:paciente_id].nil?
+      @paciente = Paciente.find(session[:paciente_id])
+      params[:codigo] = @paciente.id
+      params[:nome] = @paciente.nome
+    end  
     @pacientes =[]
     if params[:codigo]
       if session[:clinica_id] == 0
@@ -112,7 +116,9 @@ class PacientesController < ApplicationController
   end
   
   def abre
+    session[:paciente_id] = params[:id]
     @paciente = Paciente.find(params[:id])
+    @tabelas = Tabela.ativas.collect{|obj| [obj.nome,obj.id]}
   end
   
 end

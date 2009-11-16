@@ -1,50 +1,56 @@
 body{
-	background :#000000;
+    background :#000000;
 }
 fieldset{
-	width: 30em;
+    width: 30em;
+}
+.fieldset_60{
+    width: 60em;
 }
 .fieldset_50{
-	width: 50em;
+    width: 50em;
+}
+.fieldset_40{
+    width: 40em;
 }
 #logo{
-	margin-left: 2em;
-	margin-top: 2em;
-	float: left;
+    margin-left: 2em;
+    margin-top: 2em;
+    float: left;
 }
 #login{
-	margin-top: -7em;
-	padding-left: 30em;
-	background : white;
-	font-size :14px;
+    margin-top: -7em;
+    padding-left: 30em;
+    background : white;
+    font-size :14px;
 }
 #cabecalho{
-	margin-left: 5em;
-	margin-top: 2em;
-	background-color: red;
+    margin-left: 5em;
+    margin-top: 2em;
+    background-color: red;
 }
 #principal{
-	margin-top:0em;
-	margin-left:5em;
-	margin-bottom:0em;
-	margin-right: 5em;
-	padding-top: 9em;
-	padding-left: 2em;
-	padding-bottom: 10em;
-	padding-right: 7em;
-	background :white;
-//	width: 45.2em;
+    margin-top:0em;
+    margin-left:5em;
+    margin-bottom:0em;
+    margin-right: 5em;
+    padding-top: 9em;
+    padding-left: 2em;
+    padding-bottom: 10em;
+    padding-right: 7em;
+    background :white;
+//  width: 45.2em;
 }
 #rodape{
-	background: #1C4EA3;
-	margin-left: 5em;
-	margin-right: 5em;
-//	width: 48.2em;
-	text-align: center;
-	color: #DF7417;
+    background: #1C4EA3;
+    margin-left: 5em;
+    margin-right: 5em;
+//  width: 48.2em;
+    text-align: center;
+    color: #DF7417;
 }
 #rodape a{
-	color :#DF7427;
+    color :#DF7427;
 }
 
 
@@ -76,26 +82,26 @@ fieldset{
 .pd_menu_01 ul li a:hover ul li a:hover {background-color:#90b7e5; text-decoration:none;color:#F5F5F5;} /*Color subcells hovering mode*/
 
 .transparente{
-	padding:0;
-	margin:0;
+    padding:0;
+    margin:0;
 }
 .transparente table, tr, td{
-	border:0px; 
-	
+    border:0px; 
+    
 }
 .transparente, table , td{
-		border:0px; 
+        border:0px; 
 }
 .transparente td{
-		border:0px; 
-	background: white;
+        border:0px; 
+    background: white;
 }
 .transparente , tr{
-	height: 10px;
-	margin: 0;
-	padding: 0;
+    height: 10px;
+    margin: 0;
+    padding: 0;
 }
 
 #notice{
-	color:green;
+    color:green;
 }

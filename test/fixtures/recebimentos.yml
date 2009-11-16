@@ -1,0 +1,17 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  paciente_id: 1
+  clinica_id: 1
+  data: 2009-11-16
+  forma_recebimento_id: 1
+  valor: 9.99
+  observacao: MyString
+
+two:
+  paciente_id: 1
+  clinica_id: 1
+  data: 2009-11-16
+  forma_recebimento_id: 1
+  valor: 9.99
+  observacao: MyString

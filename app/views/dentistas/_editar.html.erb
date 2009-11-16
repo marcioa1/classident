@@ -1,4 +1,4 @@
-<fieldset>
+<fieldset class="fieldset_40">
 
 <% form_for(@dentista) do |f| %>
   <%= f.error_messages %>
@@ -6,6 +6,10 @@
   <p>
     <%= f.label :nome %><br />
     <%= f.text_field :nome %>
+  </p>
+  <p>
+    <%= f.label :CRO %><br />
+    <%= f.text_field :cro, :size=>10 %>
   </p>
   <p>
     <%= f.label :telefone %><br />
@@ -30,6 +34,6 @@
     <%= f.submit 'alterar' %>
   </p>
 <% end %>
-
+</fieldset><br/>
 <%= link_to 'voltar', dentistas_path %>
-</fieldset>
+

@@ -1,0 +1,43 @@
+<% content_for :main do %>
+<fieldset>
+    <legend>Relatório de recebimentos</legend>
+<% form_tag relatorio_recebimentos_path do %>
+<table class="transparente">
+    <tr><td>Início : </td><td><%= select_date  @data_inicial, :prefix=>"inicio", :order=>[:day,:month,:year] %> </td></tr>
+    <tr><td>Fim : </td><td><%= select_date  @data_final, :prefix=>"fim", :order=>[:day,:month,:year]%></td></tr>
+    </table>
+ <p>
+     Tipos de recebimento : <br/>
+   <%= select_tag :tipo_recebimento_id, options_for_select(@tipos_recebimento, :selected=>@tipos_recebimento), :multiple=>true, :selected=>:all%>
+</p>
+  <%= submit_tag "pesquisar"%>
+<% end %>
+</fieldset>
+<br/>
+<table>
+  <tr>
+    <th>Data</th>
+    <th width="180px">Paciente</th>
+    <th width="70px">Valor</th>
+    <th width="120px">Observação</th>
+    <th>Tipo</th>
+    <th>&nbsp;</th>
+    <th>&nbsp;</th>
+  </tr>
+
+<% @recebimentos.each do |recebimento| %>
+  <tr>
+    <td align="center"><%=h recebimento.data.to_s_br %></td>
+    <td><%=h recebimento.paciente.nome %></td>
+    <td align="right"><%=h recebimento.valor.real %></td>
+    <td><%=h recebimento.observacao %></td>
+    <td><%=h recebimento.formas_recebimento.nome %></td>
+    <td><%= link_to 'editar', edit_recebimento_path(recebimento) %></td>
+    <td><%= link_to 'excluir', recebimento, :confirm => 'Tem certeza ?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<% end %>

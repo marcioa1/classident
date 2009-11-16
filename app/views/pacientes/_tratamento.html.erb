@@ -1,18 +1,20 @@
 <table>
   <tr>
-  	<th>Código</th>
-    <th>Descrição</th>
-    <th>Valor</th>
+  	<th width="80px">Código</th>
+    <th width="190px">Descrição</th>
+    <th width="70px">Valor</th>
     <th>Dentista</th>
     <th>Data de realização</th>
+    <th>&nbsp;</th>
   </tr>
 <% Tratamento.do_paciente(@paciente.id).each()  do |tratamento|  %>
   <tr>
 	<td><%= tratamento.item_tabela.codigo %></td>
     <td><%= tratamento.item_tabela.descricao %></td>
-    <td><%= tratamento.valor.real%></td>
+    <td align="right"><%= tratamento.valor.real%></td>
     <td><%= tratamento.dentista.nome %></td>
     <td><%= tratamento.data.to_s_br%></td>
+    <td><%= link_to "alterar", edit_tratamento_path(:id=>tratamento.id) %></td>
   </tr>
      <br/>
 <% end %>

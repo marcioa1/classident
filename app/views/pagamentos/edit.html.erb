@@ -13,19 +13,19 @@
   </p>
   <p>
     <%= f.label :valor %><br />
-    <%= f.text_field :valor %>
+    <%= f.text_field :valor, :size=>10 %>
   </p>
   <p>
     <%= f.label :valor_pago %><br />
-    <%= f.text_field :valor_pago %>
+    <%= f.text_field :valor_pago, :size=>10 %>
   </p>
   <p>
-    <%= f.label :observacao %><br />
+    <%= f.label :observação %><br />
     <%= f.text_field :observacao %>
   </p>
   <p>
-    <%= f.label :nao_lancar_no_livro_caixa %><br />
     <%= f.check_box :nao_lancar_no_livro_caixa %>
+    <%= f.label :não_lançar_no_livro_caixa %>
   </p>
   
   <p>
@@ -33,7 +33,6 @@
   </p>
 <% end %>
 
-<%= link_to 'mostrar', @pagamento %> |
 <%= link_to 'voltar', relatorio_pagamentos_path %>
 </fieldset>
 <% end %>

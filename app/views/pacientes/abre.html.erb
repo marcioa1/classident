@@ -4,22 +4,19 @@
 
 <div id="tabs">
     <ul>
-        <li><a href="#fragment-1"><span>Cadastro</span></a></li>
-        <li><a href="#fragment-2"><span>Tratamento</span></a></li>
+        <li><a href="#fragment-1"><span>Tratamento</span></a></li>
+        <li><a href="#fragment-2"><span>Cadastro</span></a></li>
         <li><a href="#fragment-3"><span>Extrato</span></a></li>
     </ul>
     <div id="fragment-1">
-        <%= render :partial=>"cadastro" , :locals=>{:paciente=>@paciente} %>
-        
+        <%= link_to "novo procedimento" , new_tratamento_path(:paciente_id=>@paciente.id) unless session[:clinica_id].to_i == 0 %>
+      <%= render :partial=>"tratamento" , :locals=>{:paciente=>@paciente} %>
     </div>
     <div id="fragment-2">
-      <p>
-        <%= link_to "novo procedimento" , new_tratamento_path(:paciente_id=>@paciente.id) unless session[:clinica_id].to_i == 0 %>
-      </p>
-        <%= render :partial=>"tratamento" , :locals=>{:paciente=>@paciente} %>
+    <%= render :partial=>"edit" , :locals=>{:paciente=>@paciente} %>
     </div>
     <div id="fragment-3">
-        Extrato
+        <%= render :partial=>"extrato", :locals=>{:paciente=>@paciente} %>
     </div>
 </div>
 <% end %>

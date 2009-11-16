@@ -1,0 +1,13 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  paciente_id: 1
+  tratamento_id: 1
+  valor: 9.99
+  descricao: MyString
+
+two:
+  paciente_id: 1
+  tratamento_id: 1
+  valor: 9.99
+  descricao: MyString

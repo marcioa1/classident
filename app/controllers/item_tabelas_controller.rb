@@ -125,7 +125,6 @@ class ItemTabelasController < ApplicationController
   end
   
   def busca_descricao
-    debugger
     valor_item = Preco.valor(params[:id].to_i,params[:clinica_id].to_i)
     if valor_item.empty?
       preco_do_item = 0

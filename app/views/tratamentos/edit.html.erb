@@ -1,0 +1,35 @@
+<% content_for :main do %>
+<fieldset>
+<legend>Alterando tratamento</legend>
+
+Paciente : <%= @tratamento.paciente.nome %> ( Tabela: <%= @tratamento.paciente.tabela.nome %> )<br/>
+<% form_for(@tratamento) do |f| %>
+
+  <%= f.hidden_field :paciente_id %>
+  <p>
+  	<%= f.label :dente %> : 
+    <%= f.text_field :dente, :size=>10%>
+  </p>
+  
+  <%= f.label :codigo %> : <%= @tratamento.item_tabela_id %> | 
+  <%= f.select :item_tabela_id, options_for_select(@items), {}, html_options={  :onchange=>"selecionou_item_tabela(#{session[:clinica_id]});"} %>
+  <p>
+    <%= f.label :descrição %> : <span id="descricao_item_tabela"></span>
+  </p>
+  <p><%= f.label :valor %> :
+	<%= f.text_field :valor, :size=>10 %>
+  </p>
+  <p>
+  	<%= f.label :dentista %>
+    <%= f.select :dentista_id, @dentistas%>
+  </p>
+  <p>
+  	<%= f.label :data_de_término %>
+    <%= f.date_select :data , :order=>[:day, :month, :year],
+           :include_blank=>true %> <%= link_to "hoje" , "#", :onclick=>"coloca_data_de_hoje(#{Date.today.day}, #{Date.today.month}, #{Date.today.year});" %>
+  </p>
+  <%= f.submit "alterar"%>
+<% end %>
+</fieldset>
+<%= link_to "voltar", abre_paciente_path(:id=>@tratamento.paciente_id) %>
+<% end %>

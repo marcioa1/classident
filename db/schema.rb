@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20091113132225) do
+ActiveRecord::Schema.define(:version => 20091116164602) do
 
   create_table "clinicas", :force => true do |t|
     t.string   "nome"
@@ -25,6 +25,18 @@ ActiveRecord::Schema.define(:version => 20091113132225) do
     t.integer "dentista_id"
   end
 
+  create_table "debitos", :force => true do |t|
+    t.integer  "paciente_id"
+    t.integer  "tratamento_id"
+    t.decimal  "valor"
+    t.string   "descricao"
+    t.date     "data"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "debitos", ["paciente_id"], :name => "index_debitos_on_paciente_id"
+
   create_table "dentistas", :force => true do |t|
     t.string   "nome"
     t.string   "telefone"
@@ -32,7 +44,16 @@ ActiveRecord::Schema.define(:version => 20091113132225) do
     t.boolean  "ativo"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "cro"
   end
+
+  create_table "formas_recebimentos", :force => true do |t|
+    t.string   "nome"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "formas_recebimentos", ["id"], :name => "index_formas_recebimentos_on_id"
 
   create_table "item_tabelas", :force => true do |t|
     t.integer  "tabela_id"
@@ -98,6 +119,20 @@ ActiveRecord::Schema.define(:version => 20091113132225) do
 
   add_index "precos", ["clinica_id"], :name => "index_precos_on_clinica_id"
   add_index "precos", ["id"], :name => "index_precos_on_id"
+
+  create_table "recebimentos", :force => true do |t|
+    t.integer  "paciente_id"
+    t.integer  "clinica_id"
+    t.date     "data"
+    t.integer  "formas_recebimento_id"
+    t.decimal  "valor",                 :precision => 6, :scale => 2
+    t.string   "observacao"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "recebimentos", ["clinica_id"], :name => "index_recebimentos_on_clinica_id"
+  add_index "recebimentos", ["paciente_id"], :name => "index_recebimentos_on_paciente_id"
 
   create_table "tabelas", :force => true do |t|
     t.string   "nome"

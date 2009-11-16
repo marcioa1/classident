@@ -1,0 +1,2 @@
+module FormasRecebimentosHelper
+end

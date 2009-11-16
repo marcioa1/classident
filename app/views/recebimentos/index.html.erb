@@ -1,0 +1,30 @@
+<h1>Listing recebimentos</h1>
+
+<table>
+  <tr>
+    <th>Paciente</th>
+    <th>Clinica</th>
+    <th>Data</th>
+    <th>Forma recebimento</th>
+    <th>Valor</th>
+    <th>Observacao</th>
+  </tr>
+
+<% @recebimentos.each do |recebimento| %>
+  <tr>
+    <td><%=h recebimento.paciente_id %></td>
+    <td><%=h recebimento.clinica_id %></td>
+    <td><%=h recebimento.data %></td>
+    <td><%=h recebimento.forma_recebimento_id %></td>
+    <td><%=h recebimento.valor %></td>
+    <td><%=h recebimento.observacao %></td>
+    <td><%= link_to 'Show', recebimento %></td>
+    <td><%= link_to 'Edit', edit_recebimento_path(recebimento) %></td>
+    <td><%= link_to 'Destroy', recebimento, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New recebimento', new_recebimento_path %>

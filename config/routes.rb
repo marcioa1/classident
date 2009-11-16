@@ -1,25 +1,27 @@
 ActionController::Routing::Routes.draw do |map|
-
-  map.resources :pagamentos, :collection=>{:relatorio=>:get}
-
-  map.resources :tipo_pagamentos
-  map.resources :tratamentos
-
+ 
+  map.resources :debitos
   map.resources :dentistas, :member=>{:abre=>:get, :producao=>:get}
+  map.resources :formas_recebimentos
+  map.resources :item_tabelas, :collection=>{:busca_descricao=>:get}
   map.resources :pacientes, :member=>{:abre=>:get}, :collection=>{:pesquisa=>:get}
 
+  map.administracao "administracao", :controller=>"administracao", :action=>"index"
+  map.resources :pagamentos, :collection=>{:relatorio=>:get}
+  map.resources :precos
+  map.resources :recebimentos, :collection=>{:relatorio=>:get}
   map.resources :tabelas do |item|
      item.resources :item_tabelas
   end
-  map.resources :item_tabelas, :collection=>{:busca_descricao=>:get}
+  map.resources :tipo_pagamentos
+  map.resources :tratamentos
+  map.resources :users, :member =>[:troca_senha=>:get]
+  map.resource :user_sessions
 
   map.selecionou_clinica "selecionou_clinica", :controller=>:clinicas, :action=>:selecionou_clinica
-  map.resource :user_sessions
   map.root :controller => "user_sessions", :action => "new" # optional, this just sets the root route
-  map.resources :users, :member =>[:troca_senha=>:get]
   map.logout "logout", :controller=>:user_sessions, :action=>:destroy
   map.troca_senha "troca_senha", :controller=>:users, :action=>:troca_senha
-  map.resources :precos
   map.grava_precos "grava_precos", :controller => "item_tabelas", :action=>"grava_precos"
 #  map.resource :account, :controller => "users"
   

@@ -10,6 +10,4 @@ class Dentista < ActiveRecord::Base
     sigla
   end
   
- 
-  
 end

@@ -1,0 +1,33 @@
+<p>
+  <b>Paciente:</b>
+  <%=h @recebimento.paciente_id %>
+</p>
+
+<p>
+  <b>Clinica:</b>
+  <%=h @recebimento.clinica_id %>
+</p>
+
+<p>
+  <b>Data:</b>
+  <%=h @recebimento.data %>
+</p>
+
+<p>
+  <b>Forma recebimento:</b>
+  <%=h @recebimento.forma_recebimento_id %>
+</p>
+
+<p>
+  <b>Valor:</b>
+  <%=h @recebimento.valor %>
+</p>
+
+<p>
+  <b>Observacao:</b>
+  <%=h @recebimento.observacao %>
+</p>
+
+
+<%= link_to 'Edit', edit_recebimento_path(@recebimento) %> |
+<%= link_to 'Back', recebimentos_path %>

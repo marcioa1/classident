@@ -21,6 +21,8 @@
     <th width="220px">Observação</th>
     <th>Tipo</th>
     <th>Livro caixa</th>
+    <th>&nbsp;</th>
+    <th>&nbsp;</th>
   </tr>
 
 <% @pagamentos.each do |pagamento| %>
@@ -30,7 +32,6 @@
     <td><%=h pagamento.observacao %></td>
     <td><%=h pagamento.tipo_pagamento.nome %></td>
     <td><%=h pagamento.nao_lancar_no_livro_caixa %></td>
-    <td><%= link_to 'mostrar', pagamento %></td>
     <td><%= link_to 'editar', edit_pagamento_path(pagamento) %></td>
     <td><%= link_to 'excluir', pagamento, :confirm => 'Tem certeza ?', :method => :delete %></td>
   </tr>

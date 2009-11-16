@@ -1,0 +1,26 @@
+<h1>Listing debitos</h1>
+
+<table>
+  <tr>
+    <th>Paciente</th>
+    <th>Tratamento</th>
+    <th>Valor</th>
+    <th>Descricao</th>
+  </tr>
+
+<% @debitos.each do |debito| %>
+  <tr>
+    <td><%=h debito.paciente_id %></td>
+    <td><%=h debito.tratamento_id %></td>
+    <td><%=h debito.valor %></td>
+    <td><%=h debito.descricao %></td>
+    <td><%= link_to 'Show', debito %></td>
+    <td><%= link_to 'Edit', edit_debito_path(debito) %></td>
+    <td><%= link_to 'Destroy', debito, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New debito', new_debito_path %>

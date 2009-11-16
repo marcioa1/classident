@@ -18,11 +18,18 @@ function conta_caracteres(){
 }
 
 function selecionou_item_tabela(clinica_id){
-    $.getJSON('/item_tabelas/busca_descricao',{'id': $("#item_tabela_id").selectedValues(),
+    $.getJSON('/item_tabelas/busca_descricao',{'id': $("#tratamento_item_tabela_id").selectedValues(),
           'clinica_id': clinica_id},
       function(data){
        resultado = data.split("/");
        $("#descricao_item_tabela").text(resultado[0]);         
        $("#tratamento_valor").val(resultado[1]);         
   });
+}
+
+function coloca_data_de_hoje(dia,mes,ano){
+	//alert(dia);
+	$("#tratamento_data_3i").selectOptions(dia + "");
+	$("#tratamento_data_2i").selectOptions(mes + "");
+	$("#tratamento_data_1i").selectOptions(ano + "");
 }

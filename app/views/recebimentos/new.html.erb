@@ -1,0 +1,36 @@
+<% content_for :main do %>
+<fieldset>
+<legend>Novo recebimento</legend>
+
+<% form_for(@recebimento) do |f| %>
+  <%= f.error_messages %>
+  <%= f.hidden_field :paciente_id %>
+  <%= f.hidden_field :clinica_id %>
+
+  <p>
+    <%= f.label :paciente %> : <%= @paciente.nome %>
+  </p>
+  <p>
+    <%= f.label :data %><br />
+    <%= f.date_select :data, :order=>[:day, :month, :year] %>
+  </p>
+  <p>
+    <%= f.label :forma_recebimento_id %><br />
+    <%= f.select :formas_recebimento_id, @formas_recebimentos %>
+  </p>
+  <p>
+    <%= f.label :valor %><br />
+    <%= f.text_field :valor, :size=>10  %>
+  </p>
+  <p>
+    <%= f.label :observação %><br />
+    <%= f.text_field :observacao %>
+  </p>
+  <p>
+    <%= f.submit 'salvar' %>
+  </p>
+<% end %>
+
+<%= link_to 'voltar', recebimentos_path %>
+</fieldset >
+<% end %>
