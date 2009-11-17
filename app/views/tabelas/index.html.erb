@@ -5,19 +5,19 @@
   <tr>
     <th width="150px">Tabela</th>
     <th>Ativa</th>
-    <th>&nbsp;</th>
-    <th>&nbsp;</th>
-    <th>&nbsp;</th>
-    <th>&nbsp;</th>
+    <% if session[:clinica_id].to_i == 0 %>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+    <% end %>
   </tr>
 <% @tabelas.each do |tabela| %>
   <tr>
-    <td><%= tabela.nome %></td>
+    <td><%= link_to tabela.nome, item_tabelas_path(:tabela_id=>tabela.id) %></td>
     <td><%= tabela.ativa %></td>
-    <td><%= link_to "Items", item_tabelas_path(:tabela_id=>tabela.id) %></td>
-    <td><%= link_to 'Mostrar', tabela %></td>
+    <% if session[:clinica_id].to_i == 0 %>
     <td><%= link_to 'Editar', edit_tabela_path(tabela) if current_user.pode_incluir_tabela %></td>
     <td><%= link_to 'Excluir', tabela, :confirm => 'Tem certeza ?', :method => :delete if current_user.pode_incluir_tabela%></td>
+    <% end %>
   </tr>
 <% end %>
 </table>

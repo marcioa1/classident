@@ -20,9 +20,8 @@
 <% end %>
 
 <p>
-   
     <% @pacientes.each do |paciente| %>
-      <%= link_to paciente.nome, abre_paciente_path(:id=>paciente.id) %><br/>
+      <%= link_to paciente.nome_e_clinica(session[:clinica_id].to_i), abre_paciente_path(:id=>paciente.id) %><br/>
     <% end %>
 </p>
 <% end %>

@@ -9,7 +9,33 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20091116164602) do
+ActiveRecord::Schema.define(:version => 20091117181752) do
+
+  create_table "bancos", :force => true do |t|
+    t.integer  "numero"
+    t.string   "nome"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "cheques", :force => true do |t|
+    t.integer  "banco"
+    t.string   "agencia"
+    t.string   "conta_corrente"
+    t.string   "numero"
+    t.decimal  "valor",                   :precision => 6, :scale => 2
+    t.integer  "recebimento_id"
+    t.integer  "paciente_id"
+    t.integer  "segundo_paciente"
+    t.integer  "terceiro_paciente"
+    t.decimal  "valor_primeiro_paciente", :precision => 6, :scale => 2
+    t.decimal  "valor_segundo_paciente",  :precision => 6, :scale => 2
+    t.decimal  "valor_terceiro_paciente", :precision => 6, :scale => 2
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "cheques", ["recebimento_id"], :name => "index_cheques_on_recebimento_id"
 
   create_table "clinicas", :force => true do |t|
     t.string   "nome"
@@ -87,6 +113,7 @@ ActiveRecord::Schema.define(:version => 20091116164602) do
     t.integer  "clinica_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "codigo"
   end
 
   add_index "pacientes", ["id"], :name => "index_pacientes_on_id"

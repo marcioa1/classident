@@ -1,8 +1,8 @@
 require 'test_helper'
 
 class PacienteTest < ActiveSupport::TestCase
-  # Replace this with your real tests.
-  test "the truth" do
-    assert true
-  end
+   def test_saldo
+     marcio = pacientes(:marcio)
+     assert marcio.saldo == -44.0
+   end
 end

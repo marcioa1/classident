@@ -55,4 +55,5 @@ class ApplicationController < ActionController::Base
     end
     
 end
-#TODO trocar o true de ativo por sim ou não
+#TODO impressão das tabelas em cada clínica
+#TODO fazer datepicker

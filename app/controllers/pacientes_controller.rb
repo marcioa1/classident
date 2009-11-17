@@ -26,12 +26,16 @@ class PacientesController < ApplicationController
   # GET /pacientes/new
   # GET /pacientes/new.xml
   def new
-    @tabelas = Tabela.ativas.collect{|obj| [obj.nome,obj.id]}
-    @paciente = Paciente.new
+    if session[:clinica_id].to_i == 0
+      redirect_to administracao_path
+    else
+      @tabelas = Tabela.ativas.collect{|obj| [obj.nome,obj.id]}
+      @paciente = Paciente.new
 
-    respond_to do |format|
-      format.html # new.html.erb
-      format.xml  { render :xml => @paciente }
+      respond_to do |format|
+        format.html # new.html.erb
+        format.xml  { render :xml => @paciente }
+      end
     end
   end
 
@@ -45,9 +49,9 @@ class PacientesController < ApplicationController
   def create
     @paciente = Paciente.new(params[:paciente])
     @paciente.clinica_id = session[:clinica_id]
+    @paciente.codigo = @paciente.gera_codigo()
     respond_to do |format|
       if @paciente.save
-        flash[:notice] = 'Paciente was successfully created.'
         format.html { redirect_to(pesquisa_pacientes_path) }
         format.xml  { render :xml => @paciente, :status => :created, :location => @paciente }
       else
@@ -86,20 +90,25 @@ class PacientesController < ApplicationController
   end
   
   def pesquisa
+    session[:paciente_id] = nil
     if !session[:paciente_id].nil?
       @paciente = Paciente.find(session[:paciente_id])
       params[:codigo] = @paciente.id
       params[:nome] = @paciente.nome
     end  
     @pacientes =[]
-    if params[:codigo]
-      if session[:clinica_id] == 0
-        @pacientes = Paciente.all(:conditions=>["id=?", params[:codigo]])
+    debugger
+    if !params[:codigo].blank?
+      if session[:clinica_id].to_i == 0
+        @pacientes = Paciente.all(:conditions=>["codigo=?", params[:codigo]])
       else
-        @pacientes = Paciente.all(:conditions=>["clinica_id=? and id=?", session[:clinica_id], params[:codigo]])
+        @pacientes = Paciente.all(:conditions=>["clinica_id=? and codigo=?", session[:clinica_id], params[:codigo]])
       end
       if !@pacientes.empty?
-        redirect_to abre_paciente_path(:id=>@pacientes.first.id)
+        if @pacientes.size==1
+          redirect_to abre_paciente_path(:id=>@pacientes.first.id)
+        else
+        end 
       else
         flash[:notice] =  'Não foi encontrado paciente com o código ' + params[:codigo]
         render :action=> "pesquisa"

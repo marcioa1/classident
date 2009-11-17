@@ -28,8 +28,11 @@ function selecionou_item_tabela(clinica_id){
 }
 
 function coloca_data_de_hoje(dia,mes,ano){
-	//alert(dia);
 	$("#tratamento_data_3i").selectOptions(dia + "");
 	$("#tratamento_data_2i").selectOptions(mes + "");
 	$("#tratamento_data_1i").selectOptions(ano + "");
+}
+
+function selecionou_forma(){
+	//forma = $('#recebimento_formas_recebimento_id').selectedOptions.
 }

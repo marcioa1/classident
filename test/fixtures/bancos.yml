@@ -1,4 +1,9 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
-classident:
-  nome: classident
+one:
+  numero: 1
+  nome: MyString
+
+two:
+  numero: 1
+  nome: MyString

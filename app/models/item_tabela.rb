@@ -3,4 +3,9 @@ class ItemTabela < ActiveRecord::Base
   has_many :precos
   has_many :tratamentos
   
+  def preco_na_clinica(clinica_id)
+    registro = Preco.find_by_clinica_id_and_item_tabela_id(clinica_id,id)
+    return registro.preco    
+  end
+  
 end

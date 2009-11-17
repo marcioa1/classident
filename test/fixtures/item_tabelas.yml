@@ -1,13 +1,15 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
-one:
-  tabela_id: 1
-  codigo: MyString
-  descricao: MyString
-  ativo: false
+ama1:
+  id: 1
+  tabela: classident
+  codigo: ama1
+  descricao: amalgama_de_1_face
+  ativo: true
 
-two:
-  tabela_id: 1
-  codigo: MyString
-  descricao: MyString
-  ativo: false
+ama2:
+  id: 2
+  tabela: classident
+  codigo: ama2
+  descricao: Amalgama_de_2_faces
+  ativo: true

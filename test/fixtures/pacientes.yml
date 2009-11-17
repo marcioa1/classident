@@ -1,7 +1,8 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
-one:
-  nome: MyString
+marcio:
+  nome: Marcio
+  codigo: 1
   logradouro: MyString
   numero: MyString
   complemento: MyString
@@ -19,6 +20,7 @@ one:
 
 two:
   nome: MyString
+  codigo: 2
   logradouro: MyString
   numero: MyString
   complemento: MyString

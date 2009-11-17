@@ -1,7 +1,5 @@
-# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+dinheiro:
+  nome: Dinheiro
 
-one:
-  nome: MyString
-
-two:
-  nome: MyString
+cheque:
+  nome: Cheque

@@ -16,7 +16,7 @@
   </p>
   <p>
     <%= f.label :forma_recebimento_id %><br />
-    <%= f.select :formas_recebimento_id, @formas_recebimentos %>
+    <%= f.select :formas_recebimento_id, @formas_recebimentos, {}, html_options={  :onchange=>"selecionou_forma();"} %>
   </p>
   <p>
     <%= f.label :valor %><br />
@@ -26,6 +26,11 @@
     <%= f.label :observação %><br />
     <%= f.text_field :observacao %>
   </p>
+  <div id="cheque" style="display:none;">
+	<p>
+	   Banco
+	  </p>
+  </div>
   <p>
     <%= f.submit 'salvar' %>
   </p>

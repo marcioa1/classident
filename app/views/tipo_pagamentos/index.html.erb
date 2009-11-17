@@ -13,7 +13,7 @@
 <% @tipo_pagamentos.each do |tipo_pagamento| %>
   <tr>
     <td><%=h tipo_pagamento.nome %></td>
-    <td><%=h tipo_pagamento.ativo %></td>
+    <td><%=h tipo_pagamento.ativo ? "sim" : "não" %></td>
     <td><%= link_to 'mostrar', tipo_pagamento %></td>
     <td><%= link_to 'editar', edit_tipo_pagamento_path(tipo_pagamento) %></td>
     <td><%= link_to 'desativar', tipo_pagamento, :confirm => 'Tem certeza ?', :method => :delete %></td>

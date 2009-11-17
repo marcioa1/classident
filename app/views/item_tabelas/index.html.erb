@@ -6,9 +6,11 @@
     <th width="100px">Código</th>
     <th width="220px">Descrição</th>
     <th>Ativo</th>
-    <th>Preços</th>
-    <th>&nbsp;</th>
-    <th>&nbsp;</th>
+    <th width="60px">Preço</th>
+    <% if session[:clinica_id].to_i == 0 %>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+    <% end %>
   </tr>
 
 <% @item_tabelas.each do |item_tabela| %>
@@ -16,10 +18,14 @@
     <td><%=h item_tabela.codigo %></td>
     <td><%=h item_tabela.descricao %></td>
     <td><%=h item_tabela.ativo %></td>
-    <td><%= link_to "preços", 
-            item_tabela %></td>
-    <td><%= link_to 'Editar', edit_item_tabela_path(item_tabela) if current_user.pode_incluir_tabela %></td>
-    <td><%= link_to 'Excluir', item_tabela, :confirm => 'Are you sure?', :method => :delete  if current_user.pode_incluir_tabela%></td>
+    <% if session[:clinica_id].to_i==0 %>
+       <td><%= link_to "preços", item_tabela %></td>
+       <td><%= link_to 'Editar', edit_item_tabela_path(item_tabela) if current_user.pode_incluir_tabela %></td>
+       <td><%= link_to 'Excluir', item_tabela, :confirm => 'Are you sure?', :method => :delete  if current_user.pode_incluir_tabela%></td>
+    <% else %>
+       <td align="right"><%= item_tabela.preco_na_clinica(session[:clinica_id].to_i).real %></td>
+    <% end %>
+    
   </tr>
 <% end %>
 </table>

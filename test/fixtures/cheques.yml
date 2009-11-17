@@ -1,0 +1,27 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  banco: 1
+  agencia: MyString
+  conta_corrente: MyString
+  numero: MyString
+  valor: 9.99
+  recebimento_id: 1
+  paciente_id: 1
+  segundo_paciente: 1
+  terceiro_paciente: 1
+  valor_segundo_paciente: 9.99
+  valor_terceiro_paciente: 9.99
+
+two:
+  banco: 1
+  agencia: MyString
+  conta_corrente: MyString
+  numero: MyString
+  valor: 9.99
+  recebimento_id: 1
+  paciente_id: 1
+  segundo_paciente: 1
+  terceiro_paciente: 1
+  valor_segundo_paciente: 9.99
+  valor_terceiro_paciente: 9.99

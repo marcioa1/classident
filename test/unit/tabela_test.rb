@@ -1,8 +1,10 @@
 require 'test_helper'
 
 class TabelaTest < ActiveSupport::TestCase
-  # Replace this with your real tests.
-  test "the truth" do
-    assert true
-  end
+ 
+ def test_quantidade_de_items
+   classident = tabelas(:classident)
+   assert classident.item_tabelas.size==2
+ end
+ 
 end
