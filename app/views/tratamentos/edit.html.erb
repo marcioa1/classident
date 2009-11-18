@@ -25,8 +25,11 @@ Paciente : <%= @tratamento.paciente.nome %> ( Tabela: <%= @tratamento.paciente.t
   </p>
   <p>
   	<%= f.label :data_de_término %>
+    <%= text_field_tag :datepicker , @tratamento.data.to_s_br ,  :onchange=>"alterou_data_tratamento();", :size=>12%>
+    <span style="display:none;">    
     <%= f.date_select :data , :order=>[:day, :month, :year],
-           :include_blank=>true %> <%= link_to "hoje" , "#", :onclick=>"coloca_data_de_hoje(#{Date.today.day}, #{Date.today.month}, #{Date.today.year});" %>
+           :include_blank=>true %> 
+    </span>
   </p>
   <%= f.submit "alterar"%>
 <% end %>

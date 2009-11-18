@@ -9,7 +9,8 @@
 </p>
 <p>
 <%= f.label :tabela_id %> : <%= f.select :tabela_id, @tabelas %>
-<%= f.label :inicio_tratamento %> : <%= f.date_select :inicio_tratamento %>
+<%= f.label :inicio_de_tratamento %> :
+<%= text_field_tag :datepicker2, Date.today.to_s_br, :size=>10 %>
   </p>
   <p>
 	<%= f.label :cep %> :
@@ -43,7 +44,7 @@
   </p>
   <p>
     <%= f.label :nascimento %> :
-    <%= f.date_select :nascimento %>
+<%= f.date_select :nascimento, options={:start_year=>1910, :order=>[:day, :month, :year] }%>
     <%= f.label :cpf %> :
     <%= f.text_field :cpf, :size=>12 %>
     <%= f.label :sexo %> :

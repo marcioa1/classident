@@ -25,8 +25,13 @@ Paciente : <%= @tratamento.paciente.nome %> ( Tabela: <%= @tratamento.paciente.t
   </p>
   <p>
   	<%= f.label :data_de_término %>
+  	<input type="text" id="datepicker" onchange="alterou_data_tratamento();", size="12">
+    <span style="display:none;">
     <%= f.date_select :data , :order=>[:day, :month, :year],
            :include_blank=>true %>
+    </span>
+  </p>
+  <p>
   </p>
   <%= f.submit "salvar"%>
 <% end %>

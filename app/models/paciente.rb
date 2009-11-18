@@ -5,6 +5,8 @@ class Paciente < ActiveRecord::Base
   has_many :recebimentos
   
   #validates_uniqueness_of :codigo
+  #validates_date :inicio_tratamento, :message=>"Data inválida."
+  validates_date :nascimento,  :message=>"Data inválida."
   
   def extrato
     result = (recebimentos + debitos).sort { |a,b| a.data<=>b.data }
@@ -22,7 +24,8 @@ class Paciente < ActiveRecord::Base
   end
   
   def gera_codigo()
-    ultimo = Paciente.last(:order=>"codigo desc", :conditions=>["clinica_id=?", clinica_id])
+debugger
+    ultimo = Paciente.last(:conditions=>["clinica_id=?", clinica_id])
     if ultimo.nil?
       codigo = 0
     else

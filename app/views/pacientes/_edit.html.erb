@@ -9,8 +9,8 @@
 </p>
 <p>
 <%= f.label :tabela_id %> : <%= f.select :tabela_id, @tabelas %>
-<%= f.label :inicio_tratamento %> : 
-<%= f.date_select :inicio_tratamento, :order=>[:day, :month, :year] %>
+<%= f.label :inicio_tratamento %> :
+ <%= text_field_tag :datepicker2 , @paciente.inicio_tratamento.to_s_br , :size=>12 %> 
   </p>
  
   <p>
@@ -45,7 +45,7 @@
   </p>
   <p>
     <%= f.label :nascimento %> :
-    <%= f.date_select :nascimento, :order=>[:day, :month, :year] %>
+    <%= text_field_tag :datepicker , @paciente.nascimento.to_s_br , :size=>12%>
    
     <%= f.label :sexo %> :
     <%= f.radio_button :sexo, :m %> Masc

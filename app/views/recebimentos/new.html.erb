@@ -12,7 +12,7 @@
   </p>
   <p>
     <%= f.label :data %><br />
-    <%= f.date_select :data, :order=>[:day, :month, :year] %>
+    <%= text_field_tag :datepicker, Date.today.to_s_br, :size=>10 %>
   </p>
   <p>
     <%= f.label :forma_recebimento_id %><br />

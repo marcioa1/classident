@@ -19,7 +19,7 @@ class TratamentosController < ApplicationController
             debito = Debito.new
             debito.paciente_id = @tratamento.paciente_id
             debito.tratamento_id = @tratamento.id
-            debito.descricao = @tratamento.descricao
+            debito.descricao = @tratamento.item_tabela.descricao
             debito.valor = @tratamento.valor
             debito.data = @tratamento.data
             debito.save

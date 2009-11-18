@@ -45,7 +45,7 @@ class RecebimentosController < ApplicationController
   # POST /recebimentos.xml
   def create
     @recebimento = Recebimento.new(params[:recebimento])
-
+    @recebimento.data = params[:datepicker].to_date
     respond_to do |format|
       if @recebimento.save
         format.html { redirect_to(abre_paciente_path(:id=>@recebimento.paciente_id)) }

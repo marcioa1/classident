@@ -50,6 +50,8 @@ class PacientesController < ApplicationController
     @paciente = Paciente.new(params[:paciente])
     @paciente.clinica_id = session[:clinica_id]
     @paciente.codigo = @paciente.gera_codigo()
+    @paciente.inicio_tratamento = params[:datepicker2].to_date
+#    @paciente.nascimento = params[:datepicker].to_date
     respond_to do |format|
       if @paciente.save
         format.html { redirect_to(pesquisa_pacientes_path) }
@@ -65,7 +67,8 @@ class PacientesController < ApplicationController
   # PUT /pacientes/1.xml
   def update
     @paciente = Paciente.find(params[:id])
-
+    @paciente.inicio_tratamento = params[:datepicker2].to_date
+    @paciente.nascimento = params[:datepicker].to_date
     respond_to do |format|
       if @paciente.update_attributes(params[:paciente])
         format.html { redirect_to(abre_paciente_path(:id=>@paciente.id)) }

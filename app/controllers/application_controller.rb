@@ -56,4 +56,4 @@ class ApplicationController < ActionController::Base
     
 end
 #TODO impressão das tabelas em cada clínica
-#TODO fazer datepicker
+#TODO fazer via js ao escrever nome do paciente a pesquisar, apagar o codigo, e vice-versa

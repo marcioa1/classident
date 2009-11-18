@@ -3,8 +3,53 @@
 
 $(document).ready(function(){
     $("#tabs").tabs();
-  });
+    $("#datepicker").datepicker({  
+        dateFormat: 'dd-mm-yy',
+         dayNames: [  
+        'Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado','Domingo'  
+        ],  
+        dayNamesMin: [  
+        'D','S','T','Q','Q','S','S','D'  
+        ],  
+        dayNamesShort: [  
+        'Dom','Seg','Ter','Qua','Qui','Sex','Sáb','Dom'  
+        ],  
+        monthNames: [  
+        'Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro',  
+        'Outubro','Novembro','Dezembro'  
+        ],  
+        monthNamesShort: [  
+        'Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set',  
+        'Out','Nov','Dez'  
+        ],  
+        nextText: 'Próximo',  
+        prevText: 'Anterior'  
 
+          });
+		$("#datepicker2").datepicker({  
+	        dateFormat: 'dd-mm-yy',
+	         dayNames: [  
+	        'Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado','Domingo'  
+	        ],  
+	        dayNamesMin: [  
+	        'D','S','T','Q','Q','S','S','D'  
+	        ],  
+	        dayNamesShort: [  
+	        'Dom','Seg','Ter','Qua','Qui','Sex','Sáb','Dom'  
+	        ],  
+	        monthNames: [  
+	        'Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro',  
+	        'Outubro','Novembro','Dezembro'  
+	        ],  
+	        monthNamesShort: [  
+	        'Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set',  
+	        'Out','Nov','Dez'  
+	        ],  
+	        nextText: 'Próximo',  
+	        prevText: 'Anterior'  
+
+	          });
+  });
 function outra_clinica(){
     $("#seleciona_clinica").show();
 }
@@ -28,11 +73,43 @@ function selecionou_item_tabela(clinica_id){
 }
 
 function coloca_data_de_hoje(dia,mes,ano){
-	$("#tratamento_data_3i").selectOptions(dia + "");
-	$("#tratamento_data_2i").selectOptions(mes + "");
-	$("#tratamento_data_1i").selectOptions(ano + "");
+    $("#tratamento_data_3i").selectOptions(dia + "");
+    $("#tratamento_data_2i").selectOptions(mes + "");
+    $("#tratamento_data_1i").selectOptions(ano + "");
 }
 
 function selecionou_forma(){
-	//forma = $('#recebimento_formas_recebimento_id').selectedOptions.
+    //forma = $('#recebimento_formas_recebimento_id').selectedOptions.
+}
+
+function alterou_data_tratamento(){
+    data = $("#datepicker").datepicker('getDate');
+    if (data==null){
+      $("#tratamento_data_3i").selectOptions("");
+      $("#tratamento_data_2i").selectOptions("");
+      $("#tratamento_data_1i").selectOptions("");
+    }else {
+      dia = data.getDate();
+      mes = data.getMonth() + 1;
+      ano = data.getFullYear();
+      $("#tratamento_data_3i").selectOptions(dia+"");
+      $("#tratamento_data_2i").selectOptions(mes+"");
+      $("#tratamento_data_1i").selectOptions(ano+"");
+    }
+}
+
+function alterou_data_cadastro(){
+    data = $("#datepicker").datepicker('getDate');
+    if (data==null){
+      $("#paciente_nascimento_3i").selectOptions("");
+      $("#paciente_nascimento_2i").selectOptions("");
+      $("#paciente_nascimento_1i").selectOptions("");
+    }else {
+      dia = data.getDate();
+      mes = data.getMonth() + 1;
+      ano = data.getFullYear();
+      $("#paciente_nascimento_3i").selectOptions(dia+"");
+      $("#paciente_nascimento_2i").selectOptions(mes+"");
+      $("#paciente_nascimento_1i").selectOptions(ano+"");
+    }
 }
