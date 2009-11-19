@@ -100,7 +100,6 @@ class PacientesController < ApplicationController
       params[:nome] = @paciente.nome
     end  
     @pacientes =[]
-    debugger
     if !params[:codigo].blank?
       if session[:clinica_id].to_i == 0
         @pacientes = Paciente.all(:conditions=>["codigo=?", params[:codigo]])

@@ -2,6 +2,9 @@ class Recebimento < ActiveRecord::Base
   belongs_to :paciente
   belongs_to :formas_recebimento
   belongs_to :clinica
+  has_one :cheque
+  accepts_nested_attributes_for :cheque, :allow_destroy => true
+  
   
   named_scope :por_data, :order=>:data
   named_scope :entre_datas, lambda{|inicio,fim| 

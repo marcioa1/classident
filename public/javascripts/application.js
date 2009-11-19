@@ -3,7 +3,7 @@
 
 $(document).ready(function(){
     $("#tabs").tabs();
-    $("#datepicker").datepicker({  
+   	$("#datepicker").datepicker({  
         dateFormat: 'dd-mm-yy',
          dayNames: [  
         'Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado','Domingo'  
@@ -26,6 +26,8 @@ $(document).ready(function(){
         prevText: 'Anterior'  
 
           });
+
+
 		$("#datepicker2").datepicker({  
 	        dateFormat: 'dd-mm-yy',
 	         dayNames: [  
@@ -78,8 +80,12 @@ function coloca_data_de_hoje(dia,mes,ano){
     $("#tratamento_data_1i").selectOptions(ano + "");
 }
 
-function selecionou_forma(){
-    //forma = $('#recebimento_formas_recebimento_id').selectedOptions.
+function selecionou_forma(element){
+	if ($("#" + element).selectedOptions().text().toLowerCase()=="cheque") {
+      $("#cheque").toggle('blind', { percent: 0 },500 ); 		
+	}else {
+      $("#cheque").toggle('blind', { percent: 0 },500 ); 		
+	}
 }
 
 function alterou_data_tratamento(){
@@ -112,4 +118,10 @@ function alterou_data_cadastro(){
       $("#paciente_nascimento_2i").selectOptions(mes+"");
       $("#paciente_nascimento_1i").selectOptions(ano+"");
     }
+}
+
+
+function hoje(){
+	alert("hoje");
+	$("#datepicker").datepicker('setDate', new Date());
 }

@@ -7,13 +7,14 @@ class CreateCheques < ActiveRecord::Migration
       t.string :numero
       t.decimal :valor, :precision=>6, :scale=>2
       t.integer :recebimento_id
+      #TODO decidir se este campo vai ficar
       t.integer :paciente_id
       t.integer :segundo_paciente
       t.integer :terceiro_paciente
       t.decimal :valor_primeiro_paciente, :precision=>6, :scale=>2
       t.decimal :valor_segundo_paciente, :precision=>6, :scale=>2
       t.decimal :valor_terceiro_paciente, :precision=>6, :scale=>2
-
+      
       t.timestamps
     end
     add_index :cheques, :recebimento_id

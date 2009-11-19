@@ -17,7 +17,7 @@ Paciente : <%= @tratamento.paciente.nome %> ( Tabela: <%= @tratamento.paciente.t
     <%= f.label :descrição %> : <span id="descricao_item_tabela"></span>
   </p>
   <p><%= f.label :valor %> :
-	<%= f.text_field :valor %>
+	<%= f.text_field :valor, :size=>10 %>
   </p>
   <p>
   	<%= f.label :dentista %>
@@ -26,6 +26,7 @@ Paciente : <%= @tratamento.paciente.nome %> ( Tabela: <%= @tratamento.paciente.t
   <p>
   	<%= f.label :data_de_término %>
   	<input type="text" id="datepicker" onchange="alterou_data_tratamento();", size="12">
+    <%= link_to "hoje", "#", :onclick=>"hoje();alterou_data_tratamento();"%>
     <span style="display:none;">
     <%= f.date_select :data , :order=>[:day, :month, :year],
            :include_blank=>true %>
