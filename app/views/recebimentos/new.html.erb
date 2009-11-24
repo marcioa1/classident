@@ -20,25 +20,31 @@
   </p>
   <p>
     <%= f.label :valor %>
-    <%= f.text_field :valor, :size=>10  %>
+    <%= f.text_field :valor, :size=>10, :onblur=>"copia_valor();"  %>
   </p>
   <p>
     <%= f.label :observação %>
     <%= f.text_field :observacao %>
   </p>
   <div id="cheque" style="display:none;">
-	<fieldset>
-	<legend> dados do cheque</legend>
+    <fieldset>
+    <legend> dados do cheque</legend>
   <% f.fields_for :cheque do |c| %>
     <p>
        <%= c.label :banco %> : 
-       <%= c.text_field :banco, :size=>5 %>
+       <%= c.select :banco_id, options_for_select(@bancos)  %>
     </p>
     <p>
        <%= c.label :agencia %> : 
        <%= c.text_field :agencia, :size=>7 %>
        <%= c.label :conta_corrente %> : 
        <%= c.text_field :conta_corrente, :size=>7 %>
+       <%= c.label :número %> : 
+       <%= c.text_field :numero, :size=>7 %>
+    </p>
+    <p>
+      <%= c.label :valor %>
+      <%= c.text_field :valor, :size=>8%>
     </p>
     <p>
         <%= f.label :bom_para %>

@@ -25,6 +25,7 @@ class RecebimentosController < ApplicationController
   # GET /recebimentos/new
   # GET /recebimentos/new.xml
   def new
+    @bancos = Banco.all(:order=>:nome).collect{|obj| [obj.numero + " - " + obj.nome,obj.id]}
     @formas_recebimentos = FormasRecebimento.all.collect{|obj| [obj.nome,obj.id]}
     @recebimento = Recebimento.new
     @recebimento.cheque = Cheque.new
@@ -47,9 +48,15 @@ class RecebimentosController < ApplicationController
   # POST /recebimentos.xml
   def create
     @recebimento = Recebimento.new(params[:recebimento])
+    debugger
     @recebimento.data = params[:datepicker].to_date
-    @recebimento.cheque.bom_para = params[:datepicker2].to_date
-debugger
+    if FormasRecebimento.find(params[:formas_recebimento_id]).nome.downcase == "cheque"
+      @recebimento.cheque.bom_para = params[:datepicker2].to_date
+      @recebimento.cheque.clinica_id = session[:clinica_id]
+      @recebimento.cheque.paciente_id = @recebimento.paciente_id
+    else
+      @recebimento.cheque = nil
+    end
     respond_to do |format|
       if @recebimento.save 
         format.html { redirect_to(abre_paciente_path(:id=>@recebimento.paciente_id)) }
@@ -107,8 +114,7 @@ debugger
   end
   
   def cheques_recebidos
-    @cheques = Cheque.all(:order=>:bom_para)
-    debugger
+    @cheques = Cheque.por_bom_para.da_clinica(session[:clinica_id])
   end
   
 end

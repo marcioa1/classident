@@ -1,6 +1,8 @@
 ActionController::Routing::Routes.draw do |map|
   map.resources :bancos
 
+  map.resources :bancos
+
  
   map.resources :debitos
   map.resources :dentistas, :member=>{:abre=>:get, :producao=>:get}

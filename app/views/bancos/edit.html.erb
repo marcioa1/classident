@@ -1,0 +1,20 @@
+<h1>Editing banco</h1>
+
+<% form_for(@banco) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :numero %><br />
+    <%= f.text_field :numero %>
+  </p>
+  <p>
+    <%= f.label :nome %><br />
+    <%= f.text_field :nome %>
+  </p>
+  <p>
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @banco %> |
+<%= link_to 'Back', bancos_path %>

@@ -1,10 +1,24 @@
 <% content_for :main do %>
   Cheques recebidos
 <table>
+  <tr>
+  	<th>Bom para</th>
+    <th width="170px">Paciente</th>
+    <th width="60px">Valor</th>
+    <th>Banco</th>
+    <th>Agência</th>
+    <th>Conta corrente</th>
+    <th>Número</th>
+  </tr>
   <% for cheque in @cheques do %>
   <tr>
-  	<td><%= cheque.bom_para.to_s_br %></td>
+  	<td align="center"><%= cheque.bom_para.to_s_br %></td>
     <td><%= cheque.recebimento.paciente.nome %></td>
+    <td align="right"><%= cheque.recebimento.valor.real %></td>
+    <td align="center"><%= cheque.banco.numero + "-"+ cheque.banco.nome %></td>
+    <td><%= cheque.agencia  %></td>
+    <td><%= cheque.conta_corrente %></td>
+    <td><%= cheque.numero %></td>
   </tr>
   <% end %>
 </table>

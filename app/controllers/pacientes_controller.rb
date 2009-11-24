@@ -104,7 +104,7 @@ class PacientesController < ApplicationController
       if session[:clinica_id].to_i == 0
         @pacientes = Paciente.all(:conditions=>["codigo=?", params[:codigo]])
       else
-        @pacientes = Paciente.all(:conditions=>["clinica_id=? and codigo=?", session[:clinica_id], params[:codigo]])
+        @pacientes = Paciente.all(:conditions=>["clinica_id=? and codigo=?", session[:clinica_id].to_i, params[:codigo].to_i])
       end
       if !@pacientes.empty?
         if @pacientes.size==1
@@ -127,9 +127,10 @@ class PacientesController < ApplicationController
   end
   
   def abre
-    session[:paciente_id] = params[:id]
     @paciente = Paciente.find(params[:id])
     @tabelas = Tabela.ativas.collect{|obj| [obj.nome,obj.id]}
+    session[:paciente_id] = params[:id]
+    session[:paciente_nome] = @paciente.nome
   end
   
 end

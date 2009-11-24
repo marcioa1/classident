@@ -125,3 +125,7 @@ function hoje(){
 	alert("hoje");
 	$("#datepicker").datepicker('setDate', new Date());
 }
+
+function copia_valor(){
+	$("#recebimento_cheque_attributes_valor").val($("#recebimento_valor").val());
+}

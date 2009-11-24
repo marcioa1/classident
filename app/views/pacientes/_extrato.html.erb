@@ -8,6 +8,8 @@
     <th width="70px">Débito</th>
     <th width="70px">Crédito</th>
     <th width="70px">Saldo</th>
+    <th>Bom para</th>
+    <th>Detalhes</th>
   </tr>
   <% saldo = 0 %>
 <% @paciente.extrato.each do |lancamento| %>
@@ -30,6 +32,15 @@
       <% cor = "red" %>
     <% end %>
     <td align="right" style="color: <%= cor %>"><%= saldo.real %></td>
+    
+      <% if lancamento.class == Recebimento %>
+        <td><%= lancamento.cheque.bom_para.to_s_br unless lancamento.cheque.nil? %></td>    
+       <td><%= lancamento.formas_recebimento.nome %></td> 
+      <% else %>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+	  <% end %>
+	</td>
   </tr>
 <% end %>
 </table>

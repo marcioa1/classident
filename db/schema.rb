@@ -12,25 +12,25 @@
 ActiveRecord::Schema.define(:version => 20091119113417) do
 
   create_table "bancos", :force => true do |t|
-    t.integer  "numero"
+    t.string   "numero"
     t.string   "nome"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   create_table "cheques", :force => true do |t|
-    t.integer  "banco"
+    t.integer  "banco_id"
     t.string   "agencia"
     t.string   "conta_corrente"
     t.string   "numero"
-    t.decimal  "valor"
+    t.decimal  "valor",                   :precision => 6, :scale => 2
     t.integer  "recebimento_id"
     t.integer  "paciente_id"
     t.integer  "segundo_paciente"
     t.integer  "terceiro_paciente"
-    t.decimal  "valor_primeiro_paciente"
-    t.decimal  "valor_segundo_paciente"
-    t.decimal  "valor_terceiro_paciente"
+    t.decimal  "valor_primeiro_paciente", :precision => 6, :scale => 2
+    t.decimal  "valor_segundo_paciente",  :precision => 6, :scale => 2
+    t.decimal  "valor_terceiro_paciente", :precision => 6, :scale => 2
     t.datetime "created_at"
     t.datetime "updated_at"
     t.date     "bom_para"

@@ -1,7 +1,7 @@
 class CreateBancos < ActiveRecord::Migration
   def self.up
     create_table :bancos do |t|
-      t.integer :numero
+      t.string :numero
       t.string :nome
 
       t.timestamps

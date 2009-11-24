@@ -1,8 +1,7 @@
    <%= link_to "novo procedimento" , new_tratamento_path(:paciente_id=>@paciente.id) unless session[:clinica_id].to_i == 0 %>
 <% if @paciente.tratamentos.empty? %>
-  <br/>
+  <br/><br/>
 <% end %>
-<br/>
 <table>
   <tr>
 	<th>Dente</th>

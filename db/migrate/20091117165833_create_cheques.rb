@@ -1,7 +1,7 @@
 class CreateCheques < ActiveRecord::Migration
   def self.up
     create_table :cheques do |t|
-      t.integer :banco
+      t.integer :banco_id
       t.string :agencia
       t.string :conta_corrente
       t.string :numero
