@@ -17,13 +17,13 @@
     <td align="center"><%= lancamento.data.to_s_br%></td>
     <% if lancamento.class == Debito %>
       <td><%= lancamento.descricao %></td>
-      <td align="right"><%= lancamento.valor.real %></td>
+      <td align="right"><%= link_to lancamento.valor.real, edit_debito_path(lancamento) %></td>
       <td>&nbsp;</td>
       <% saldo -= lancamento.valor %>
     <% else %>
       <td><%= lancamento.observacao %></td>
       <td>&nbsp;</td>
-      <td align="right"><%= lancamento.valor.real %></td>
+      <td align="right"><%= link_to lancamento.valor.real, edit_recebimento_path(lancamento) %></td>
       <% saldo += lancamento.valor %>
     <% end %>
     <% if saldo >0 %>

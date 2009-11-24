@@ -24,18 +24,24 @@
     <th>&nbsp;</th>
     <th>&nbsp;</th>
   </tr>
-
+<% total = 0 %>
 <% @pagamentos.each do |pagamento| %>
   <tr>
     <td align="center"><%=h pagamento.data_de_pagamento.to_s_br %></td>
     <td align="right"><%=h pagamento.valor_pago.real %></td>
     <td><%=h pagamento.observacao %></td>
     <td><%=h pagamento.tipo_pagamento.nome %></td>
-    <td><%=h pagamento.nao_lancar_no_livro_caixa %></td>
+    <td align="center"><%=h pagamento.nao_lancar_no_livro_caixa ? "sim" : "não" %></td>
     <td><%= link_to 'editar', edit_pagamento_path(pagamento) %></td>
     <td><%= link_to 'excluir', pagamento, :confirm => 'Tem certeza ?', :method => :delete %></td>
   </tr>
+  <% total += pagamento.valor %>
 <% end %>
+  <tr>
+  	<td align="center">Total</td>
+    <td align="right"><%= total.real%></td>
+    <td colspan="5">&nbsp;</td>
+  </tr>
 </table>
 
 <br />

@@ -1,4 +1,5 @@
 class DebitosController < ApplicationController
+  layout "adm"
   # GET /debitos
   # GET /debitos.xml
   def index
@@ -44,7 +45,6 @@ class DebitosController < ApplicationController
 
     respond_to do |format|
       if @debito.save
-        flash[:notice] = 'Debito was successfully created.'
         format.html { redirect_to(@debito) }
         format.xml  { render :xml => @debito, :status => :created, :location => @debito }
       else
@@ -61,8 +61,7 @@ class DebitosController < ApplicationController
 
     respond_to do |format|
       if @debito.update_attributes(params[:debito])
-        flash[:notice] = 'Debito was successfully updated.'
-        format.html { redirect_to(@debito) }
+        format.html { redirect_to(abre_paciente_path(:id=>@debito.paciente_id)) }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }
@@ -78,7 +77,7 @@ class DebitosController < ApplicationController
     @debito.destroy
 
     respond_to do |format|
-      format.html { redirect_to(debitos_url) }
+      format.html { redirect_to(abre_paciente_path(:id=>@debito.paciente_id)) }
       format.xml  { head :ok }
     end
   end

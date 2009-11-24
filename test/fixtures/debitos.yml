@@ -8,6 +8,6 @@ one:
 
 two:
   paciente: marcio
-  tratamento_id: 1
+  tratamento_id: 2
   valor: 40
   descricao: MyString

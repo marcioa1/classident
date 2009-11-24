@@ -7,8 +7,9 @@
     <tr><td>Fim : </td><td><%= select_date  @data_final, :prefix=>"fim", :order=>[:day,:month,:year]%></td></tr>
     </table>
  <p>
-     Tipos de recebimento : <br/>
-   <%= select_tag :tipo_recebimento_id, options_for_select(@tipos_recebimento, :selected=>@tipos_recebimento), :multiple=>true, :selected=>:all%>
+     Tipos de recebimento : 
+   <%= select_tag :tipo_recebimento_id, options_for_select(@tipos_recebimento, :selected=>@tipos_recebimento), :multiple=>true %>
+<% #TODO colocar parametros selecionados anteriormente aqui%>
 </p>
   <%= submit_tag "pesquisar"%>
 <% end %>
@@ -24,7 +25,7 @@
     <th>&nbsp;</th>
     <th>&nbsp;</th>
   </tr>
-
+<% total = 0 %>
 <% @recebimentos.each do |recebimento| %>
   <tr>
     <td align="center"><%=h recebimento.data.to_s_br %></td>
@@ -35,7 +36,13 @@
     <td><%= link_to 'editar', edit_recebimento_path(recebimento) %></td>
     <td><%= link_to 'excluir', recebimento, :confirm => 'Tem certeza ?', :method => :delete %></td>
   </tr>
+  <% total += recebimento.valor %>
 <% end %>
+  <tr>
+  	<td colspan="2" align="center">Total</td>
+    <td align="right"><%= total.real %></td>
+    <td colspan="4">&nbsp;</td>
+  </tr>
 </table>
 
 <br />

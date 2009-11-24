@@ -1,28 +1,25 @@
-<h1>Editing debito</h1>
+<% content_for :main do %>
+<fieldset>
+<legend>Editando débito</legend>
 
 <% form_for(@debito) do |f| %>
   <%= f.error_messages %>
-
   <p>
-    <%= f.label :paciente_id %><br />
-    <%= f.text_field :paciente_id %>
-  </p>
-  <p>
-    <%= f.label :tratamento_id %><br />
-    <%= f.text_field :tratamento_id %>
+    <%= f.label :paciente %> : <b> <%= @debito.paciente.nome %></b>
+    <%= f.hidden_field :paciente_id %>
   </p>
   <p>
     <%= f.label :valor %><br />
-    <%= f.text_field :valor %>
+    <%= f.text_field :valor, :size=>8 %>
   </p>
   <p>
-    <%= f.label :descricao %><br />
+    <%= f.label :descrição %><br />
     <%= f.text_field :descricao %>
   </p>
   <p>
-    <%= f.submit 'Update' %>
+    <%= f.submit 'salvar' %>
   </p>
 <% end %>
 
-<%= link_to 'Show', @debito %> |
-<%= link_to 'Back', debitos_path %>
+<%= link_to 'voltar', abre_paciente_path(:id=>@debito.paciente_id) %>
+<% end %>

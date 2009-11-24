@@ -1,36 +1,69 @@
-<h1>Editing recebimento</h1>
+<% content_for :main do %>
+<fieldset>
+<legend>Editando recebimento</legend>
 
 <% form_for(@recebimento) do |f| %>
   <%= f.error_messages %>
 
   <p>
-    <%= f.label :paciente_id %><br />
-    <%= f.text_field :paciente_id %>
+    <%= f.label :paciente %> : <b><%= @recebimento.paciente.nome %></b>
+    <%= f.hidden_field :paciente_id %>
   </p>
-  <p>
-    <%= f.label :clinica_id %><br />
-    <%= f.text_field :clinica_id %>
-  </p>
+    <%= f.hidden_field :clinica_id %>
   <p>
     <%= f.label :data %><br />
     <%= f.date_select :data %>
+    <%= text_field_tag :datepicker, @recebimento.data.to_s_br, :size=>10 %>
+
   </p>
   <p>
     <%= f.label :forma_recebimento_id %><br />
-    <%= f.text_field :formas_recebimento_id %>
+    <%= f.select :formas_recebimento_id , @formas_recebimentos, {}, html_options={:onchange=>"selecionou_forma('recebimento_formas_recebimento_id');"} %>
   </p>
   <p>
     <%= f.label :valor %><br />
-    <%= f.text_field :valor, :size=>10 %>
+    <%= f.text_field :valor, :size=>10, :onblur=>"copia_valor();"  %>
   </p>
   <p>
-    <%= f.label :observacao %><br />
+    <%= f.label :observação %><br />
     <%= f.text_field :observacao %>
   </p>
+  <% if @recebimento.em_cheque? %>
+    <div id="cheque">
+  <% else %>
+    <div id="cheque" style="display:none;">
+  <% end %>
+    <fieldset>
+    <legend> dados do cheque</legend>
+  <% f.fields_for :cheque do |c| %>
+    <p>
+       <%= c.label :banco %> : 
+       <%= c.select :banco_id, options_for_select(@bancos)  %>
+    </p>
+    <p>
+       <%= c.label :agencia %> : 
+       <%= c.text_field :agencia, :size=>7 %>
+       <%= c.label :conta_corrente %> : 
+       <%= c.text_field :conta_corrente, :size=>7 %>
+       <%= c.label :número %> : 
+       <%= c.text_field :numero, :size=>7 %>
+    </p>
+    <p>
+      <%= c.label :valor %>
+      <%= c.text_field :valor, :size=>8%>
+    </p>
+    <p>
+        <%= f.label :bom_para %>
+        <%= text_field_tag :datepicker2, Date.today.to_s_br, :size=>10 %>
+      </p>
+  <% end %>
+  </fieldset>
+  </div>
   <p>
     <%= f.submit 'Update' %>
   </p>
 <% end %>
 
-<%= link_to 'Show', @recebimento %> |
-<%= link_to 'Back', recebimentos_path %>
+<%= link_to 'voltar', :back %>
+</fieldset>
+<% end %>

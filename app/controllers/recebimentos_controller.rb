@@ -42,6 +42,9 @@ class RecebimentosController < ApplicationController
   # GET /recebimentos/1/edit
   def edit
     @recebimento = Recebimento.find(params[:id])
+    @bancos = Banco.all(:order=>:nome).collect{|obj| [obj.numero + " - " + obj.nome,obj.id]}
+    @formas_recebimentos = FormasRecebimento.all.collect{|obj| [obj.nome,obj.id]}
+    
   end
 
   # POST /recebimentos
@@ -50,7 +53,7 @@ class RecebimentosController < ApplicationController
     @recebimento = Recebimento.new(params[:recebimento])
     debugger
     @recebimento.data = params[:datepicker].to_date
-    if FormasRecebimento.find(params[:formas_recebimento_id]).nome.downcase == "cheque"
+    if @recebimento.em_cheque?
       @recebimento.cheque.bom_para = params[:datepicker2].to_date
       @recebimento.cheque.clinica_id = session[:clinica_id]
       @recebimento.cheque.paciente_id = @recebimento.paciente_id
@@ -72,11 +75,19 @@ class RecebimentosController < ApplicationController
   # PUT /recebimentos/1.xml
   def update
     @recebimento = Recebimento.find(params[:id])
+    @recebimento.data = params[:datepicker].to_date
+    if @recebimento.em_cheque?
+      @recebimento.cheque.bom_para = params[:datepicker2].to_date
+      @recebimento.cheque.clinica_id = session[:clinica_id]
+      @recebimento.cheque.paciente_id = @recebimento.paciente_id
+    else
+      @recebimento.cheque = nil
+    end
 
     respond_to do |format|
       if @recebimento.update_attributes(params[:recebimento])
         flash[:notice] = 'Recebimento was successfully updated.'
-        format.html { redirect_to(@recebimento) }
+        format.html { redirect_to(abre_paciente_path(:id=>@recebimento.paciente_id)) }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }
@@ -110,7 +121,7 @@ class RecebimentosController < ApplicationController
        @data_inicial = Date.today 
        @data_final = Date.today
      end
-     @recebimentos = Recebimento.por_data.entre_datas(@data_inicial, @data_final)
+     @recebimentos = Recebimento.por_data.entre_datas(@data_inicial, @data_final).formas(params[:tipo_recebimento_id])
   end
   
   def cheques_recebidos

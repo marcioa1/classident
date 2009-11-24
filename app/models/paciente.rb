@@ -10,15 +10,25 @@ class Paciente < ActiveRecord::Base
     result = (recebimentos + debitos).sort { |a,b| a.data<=>b.data }
   end
   
-  def saldo
-    saldo = 0
+  
+  def debito
+    total = 0
     debitos.each() do |debito|
-      saldo -= debito.valor
+      total += debito.valor
     end
+    return total
+  end
+  
+  def credito
+    total = 0
     recebimentos.each() do |recebimento|
-      saldo += recebimento.valor
+      total += recebimento.valor
     end
-    return saldo
+    return total
+  end
+  
+  def saldo
+    credito-debito
   end
   
   def gera_codigo()

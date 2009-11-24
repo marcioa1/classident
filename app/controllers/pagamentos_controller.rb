@@ -99,7 +99,7 @@ class PagamentosController < ApplicationController
        @data_inicial = Date.today 
        @data_final = Date.today
      end
-     @pagamentos = Pagamento.por_data.entre_datas(@data_inicial, @data_final)
+     @pagamentos = Pagamento.por_data.entre_datas(@data_inicial, @data_final).tipos(params[:tipo_pagamento_id])
      respond_to do |format|
        format.html # index.html.erb
        format.xml  { render :xml => @pagamentos }
