@@ -124,8 +124,6 @@ class RecebimentosController < ApplicationController
      @recebimentos = Recebimento.por_data.entre_datas(@data_inicial, @data_final).formas(params[:tipo_recebimento_id])
   end
   
-  def cheques_recebidos
-    @cheques = Cheque.por_bom_para.da_clinica(session[:clinica_id])
-  end
+ 
   
 end

@@ -13,7 +13,7 @@
   <% total = 0 %>
   <% for cheque in @cheques do %>
   <tr>
-  	<td align="center"><%= cheque.bom_para.to_s_br %></td>
+  	<td align="center"><%= link_to cheque.bom_para.to_s_br, edit_cheque_path(cheque) %></td>
     <td><%= cheque.recebimento.paciente.nome %></td>
     <td align="right"><%= cheque.recebimento.valor.real %></td>
     <td align="center"><%= cheque.banco.numero + "-"+ cheque.banco.nome %></td>

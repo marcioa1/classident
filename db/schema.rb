@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20091119113417) do
+ActiveRecord::Schema.define(:version => 20091125143504) do
 
   create_table "bancos", :force => true do |t|
     t.string   "numero"
@@ -23,18 +23,29 @@ ActiveRecord::Schema.define(:version => 20091119113417) do
     t.string   "agencia"
     t.string   "conta_corrente"
     t.string   "numero"
-    t.decimal  "valor",                   :precision => 6, :scale => 2
+    t.decimal  "valor",                              :precision => 6, :scale => 2
     t.integer  "recebimento_id"
     t.integer  "paciente_id"
     t.integer  "segundo_paciente"
     t.integer  "terceiro_paciente"
-    t.decimal  "valor_primeiro_paciente", :precision => 6, :scale => 2
-    t.decimal  "valor_segundo_paciente",  :precision => 6, :scale => 2
-    t.decimal  "valor_terceiro_paciente", :precision => 6, :scale => 2
+    t.decimal  "valor_primeiro_paciente",            :precision => 6, :scale => 2
+    t.decimal  "valor_segundo_paciente",             :precision => 6, :scale => 2
+    t.decimal  "valor_terceiro_paciente",            :precision => 6, :scale => 2
     t.datetime "created_at"
     t.datetime "updated_at"
     t.date     "bom_para"
     t.integer  "clinica_id"
+    t.date     "data_primeira_devolucao"
+    t.string   "motivo_primeira_devolucao"
+    t.date     "data_lancamento_primeira_devolucao"
+    t.date     "data_reapresentacao"
+    t.date     "data_segunda_devolucao"
+    t.string   "motivo_segunda_devolucao"
+    t.date     "data_solucao"
+    t.string   "descricao_solucao"
+    t.boolean  "reapresentacao"
+    t.date     "data_spc"
+    t.date     "data_arquivo_morto"
   end
 
   add_index "cheques", ["recebimento_id"], :name => "index_cheques_on_recebimento_id"

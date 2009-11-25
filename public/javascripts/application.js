@@ -1,7 +1,7 @@
 // Place your application-specific JavaScript functions and classes here
 // This file is automatically included by javascript_include_tag :defaults
-
-$(document).ready(function(){
+jQuery(function() {
+	$('input[type="text"].first').focus();
     $("#tabs").tabs();
    	$("#datepicker").datepicker({  
         dateFormat: 'dd-mm-yy',
@@ -49,9 +49,9 @@ $(document).ready(function(){
 	        ],  
 	        nextText: 'Próximo',  
 	        prevText: 'Anterior'  
+        });
+})
 
-	          });
-  });
 function outra_clinica(){
     $("#seleciona_clinica").show();
 }
@@ -128,4 +128,9 @@ function hoje(){
 
 function copia_valor(){
 	$("#recebimento_cheque_attributes_valor").val($("#recebimento_valor").val());
+}
+
+function abre_uma_devolucao(){
+	alert("uma devolucao");
+	$("#uma_devolucao").toggle();
 }

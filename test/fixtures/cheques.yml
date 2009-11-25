@@ -1,6 +1,6 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
-one:
+normal:
   banco: 1
   agencia: MyString
   conta_corrente: MyString
@@ -12,7 +12,7 @@ one:
   terceiro_paciente: 1
   valor_segundo_paciente: 9.99
   valor_terceiro_paciente: 9.99
-
+  data_primeira_devolucao: nil
 two:
   banco: 1
   agencia: MyString
@@ -25,3 +25,117 @@ two:
   terceiro_paciente: 1
   valor_segundo_paciente: 9.99
   valor_terceiro_paciente: 9.99
+
+uma_devolucao:
+    banco: 1
+    agencia: MyString
+    conta_corrente: MyString
+    numero: MyString
+    valor: 9.99
+    recebimento_id: 1
+    paciente_id: 1
+    segundo_paciente: 1
+    terceiro_paciente: 1
+    valor_segundo_paciente: 9.99
+    valor_terceiro_paciente: 9.99
+    data_primeira_devolucao: 2009-11-17
+    motivo_primeira_devolucao: 11
+    data_lancamento_primeira_devolucao: 2009-11-19
+    data_reapresentacao: nil
+    data_segunda_devolucao: nil
+    
+reapresentado:
+    banco: 1
+    agencia: MyString
+    conta_corrente: MyString
+    numero: MyString
+    valor: 9.99
+    recebimento_id: 1
+    paciente_id: 1
+    segundo_paciente: 1
+    terceiro_paciente: 1
+    valor_segundo_paciente: 9.99
+    valor_terceiro_paciente: 9.99
+    data_primeira_devolucao: 2009-11-17
+    motivo_primeira_devolucao: 11
+    data_lancamento_primeira_devolucao: 2009-11-19
+    data_reapresentacao: 2009-11-21
+    data_segunda_devolucao: nil
+       
+duas_devolucoes:
+    agencia: MyString
+    conta_corrente: MyString
+    numero: MyString
+    valor: 9.99
+    recebimento_id: 1
+    paciente_id: 1
+    segundo_paciente: 1
+    terceiro_paciente: 1
+    valor_segundo_paciente: 9.99
+    valor_terceiro_paciente: 9.99
+    data_primeira_devolucao: 2009-11-17
+    motivo_primeira_devolucao: 11
+    data_lancamento_primeira_devolucao: 2009-11-19
+    data_reapresentacao: 2009-11-21
+    data_segunda_devolucao: 2009-11-23
+    motivo_segunda_devolucao: 11
+    
+solucionado:
+    agencia: MyString
+    conta_corrente: MyString
+    numero: MyString
+    valor: 9.99
+    recebimento_id: 1
+    paciente_id: 1
+    segundo_paciente: 1
+    terceiro_paciente: 1
+    valor_segundo_paciente: 9.99
+    valor_terceiro_paciente: 9.99
+    data_primeira_devolucao: 2009-11-17
+    motivo_primeira_devolucao: 11
+    data_lancamento_primeira_devolucao: 2009-11-19
+    data_reapresentacao: 2009-11-21
+    data_segunda_devolucao: 2009-11-23
+    motivo_segunda_devolucao: 11
+    data_solucao: 2009-11-25
+    descricao_solucao: trouxe em dinheiro
+    reapresentacao: false
+
+spc:
+    agencia: MyString
+    conta_corrente: MyString
+    numero: MyString
+    valor: 9.99
+    recebimento_id: 1
+    paciente_id: 1
+    segundo_paciente: 1
+    terceiro_paciente: 1
+    valor_segundo_paciente: 9.99
+    valor_terceiro_paciente: 9.99
+    data_primeira_devolucao: 2009-11-17
+    motivo_primeira_devolucao: 11
+    data_lancamento_primeira_devolucao: 2009-11-19
+    data_reapresentacao: 2009-11-21
+    data_segunda_devolucao: nil
+    motivo_segunda_devolucao: nil
+    data_spc: 2009-11-29
+    
+arquivo_morto:
+   agencia: MyString
+   conta_corrente: MyString
+   numero: MyString
+   valor: 9.99
+   recebimento_id: 1
+   paciente_id: 1
+   segundo_paciente: 1
+   terceiro_paciente: 1
+   valor_segundo_paciente: 9.99
+   valor_terceiro_paciente: 9.99
+   data_primeira_devolucao: 2009-11-17
+   motivo_primeira_devolucao: 11
+   data_lancamento_primeira_devolucao: 2009-11-19
+   data_reapresentacao: 2009-11-21
+   data_segunda_devolucao: nil
+   motivo_segunda_devolucao: nil
+   data_spc: 2009-11-29
+   data_arquivo_morto: 2009-12-02
