@@ -1,6 +1,7 @@
 class PagamentosController < ApplicationController
   
   layout "adm"
+  before_filter :require_user
   # GET /pagamentos
   # GET /pagamentos.xml
   def index

@@ -1,5 +1,6 @@
 class TratamentosController < ApplicationController
- layout "adm"
+  layout "adm"
+  before_filter :require_user
   def new
     @paciente = Paciente.find(params[:paciente_id])
     @tratamento = Tratamento.new

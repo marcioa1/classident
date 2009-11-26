@@ -1,7 +1,7 @@
 class ChequesController < ApplicationController
 
   layout "adm"
-
+  before_filter :require_user
   # GET /cheques
   # GET /cheques.xml
   def index
@@ -34,11 +34,25 @@ class ChequesController < ApplicationController
   # PUT /cheques/1.xml
   def update
     @cheque = Cheque.find(params[:id])
-
+    debugger
+    if params[:datepicker2].empty?
+      @cheque.data_primeira_devolucao = nil
+    else
+      @cheque.data_primeira_devolucao = params[:datepicker2].to_date
+    end
+    if params[:datepicker3].empty?
+      @cheque.data_reapresentacao = nil
+    else
+      @cheque.data_reapresentacao = params[:datepicker3].to_date
+    end
+    if params[:datepicker4].empty?
+      @cheque.data_segunda_devolucao = nil
+    else
+      @cheque.data_segunda_devolucao = params[:datepicker4].to_date
+    end
     respond_to do |format|
       if @cheque.update_attributes(params[:cheque])
-        flash[:notice] = 'Cheque was successfully updated.'
-        format.html { redirect_to(@cheque) }
+        format.html { redirect_to(:back) }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }

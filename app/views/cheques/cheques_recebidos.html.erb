@@ -9,6 +9,7 @@
     <th>Agência</th>
     <th>Conta corrente</th>
     <th>Número</th>
+    <th>Situação</th>
   </tr>
   <% total = 0 %>
   <% for cheque in @cheques do %>
@@ -20,12 +21,14 @@
     <td><%= cheque.agencia  %></td>
     <td><%= cheque.conta_corrente %></td>
     <td><%= cheque.numero %></td>
+    <td><%= cheque.status %></td>
   </tr>
   <% total += cheque.valor %>
   <% end %>
   <tr>
-  	<td colspan="3" align="right"><%= total.real%></td>
-    <td colspan="4">&nbsp;</td>
+	<td colspan="2" align="center">Total</td>
+  	<td align="right"><%= total.real%></td>
+    <td colspan="5">&nbsp;</td>
   </tr>
 </table>
 <% end %>

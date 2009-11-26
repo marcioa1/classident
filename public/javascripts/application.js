@@ -1,55 +1,14 @@
 // Place your application-specific JavaScript functions and classes here
 // This file is automatically included by javascript_include_tag :defaults
 jQuery(function() {
-	$('input[type="text"].first').focus();
+    $('input[type="text"].first').focus();
     $("#tabs").tabs();
-   	$("#datepicker").datepicker({  
-        dateFormat: 'dd-mm-yy',
-         dayNames: [  
-        'Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado','Domingo'  
-        ],  
-        dayNamesMin: [  
-        'D','S','T','Q','Q','S','S','D'  
-        ],  
-        dayNamesShort: [  
-        'Dom','Seg','Ter','Qua','Qui','Sex','Sáb','Dom'  
-        ],  
-        monthNames: [  
-        'Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro',  
-        'Outubro','Novembro','Dezembro'  
-        ],  
-        monthNamesShort: [  
-        'Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set',  
-        'Out','Nov','Dez'  
-        ],  
-        nextText: 'Próximo',  
-        prevText: 'Anterior'  
-
-          });
-
-
-		$("#datepicker2").datepicker({  
-	        dateFormat: 'dd-mm-yy',
-	         dayNames: [  
-	        'Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado','Domingo'  
-	        ],  
-	        dayNamesMin: [  
-	        'D','S','T','Q','Q','S','S','D'  
-	        ],  
-	        dayNamesShort: [  
-	        'Dom','Seg','Ter','Qua','Qui','Sex','Sáb','Dom'  
-	        ],  
-	        monthNames: [  
-	        'Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro',  
-	        'Outubro','Novembro','Dezembro'  
-	        ],  
-	        monthNamesShort: [  
-	        'Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set',  
-	        'Out','Nov','Dez'  
-	        ],  
-	        nextText: 'Próximo',  
-	        prevText: 'Anterior'  
-        });
+    
+    $("#datepicker").datepicker();
+    $("#datepicker2").datepicker();
+    $("#datepicker3").datepicker();
+    $("#datepicker4").datepicker();
+        
 })
 
 function outra_clinica(){
@@ -81,11 +40,11 @@ function coloca_data_de_hoje(dia,mes,ano){
 }
 
 function selecionou_forma(element){
-	if ($("#" + element).selectedOptions().text().toLowerCase()=="cheque") {
-      $("#cheque").toggle('blind', { percent: 0 },500 ); 		
-	}else {
-      $("#cheque").toggle('blind', { percent: 0 },500 ); 		
-	}
+    if ($("#" + element).selectedOptions().text().toLowerCase()=="cheque") {
+      $("#cheque").toggle('blind', { percent: 0 },500 );        
+    }else {
+      $("#cheque").toggle('blind', { percent: 0 },500 );        
+    }
 }
 
 function alterou_data_tratamento(){
@@ -122,15 +81,20 @@ function alterou_data_cadastro(){
 
 
 function hoje(){
-	alert("hoje");
-	$("#datepicker").datepicker('setDate', new Date());
+    alert("hoje");
+    $("#datepicker").datepicker('setDate', new Date());
 }
 
 function copia_valor(){
-	$("#recebimento_cheque_attributes_valor").val($("#recebimento_valor").val());
+    $("#recebimento_cheque_attributes_valor").val($("#recebimento_valor").val());
 }
 
 function abre_uma_devolucao(){
-	alert("uma devolucao");
-	$("#uma_devolucao").toggle();
+    $("#devolvido_uma_vez").toggle('blind', { percent: 0 },500);
+}
+function abre_reapresentacao(){
+    $("#reapresentado").toggle('blind', { percent: 0 },500);
+}
+function abre_segunda_devolucao(){
+    $("#devolvido_duas_vezes").toggle('blind', { percent: 0 },500);
 }

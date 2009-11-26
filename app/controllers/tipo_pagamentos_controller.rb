@@ -1,5 +1,6 @@
 class TipoPagamentosController < ApplicationController
   layout "adm"
+  before_filter :require_user 
   # GET /tipo_pagamentos
   # GET /tipo_pagamentos.xml
   def index

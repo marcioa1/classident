@@ -1,4 +1,6 @@
 class BancosController < ApplicationController
+ 
+  before_filter :require_user
   # GET /bancos
   # GET /bancos.xml
   def index

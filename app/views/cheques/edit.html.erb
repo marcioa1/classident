@@ -29,27 +29,57 @@
   </p>
   <p>
       <%= f.label :bom_para %>
-      <%= text_field_tag :datepicker2, Date.today.to_s_br, :size=>10 %>
+      <%= text_field_tag :datepicker, Date.today.to_s_br, :size=>10 %>
     </p>
  <p>
- 	<%= check_box_tag :uma_devolucao, false , options={ :onclick=>"abre_uma_devolucao();"}%> devolvido uma vez
+    <%= check_box_tag :uma_devolucao, 1, checked=@cheque.devolvido_uma_vez? , options={ :onclick=>"abre_uma_devolucao();"}%> devolvido uma vez
  </p>
- <% @cheque.data_primeira_devolucao = Date.today %>
+ <%# @cheque.data_primeira_devolucao = Date.today %>
   <% if @cheque.devolvido_uma_vez? %>
-  <div id="uma_devolucao" style="display:none;">
-    <p>
-      <%= f.label :data_primeira_devolucao %>	
-      <%= text_field_tag :datepicker3, Date.today.to_s_br, :size=>10 %>
-    </p>
-  </div>
+    <div id="devolvido_uma_vez" >
+  <% else %>
+    <div id="devolvido_uma_vez" style="display:none;">
   <% end %>
+    <p class="borda_dupla">
+      <%= f.label :data_primeira_devolucao %>   
+      <%= text_field_tag :datepicker2, @cheque.data_primeira_devolucao.to_s_br, :size=>10 %>
+      <%= f.label :motivo %>    
+      <%= f.text_field :motivo_primeira_devolucao, :size=>10 %>
+    </p>
+    <p>
+        <%= check_box_tag :reapresentacao, 'reapresentado', checked=@cheque.reapresentado? , options={ :onclick=>"abre_reapresentacao();"}%> reapresentado
+     </p>
+    <% if @cheque.reapresentado? %>
+      <div id="reapresentado" >
+    <% else %>
+      <div id="reapresentado" style="display:none">
+    <% end %>
+      <p class="borda_dupla">
+        <%= f.label :data_da_reapresentação %>
+        <%= text_field_tag :datepicker3, @cheque.data_reapresentacao, :size=>10%>
+      </p>
+        <p >
+            <%= check_box_tag :segunda_devolucao, 1, checked=@cheque.devolvido_duas_vezes? , options={ :onclick=>"abre_segunda_devolucao();"}%> segunda devolução
+         </p>
+        <% if @cheque.devolvido_duas_vezes? %>
+          <div id="devolvido_duas_vezes" >
+        <% else %>
+          <div id="devolvido_duas_vezes" style="display:none">
+        <% end %>
+        <p class="borda_dupla">
+          <%= f.label :data_da_segunda_devolução %>
+        <%= text_field_tag :datepicker4, @cheque.data_segunda_devolucao, :size=>10%>
+		<%= f.label :motivo %>    
+        <%= f.text_field :motivo_segunda_devolucao, :size=>10 %>
+        </p>
+        </div>
+      </div>
+  </div>
 
   <p>
     <%= f.submit 'Update' %>
   </p>
 <% end %>
-
-<%= link_to 'Show', @cheque %> |
-<%= link_to 'Back', cheques_path %>
+<%= link_to 'voltar', :back %>
 </fieldset>
 <% end %>

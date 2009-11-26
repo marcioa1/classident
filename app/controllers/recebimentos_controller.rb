@@ -1,5 +1,6 @@
 class RecebimentosController < ApplicationController
   layout "adm"
+  before_filter :require_user
   # GET /recebimentos
   # GET /recebimentos.xml
   def index
