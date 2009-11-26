@@ -74,7 +74,15 @@ class ChequesController < ApplicationController
   end
   
   def cheques_recebidos
-     @cheques = Cheque.por_bom_para.da_clinica(session[:clinica_id])
+    if params[:datepicker]
+      data_inicial = params[:datepicker].to_date
+      data_final = params[:datepicker2].to_date
+    else
+      data_inicial = Date.today - Date.today.day.days + 1.day
+      data_final = Date.today
+    end
+    @cheques = Cheque.por_bom_para.da_clinica(session[:clinica_id]).entre_datas(data_inicial,data_final)
+    #TODO fazer parametros de situação de cheque
   end
   
 end

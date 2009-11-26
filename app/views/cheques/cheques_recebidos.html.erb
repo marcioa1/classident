@@ -1,8 +1,39 @@
 <% content_for :main do %>
-  Cheques recebidos
+  <%= @cheques.size %> Cheques recebidos
+<% form_tag cheques_recebidos_cheques_path do %>
+  <p>
+  <%= label_tag :data_inicial %> : <%= text_field_tag :datepicker, (Date.today - Date.today.day.days + 1.day).to_s_br, :size=>10 %>
+
+  <%= label_tag :data_final %> : <%= text_field_tag :datepicker2, 
+          params[:datepicker2].blank? ? Date.today.to_s_br : params[:datepicker2].to_date.to_s_br, :size=>10  %>
+  </p>
+  <p>
+    <table class="transparente">
+      <tr>
+	<% #TODO fazer que a opção todos já venha pré-selecionada%>
+        <td><%= radio_button_tag :opcao, :todos %> <%= label_tag :todos %></td>
+        <td><%= radio_button_tag :opcao, :destinacao %> <%= label_tag :destinação %></td>
+        <td><%= radio_button_tag :opcao, :adminsitracao %> <%= label_tag :administração %></td>
+        <td><%= radio_button_tag :opcao, :reapresentados %> <%= label_tag :reapresentados %></td>
+        <td><%= radio_button_tag :opcao, :solucionados %> <%= label_tag :solucionados %><br/></td>
+      </tr>
+      <tr>
+        <td><%= radio_button_tag :opcao, :usados_para_pagamento%> <%= label_tag :usados_para_pagamento %></td>
+        <td><%= radio_button_tag :opcao, :disponiveis %> <%= label_tag :disponíveis %></td>
+        <td><%= radio_button_tag :opcao, :devolvidos %> <%= label_tag :devolvidos %></td>
+        <td><%= radio_button_tag :opcao, :devolvidos_2_vez %> <%= label_tag :devolvidos_2a_vez %></td>
+        <td><%= radio_button_tag :opcao, :spc %> <%= label_tag :SPC %></td>
+        <td><%= radio_button_tag :opcao, :arquivo_morto %> <%= label_tag :arquivo_morto %></td>
+      </tr>
+    </table>
+
+  </p>
+  <%= submit_tag "pesquisar"%>
+<% end %>
+<br/>
 <table>
   <tr>
-  	<th>Bom para</th>
+    <th>Bom para</th>
     <th width="170px">Paciente</th>
     <th width="60px">Valor</th>
     <th>Banco</th>
@@ -14,7 +45,7 @@
   <% total = 0 %>
   <% for cheque in @cheques do %>
   <tr>
-  	<td align="center"><%= link_to cheque.bom_para.to_s_br, edit_cheque_path(cheque) %></td>
+    <td align="center"><%= link_to cheque.bom_para.to_s_br, edit_cheque_path(cheque) %></td>
     <td><%= cheque.recebimento.paciente.nome %></td>
     <td align="right"><%= cheque.recebimento.valor.real %></td>
     <td align="center"><%= cheque.banco.numero + "-"+ cheque.banco.nome %></td>
@@ -26,8 +57,8 @@
   <% total += cheque.valor %>
   <% end %>
   <tr>
-	<td colspan="2" align="center">Total</td>
-  	<td align="right"><%= total.real%></td>
+    <td colspan="2" align="center">Total</td>
+    <td align="right"><%= total.real%></td>
     <td colspan="5">&nbsp;</td>
   </tr>
 </table>

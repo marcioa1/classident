@@ -1,6 +1,6 @@
 <% content_for :main do %>
 <fieldset>
-<legend>Editando cheque</legend>
+<legend>Editando cheque ( <%= @cheque.id%> )</legend>
 
 <% form_for(@cheque) do |f| %>
   <%= f.error_messages %>

@@ -52,7 +52,6 @@ class RecebimentosController < ApplicationController
   # POST /recebimentos.xml
   def create
     @recebimento = Recebimento.new(params[:recebimento])
-    debugger
     @recebimento.data = params[:datepicker].to_date
     if @recebimento.em_cheque?
       @recebimento.cheque.bom_para = params[:datepicker2].to_date
@@ -87,7 +86,6 @@ class RecebimentosController < ApplicationController
 
     respond_to do |format|
       if @recebimento.update_attributes(params[:recebimento])
-        flash[:notice] = 'Recebimento was successfully updated.'
         format.html { redirect_to(abre_paciente_path(:id=>@recebimento.paciente_id)) }
         format.xml  { head :ok }
       else

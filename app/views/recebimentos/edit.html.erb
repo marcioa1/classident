@@ -1,5 +1,5 @@
 <% content_for :main do %>
-<fieldset>
+<fieldset class="fieldset_40">
 <legend>Editando recebimento</legend>
 
 <% form_for(@recebimento) do |f| %>
@@ -12,7 +12,6 @@
     <%= f.hidden_field :clinica_id %>
   <p>
     <%= f.label :data %><br />
-    <%= f.date_select :data %>
     <%= text_field_tag :datepicker, @recebimento.data.to_s_br, :size=>10 %>
 
   </p>
@@ -54,7 +53,7 @@
     </p>
     <p>
         <%= f.label :bom_para %>
-        <%= text_field_tag :datepicker2, Date.today.to_s_br, :size=>10 %>
+	        <%= text_field_tag :datepicker2, @recebimento.cheque.bom_para.to_s_br, :size=>10 %>
       </p>
   <% end %>
   </fieldset>

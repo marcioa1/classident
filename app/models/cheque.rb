@@ -3,6 +3,8 @@ class Cheque < ActiveRecord::Base
   belongs_to :banco
   named_scope :por_bom_para, :order=>:bom_para
   named_scope :da_clinica, lambda{|clinica_id| {:conditions=>["clinica_id=?",clinica_id]}}
+  named_scope :entre_datas, lambda{|data_inicial, data_final| 
+      {:conditions=>["bom_para between ? and ?", data_inicial, data_final]}}
 
   def status
     return "arquivo morto" unless !arquivo_morto?
