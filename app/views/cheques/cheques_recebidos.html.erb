@@ -10,7 +10,7 @@
   <p>
     <table class="transparente">
       <tr>
-	<% #TODO fazer que a opção todos já venha pré-selecionada%>
+    <% #TODO fazer que a opção todos já venha pré-selecionada%>
         <td><%= radio_button_tag :opcao, :todos %> <%= label_tag :todos %></td>
         <td><%= radio_button_tag :opcao, :destinacao %> <%= label_tag :destinação %></td>
         <td><%= radio_button_tag :opcao, :adminsitracao %> <%= label_tag :administração %></td>
@@ -40,6 +40,7 @@
     <th>Agência</th>
     <th>Conta corrente</th>
     <th>Número</th>
+    <th>Adm</th>
     <th>Situação</th>
   </tr>
   <% total = 0 %>
@@ -52,6 +53,12 @@
     <td><%= cheque.agencia  %></td>
     <td><%= cheque.conta_corrente %></td>
     <td><%= cheque.numero %></td>
+    <td><% if cheque.entregue_administracao?  %>
+          <%= image_tag ok.png %>
+        <% else %>
+          <%= check_box_tag "adm_"+cheque.id.to_s %>
+        <% end %>
+    </td>
     <td><%= cheque.status %></td>
   </tr>
   <% total += cheque.valor %>

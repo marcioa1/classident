@@ -2,6 +2,13 @@ require 'test_helper'
 
 class ChequeTest < ActiveSupport::TestCase
   
+  def test_entregue_adminitracao?
+    adm = cheques(:adm)
+    dispo = cheques(:disponivel)
+    assert adm.entregue_adminitracao?
+    assert dispo.entregue_adminitracao?==false
+  end
+  
   def test_sem_devolucao?
     cheque = cheques(:normal)
     assert cheque.sem_devolucao?
