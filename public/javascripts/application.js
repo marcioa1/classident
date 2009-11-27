@@ -98,3 +98,17 @@ function abre_reapresentacao(){
 function abre_segunda_devolucao(){
     $("#devolvido_duas_vezes").toggle('blind', { percent: 0 },500);
 }
+function enviar_administracao(){
+    var selecionados = ""
+    var chk = $('input:checkbox');
+    for (var i = 0; i < chk.length; i++){ 
+             var item = chk[i].id; 
+             if($("#" + item).is(':checked')){
+               selecionados += item + ","
+             }
+    }
+    $.getJSON("recebe_cheques", {cheques: selecionados}, function(data){
+      $("form:last").trigger("submit");
+      alert(data);
+    });
+}

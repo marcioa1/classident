@@ -75,7 +75,9 @@
         </div>
       </div>
   </div>
-
+  <% if @cheque.entregue_a_administracao? %>
+  <p>Entregue à Administração em <%= @cheque.data_entrega_administracao.to_s_br %></p>
+  <% end %>
   <p>
     <%= f.submit 'Update' %>
   </p>

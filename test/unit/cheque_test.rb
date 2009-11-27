@@ -5,8 +5,8 @@ class ChequeTest < ActiveSupport::TestCase
   def test_entregue_na_adminitracao?
     adm = cheques(:adm)
     dispo = cheques(:disponivel)
-    assert adm.entregue_na_administracao?
-    assert !dispo.entregue_na_administracao?
+    assert adm.entregue_a_administracao?
+    assert !dispo.entregue_a_administracao?
   end
   
   def test_sem_devolucao?
