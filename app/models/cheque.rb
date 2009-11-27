@@ -6,6 +6,10 @@ class Cheque < ActiveRecord::Base
   named_scope :entre_datas, lambda{|data_inicial, data_final| 
       {:conditions=>["bom_para between ? and ?", data_inicial, data_final]}}
 
+  named_scope :disponiveis, :conditions=>["data_segunda_devolucao IS NULL and 
+        data_spc IS NULL and data_solucao IS NULL and data_arquivo_morto IS NULL
+        and data_entrega_administracao IS NULL"]
+  
   def status
     return "arquivo morto" unless !arquivo_morto?
     return "SPC" unless !spc?
@@ -44,4 +48,17 @@ class Cheque < ActiveRecord::Base
     !data_arquivo_morto.nil?
   end
   
+  def entregue_na_administracao?
+    !data_entrega_administracao.nil?
+  end
+  
+  def disponivel?
+    return false if devolvido_duas_vezes?
+    return false if spc?
+    return false if arquivo_morto?
+    return false if solucionado?
+    true
+  end
+  
 end
+#TODO Discutir qual cheque é disponivel

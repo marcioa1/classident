@@ -7,23 +7,24 @@
   <%= label_tag :data_final %> : <%= text_field_tag :datepicker2, 
           params[:datepicker2].blank? ? Date.today.to_s_br : params[:datepicker2].to_date.to_s_br, :size=>10  %>
   </p>
+opcao anterior : <%= params[:opcao]%>
   <p>
     <table class="transparente">
       <tr>
     <% #TODO fazer que a opção todos já venha pré-selecionada%>
-        <td><%= radio_button_tag :opcao, :todos %> <%= label_tag :todos %></td>
+        <td><%= radio_button_tag :opcao, :todos ,params[:opcoes]=="todos" %> <%= label_tag :todos %></td>
         <td><%= radio_button_tag :opcao, :destinacao %> <%= label_tag :destinação %></td>
         <td><%= radio_button_tag :opcao, :adminsitracao %> <%= label_tag :administração %></td>
         <td><%= radio_button_tag :opcao, :reapresentados %> <%= label_tag :reapresentados %></td>
         <td><%= radio_button_tag :opcao, :solucionados %> <%= label_tag :solucionados %><br/></td>
       </tr>
       <tr>
-        <td><%= radio_button_tag :opcao, :usados_para_pagamento%> <%= label_tag :usados_para_pagamento %></td>
-        <td><%= radio_button_tag :opcao, :disponiveis %> <%= label_tag :disponíveis %></td>
-        <td><%= radio_button_tag :opcao, :devolvidos %> <%= label_tag :devolvidos %></td>
-        <td><%= radio_button_tag :opcao, :devolvidos_2_vez %> <%= label_tag :devolvidos_2a_vez %></td>
-        <td><%= radio_button_tag :opcao, :spc %> <%= label_tag :SPC %></td>
-        <td><%= radio_button_tag :opcao, :arquivo_morto %> <%= label_tag :arquivo_morto %></td>
+        <td><%= radio_button_tag :opcao, :usados_para_pagamento, paramas[:opcao]=="usados_para_pagamento"%> <%= label_tag :usados_para_pagamento %></td>
+        <td><%= radio_button_tag :opcao, :disponiveis, params[:opcao]=="disponiveis" %> <%= label_tag :disponíveis %></td>
+        <td><%= radio_button_tag :opcao, :devolvidos, params[:opcao]=="devolvidos" %> <%= label_tag :devolvidos %></td>
+        <td><%= radio_button_tag :opcao, :devolvidos_2_vez, params[:opcao]= "devolvidos_2_vez" %> <%= label_tag :devolvidos_2a_vez %></td>
+        <td><%= radio_button_tag :opcao, :spc ,params[:opcao]=="spc"%> <%= label_tag :SPC %></td>
+        <td><%= radio_button_tag :opcao, :arquivo_morto, params[:opcao]=="arquivo_morto" %> <%= label_tag :arquivo_morto %></td>
       </tr>
     </table>
 
@@ -53,20 +54,22 @@
     <td><%= cheque.agencia  %></td>
     <td><%= cheque.conta_corrente %></td>
     <td><%= cheque.numero %></td>
-    <td><% if cheque.entregue_administracao?  %>
+    <td><% if cheque.entregue_na_administracao?  %>
           <%= image_tag ok.png %>
-        <% else %>
+        <% else if cheque.disponivel? %>
           <%= check_box_tag "adm_"+cheque.id.to_s %>
+        <% end %>
         <% end %>
     </td>
     <td><%= cheque.status %></td>
+    
   </tr>
   <% total += cheque.valor %>
   <% end %>
   <tr>
     <td colspan="2" align="center">Total</td>
     <td align="right"><%= total.real%></td>
-    <td colspan="5">&nbsp;</td>
+    <td colspan="6">&nbsp;</td>
   </tr>
 </table>
 <% end %>
