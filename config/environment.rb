@@ -40,4 +40,6 @@ Rails::Initializer.run do |config|
   # config.i18n.default_locale = :de
   config.gem "authlogic"
   config.gem "brazilian-rails"
+  config.gem "rghost", :version=>">=0.8.7"
+  config.gem "rghost_rails"
 end

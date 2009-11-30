@@ -1,6 +1,6 @@
 <% content_for :main do %>
 <fieldset>
-<legend>New pagamento</legend>
+<legend>Novo pagamento</legend>
 
 <% form_for(@pagamento) do |f| %>
   <%= f.error_messages %>
@@ -9,8 +9,9 @@
   </p>
   <p>
     <%= f.label :data_de_pagamento %><br />
-    <%= f.date_select :data_de_pagamento, :order=>[:day,:month,:year] %>
-  </p>
+    <%= text_field_tag :datepicker, Date.today.to_s_br %>
+ </p>
+<% #TODO fazer pgamento com cheque disponivel %>
   <p>
     <%= f.label :valor %><br />
     <%= f.text_field :valor, :size=>10 %>

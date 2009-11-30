@@ -44,6 +44,7 @@ class PagamentosController < ApplicationController
   # POST /pagamentos.xml
   def create
     @pagamento = Pagamento.new(params[:pagamento])
+    @pagamento.data_de_pagamento = params[:datepicker].to_date
     @pagamento.clinica_id = session[:clinica_id]
     respond_to do |format|
       if @pagamento.save

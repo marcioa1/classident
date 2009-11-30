@@ -1,0 +1,30 @@
+<% content_for :main do %>
+Cheques recebidos
+<table>
+  <tr>
+    <th>Clínica</th>
+    <th width="200px">Paciente</th>
+    <th>Bom para</th>
+    <th>Banco</th>
+    <th width="90px">Valor</th>
+    <th>Recebido em</th>
+  </tr>
+  
+  <% total = 0%>
+  <% @cheques.each() do |cheque| %>
+  <tr>
+    <td><%= cheque.clinica.nome %></td>
+    <td><%= cheque.recebimento.paciente.nome %></td>
+    <td align="center"><%= cheque.bom_para.to_s_br %></td>
+    <td><%= cheque.banco.nome %></td>
+    <td align="right"><%= cheque.valor.real %></td>
+    <td align="center"><%= cheque.data_recebimento_na_administracao.to_s_br %></td>
+  </tr>
+  <% total += cheque.valor %>
+  <% end %>
+  <tr>
+    <td colspan="4" align= "center">Total</td>
+    <td align="right"><%= total.real %></td>
+  </tr>
+</table>
+<% end %>

@@ -93,4 +93,10 @@ class TabelasController < ApplicationController
       format.xml  { head :ok }
     end
   end
+  
+  def print
+     @tabela = Tabela.find(params[:id])
+     rghost_render :pdf, :report => {:action => 'relatorio'}, :filename => 'tabela.pdf'
+  end
+  #TODO terminar esta impressão
 end

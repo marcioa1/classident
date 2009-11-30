@@ -7,6 +7,7 @@ function confirma_recebimento_de_cheque(){
                selecionados += item + ","
              }
     }
+alert (selecionados);
     $.getJSON("registra_recebimento_de_cheques", {cheques: selecionados}, function(data){
 //      $("form:last").trigger("submit");
       alert(data);

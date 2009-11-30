@@ -93,7 +93,7 @@ class ChequesController < ApplicationController
       @cheques = Cheque.por_bom_para.da_clinica(session[:clinica_id]).entre_datas(data_inicial,data_final).devolvido_duas_vezes
     end 
     if params[:opcao]=="administracao"     
-      @cheques = Cheque.por_bom_para.da_clinica(session[:clinica_id]).entre_datas(data_inicial,data_final).entregue_a_administracao
+      @cheques = Cheque.por_bom_para.da_clinica(session[:clinica_id]).entre_datas(data_inicial,data_final).entregues_a_administracao
     end
       
      #TODO fazer parametros de situação de cheque
@@ -112,10 +112,21 @@ class ChequesController < ApplicationController
   end
 
   def confirma_recebimento
-    @cheques = Cheque.entregue_a_administracao
+    @cheques = Cheque.entregues_a_administracao.nao_recebidos
   end
   
   def registra_recebimento_de_cheques
-    #TODO fazer a cofnirmacao do recebimento do cheque na adm
+    debugger
+    lista = params[:cheques].split(",")
+    lista.each() do |numero|
+      cheque = Cheque.find(numero.to_i)
+      cheque.data_recebimento_na_administracao = Date.today
+      cheque.save
+    end
+    render :json => (lista.size.to_s  + " cheques recebidos.").to_json
+  end
+  
+  def recebimento_confirmado
+     @cheques = Cheque.recebidos_na_administracao
   end
 end
