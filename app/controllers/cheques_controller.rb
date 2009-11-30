@@ -131,6 +131,16 @@ class ChequesController < ApplicationController
   end
   
   def busca_disponiveis
-    @cheques = Cheque.disponiveis;
+    @cheques = Cheque.disponiveis.por_valor;
+    result = "<table >"
+    result += "<tr><th>Bom para</th><th>valor</th><th>Paciente</th><th>&nbsp;</th></tr>"
+    @cheques.each() do |cheque|
+      result +=  "<tr><td>" + cheque.bom_para.to_s_br + "</td><td>" + cheque.valor.real.to_s + "</td>"
+      result += "<td>" + cheque.recebimento.paciente.nome + "</td>"
+      result += "<td> <input type='checkbox' id='cheque_#{cheque.id}' onclick='selecionou_cheque();'</input></td> " 
+      result += "</tr>"
+    end
+    result += "</table>"
+    render :json =>result.to_json
   end
 end

@@ -1,7 +1,6 @@
 <% content_for :main do %>
 <fieldset class="fieldset_50">
 <legend>Novo pagamento</legend>
-
 <% form_for(@pagamento) do |f| %>
   <%= f.error_messages %>
   <p><%= f.label :tipo_de_pagamento %> : 
@@ -13,7 +12,7 @@
  </p>
 <% #TODO fazer pgamento com cheque disponivel %>
   <p>
-    <%= f.label :valor_original %> : <%= f.text_field :valor, :size=>10 %>
+    <%= f.label :valor_original %> : <%= f.text_field :valor, :size=>10 , :onblur=>'$("#disponiveis").show();'%>
   </p>
   <p>
     <%= f.label :valor_pago %> : 
@@ -35,4 +34,5 @@
 <%= render :partial=>"cheques/disponiveis" %>
 <%= link_to 'voltar', relatorio_pagamentos_path %>
 </fieldset>
+<div id="fim">fim</div>
 <% end %>

@@ -14,7 +14,7 @@ class Cheque < ActiveRecord::Base
   named_scope :entregues_a_administracao, :conditions=>["data_entrega_administracao NOT NULL"]
   named_scope :nao_recebidos, :conditions=>["data_recebimento_na_administracao IS NULL"]  
   named_scope :recebidos_na_administracao, :conditions=>["data_recebimento_na_administracao NOT NULL"]
-  
+  named_scope :por_valor, :order=>"valor desc"
   def status
     return "arquivo morto" unless !arquivo_morto?
     return "SPC" unless !spc?
