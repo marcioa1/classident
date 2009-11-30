@@ -1,5 +1,5 @@
 <% content_for :main do %>
-<fieldset>
+<fieldset class="fieldset_50">
 <legend>Novo pagamento</legend>
 
 <% form_for(@pagamento) do |f| %>
@@ -8,32 +8,31 @@
 	<%= f.select :tipo_pagamento_id, @tipos_pagamento %>
   </p>
   <p>
-    <%= f.label :data_de_pagamento %><br />
-    <%= text_field_tag :datepicker, Date.today.to_s_br %>
+    <%= f.label :data_de_pagamento %> : 
+    <%= text_field_tag :datepicker, Date.today.to_s_br, :size=>10 %>
  </p>
 <% #TODO fazer pgamento com cheque disponivel %>
   <p>
-    <%= f.label :valor %><br />
-    <%= f.text_field :valor, :size=>10 %>
+    <%= f.label :valor_original %> : <%= f.text_field :valor, :size=>10 %>
   </p>
   <p>
-    <%= f.label :valor_pago %><br />
+    <%= f.label :valor_pago %> : 
     <%= f.text_field :valor_pago, :size=>10 %>
   </p>
   <p>
-    <%= f.label :observação %><br />
+    <%= f.label :observação %> : 
     <%= f.text_field :observacao, :size=>40 %>
   </p>
   <p>
     <%= f.check_box :nao_lancar_no_livro_caixa %>
-    <%= f.label :nao_lancar_no_livro_caixa %>
+    <%= f.label :não_lançar_no_livro_caixa %>
   </p>
   
   <p>
     <%= f.submit 'Criar' %>
   </p>
 <% end %>
-
+<%= render :partial=>"cheques/disponiveis" %>
 <%= link_to 'voltar', relatorio_pagamentos_path %>
 </fieldset>
 <% end %>

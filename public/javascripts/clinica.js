@@ -5,3 +5,7 @@ function limpa_nome(){
 function limpa_codigo(){
 	$("#codigo").val('')
 }
+function pesquisa_disponiveis(){
+//  alert("pesquisando cheques disponiveis");
+   $.get("/cheques/busca_disponiveis" );
+}

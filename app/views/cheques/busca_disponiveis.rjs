@@ -1,0 +1,5 @@
+page.alert("entrando no metodo rjs")
+#@cheques.each() do  |cheque|
+#  page.insert_html :bottom, "lista_de_cheques", cheque.bom_para.to_s_br
+#end
+#page.insert_html :bottom, "lista_de_cheques", "aqui"

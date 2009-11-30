@@ -129,4 +129,8 @@ class ChequesController < ApplicationController
   def recebimento_confirmado
      @cheques = Cheque.recebidos_na_administracao
   end
+  
+  def busca_disponiveis
+    @cheques = Cheque.disponiveis;
+  end
 end
