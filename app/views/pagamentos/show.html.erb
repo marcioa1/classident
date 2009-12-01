@@ -32,7 +32,25 @@
   <b>Data de exclusao:</b>
   <%=h @pagamento.data_de_exclusao %>
 </p>
-
+<p>
+  Cheques utilizados <br/>
+  <table>
+	<tr>
+	  <th width="140px">Paciente</th>
+	  <th width="90px">Valor</th>
+	  <th width="120px">Banco</th>
+	  <th>Número</th>
+	</tr>
+  <% @pagamento.cheques.each() do |cheque| %>
+    <tr>
+      <td><%= cheque.recebimento.paciente.nome %></td>
+      <td align="right"><%= cheque.valor.real %></td>
+      <td><%= cheque.banco.numero + "-" + cheque.banco.nome %></td>
+      <td><%= cheque.numero %></td>
+    </tr>
+  <% end %>
+  </table>
+</p>
 
 <%= link_to 'editar', edit_pagamento_path(@pagamento) %> |
 <%= link_to 'voltar', relatorio_pagamentos_path %>

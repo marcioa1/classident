@@ -38,5 +38,16 @@ class ChequeTest < ActiveSupport::TestCase
     cheque = cheques(:arquivo_morto)
     assert cheque.arquivo_morto?
   end
-
+  
+  def test_usados_para_pagamento
+    pgto = cheques(:usado_pagamento_clinica)
+    assert pgto.usado_para_pagamento?
+  end
+  
+  def test_disponivel?
+    pgto = cheques(:usado_pagamento_clinica)
+    assert !pgto.disponivel?
+    disponivel = cheques(:disponivel)
+    assert disponivel.disponivel?
+  end
 end

@@ -43,7 +43,22 @@ disponivel:
     valor_terceiro_paciente: 9.99
     data_primeira_devolucao: nil
     data_entrega_administracao: nil
-
+usado_pagamento_clinica:
+    banco: 1
+    agencia: 23
+    conta_corrente: 3423
+    numero: MyString
+    valor: 56
+    bom_para: 2009-11-06
+    recebimento_id: 1
+    paciente_id: 1
+    segundo_paciente: 1
+    terceiro_paciente: 1
+    valor_segundo_paciente: 9.99
+    valor_terceiro_paciente: 9.99
+    data_primeira_devolucao: nil
+    data_entrega_administracao: nil
+    pagamento_id: 1
 two:
   banco: 1
   agencia: MyString

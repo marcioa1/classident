@@ -1,6 +1,7 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
 one:
+  id: 1
   clinica_id: 1
   data_de_vencimento: 2009-11-10
   data_de_pagamento: 2009-11-10
@@ -11,6 +12,7 @@ one:
   data_de_exclusao: 2009-11-10 16:42:00
 
 two:
+  id: 2
   clinica_id: 1
   data_de_vencimento: 2009-11-10
   data_de_pagamento: 2009-11-10

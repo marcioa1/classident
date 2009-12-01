@@ -47,13 +47,18 @@ class PagamentosController < ApplicationController
     @pagamento.data_de_pagamento = params[:datepicker].to_date
     @pagamento.clinica_id = session[:clinica_id]
     respond_to do |format|
-      if @pagamento.save
-        flash[:notice] = 'Pagamento criado com sucesso.'
-        format.html { redirect_to(@pagamento) }
-        format.xml  { render :xml => @pagamento, :status => :created, :location => @pagamento }
-      else
-        format.html { render :action => "new" }
-        format.xml  { render :xml => @pagamento.errors, :status => :unprocessable_entity }
+      Pagamento.transaction do
+        debugger
+      cheques = Cheque.all(:conditions=>["id in (?)",params[:cheques_ids][0..(params[:cheques_ids].size-2)]])
+      @pagamento.cheques << cheques
+        if @pagamento.save
+          flash[:notice] = 'Pagamento criado com sucesso.'
+          format.html { redirect_to(@pagamento) }
+          format.xml  { render :xml => @pagamento, :status => :created, :location => @pagamento }
+        else
+          format.html { render :action => "new" }
+          format.xml  { render :xml => @pagamento.errors, :status => :unprocessable_entity }
+      end
       end
     end
   end

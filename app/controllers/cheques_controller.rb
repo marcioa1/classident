@@ -95,7 +95,9 @@ class ChequesController < ApplicationController
     if params[:opcao]=="administracao"     
       @cheques = Cheque.por_bom_para.da_clinica(session[:clinica_id]).entre_datas(data_inicial,data_final).entregues_a_administracao
     end
-      
+    if params[:opcao]=="usados_para_pagamento"
+      @cheques = Cheque.por_bom_para.da_clinica(session[:clinica_id]).entre_datas(data_inicial,data_final).usados_para_pagamento
+    end  
      #TODO fazer parametros de situação de cheque
   end
   
@@ -131,13 +133,14 @@ class ChequesController < ApplicationController
   end
   
   def busca_disponiveis
-    @cheques = Cheque.disponiveis.por_valor;
+    @cheques = Cheque.disponiveis.por_valor.menores_que(params[:valor]);
     result = "<table >"
     result += "<tr><th>Bom para</th><th>valor</th><th>Paciente</th><th>&nbsp;</th></tr>"
     @cheques.each() do |cheque|
-      result +=  "<tr><td>" + cheque.bom_para.to_s_br + "</td><td>" + cheque.valor.real.to_s + "</td>"
+      result +=  "<tr><td>" + cheque.bom_para.to_s_br + "</td>" 
+      result += "<td><span id='valor_#{cheque.id}'>" + cheque.valor.real.to_s + "</span></td>"
       result += "<td>" + cheque.recebimento.paciente.nome + "</td>"
-      result += "<td> <input type='checkbox' id='cheque_#{cheque.id}' onclick='selecionou_cheque();'</input></td> " 
+      result += "<td> <input type='checkbox' id='cheque_#{cheque.id}' onclick='selecionou_cheque(#{cheque.id});'</input></td> " 
       result += "</tr>"
     end
     result += "</table>"

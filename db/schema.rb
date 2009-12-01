@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20091130104741) do
+ActiveRecord::Schema.define(:version => 20091130220959) do
 
   create_table "bancos", :force => true do |t|
     t.string   "numero"
@@ -48,6 +48,7 @@ ActiveRecord::Schema.define(:version => 20091130104741) do
     t.date     "data_arquivo_morto"
     t.date     "data_entrega_administracao"
     t.date     "data_recebimento_na_administracao"
+    t.integer  "pagamento_id"
   end
 
   add_index "cheques", ["recebimento_id"], :name => "index_cheques_on_recebimento_id"
@@ -139,10 +140,10 @@ ActiveRecord::Schema.define(:version => 20091130104741) do
     t.integer  "tipo_pagamento_id"
     t.date     "data_de_vencimento"
     t.date     "data_de_pagamento"
-    t.decimal  "valor",                     :precision => 6, :scale => 2
-    t.decimal  "valor_pago",                :precision => 6, :scale => 2
+    t.decimal  "valor"
+    t.decimal  "valor_pago"
     t.string   "observacao"
-    t.boolean  "nao_lancar_no_livro_caixa",                               :default => false
+    t.boolean  "nao_lancar_no_livro_caixa", :default => false
     t.datetime "data_de_exclusao"
     t.datetime "created_at"
     t.datetime "updated_at"

@@ -1,6 +1,7 @@
 class Pagamento < ActiveRecord::Base
   belongs_to :clinica
   belongs_to :tipo_pagamento
+  has_many :cheques
   
   named_scope :por_data, :order=>:data_de_pagamento
   named_scope :entre_datas, lambda{|inicio,fim| 
