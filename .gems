@@ -1,2 +1,4 @@
 authlogic
 brazilian-rails
+rghost --version ">=0.8.7"
+rghost_rails
