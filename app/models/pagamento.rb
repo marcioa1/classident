@@ -8,4 +8,6 @@ class Pagamento < ActiveRecord::Base
        {:conditions=>["data_de_pagamento >= ? and data_de_pagamento <= ?", inicio,fim]}}
   named_scope :tipos, lambda{|tipos| 
             {:conditions=>["tipo_pagamento_id in (?)", tipos]}}
+  named_scope :nao_excluidos, :conditions=>["data_de_exclusao IS NULL"]
+  named_scope :da_clinica, lambda{|clinica_id| {:conditions=>["clinica_id = ?", clinica_id]}}
 end

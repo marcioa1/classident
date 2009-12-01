@@ -10,7 +10,6 @@
     <%= f.label :data_de_pagamento %> : 
     <%= text_field_tag :datepicker, Date.today.to_s_br, :size=>10 %>
  </p>
-<% #TODO fazer pgamento com cheque disponivel %>
   <p>
     <%= f.label :valor_original %> : <%= f.text_field :valor, :size=>10 , :onblur=>'$("#disponiveis").show();'%>
   </p>
@@ -26,7 +25,7 @@
     <%= f.check_box :nao_lancar_no_livro_caixa %>
     <%= f.label :não_lançar_no_livro_caixa %>
   </p>
-  <%= text_field_tag :cheques_ids %>
+  <%= hidden_field_tag :cheques_ids %>
   <p>
     <%= f.submit 'Criar' %>
   </p>
@@ -34,5 +33,4 @@
 <%= render :partial=>"cheques/disponiveis" %>
 <%= link_to 'voltar', relatorio_pagamentos_path %>
 </fieldset>
-<div id="fim">fim</div>
 <% end %>

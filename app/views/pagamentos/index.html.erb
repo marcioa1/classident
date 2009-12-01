@@ -19,10 +19,10 @@ INDEX
 <% @pagamentos.each do |pagamento| %>
   <tr>
     <td><%=h pagamento.data_de_pagamento.to_s_br %></td>
-    <td><%=h pagamento.valor_pago.real %></td>
+    <td align="right"><%=h pagamento.valor_pago.real %></td>
     <td><%=h pagamento.observacao %></td>
     <td><%=h pagamento.nao_lancar_no_livro_caixa %></td>
-    <td><%=h pagamento.data_de_exclusao %></td>
+    <td><%=h pagamento.data_de_exclusao.to_s_br %></td>
     <td><%= link_to 'mostrar', pagamento %></td>
     <td><%= link_to 'editar', edit_pagamento_path(pagamento) %></td>
     <td><%= link_to 'excluir', pagamento, :confirm => 'Tem certeza ?', :method => :delete %></td>

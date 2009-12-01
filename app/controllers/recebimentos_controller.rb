@@ -109,18 +109,16 @@ class RecebimentosController < ApplicationController
   
   def relatorio
     @tipos_recebimento = FormasRecebimento.por_nome.collect{|obj| [obj.nome, obj.id]}
-     if params[:inicio]
-       @data_inicial = Date.new(params[:inicio][:year].to_i, 
-                 params[:inicio][:month].to_i, 
-                 params[:inicio][:day].to_i)
-       @data_final = Date.new(params[:fim][:year].to_i,
-                params[:fim][:month].to_i, 
-                params[:fim][:day].to_i)
+     if params[:datepicker]
+       @data_inicial = params[:datepicker].to_date
+       @data_final = params[:datepicker2].to_date
      else
-       @data_inicial = Date.today 
+       @data_inicial = Date.today  - Date.today.day.days + 1.day
        @data_final = Date.today
      end
-     @recebimentos = Recebimento.por_data.entre_datas(@data_inicial, @data_final).formas(params[:tipo_recebimento_id])
+     @recebimentos = Recebimento.da_clinica(session[:clinica_id]).
+               por_data.entre_datas(@data_inicial, @data_final).
+               formas(params[:tipo_recebimento_id])
   end
   
  

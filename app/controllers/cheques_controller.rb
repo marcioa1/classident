@@ -75,34 +75,33 @@ class ChequesController < ApplicationController
   
   def cheques_recebidos
     if params[:datepicker]
-      data_inicial = params[:datepicker].to_date
-      data_final = params[:datepicker2].to_date
+      @data_inicial = params[:datepicker].to_date
+      @data_final = params[:datepicker2].to_date
     else
-      data_inicial = Date.today - Date.today.day.days + 1.day
-      data_final = Date.today
+      @data_inicial = Date.today - Date.today.day.days + 1.day
+      @data_final = Date.today
     end
     
     @cheques = []
     if params[:opcao] == "todos"
-      @cheques = Cheque.por_bom_para.da_clinica(session[:clinica_id]).entre_datas(data_inicial,data_final)
+      @cheques = Cheque.por_bom_para.da_clinica(session[:clinica_id]).entre_datas(@data_inicial,@data_final)
     end
     if params[:opcao] == "disponiveis"
-      @cheques = Cheque.por_bom_para.da_clinica(session[:clinica_id]).entre_datas(data_inicial,data_final).disponiveis
+      @cheques = Cheque.por_bom_para.da_clinica(session[:clinica_id]).entre_datas(@data_inicial,@data_final).disponiveis
     end
     if params[:opcao]== "devolvido_2_vezes"
-      @cheques = Cheque.por_bom_para.da_clinica(session[:clinica_id]).entre_datas(data_inicial,data_final).devolvido_duas_vezes
+      @cheques = Cheque.por_bom_para.da_clinica(session[:clinica_id]).entre_datas(@data_inicial,@data_final).devolvido_duas_vezes
     end 
     if params[:opcao]=="administracao"     
-      @cheques = Cheque.por_bom_para.da_clinica(session[:clinica_id]).entre_datas(data_inicial,data_final).entregues_a_administracao
+      @cheques = Cheque.por_bom_para.da_clinica(session[:clinica_id]).entre_datas(@data_inicial,@data_final).entregues_a_administracao
     end
     if params[:opcao]=="usados_para_pagamento"
-      @cheques = Cheque.por_bom_para.da_clinica(session[:clinica_id]).entre_datas(data_inicial,data_final).usados_para_pagamento
+      @cheques = Cheque.por_bom_para.da_clinica(session[:clinica_id]).entre_datas(@data_inicial,@data_final).usados_para_pagamento
     end  
      #TODO fazer parametros de situação de cheque
   end
   
   def recebe_cheques
-    debugger
     lista = params[:cheques].split(",")
     lista.each() do |numero|
       id = numero.split("_")

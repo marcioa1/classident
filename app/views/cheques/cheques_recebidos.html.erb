@@ -2,13 +2,10 @@
   <%= @cheques.size %> Cheques recebidos
 <% form_tag cheques_recebidos_cheques_path do %>
   <p>
-  <%= label_tag :data_inicial %> : <%= text_field_tag :datepicker, (Date.today - Date.today.day.days + 1.day).to_s_br, :size=>10 %>
+  <%= label_tag :data_inicial %> : <%= text_field_tag :datepicker, @data_inicial.to_s_br, :size=>10 %>
 
-  <%= label_tag :data_final %> : <%= text_field_tag :datepicker2, 
-          params[:datepicker2].blank? ? Date.today.to_s_br : params[:datepicker2].to_date.to_s_br, :size=>10  %>
+  <%= label_tag :data_final %> : <%= text_field_tag :datepicker2, @data_final.to_s_br, :size=>10  %>
   </p>
-opcao anterior : <%= params[:opcao]%>
-  <br/>
     <table class="transparente">
       <tr>
         <td><%= radio_button_tag :opcao, :todos ,params[:opcao]=="todos" %> <%= label_tag :todos %></td>

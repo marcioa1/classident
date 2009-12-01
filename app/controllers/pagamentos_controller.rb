@@ -84,8 +84,15 @@ class PagamentosController < ApplicationController
   # DELETE /pagamentos/1.xml
   def destroy
     @pagamento = Pagamento.find(params[:id])
-    @pagamento.data_da_exclusa = Time.now
-    @pagamento.save
+    @pagamento.data_de_exclusao = Time.now
+    Pagamento.transaction do
+      cheques = @pagamento.cheques
+      cheques.each() do |cheque|
+        cheque.pagamento_id = nil
+        cheque.save
+      end
+      @pagamento.save
+    end
 
     respond_to do |format|
       format.html { redirect_to(pagamentos_url) }
@@ -95,18 +102,14 @@ class PagamentosController < ApplicationController
   
    def relatorio
      @tipos_pagamento = TipoPagamento.por_nome.collect{|obj| [obj.nome, obj.id]}
-     if params[:inicio]
-       @data_inicial = Date.new(params[:inicio][:year].to_i, 
-                 params[:inicio][:month].to_i, 
-                 params[:inicio][:day].to_i)
-       @data_final = Date.new(params[:fim][:year].to_i,
-                params[:fim][:month].to_i, 
-                params[:fim][:day].to_i)
+     if params[:datepicker]
+       @data_inicial = params[:datepicker].to_date
+       @data_final = params[:datepicker2].to_date
      else
-       @data_inicial = Date.today 
+       @data_inicial = Date.today  - Date.today.day + 1.day
        @data_final = Date.today
      end
-     @pagamentos = Pagamento.por_data.entre_datas(@data_inicial, @data_final).tipos(params[:tipo_pagamento_id])
+     @pagamentos = Pagamento.da_clinica(session[:clinica_id]).nao_excluidos.por_data.entre_datas(@data_inicial, @data_final).tipos(params[:tipo_pagamento_id])
      respond_to do |format|
        format.html # index.html.erb
        format.xml  { render :xml => @pagamentos }

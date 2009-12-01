@@ -5,14 +5,21 @@
     <legend>Relatório de pagamentos</legend>
 <% form_tag relatorio_pagamentos_path do %>
 <table class="transparente">
-    <tr><td>Início : </td><td><%= select_date  @data_inicial, :prefix=>"inicio", :order=>[:day,:month,:year] %> </td></tr>
-    <tr><td>Fim : </td><td><%= select_date  @data_final, :prefix=>"fim", :order=>[:day,:month,:year]%></td></tr>
+  <tr>
+	<td>
+<table class="transparente">
+    <tr><td>Início : </td><td><%= text_field_tag :datepicker, @data_inicial.to_s_br, :size=>10 %> </td></tr>
+    <tr><td>Fim : </td><td><%= text_field_tag :datepicker2, @data_final.to_s_br, :size=>10 %></td></tr>
     </table>
- <p>
+    </td>
+    <td>
      Tipos de pagamento : <br/>
    <%= select_tag :tipo_pagamento_id, options_for_select(@tipos_pagamento, :selected=>@tipos_pagamento), :multiple=>true, :selected=>:all%>
-</p>
-  <%= submit_tag "pesquisar"%>
+   </td>
+   </tr>
+   <tr><td>&nbsp;</td><td><%= submit_tag "pesquisar"%></td></tr>
+</table>
+  
 <% end %>
 </fieldset>
 <br/>

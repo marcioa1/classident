@@ -11,7 +11,8 @@ class Recebimento < ActiveRecord::Base
        {:conditions=>["data >= ? and data <= ?", inicio,fim]}}
   named_scope :formas, lambda{|formas| 
        {:conditions=>["formas_recebimento_id in (?)", formas]}}
-       
+  named_scope :da_clinica, lambda{|clinica_id| {:conditions=>["clinica_id=?", clinica_id]}}
+  
   def em_cheque?
     forma = FormasRecebimento.find(formas_recebimento_id)
     if forma.nil?
