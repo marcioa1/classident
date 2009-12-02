@@ -1,9 +1,14 @@
 class DentistasController < ApplicationController
   layout "adm"
+  before_filter :require_user
   # GET /dentistas
   # GET /dentistas.xml
   def index
-    @dentistas = Dentista.all
+    if session[:clinica_id].to_i > 0
+      @dentistas = Clinica.find(session[:clinica_id]).dentistas
+    else
+      @dentistas = Dentista.all
+    end
 
     respond_to do |format|
       format.html # index.html.erb
@@ -102,6 +107,17 @@ class DentistasController < ApplicationController
     @clinica_1 = "1"
     @inicio = Date.today
     @fim = Date.today
+  end
+  
+  def producao
+    dentista = Dentista.find(params[:id])
+    @producao = dentista.busca_producao 
+    saida = "<table>"
+    @producao.each() do |tratamento|
+      saida += "<tr><td>"+tratamento.paciente.nome + "</td><td>" + tratamento.valor.real.to_s + "</td></tr>"
+    end
+    saida += "</table>"
+    render :json => saida.to_json
   end
   
 end

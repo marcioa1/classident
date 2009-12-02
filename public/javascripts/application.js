@@ -112,3 +112,19 @@ function enviar_administracao(){
       alert(data);
     });
 }
+
+function selecionar(){
+	if($("#selecao").text()=="todos") {
+		$("#selecao").text("nenhum");
+		$("#tipo_pagamento_id").each(function(){
+		    $("#tipo_pagamento_id option").attr("selected","selected"); 
+		});
+		
+	}else {
+		$("#selecao").text("todos");
+		$("#tipo_pagamento_id").each(function(){
+		    $("#tipo_pagamento_id option").removeAttr("selected"); 
+		});
+		
+	}
+}

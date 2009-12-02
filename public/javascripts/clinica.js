@@ -42,3 +42,10 @@ function selecionou_cheque(elemento){
     }
     $("#cheques_ids").val(selecionados);
 }
+
+function producao(){
+	$.getJSON("producao", function(data){
+//		alert(data);
+		$("#lista").after(data);
+	});
+}

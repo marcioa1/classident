@@ -1,0 +1,2 @@
+page.alert "bom dia"
+page["#lista"].hide
