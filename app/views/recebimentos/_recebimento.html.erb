@@ -1,0 +1,8 @@
+<tr>
+  <td><%= recebimento.data.to_s_br %></td>
+  <td><%= recebimento.paciente.nome %></td>
+  <td align="right"><%= recebimento.valor.real%></td>
+  <td><%= recebimento.formas_recebimento.nome %></td>
+  <td><%= recebimento.clinica.nome %></td>
+</tr>
+<% @total += recebimento.valor %>

@@ -111,12 +111,26 @@ class DentistasController < ApplicationController
   
   def producao
     dentista = Dentista.find(params[:id])
-    @producao = dentista.busca_producao 
-    saida = "<table>"
+    inicio = params[:datepicker].to_date
+    fim = params[:datepicker2].to_date
+    clinicas = params[:clinicas].split(",").to_a
+    debugger
+    @producao = dentista.busca_producao(inicio,fim,clinicas) 
+    saida = "<div id='lista'><table><tr><th width='120px'>Data</th>
+         <th width='220px'>Paciente</th>
+        <th width='220px'>Procedimento</th>
+        <th width='90px'>Valor</th>
+        </tr>"
+    total = 0.0  
     @producao.each() do |tratamento|
-      saida += "<tr><td>"+tratamento.paciente.nome + "</td><td>" + tratamento.valor.real.to_s + "</td></tr>"
+      saida += "<tr><td>"+ tratamento.data.to_s_br + "</td>"
+      saida += "<td>" + tratamento.paciente.nome + "</td>"
+      saida += "<td>" + tratamento.item_tabela.descricao + "</td>"
+      saida += "<td align='right'>" + tratamento.valor.real.to_s + "</td></tr>"
+      total += tratamento.valor
     end
-    saida += "</table>"
+    saida += "<tr><td colspan='3' align='center'>Total</td><td align='right'>" + total.real.to_s + "</td></tr>"
+    saida += "</table></div>"
     render :json => saida.to_json
   end
   

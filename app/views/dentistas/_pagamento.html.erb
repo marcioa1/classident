@@ -1,8 +1,8 @@
 <fieldset class="fieldset_50">
 
 <% form_tag producao_dentista_path do %>
-    Entre : <%= date_select :data_inicio, @inicio, :order=>[:day, :month, :year] %>
-    e : <%= date_select :data_fim, @fim , :order=>[:day,:month,:year] %><br/>
+    Entre : <%= text_field_tag :datepicke2, @inicio %>
+    e : <%= text_field_tag :datepicker2 , @fim %><br/>
     
   <p>
     <%= submit_tag 'pesquisar' %>

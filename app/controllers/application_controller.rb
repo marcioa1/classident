@@ -57,3 +57,4 @@ class ApplicationController < ActionController::Base
 end
 #TODO impressão das tabelas em cada clínica
 #TODO usar this no jquery
+#TODO fazer recebimento nas clinicas na adm

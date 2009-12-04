@@ -4,5 +4,8 @@ class Clinica < ActiveRecord::Base
   has_and_belongs_to_many :dentistas
   has_many :recebimentos
   has_many :cheques
+  has_many :tratamentos
+  
+  named_scope :por_nome, :order=>:nome
   
 end

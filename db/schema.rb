@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20091130220959) do
+ActiveRecord::Schema.define(:version => 20091203163357) do
 
   create_table "bancos", :force => true do |t|
     t.string   "numero"
@@ -217,6 +217,7 @@ ActiveRecord::Schema.define(:version => 20091130220959) do
     t.integer  "orcamento_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "clinica_id"
   end
 
   add_index "tratamentos", ["id"], :name => "index_tratamentos_on_id"

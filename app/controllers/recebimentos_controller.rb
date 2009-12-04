@@ -121,6 +121,27 @@ class RecebimentosController < ApplicationController
                formas(params[:tipo_recebimento_id])
   end
   
- 
+  def das_clinicas
+    if params[:datepicker]
+      inicio = params[:datepicker].to_date
+      fim = params[:datepicker2].to_date
+    else
+      inicio = Date.today
+      fim = Date.today
+      params[:datepicker] = inicio.to_s_br
+      params[:datepicker2] = fim.to_s_br
+    end
+    @todas_as_clinicas = Clinica.por_nome
+    selecionadas = ""
+    @todas_as_clinicas.each() do |clinica|
+      if params["clinica_#{clinica.id.to_s}"]
+       selecionadas += clinica.id.to_s + ","
+      end      
+    end
+    @recebimentos = Recebimento.por_data.
+       das_clinicas(selecionadas.split(",").to_a).
+       entre_datas(inicio,fim)
+
+  end
   
 end

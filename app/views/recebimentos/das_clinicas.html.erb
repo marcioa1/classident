@@ -1,0 +1,25 @@
+<% content_for :main do%>
+  Recebimento das clinicas<br/>
+  <% form_tag das_clinicas_recebimentos_path do %>
+  Entre : <%= text_field_tag :datepicker, params[:datepicker], :size=>10 %>
+  e : <%= text_field_tag :datepicker2, params[:datepicker2], :size=>10%><br/>
+  <%= render :partial =>"clinicas/opcoes", :locals=>{:clinicas=>@todas_as_clinicas} %>
+  <%= submit_tag "pesquisar"%>
+  <% end %>
+  <table >
+	<tr>
+	  <th>Data</th>
+	  <th width="180px">Paciente</th>
+	  <th width="80px">Valor</th>
+	  <th>Forma</th>
+	  <th>Clínica</th>
+	</tr>
+	<% @total = 0 %>
+	  <%= render :partial=>"recebimento" , :collection=>@recebimentos %>
+	<tr>
+	  <td colspan="2" align="center">Total : </td>
+	  <td align= "right"><%= @total.real %></td>
+	  <td colspan="2">&nbsp;</td>
+	</tr>
+  </table>
+<% end %>

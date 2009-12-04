@@ -36,7 +36,6 @@ function selecionou_cheque(elemento){
     var selecionados = ""
     for (var i = 0; i < todos.length; i++) {
       if ($("#" + todos[i].id).is(':checked')) {
-        var numero = (todos[i].id).split("_")
         selecionados += (todos[i].id).split("_")[1] + ",";
       } 
     }
@@ -44,8 +43,25 @@ function selecionou_cheque(elemento){
 }
 
 function producao(){
-	$.getJSON("producao", function(data){
+	var clinicas = $("#fragment-2 input:checkbox")
+	var selecionadas = ''
+	for (var i = 0; i < clinicas.length; i++) {
+      alert(clinicas[i].id + " - " + $("#" + clinicas[i].id).is(':checked') + " / " + (clinicas[i].id).split("_"));
+      if ($("#" + clinicas[i].id).is(':checked')) {
+        selecionadas += $("#"+ clinicas[i].id).val() + ",";
+      } 
+    }
+alert(selecionadas)
+	$.getJSON("producao?datepicker='" + $("#datepicker").val() + 
+	       "'&datepicker2='" + $("#datepicker2").val() +
+	       "'&clinicas=" + selecionadas 
+	        , function(data){
 //		alert(data);
-		$("#lista").after(data);
+//		$("#lista").after(data);
+		$("#lista").replaceWith(data);
 	});
+}
+
+function cheque(){
+	alert("cheque");
 }

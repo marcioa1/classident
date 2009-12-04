@@ -12,6 +12,7 @@ class TratamentosController < ApplicationController
   
   def create
     @tratamento = Tratamento.new(params[:tratamento])
+    @tratamento.clinica_id = session[:clinica_id]
     debugger
     Tratamento.transaction do
       respond_to do |format|

@@ -31,7 +31,7 @@
     <% end %>
   </fieldset>
   <p>
-    <%= f.submit 'alterar' %>
+    <%= f.submit 'alterar' unless session[:clinica_id].to_i > 0 %>
   </p>
 <% end %>
 </fieldset><br/>

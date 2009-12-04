@@ -13,7 +13,7 @@ ActionController::Routing::Routes.draw do |map|
   map.administracao "administracao", :controller=>"administracao", :action=>"index"
   map.resources :pagamentos, :collection=>{:relatorio=>:get}
   map.resources :precos
-  map.resources :recebimentos, :collection=>{:relatorio=>:get}
+  map.resources :recebimentos, :collection=>{:relatorio=>:get, :das_clinicas=>:get}
   map.resources :tabelas, :collection=>{:print=>:get }
 
   map.resources :tabelas do |item|

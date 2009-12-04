@@ -11,8 +11,9 @@ class Dentista < ActiveRecord::Base
     sigla
   end
   
-  def busca_producao
-    resultado = Tratamento.all(:conditions=>["dentista_id = ?", id])
+  def busca_producao(inicio,fim,clinicas)
+    debugger
+    resultado = Tratamento.do_dentista(id).por_data.entre(inicio, fim).da_clinica(clinicas)
   end
   
 end

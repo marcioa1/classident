@@ -1,36 +1,19 @@
-<fieldset class="fieldset_50">
-
-<% form_remote_tag :url=>producao_dentista_path(:id=>@dentista.id)  do %>
     Entre : <%= text_field_tag :datepicker, @inicio.to_s_br, :size=>10 %>
-    e : <%= text_field_tag :datepicker2, @fim.to_s_br, :size=>10 %><br/>
+    e : <%= text_field_tag :datepicker2, @fim.to_s_br, :size=>10 %>
     <% if session[:clinica_id].to_i == 0 %>
+      <br/>
       Clínicas :  
       <% @dentista.clinicas.each() do |clinica| %>
-        <%= check_box_tag "clinica_#{clinica.id}", clinica.id, checked=true %>  
+        <%= check_box_tag "aclinica_#{clinica.id}",value= clinica.id,false %>  
         <%= clinica.nome %> &nbsp;&nbsp;
       <% end %>
     <% else %>
       <span style="display:none">
-      <%= check_box_tag session[:clinica], session[:clinica_id], checked=true %> 
+        <%= check_box_tag session[:clinica], session[:clinica_id] %> 
       </span>
-    <% end %>
-  <p>
-    <%= submit_tag 'pesquisar' %>
-  </p>
-<% end %>
-<%= link_to "producao", "#", :onclick=>"producao();" %>
-</fieldset>
+      <% end %>
+<br/><br/><%= button_to "pesquisar" , "javascript:producao();"%>
 <p>
-<table>
-  <tr>
-  	<th width="120px">Data</th>
-    <th width="220px">Paciente</th>
-    <th width="220px">Procedimento</th>
-    <th width="90px">Valor</th>
-  </tr>
-  <div id="lista">lista</div>
-</table>
+  <div id="lista"></div>
 </p>
-<br/>
-<%= link_to 'voltar', dentistas_path %>
 
