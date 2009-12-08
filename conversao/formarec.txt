@@ -1,0 +1,10 @@
+Nome;sequencial;tipo
+Cheque;24;C
+Credicard;26;O
+American;27;O
+Sollo;28;O
+Visa;29;O
+Dinheiro;30;D
+Anular Débito;32;O
+Patronal;33;O
+cartório;34;O
