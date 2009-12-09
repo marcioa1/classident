@@ -5,9 +5,9 @@ class DentistasController < ApplicationController
   # GET /dentistas.xml
   def index
     if session[:clinica_id].to_i > 0
-      @dentistas = Clinica.find(session[:clinica_id]).dentistas
+      @dentistas = Clinica.find(session[:clinica_id]).dentistas.por_nome
     else
-      @dentistas = Dentista.all
+      @dentistas = Dentista.por_nome
     end
 
     respond_to do |format|
@@ -125,7 +125,11 @@ class DentistasController < ApplicationController
     @producao.each() do |tratamento|
       saida += "<tr><td>"+ tratamento.data.to_s_br + "</td>"
       saida += "<td>" + tratamento.paciente.nome + "</td>"
-      saida += "<td>" + tratamento.item_tabela.descricao + "</td>"
+      if tratamento.item_tabela.nil?
+        saida += "<td>&nbsp;</td>"
+      else
+        saida += "<td>" + tratamento.item_tabela.descricao + "</td>"
+      end  
       saida += "<td align='right'>" + tratamento.valor.real.to_s + "</td></tr>"
       total += tratamento.valor
     end

@@ -9,7 +9,7 @@
       <% end %>
     <% else %>
       <span style="display:none">
-        <%= check_box_tag session[:clinica], session[:clinica_id] %> 
+        <%= check_box_tag session[:clinica], session[:clinica_id],true %> 
       </span>
       <% end %>
 <br/><br/><%= button_to "pesquisar" , "javascript:producao();"%>

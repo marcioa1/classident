@@ -15,8 +15,8 @@
 <% Tratamento.do_paciente(@paciente.id).each()  do |tratamento|  %>
   <tr>
 	<td align="center"><%= tratamento.dente %></td>
-    <td><%= tratamento.item_tabela.codigo %></td>
-    <td><%= tratamento.item_tabela.descricao %></td>
+    <td><%= tratamento.item_tabela.codigo  unless tratamento.item_tabela.nil? %></td>
+    <td><%= tratamento.item_tabela.descricao unless tratamento.item_tabela.nil?%></td>
     <td align="right"><%= tratamento.valor.real%></td>
     <td><%= tratamento.dentista.nome %></td>
     <td align="center"><%= tratamento.data.to_s_br%></td>

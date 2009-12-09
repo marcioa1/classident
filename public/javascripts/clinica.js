@@ -46,18 +46,14 @@ function producao(){
 	var clinicas = $("#fragment-2 input:checkbox")
 	var selecionadas = ''
 	for (var i = 0; i < clinicas.length; i++) {
-      alert(clinicas[i].id + " - " + $("#" + clinicas[i].id).is(':checked') + " / " + (clinicas[i].id).split("_"));
       if ($("#" + clinicas[i].id).is(':checked')) {
         selecionadas += $("#"+ clinicas[i].id).val() + ",";
       } 
     }
-alert(selecionadas)
 	$.getJSON("producao?datepicker='" + $("#datepicker").val() + 
 	       "'&datepicker2='" + $("#datepicker2").val() +
 	       "'&clinicas=" + selecionadas 
 	        , function(data){
-//		alert(data);
-//		$("#lista").after(data);
 		$("#lista").replaceWith(data);
 	});
 }
