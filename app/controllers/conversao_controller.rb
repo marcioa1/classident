@@ -10,7 +10,10 @@ def index
 #  c.converte_formas_recebimento
 #  c.converte_recebimento
 #  c.tratamento
-  c.dentista
+#  c.dentista
+#   c.tipo_pagamento
+#   c.pagamento
+  c.fluxo_de_caixa
 end
 
 end

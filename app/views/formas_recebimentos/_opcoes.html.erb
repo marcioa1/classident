@@ -1,14 +1,14 @@
 <Fieldset class="fieldset_40">
-	<legend>Clínicas</legend>
+	<legend>Formas de recebimento</legend>
 <% ct=0 %>
 <table class="transparente">
   <tr>
-<% clinicas.each() do |clinica| %>
+<% formas.each() do |forma| %>
     <% if ct > 4 %>
       <% ct=0 %>
       </tr><tr>
     <% end %>
-	<td><%= check_box_tag "clinica_"+clinica.id.to_s, clinica.id, params["clinica_#{clinica.id}"] %> <%= clinica.nome %></td>
+	<td><%= check_box_tag "forma_"+forma.id.to_s, forma.id, params["forma_#{forma.id}"] %> <%= forma.nome %></td>
 	<% ct += 1 %>
 <% end %>
   </tr>

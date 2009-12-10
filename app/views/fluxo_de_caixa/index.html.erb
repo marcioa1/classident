@@ -1,0 +1,31 @@
+<% content_for :main do %>
+Fluxo de caixa do dia <%= @fluxo.data.to_s_br %>
+<br/>
+Saldo anterior em dinheiro : <%= @fluxo.saldo_em_dinheiro.real%><br/>
+Saldo anterior em cheque : <%= @fluxo.saldo_em_cheque.real%><br/>
+<p>
+  <%= link_to "anterior", fluxo_de_caixa_path(:data=>@fluxo.data - 1.day)%>	 | 
+  <%= link_to "próximo", fluxo_de_caixa_path(:data=>@fluxo.data + 1.day)%>	
+</p>
+<table>
+  <tr>
+  	<th>Observação</th>
+    <th>Crédito</th>
+    <th>Débito</th>
+    <th>Saldo</th>
+  </tr>
+<% @lancamentos.each() do |lancamento| %>
+  <tr>
+    <% if lancamento.class.name == "Recebimento"%>
+      <td><%= lancamento.paciente.nome %></td>
+      <td><%= lancamento.valor.real %></td>
+      <td>&nbsp;</td>
+    <% else %>
+      <td><%= lancamento.tipo_pagamento.nome %></td>
+      <td>&nbsp;</td>
+      <td><%= lancamento.valor_pago.real %></td>
+    <% end %>
+  </tr>
+<% end %>
+</table>
+<% end %>

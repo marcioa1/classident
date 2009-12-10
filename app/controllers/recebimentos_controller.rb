@@ -108,6 +108,7 @@ class RecebimentosController < ApplicationController
   end
   
   def relatorio
+    @formas_recebimento = FormasRecebimento.por_nome
     @tipos_recebimento = FormasRecebimento.por_nome.collect{|obj| [obj.nome, obj.id]}
      if params[:datepicker]
        @data_inicial = params[:datepicker].to_date
@@ -116,9 +117,15 @@ class RecebimentosController < ApplicationController
        @data_inicial = Date.today  - Date.today.day.days + 1.day
        @data_final = Date.today
      end
+     formas_selecionadas = ""
+     @formas_recebimento.each() do |forma|
+       if params["forma_#{forma.id.to_s}"]
+         formas_selecionadas += forma.id.to_s + ","
+       end
+     end
      @recebimentos = Recebimento.da_clinica(session[:clinica_id]).
                por_data.entre_datas(@data_inicial, @data_final).
-               formas(params[:tipo_recebimento_id])
+               nas_formas(formas_selecionadas.split(",").to_a)
   end
   
   def das_clinicas
@@ -126,11 +133,12 @@ class RecebimentosController < ApplicationController
       inicio = params[:datepicker].to_date
       fim = params[:datepicker2].to_date
     else
-      inicio = Date.today
+      inicio = Date.today - 15.days
       fim = Date.today
       params[:datepicker] = inicio.to_s_br
       params[:datepicker2] = fim.to_s_br
     end
+    @formas_recebimento = FormasRecebimento.por_nome
     @todas_as_clinicas = Clinica.por_nome
     selecionadas = ""
     @todas_as_clinicas.each() do |clinica|
@@ -138,9 +146,16 @@ class RecebimentosController < ApplicationController
        selecionadas += clinica.id.to_s + ","
       end      
     end
+    formas_selecionadas = ""
+    @formas_recebimento.each() do |forma|
+      if params["forma_#{forma.id.to_s}"]
+        formas_selecionadas += forma.id.to_s + ","
+      end
+    end
     @recebimentos = Recebimento.por_data.
        das_clinicas(selecionadas.split(",").to_a).
-       entre_datas(inicio,fim)
+       entre_datas(inicio,fim).
+       nas_formas(formas_selecionadas.split(",").to_a)
 
   end
   

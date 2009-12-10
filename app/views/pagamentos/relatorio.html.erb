@@ -14,7 +14,7 @@
     </td>
     <td>
      Tipos de pagamento : <br/>
-   <%= select_tag :tipo_pagamento_id, options_for_select(@tipos_pagamento, @tipos_pagamento), :multiple=>true %>
+   <%= select_tag 'tipo_pagamento_id', options_for_select(@tipos_pagamento, params[:tipo_pagamento_id] ), :multiple=>true %>
 <a href="#" id="selecao" onclick="javascript:selecionar();">todos</a>   </td>
    </tr>
    <tr><td>&nbsp;</td><td><%= submit_tag "pesquisar"%></td></tr>
@@ -44,7 +44,7 @@
     <td><%= link_to 'editar', edit_pagamento_path(pagamento) %></td>
     <td><%= link_to 'excluir', pagamento, :confirm => 'Tem certeza ?', :method => :delete %></td>
   </tr>
-  <% total += pagamento.valor %>
+  <% total += pagamento.valor_pago  %>
 <% end %>
   <tr>
   	<td align="center">Total</td>

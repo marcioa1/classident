@@ -14,7 +14,7 @@ class CreatePacientes < ActiveRecord::Migration
       t.string :bairro, :limit=>30
       t.string :cidade, :limit=>30
       t.string :uf, :limit=>2
-      t.string :cep, :limit=>8
+      t.string :cep, :limit=>9
       t.string :cpf, :limit=>14
       t.string :sexo, :limit=> 1
       t.integer :clinica_id

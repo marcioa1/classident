@@ -6,6 +6,7 @@ ActionController::Routing::Routes.draw do |map|
        :registra_recebimento_de_cheques=>:get, :recebimento_confirmado=>:get}
   map.resources :debitos
   map.resources :dentistas, :member=>{:abre=>:get, :producao=>:get}
+  map.fluxo_de_caixa "fluxo_de_caixa", :controller=>"fluxo_de_caixa", :action=>"index"
   map.resources :formas_recebimentos
   map.resources :item_tabelas, :collection=>{:busca_descricao=>:get}
   map.resources :pacientes, :member=>{:abre=>:get}, :collection=>{:pesquisa=>:get}

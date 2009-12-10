@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20091203163357) do
+ActiveRecord::Schema.define(:version => 20091210120412) do
 
   create_table "bancos", :force => true do |t|
     t.string   "numero"
@@ -88,6 +88,17 @@ ActiveRecord::Schema.define(:version => 20091203163357) do
     t.datetime "updated_at"
     t.string   "cro"
   end
+
+  create_table "fluxo_de_caixas", :force => true do |t|
+    t.integer  "clinica_id"
+    t.date     "data"
+    t.decimal  "saldo_em_dinheiro", :precision => 6, :scale => 2
+    t.decimal  "saldo_em_cheque",   :precision => 6, :scale => 2
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "fluxo_de_caixas", ["clinica_id"], :name => "index_fluxo_de_caixas_on_clinica_id"
 
   create_table "formas_recebimentos", :force => true do |t|
     t.string   "nome"

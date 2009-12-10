@@ -101,7 +101,8 @@ class PagamentosController < ApplicationController
   end
   
    def relatorio
-     @tipos_pagamento = TipoPagamento.por_nome.collect{|obj| [obj.nome, obj.id]}
+     #TODO fazer via Ajax pata manter parametros
+     @tipos_pagamento = TipoPagamento.da_clinica(session[:clinica_id]).por_nome.collect{|obj| [obj.nome, obj.id.to_s]}
      if params[:datepicker]
        @data_inicial = params[:datepicker].to_date
        @data_final = params[:datepicker2].to_date

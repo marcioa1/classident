@@ -1,14 +1,11 @@
 <% content_for :main do %>
-<fieldset>
+<fieldset class="fieldset_50">
     <legend>Relatório de recebimentos</legend>
 <% form_tag relatorio_recebimentos_path do %>
    Início : <%= text_field_tag :datepicker ,@data_inicial.to_s_br, :size=>10  %> 
     Fim : <%= text_field_tag :datepicker2, @data_final.to_s_br, :size=>10 %>
- <p>
-     Tipos de recebimento : 
-   <%= select_tag :tipo_recebimento_id, options_for_select(@tipos_recebimento, :selected=>@tipos_recebimento), :multiple=>true %>
-<% #TODO colocar parametros selecionados anteriormente aqui%>
-</p>
+<p><%= render :partial => "formas_recebimentos/opcoes", :locals=>{:formas=>@formas_recebimento}%></p>
+ 
   <%= submit_tag "pesquisar"%>
 <% end %>
 </fieldset>

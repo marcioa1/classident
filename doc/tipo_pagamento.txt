@@ -49,7 +49,7 @@ sequencial;nome;ativo
 105;vale - protetico cel;1
 106;protetico  ricardo;1
 107;golden cross;1
-108;1° parcela 13° salar;1
+108;1Â° parcela 13Â° salar;1
 109;PROTETICO - RICARDO;1
 110;protetico marcelo;1
 111;VALE - DRa  carla;1

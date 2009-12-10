@@ -1,5 +1,0 @@
-page.alert "entrando no metodo rjss"
-@cheques.each() do  |cheque|
-    page.insert_html :bottom, "fim", cheque.bom_para.to_s_br
-end
-page.replace_html :bottom, "fim", "aqui"

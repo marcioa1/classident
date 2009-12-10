@@ -5,6 +5,6 @@ American;27;O
 Sollo;28;O
 Visa;29;O
 Dinheiro;30;D
-Anular Débito;32;O
+Anular DÃ©bito;32;O
 Patronal;33;O
-cartório;34;O
+cartÃ³rio;34;O

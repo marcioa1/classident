@@ -1,0 +1,7 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+ultimo:
+  data: "2009-12-10"
+  saldo_em_cheque: 130.0
+  saldo_em_dinheiro: 75
+  clinica_id: 7

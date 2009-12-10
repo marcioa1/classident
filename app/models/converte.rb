@@ -35,10 +35,9 @@ class Converte
           p.logradouro = registro[3]
           p.bairro = registro[4]
           p.cidade = registro[5]
-          debugger
           p.nascimento = registro[6].to_date
           p.uf = registro[7]
-          p.cep = registro[8]
+          p.cep = registro[8][0..7]
           p.telefone = registro[9]
           p.save
       end
@@ -94,12 +93,12 @@ class Converte
     while line = f.gets 
       r = Recebimento.new
       registro = line.split(";")
-      debugger
       r.data = registro[1].to_date
       r.paciente_id = registro[2].to_i
       r.formas_recebimento_id = registro[3].to_i
       r.valor = registro[4].split(" ")[1]
       r.observacao = registro[7]
+      r.clinica_id = clinica.id
     #  puts registro[8]
       r.save
     end
@@ -188,4 +187,66 @@ class Converte
       clinica.save
       f.close
   end
+  
+  def tipo_pagamento
+     puts "Convertendo tipos de pagamentos ...."
+      f = File.open("doc/tipo_pagamento.txt" , "r")
+      TipoPagamento.delete_all
+      #FIXME  NA conversao real, não apagar tabela
+      clinica = Clinica.find_by_nome("Recreio")
+      line = f.gets
+      while line = f.gets 
+        registro = line.split(";")
+        t = TipoPagamento.new
+        t.id = registro[0].to_i
+        t.nome = registro[1]
+        t.ativo = (registro[2].to_i==0)
+        t.clinica_id = clinica.id
+        t.save
+      end
+      f.close
+  end
+  
+  def pagamento
+    puts "Convertendo pagamentos ...."
+      f = File.open("doc/pagamento.txt" , "r")
+      Pagamento.delete_all
+      #FIXME  NA conversao real, não apagar tabela
+      clinica = Clinica.find_by_nome("Recreio")
+      line = f.gets
+      while line = f.gets 
+        registro = line.split(";")
+        t = Pagamento.new
+        t.clinica_id = clinica.id
+        t.tipo_pagamento_id = registro[1].to_i
+        t.data_de_pagamento = registro[3].to_date
+#        debugger
+        t.valor_pago = registro[2].split(" ")[1]
+        t.observacao = registro[4]
+        t.nao_lancar_no_livro_caixa = (registro[16].to_i!= 0)
+        t.data_de_exclusao = registro[17].to_date unless registro[17].blank?
+        t.save
+      end
+      f.close
+  end
+  
+  def fluxo_de_caixa
+    puts "Convertendo fluxo de caixa ...."
+    f = File.open("doc/saldos.txt" , "r")
+    FluxoDeCaixa.delete_all
+    #FIXME  NA conversao real, não apagar tabela
+    clinica = Clinica.find_by_nome("Recreio")
+    line = f.gets
+    while line = f.gets 
+      registro = line.split(";")
+      t = FluxoDeCaixa.new
+      t.clinica_id = clinica.id
+      t.data = registro[0].to_date
+      t.saldo_em_dinheiro = registro[1].split(" ")[1]
+      t.saldo_em_cheque = registro[2].split(" ")[1]
+      t.save
+    end
+    f.close
+  end
+  
 end
