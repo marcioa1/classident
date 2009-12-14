@@ -27,7 +27,7 @@ class PagamentosController < ApplicationController
   def new
     @tipos_pagamento = TipoPagamento.por_nome.collect{|obj| [obj.nome, obj.id]}
     @pagamento = Pagamento.new
-
+    @contas_bancarias = ContaBancaria.all.collect{|obj| [obj.nome, obj.id]}
     respond_to do |format|
       format.html # new.html.erb
       format.xml  { render :xml => @pagamento }
@@ -46,6 +46,10 @@ class PagamentosController < ApplicationController
     @pagamento = Pagamento.new(params[:pagamento])
     @pagamento.data_de_pagamento = params[:datepicker].to_date
     @pagamento.clinica_id = session[:clinica_id]
+    debugger
+    if params[:opcao_restante]!="pago_em_cheque"
+      @pagamento.conta_bancaria_id = nil
+    end
     respond_to do |format|
       Pagamento.transaction do
         debugger
@@ -101,7 +105,6 @@ class PagamentosController < ApplicationController
   end
   
    def relatorio
-     #TODO fazer via Ajax pata manter parametros
      @tipos_pagamento = TipoPagamento.da_clinica(session[:clinica_id]).por_nome.collect{|obj| [obj.nome, obj.id.to_s]}
      if params[:datepicker]
        @data_inicial = params[:datepicker].to_date

@@ -1,3 +1,37 @@
 
-<%= link_to 'Edit', edit_cheque_path(@cheque) %> |
-<%= link_to 'Back', cheques_path %>
+<fieldset>
+<legend>Detalhe do cheque </legend>
+<table class="transparente">
+  <tr>
+  	<td>Banco : </td>
+    <td><%= @cheque.banco.nome %></td>
+  </tr>
+  <tr>
+  	<td>Agência : </td>
+    <td><%= @cheque.agencia%></td>
+  </tr>
+  <tr>
+  	<td>Conta-corrente : </td>
+    <td><%= @cheque.conta_corrente %></td>
+  </tr>
+  <tr>
+  	<td>Número : </td>
+    <td><%= @cheque.numero %></td>
+  </tr>
+  <tr>
+  	<td>Valor : </td>
+    <td><%= @cheque.valor.real %></td>
+  </tr>
+  <tr>
+  	<td>Bom-para : </td>
+    <td><%= @cheque.bom_para.to_s_br %></td>
+  </tr>
+  <tr>
+  	<td>Status :</td>
+	<td><%= @cheque.status %></td>
+  </tr>
+</table>
+
+<br/>
+<a href="javascript: self.close();">fechar</a>
+</fieldset>

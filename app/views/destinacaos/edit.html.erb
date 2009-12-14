@@ -1,0 +1,12 @@
+<h1>Editing destinacao</h1>
+
+<% form_for(@destinacao) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @destinacao %> |
+<%= link_to 'Back', destinacaos_path %>

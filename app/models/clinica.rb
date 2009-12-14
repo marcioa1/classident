@@ -5,6 +5,7 @@ class Clinica < ActiveRecord::Base
   has_many :recebimentos
   has_many :cheques
   has_many :tratamentos
+  has_many :destinacaos
   
   named_scope :por_nome, :order=>:nome
   

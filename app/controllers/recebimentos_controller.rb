@@ -27,13 +27,15 @@ class RecebimentosController < ApplicationController
   # GET /recebimentos/new.xml
   def new
     @bancos = Banco.all(:order=>:nome).collect{|obj| [obj.numero + " - " + obj.nome,obj.id]}
-    @formas_recebimentos = FormasRecebimento.all.collect{|obj| [obj.nome,obj.id]}
+    @formas_recebimentos = FormasRecebimento.por_nome.collect{|obj| [obj.nome,obj.id]}
     @recebimento = Recebimento.new
     @recebimento.cheque = Cheque.new
-    @paciente = Paciente.find(params[:paciente_id])
+    @paciente = Paciente.find(session[:paciente_id])
+    @recebimento.paciente = @paciente
     @recebimento.paciente_id = @paciente.id
     @recebimento.clinica_id = @paciente.clinica_id
-    @recebimento.cheque.clinica_id = @paciente.clinica_id
+   # @recebimento.cheque.clinica_id = @paciente.clinica_id
+    
     respond_to do |format|
       format.html # new.html.erb
       format.xml  { render :xml => @recebimento }
@@ -53,6 +55,11 @@ class RecebimentosController < ApplicationController
   def create
     @recebimento = Recebimento.new(params[:recebimento])
     @recebimento.data = params[:datepicker].to_date
+    @paciente = Paciente.find(params[:paciente_id])
+    @recebimento.paciente_id = @paciente.id
+    @recebimento.clinica_id = @paciente.clinica_id
+    @recebimento.cheque.clinica_id = @paciente.clinica_id
+    
     if @recebimento.em_cheque?
       @recebimento.cheque.bom_para = params[:datepicker2].to_date
       @recebimento.cheque.clinica_id = session[:clinica_id]
@@ -99,7 +106,9 @@ class RecebimentosController < ApplicationController
   # DELETE /recebimentos/1.xml
   def destroy
     @recebimento = Recebimento.find(params[:id])
-    @recebimento.destroy
+    @recebimento.data_de_exclusao = Date.today
+    @recebimento.observacao_exclusao = "."
+    #TODO fazer exclusao de recebimento lembrando que é preciso excluir o respectivo cheque
 
     respond_to do |format|
       format.html { redirect_to(recebimentos_url) }
@@ -125,7 +134,12 @@ class RecebimentosController < ApplicationController
      end
      @recebimentos = Recebimento.da_clinica(session[:clinica_id]).
                por_data.entre_datas(@data_inicial, @data_final).
-               nas_formas(formas_selecionadas.split(",").to_a)
+               nas_formas(formas_selecionadas.split(",").to_a).
+               nao_excluidos
+     @recebimentos_excluidos = Recebimento.da_clinica(session[:clinica_id]).
+                          por_data.entre_datas(@data_inicial, @data_final).
+                          nas_formas(formas_selecionadas.split(",").to_a).
+                          excluidos
   end
   
   def das_clinicas
@@ -155,7 +169,8 @@ class RecebimentosController < ApplicationController
     @recebimentos = Recebimento.por_data.
        das_clinicas(selecionadas.split(",").to_a).
        entre_datas(inicio,fim).
-       nas_formas(formas_selecionadas.split(",").to_a)
+       nas_formas(formas_selecionadas.split(",").to_a).
+       nao_excluidos
 
   end
   

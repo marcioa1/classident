@@ -22,7 +22,7 @@ class Paciente < ActiveRecord::Base
   def credito
     total = 0
     recebimentos.each() do |recebimento|
-      total += recebimento.valor
+      total += recebimento.valor unless recebimento.excluido?
     end
     return total
   end

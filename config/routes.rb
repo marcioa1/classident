@@ -1,4 +1,8 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :destinacaos
+
+  map.resources :conta_bancarias
+
   map.resources :conversao
   map.resources :bancos
   map.resources :cheques, :collection=>{:busca_disponiveis=>:get, :cheques_recebidos=>:get, 

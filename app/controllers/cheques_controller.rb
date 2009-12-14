@@ -1,6 +1,7 @@
 class ChequesController < ApplicationController
 
-  layout "adm"
+  layout "adm", :except => :show
+  
   before_filter :require_user
   # GET /cheques
   # GET /cheques.xml
@@ -81,24 +82,28 @@ class ChequesController < ApplicationController
       @data_inicial = Date.today - Date.today.day.days + 1.day
       @data_final = Date.today
     end
-    
+    @status = [["todos","todos"],["disponíveis","disponíveis"],
+        ["devolvido 2 vezes","devolvido 2 vezes"],
+        ["administração","administração"],
+        ["usados para pagamento","usados para pagamento"]]
+    debugger
     @cheques = []
-    if params[:opcao] == "todos"
+    if params[:status] == "todos"
       @cheques = Cheque.por_bom_para.da_clinica(session[:clinica_id]).entre_datas(@data_inicial,@data_final)
     end
-    if params[:opcao] == "disponiveis"
+    if params[:status] == "disponíveis"
       @cheques = Cheque.por_bom_para.da_clinica(session[:clinica_id]).entre_datas(@data_inicial,@data_final).disponiveis
     end
-    if params[:opcao]== "devolvido_2_vezes"
+    if params[:status]== "devolvido 2 vezes"
       @cheques = Cheque.por_bom_para.da_clinica(session[:clinica_id]).entre_datas(@data_inicial,@data_final).devolvido_duas_vezes
     end 
-    if params[:opcao]=="administracao"     
+    if params[:status]=="administração"     
       @cheques = Cheque.por_bom_para.da_clinica(session[:clinica_id]).entre_datas(@data_inicial,@data_final).entregues_a_administracao
     end
-    if params[:opcao]=="usados_para_pagamento"
+    if params[:status]=="usados para pagamento"
       @cheques = Cheque.por_bom_para.da_clinica(session[:clinica_id]).entre_datas(@data_inicial,@data_final).usados_para_pagamento
     end  
-     #TODO fazer parametros de situação de cheque
+     #TODO fazer parametros que faltam de situação de cheque
   end
   
   def recebe_cheques
@@ -138,7 +143,7 @@ class ChequesController < ApplicationController
     @cheques.each() do |cheque|
       result +=  "<tr><td>" + cheque.bom_para.to_s_br + "</td>" 
       result += "<td><span id='valor_#{cheque.id}'>" + cheque.valor.real.to_s + "</span></td>"
-      result += "<td>" + cheque.recebimento.paciente.nome + "</td>"
+      result += "<td>" + cheque.sequencial.to_s + cheque.recebimento.paciente.nome + "</td>"
       result += "<td> <input type='checkbox' id='cheque_#{cheque.id}' onclick='selecionou_cheque(#{cheque.id});'</input></td> " 
       result += "</tr>"
     end

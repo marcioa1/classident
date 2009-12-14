@@ -1,8 +1,21 @@
 <% content_for :main do %>
-<fieldset class="fieldset_50">
+<div id="formulario">
+<fieldset class="fieldset_40">
 <legend>Novo pagamento</legend>
 <% form_for(@pagamento) do |f| %>
   <%= f.error_messages %>
+<div id="valor_restante" class="direita">
+<p><%= f.label :valor_restante %>
+	<%= f.text_field :valor_restante, :size=>9 %></p>
+	<p>
+	  <%= f.radio_button :opcao_restante,  :sem_restante, :onclick=>"cheque(0);"%> sem restante<br/>
+	  <%= f.radio_button :opcao_restante,  :pago_em_cheque, :onclick=>"cheque(1);" %> pago em cheque<br/>
+	  <%= f.radio_button :opcao_restante, :pago_em_dinheiro, :onclick=>"cheque(0);" %> pago em dinheiro<br/>
+	  <%= f.radio_button :opcao_restante, :fica_devendo, :onclick=>"cheque(0);"%> fica devendo<br/>
+	  <%= f.radio_button :opcao_restante, :ignora_restante, :onclick=>"cheque(0);"%> ignora restante<br/>
+	  <%= f.radio_button :opcao_restante, :recebe_troco, :onclick=>"cheque(0);"%> recebe_troco<br/>
+	</p>
+</div>
   <p><%= f.label :tipo_de_pagamento %> : 
 	<%= f.select :tipo_pagamento_id, @tipos_pagamento %>
   </p>
@@ -25,12 +38,26 @@
     <%= f.check_box :nao_lancar_no_livro_caixa %>
     <%= f.label :não_lançar_no_livro_caixa %>
   </p>
+  <div id="cheque_classident" style="display:none">
+	<fieldset>
+	  <legend>Cheque da classident</legend>
+	  <%= f.label :conta %> : 
+	  <%= f.select :conta_bancaria_id, @contas_bancarias %>
+	  <%= f.label :n_cheque %> : 
+	  <%= f.text_field :numero_do_cheque, :size=>7 %>
+	  <%= f.label :valor %> : 
+	  <%= f.text_field :valor_cheque, :size=>8 %>
+	</fieldset>
+  </div>
   <%= hidden_field_tag :cheques_ids %>
   <p>
     <%= f.submit 'Criar' %>
   </p>
+<%= link_to 'voltar', relatorio_pagamentos_path %>
+
 <% end %>
 <%= render :partial=>"cheques/disponiveis" %>
-<%= link_to 'voltar', relatorio_pagamentos_path %>
+
 </fieldset>
+</div>
 <% end %>

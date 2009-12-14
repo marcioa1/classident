@@ -112,3 +112,7 @@ fieldset{
 #notice{
     color:green;
 }
+
+#valor_restante{
+	float: right;
+}

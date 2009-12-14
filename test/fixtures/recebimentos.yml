@@ -15,3 +15,14 @@ two:
   formas_recebimento: cheque
   valor: 14
   observacao: MyString
+
+excluido:
+  paciente: marcio
+  clinica_id: 1
+  data: 2009-11-16
+  formas_recebimento: cheque
+  valor: 67
+  observacao: MyString
+  data_de_exclusao: "2009-12-13"
+  observacao_exclusao: "registro errado"
+    

@@ -16,7 +16,7 @@ function outra_clinica(){
 }
 
 function conta_caracteres(){
-    if ($("#nome").val().length > 7){
+    if ($("#nome").val().length > 5){
       $("#pesquisar_button").attr('disabled',false);    
     }else{
       $("#pesquisar_button").attr('disabled',true); 
@@ -32,7 +32,7 @@ function selecionou_item_tabela(clinica_id){
        $("#tratamento_valor").val(resultado[1]);         
   });
 }
-
+//TODO acho que nao  é mais necessario
 function coloca_data_de_hoje(dia,mes,ano){
     $("#tratamento_data_3i").selectOptions(dia + "");
     $("#tratamento_data_2i").selectOptions(mes + "");
@@ -41,9 +41,9 @@ function coloca_data_de_hoje(dia,mes,ano){
 
 function selecionou_forma(element){
     if ($("#" + element).selectedOptions().text().toLowerCase()=="cheque") {
-      $("#cheque").toggle('blind', { percent: 0 },500 );        
+      $("#cheque").show();        
     }else {
-      $("#cheque").toggle('blind', { percent: 0 },500 );        
+      $("#cheque").hide();        
     }
 }
 
@@ -127,4 +127,8 @@ function selecionar(){
 		});
 		
 	}
+}
+
+function abre_cheque(id){
+	window.open("/cheques/"+ id,"abriu o cheque" ,"height=240,width=310,status=no");
 }

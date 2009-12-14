@@ -31,6 +31,7 @@ function selecionou_cheque(elemento){
 	  alert("A soma dos valores dos cheques selecionados é maior que o valor do pagamento.");
     }
     $("#pagamento_valor_pago").val(resultado);
+    $("#pagamento_valor_restante").val(total-resultado);
     // verifica cheques selecionados
     var todos = $("table input:checkbox");
     var selecionados = ""
@@ -58,6 +59,14 @@ function producao(){
 	});
 }
 
-function cheque(){
-	alert("cheque");
+function cheque(mostra){
+	if (mostra==1){
+		$("#cheque_classident").show();
+		$("#pagamento_conta_bancaria_id").focus();
+		$("#pagamento_valor_cheque").val($("#pagamento_valor_restante").val());
+	}else {
+		$("#cheque_classident").hide();
+		$("#pagamento_numero_do_cheque").val("");
+		$("#pagamento_valor_cheque").val("");
+	}
 }

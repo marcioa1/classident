@@ -27,7 +27,11 @@
     <td><%=h recebimento.paciente.nome %></td>
     <td align="right"><%=h recebimento.valor.real %></td>
     <td><%=h recebimento.observacao %></td>
-    <td><%=h recebimento.formas_recebimento.nome %></td>
+    <td><%  if recebimento.em_cheque? %>
+           <%= link_to_function "cheque", "abre_cheque(#{recebimento.cheque.id})" %>
+         <% else %> 
+<%= recebimento.formas_recebimento.nome %>
+    <% end %></td>
     <td><%= link_to 'editar', edit_recebimento_path(recebimento) %></td>
     <td><%= link_to 'excluir', recebimento, :confirm => 'Tem certeza ?', :method => :delete %></td>
   </tr>
@@ -41,5 +45,26 @@
 </table>
 
 <br />
+<% if @recebimentos_excluidos.size>0 %>
+  <% @total = 0%>
+    <h3>Recebimentos excluidos</h3>
+	<table>
+	  <tr>
+	    <th>Data</th>
+	    <th width="180px">Paciente</th>
+	    <th width="70px">Valor</th>
+	    <th width="120px">Observação</th>
+	    <th>Tipo</th>
+	    <th>Data exclusão</th>
+	    <th>Observação exclusão</th>
+	  </tr>
+  <%= render :partial=>"recebimento" , :collection=>@recebimentos_excluidos %>
+  <tr>
+  	<td colspan="2" align="center">Total</td>
+    <td align="right"><%= @total.real %></td>
+    <td colspan="4">&nbsp;</td>
+  </tr>
+  </table>
+<% end %>
 
 <% end %>

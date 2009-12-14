@@ -5,28 +5,14 @@
   <%= label_tag :data_inicial %> : <%= text_field_tag :datepicker, @data_inicial.to_s_br, :size=>10 %>
 
   <%= label_tag :data_final %> : <%= text_field_tag :datepicker2, @data_final.to_s_br, :size=>10  %>
+  <%= label_tag :situação %> : 
+ <%= select_tag :status, options_for_select(@status, params[:status]) %>
   </p>
-    <table class="transparente">
-      <tr>
-        <td><%= radio_button_tag :opcao, :todos ,params[:opcao]=="todos" %> <%= label_tag :todos %></td>
-        <td><%= radio_button_tag :opcao, :destinacao, params[:opcao]=="destinacao" %> <%= label_tag :destinação %></td>
-        <td><%= radio_button_tag :opcao, :administracao, params[:opcao]=="administracao" %> <%= label_tag :administração %></td>
-        <td><%= radio_button_tag :opcao, :reapresentados, params[:opcao]=="reapresentados" %> <%= label_tag :reapresentados %></td>
-        <td><%= radio_button_tag :opcao, :solucionados, params[:opcao]=="solucionados" %> <%= label_tag :solucionados %><br/></td>
-      </tr>
-      <tr>
-        <td><%= radio_button_tag :opcao, :usados_para_pagamento, params[:opcao]=="usados_para_pagamento"%> <%= label_tag :usados_para_pagamento %></td>
-        <td><%= radio_button_tag :opcao, :disponiveis, params[:opcao]=="disponiveis" %> <%= label_tag :disponíveis %></td>
-        <td><%= radio_button_tag :opcao, :devolvidos, params[:opcao]=="devolvidos" %> <%= label_tag :devolvidos %></td>
-        <td><%= radio_button_tag :opcao, :devolvido_2_vezes, params[:opcao]== "devolvido_2_vezes" %> <%= label_tag :devolvidos_2a_vez %></td>
-        <td><%= radio_button_tag :opcao, :spc ,params[:opcao]=="spc"%> <%= label_tag :SPC %></td>
-        <td><%= radio_button_tag :opcao, :arquivo_morto, params[:opcao]=="arquivo_morto" %> <%= label_tag :arquivo_morto %></td>
-      </tr>
-    </table>
 
   <%= submit_tag "pesquisar"%>
 <% end %>
 <br/>
+
 <table>
   <tr>
     <th>Bom para</th>
@@ -38,6 +24,7 @@
     <th>Número</th>
     <th>Adm</th>
     <th>Situação</th>
+    <th>Data recebimento</th>
   </tr>
   <% total = 0 %>
   <% for cheque in @cheques do %>
@@ -45,7 +32,7 @@
     <td align="center"><%= link_to cheque.bom_para.to_s_br, edit_cheque_path(cheque) %></td>
     <td><%= cheque.recebimento.paciente.nome %></td>
     <td align="right"><%= cheque.recebimento.valor.real %></td>
-    <td align="center"><%= cheque.banco.numero + "-"+ cheque.banco.nome %></td>
+    <td align="center"><%= cheque.banco.numero + "-"+ cheque.banco.nome unless cheque.banco.nil? %></td>
     <td><%= cheque.agencia  %></td>
     <td><%= cheque.conta_corrente %></td>
     <td><%= cheque.numero %></td>
@@ -57,8 +44,13 @@
         <% end %>
         <% end %>
     </td>
-    <td><%= cheque.status %></td>
-    
+    <td><%= status = case 
+		    when cheque.status == "usado pgto" then link_to cheque.status, cheque.pagamento(cheque.pagamento) 
+ 	     else cheque.status
+		end %>
+	
+	</td>
+    <td><%= cheque.recebimento.data.to_s_br%></td>
   </tr>
   <% total += cheque.valor %>
   <% end %>

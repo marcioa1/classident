@@ -1,0 +1,2 @@
+module DestinacaosHelper
+end

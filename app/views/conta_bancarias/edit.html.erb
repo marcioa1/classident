@@ -1,0 +1,16 @@
+<h1>Editing conta_bancaria</h1>
+
+<% form_for(@conta_bancaria) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :nome %><br />
+    <%= f.text_field :nome %>
+  </p>
+  <p>
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @conta_bancaria %> |
+<%= link_to 'Back', conta_bancarias_path %>

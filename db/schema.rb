@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20091210120412) do
+ActiveRecord::Schema.define(:version => 20091214172633) do
 
   create_table "bancos", :force => true do |t|
     t.string   "numero"
@@ -49,9 +49,14 @@ ActiveRecord::Schema.define(:version => 20091210120412) do
     t.date     "data_entrega_administracao"
     t.date     "data_recebimento_na_administracao"
     t.integer  "pagamento_id"
+    t.date     "data"
+    t.integer  "sequencial"
+    t.integer  "destinacao_id"
+    t.date     "data_destinacao"
   end
 
   add_index "cheques", ["recebimento_id"], :name => "index_cheques_on_recebimento_id"
+  add_index "cheques", ["sequencial"], :name => "index_cheques_on_sequencial"
 
   create_table "clinicas", :force => true do |t|
     t.string   "nome"
@@ -66,6 +71,14 @@ ActiveRecord::Schema.define(:version => 20091210120412) do
     t.integer "clinica_id"
     t.integer "dentista_id"
   end
+
+  create_table "conta_bancarias", :force => true do |t|
+    t.string   "nome"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "conta_bancarias", ["id"], :name => "index_conta_bancarias_on_id"
 
   create_table "debitos", :force => true do |t|
     t.integer  "paciente_id"
@@ -88,6 +101,17 @@ ActiveRecord::Schema.define(:version => 20091210120412) do
     t.datetime "updated_at"
     t.string   "cro"
   end
+
+  create_table "destinacaos", :force => true do |t|
+    t.string   "nome"
+    t.integer  "sequencial"
+    t.integer  "clinica_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "destinacaos", ["clinica_id"], :name => "index_destinacaos_on_clinica_id"
+  add_index "destinacaos", ["id"], :name => "index_destinacaos_on_id"
 
   create_table "fluxo_de_caixas", :force => true do |t|
     t.integer  "clinica_id"
@@ -154,14 +178,22 @@ ActiveRecord::Schema.define(:version => 20091210120412) do
     t.decimal  "valor"
     t.decimal  "valor_pago"
     t.string   "observacao"
-    t.boolean  "nao_lancar_no_livro_caixa", :default => false
+    t.boolean  "nao_lancar_no_livro_caixa",                               :default => false
     t.datetime "data_de_exclusao"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "sequencial"
+    t.decimal  "valor_terceiros",           :precision => 6, :scale => 2
+    t.decimal  "valor_cheque",              :precision => 6, :scale => 2
+    t.decimal  "valor_restante",            :precision => 6, :scale => 2
+    t.integer  "opcao_restante"
+    t.integer  "conta_bancaria_id"
+    t.string   "numero_do_cheque"
   end
 
   add_index "pagamentos", ["clinica_id"], :name => "index_pagamentos_on_clinica_id"
   add_index "pagamentos", ["id"], :name => "index_pagamentos_on_id"
+  add_index "pagamentos", ["sequencial"], :name => "index_pagamentos_on_sequencial"
 
   create_table "precos", :force => true do |t|
     t.integer  "clinica_id"
@@ -179,14 +211,18 @@ ActiveRecord::Schema.define(:version => 20091210120412) do
     t.integer  "clinica_id"
     t.date     "data"
     t.integer  "formas_recebimento_id"
-    t.decimal  "valor",                 :precision => 6, :scale => 2
+    t.decimal  "valor"
     t.string   "observacao"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.date     "data_de_exclusao"
+    t.string   "observacao_exclusao"
+    t.integer  "sequencial"
   end
 
   add_index "recebimentos", ["clinica_id"], :name => "index_recebimentos_on_clinica_id"
   add_index "recebimentos", ["paciente_id"], :name => "index_recebimentos_on_paciente_id"
+  add_index "recebimentos", ["sequencial"], :name => "index_recebimentos_on_sequencial"
 
   create_table "tabelas", :force => true do |t|
     t.string   "nome"
@@ -229,6 +265,7 @@ ActiveRecord::Schema.define(:version => 20091210120412) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "clinica_id"
+    t.boolean  "excluido"
   end
 
   add_index "tratamentos", ["id"], :name => "index_tratamentos_on_id"

@@ -4,5 +4,9 @@
   <td align="right"><%= recebimento.valor.real%></td>
   <td><%= recebimento.formas_recebimento.nome %></td>
   <td><%= recebimento.clinica.nome %></td>
+  <% if recebimento.excluido? %>
+    <td><%= recebimento.data_de_exclusao.to_s_br %></td>
+    <td><%= recebimento.observacao_exclusao %></td>
+  <% end %>
 </tr>
 <% @total += recebimento.valor %>

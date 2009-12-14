@@ -8,12 +8,15 @@ def index
 #  c.mala_direta
 #  c.converte_debito
 #  c.converte_formas_recebimento
-#  c.converte_recebimento
+ 
 #  c.tratamento
 #  c.dentista
 #   c.tipo_pagamento
+   c.destinacao
 #   c.pagamento
-  c.fluxo_de_caixa
+#  c.fluxo_de_caixa
+   #c.recebimento
+   c.cheque
 end
 
 end

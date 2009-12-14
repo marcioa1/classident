@@ -1,4 +1,4 @@
-Dentista;Data;Paciente;Forma;4Valor;Moeda;Recibo;7Observação;Sequencial;cheque;ultima_atualizacao;percentualDentista;dataExclusao;dataInclusao;observacao_exclusao
+Dentista;Data;Paciente;Forma;4Valor;Moeda;Recibo;7Observação;Sequencial;9cheque;ultima_atualizacao;percentualDentista;12dataExclusao;dataInclusao;14observacao_exclusao
 1;2/5/2006 00:00:00;4;30;R$ 150,00;1;0;;1;-1;2/5/2006 15:29:13;0,00;19/5/2006 13:09:45;2/5/2006 00:00:00;
 1;8/5/2006 00:00:00;17;30;R$ 50,00;1;0;;3;-1;8/5/2006 14:29:33;0,00;;8/5/2006 00:00:00;
 1;11/5/2006 00:00:00;37;30;R$ 80,00;1;0;;4;-1;11/5/2006 14:41:04;0,00;;11/5/2006 00:00:00;

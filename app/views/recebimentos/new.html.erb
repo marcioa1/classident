@@ -29,7 +29,7 @@
   <div id="cheque" style="display:none;">
     <fieldset>
     <legend> dados do cheque</legend>
-  <% f.fields_for :cheque do |c| %>
+  <% f.fields_for @recebimento.cheque do |c| %>
     <p>
        <%= c.label :banco %> : 
        <%= c.select :banco_id, options_for_select(@bancos)  %>
