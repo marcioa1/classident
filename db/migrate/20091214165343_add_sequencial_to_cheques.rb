@@ -5,7 +5,7 @@ class AddSequencialToCheques < ActiveRecord::Migration
   end
 
   def self.down
+    remove_index :cheques, :sequencial
     remove_column :cheques, :sequencial
-    delete_index :cheques, :sequencial
   end
 end

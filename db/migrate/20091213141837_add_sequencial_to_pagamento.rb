@@ -11,6 +11,7 @@ class AddSequencialToPagamento < ActiveRecord::Migration
   end
 
   def self.down
+    remove_index :pagamentos, :sequencial
     remove_column :pagamentos, :numero_do_cheque
     remove_column :pagamentos, :conta_bancaria_id
     remove_column :pagamentos, :opcao_restante
@@ -18,6 +19,5 @@ class AddSequencialToPagamento < ActiveRecord::Migration
     remove_column :pagamentos, :valor_cheque
     remove_column :pagamentos, :valor_terceiros
     remove_column :pagamentos, :sequencial
-    remove_index :pagamentos, :sequencial
   end
 end

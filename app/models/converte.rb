@@ -31,7 +31,7 @@ class Converte
   
   def mala_direta
     #TODO considerar que pode haver outras pessoas que não sejam pacientes
-     puts "Convertendo cadastro ..."
+     puts "Convertendo mala direta ..."
       f = File.open("doc/maladireta.txt" , "r")
       clinica = Clinica.find_by_nome("Recreio")
       line = f.gets

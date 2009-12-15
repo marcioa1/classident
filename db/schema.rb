@@ -23,14 +23,14 @@ ActiveRecord::Schema.define(:version => 20091215152014) do
     t.string   "agencia"
     t.string   "conta_corrente"
     t.string   "numero"
-    t.decimal  "valor"
+    t.decimal  "valor",                              :precision => 9, :scale => 2
     t.integer  "recebimento_id"
     t.integer  "paciente_id"
     t.integer  "segundo_paciente"
     t.integer  "terceiro_paciente"
-    t.decimal  "valor_primeiro_paciente"
-    t.decimal  "valor_segundo_paciente"
-    t.decimal  "valor_terceiro_paciente"
+    t.decimal  "valor_primeiro_paciente",            :precision => 9, :scale => 2
+    t.decimal  "valor_segundo_paciente",             :precision => 9, :scale => 2
+    t.decimal  "valor_terceiro_paciente",            :precision => 9, :scale => 2
     t.datetime "created_at"
     t.datetime "updated_at"
     t.date     "bom_para"
@@ -102,7 +102,7 @@ ActiveRecord::Schema.define(:version => 20091215152014) do
     t.datetime "updated_at"
     t.string   "cro"
     t.string   "especialidade"
-    t.decimal  "percentual",    :precision=>9 => 3, :scale => 2
+    t.decimal  "percentual",    :precision => 9, :scale => 2
     t.integer  "sequencial"
   end
 
@@ -122,8 +122,8 @@ ActiveRecord::Schema.define(:version => 20091215152014) do
   create_table "fluxo_de_caixas", :force => true do |t|
     t.integer  "clinica_id"
     t.date     "data"
-    t.decimal  "saldo_em_dinheiro", :precision=>9 => 6, :scale => 2
-    t.decimal  "saldo_em_cheque",   :precision=>9 => 6, :scale => 2
+    t.decimal  "saldo_em_dinheiro", :precision => 9, :scale => 2
+    t.decimal  "saldo_em_cheque",   :precision => 9, :scale => 2
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -164,7 +164,7 @@ ActiveRecord::Schema.define(:version => 20091215152014) do
     t.string   "bairro",            :limit => 30
     t.string   "cidade",            :limit => 30
     t.string   "uf",                :limit => 2
-    t.string   "cep",               :limit => 8
+    t.string   "cep",               :limit => 9
     t.string   "cpf",               :limit => 14
     t.string   "sexo",              :limit => 1
     t.integer  "clinica_id"
@@ -181,17 +181,17 @@ ActiveRecord::Schema.define(:version => 20091215152014) do
     t.integer  "tipo_pagamento_id"
     t.date     "data_de_vencimento"
     t.date     "data_de_pagamento"
-    t.decimal  "valor"
-    t.decimal  "valor_pago"
+    t.decimal  "valor",                     :precision => 9, :scale => 2
+    t.decimal  "valor_pago",                :precision => 9, :scale => 2
     t.string   "observacao"
-    t.boolean  "nao_lancar_no_livro_caixa",                               :default => false
+    t.boolean  "nao_lancar_no_livro_caixa"
     t.datetime "data_de_exclusao"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "sequencial"
-    t.decimal  "valor_terceiros",           :precision=>9 => 6, :scale => 2
-    t.decimal  "valor_cheque",              :precision=>9 => 6, :scale => 2
-    t.decimal  "valor_restante",            :precision=>9 => 6, :scale => 2
+    t.decimal  "valor_terceiros",           :precision => 9, :scale => 2
+    t.decimal  "valor_cheque",              :precision => 9, :scale => 2
+    t.decimal  "valor_restante",            :precision => 9, :scale => 2
     t.integer  "opcao_restante"
     t.integer  "conta_bancaria_id"
     t.string   "numero_do_cheque"
@@ -204,7 +204,7 @@ ActiveRecord::Schema.define(:version => 20091215152014) do
   create_table "precos", :force => true do |t|
     t.integer  "clinica_id"
     t.integer  "item_tabela_id"
-    t.decimal  "preco",          :precision=>9 => 6, :scale => 2
+    t.decimal  "preco",          :precision => 9, :scale => 2
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -217,7 +217,7 @@ ActiveRecord::Schema.define(:version => 20091215152014) do
     t.integer  "clinica_id"
     t.date     "data"
     t.integer  "formas_recebimento_id"
-    t.decimal  "valor"
+    t.decimal  "valor",                 :precision => 9, :scale => 2
     t.string   "observacao"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -242,7 +242,7 @@ ActiveRecord::Schema.define(:version => 20091215152014) do
   create_table "tipo_pagamentos", :force => true do |t|
     t.integer  "clinica_id"
     t.string   "nome"
-    t.integer  "ativo",      :default => 0
+    t.integer  "ativo"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -264,7 +264,7 @@ ActiveRecord::Schema.define(:version => 20091215152014) do
     t.integer  "paciente_id"
     t.integer  "item_tabela_id"
     t.integer  "dentista_id"
-    t.decimal  "valor",          :precision=>9 => 6, :scale => 2
+    t.decimal  "valor",          :precision => 9, :scale => 2
     t.date     "data"
     t.string   "dente"
     t.integer  "orcamento_id"

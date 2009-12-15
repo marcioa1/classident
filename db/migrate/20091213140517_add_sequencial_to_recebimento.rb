@@ -5,7 +5,7 @@ class AddSequencialToRecebimento < ActiveRecord::Migration
   end
 
   def self.down
-    remove_column :recebimentos, :sequencial
     remove_index :recebimentos, :sequencial
+    remove_column :recebimentos, :sequencial
   end
 end
