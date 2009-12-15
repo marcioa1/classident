@@ -1,7 +1,7 @@
 class AddPercentualToDentistas < ActiveRecord::Migration
   def self.up
     add_column :dentistas, :especialidade, :string
-    add_column :dentistas, :percentual, :decimal, :precision=>3, :scale=>2
+    add_column :dentistas, :percentual, :decimal, :precision=>6, :scale=>2
     add_column :dentistas, :sequencial, :integer
     add_index :dentistas, :sequencial
   end
