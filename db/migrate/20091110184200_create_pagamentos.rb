@@ -5,8 +5,8 @@ class CreatePagamentos < ActiveRecord::Migration
       t.integer :tipo_pagamento_id
       t.date :data_de_vencimento
       t.date :data_de_pagamento
-      t.decimal :valor, :precision=>6, :scale=>2
-      t.decimal :valor_pago, :precision=>6, :scale=>2
+      t.decimal :valor, :precision=>9, :scale=>2
+      t.decimal :valor_pago, :precision=>9, :scale=>2
       t.string :observacao
       t.boolean :nao_lancar_no_livro_caixa
       t.datetime :data_de_exclusao

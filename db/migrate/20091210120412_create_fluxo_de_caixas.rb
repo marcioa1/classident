@@ -3,8 +3,8 @@ class CreateFluxoDeCaixas < ActiveRecord::Migration
     create_table :fluxo_de_caixas do |t|
       t.integer :clinica_id
       t.date :data
-      t.decimal :saldo_em_dinheiro, :precision=>6, :scale=>2
-      t.decimal :saldo_em_cheque, :precision=>6, :scale=>2   
+      t.decimal :saldo_em_dinheiro, :precision=>9, :scale=>2
+      t.decimal :saldo_em_cheque, :precision=>9, :scale=>2   
       
       t.timestamps
     end

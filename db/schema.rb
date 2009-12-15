@@ -102,7 +102,7 @@ ActiveRecord::Schema.define(:version => 20091215152014) do
     t.datetime "updated_at"
     t.string   "cro"
     t.string   "especialidade"
-    t.decimal  "percentual",    :precision => 3, :scale => 2
+    t.decimal  "percentual",    :precision=>9 => 3, :scale => 2
     t.integer  "sequencial"
   end
 
@@ -122,8 +122,8 @@ ActiveRecord::Schema.define(:version => 20091215152014) do
   create_table "fluxo_de_caixas", :force => true do |t|
     t.integer  "clinica_id"
     t.date     "data"
-    t.decimal  "saldo_em_dinheiro", :precision => 6, :scale => 2
-    t.decimal  "saldo_em_cheque",   :precision => 6, :scale => 2
+    t.decimal  "saldo_em_dinheiro", :precision=>9 => 6, :scale => 2
+    t.decimal  "saldo_em_cheque",   :precision=>9 => 6, :scale => 2
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -189,9 +189,9 @@ ActiveRecord::Schema.define(:version => 20091215152014) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "sequencial"
-    t.decimal  "valor_terceiros",           :precision => 6, :scale => 2
-    t.decimal  "valor_cheque",              :precision => 6, :scale => 2
-    t.decimal  "valor_restante",            :precision => 6, :scale => 2
+    t.decimal  "valor_terceiros",           :precision=>9 => 6, :scale => 2
+    t.decimal  "valor_cheque",              :precision=>9 => 6, :scale => 2
+    t.decimal  "valor_restante",            :precision=>9 => 6, :scale => 2
     t.integer  "opcao_restante"
     t.integer  "conta_bancaria_id"
     t.string   "numero_do_cheque"
@@ -204,7 +204,7 @@ ActiveRecord::Schema.define(:version => 20091215152014) do
   create_table "precos", :force => true do |t|
     t.integer  "clinica_id"
     t.integer  "item_tabela_id"
-    t.decimal  "preco",          :precision => 6, :scale => 2
+    t.decimal  "preco",          :precision=>9 => 6, :scale => 2
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -264,7 +264,7 @@ ActiveRecord::Schema.define(:version => 20091215152014) do
     t.integer  "paciente_id"
     t.integer  "item_tabela_id"
     t.integer  "dentista_id"
-    t.decimal  "valor",          :precision => 6, :scale => 2
+    t.decimal  "valor",          :precision=>9 => 6, :scale => 2
     t.date     "data"
     t.string   "dente"
     t.integer  "orcamento_id"

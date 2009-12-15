@@ -5,7 +5,7 @@ class CreateRecebimentos < ActiveRecord::Migration
       t.integer :clinica_id
       t.date :data
       t.integer :formas_recebimento_id
-      t.decimal :valor, :precision=>6, :scale=>2
+      t.decimal :valor, :precision=>9, :scale=>2
       t.string :observacao
 
       t.timestamps
