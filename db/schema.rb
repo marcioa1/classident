@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20091214172633) do
+ActiveRecord::Schema.define(:version => 20091215152014) do
 
   create_table "bancos", :force => true do |t|
     t.string   "numero"
@@ -53,6 +53,7 @@ ActiveRecord::Schema.define(:version => 20091214172633) do
     t.integer  "sequencial"
     t.integer  "destinacao_id"
     t.date     "data_destinacao"
+    t.date     "data_de_exclusao"
   end
 
   add_index "cheques", ["recebimento_id"], :name => "index_cheques_on_recebimento_id"
@@ -100,7 +101,12 @@ ActiveRecord::Schema.define(:version => 20091214172633) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "cro"
+    t.string   "especialidade"
+    t.decimal  "percentual",    :precision => 3, :scale => 2
+    t.integer  "sequencial"
   end
+
+  add_index "dentistas", ["sequencial"], :name => "index_dentistas_on_sequencial"
 
   create_table "destinacaos", :force => true do |t|
     t.string   "nome"

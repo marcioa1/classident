@@ -1,9 +1,14 @@
 <% content_for :main do %>
-Cheques recebidos
+<% form_tag recebimento_confirmado_cheques_path do %>
+Cheques recebidos entre
+<%= text_field_tag :datepicker, params[:datepicker], :size=>10 %> e <%= text_field_tag :datepicker2, params[:datepicker2], :size=>10 %>
+<%= submit_tag "Pesquisar"%>
+<% end %>
+<br/>
 <table>
   <tr>
     <th>Clínica</th>
-    <th width="200px">Paciente</th>
+    <th width="320px">Paciente</th>
     <th>Bom para</th>
     <th>Banco</th>
     <th width="90px">Valor</th>

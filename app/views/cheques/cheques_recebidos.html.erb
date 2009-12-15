@@ -31,7 +31,7 @@
   <tr>
     <td align="center"><%= link_to cheque.bom_para.to_s_br, edit_cheque_path(cheque) %></td>
     <td><%= cheque.recebimento.paciente.nome %></td>
-    <td align="right"><%= cheque.recebimento.valor.real %></td>
+    <td align="right"><%= cheque.valor.real %></td>
     <td align="center"><%= cheque.banco.numero + "-"+ cheque.banco.nome unless cheque.banco.nil? %></td>
     <td><%= cheque.agencia  %></td>
     <td><%= cheque.conta_corrente %></td>

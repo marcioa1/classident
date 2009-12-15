@@ -120,8 +120,12 @@ class DentistasController < ApplicationController
          <th width='220px'>Paciente</th>
         <th width='220px'>Procedimento</th>
         <th width='90px'>Valor</th>
+        <th width='90px'>Dentista</th>
+        <th width='90px'>Clínica</th>
         </tr>"
     total = 0.0  
+    total_dentista = 0.0
+    total_clinica = 0.0
     @producao.each() do |tratamento|
       saida += "<tr><td>"+ tratamento.data.to_s_br + "</td>"
       saida += "<td>" + tratamento.paciente.nome + "</td>"
@@ -130,10 +134,15 @@ class DentistasController < ApplicationController
       else
         saida += "<td>" + tratamento.item_tabela.descricao + "</td>"
       end  
-      saida += "<td align='right'>" + tratamento.valor.real.to_s + "</td></tr>"
+      saida += "<td align='right'>" + tratamento.valor.real.to_s + "</td>"
+      saida += "<td align='right'>" + tratamento.valor_dentista.real.to_s + "</td>"
+      saida += "<td align='right'>" + tratamento.valor_clinica.real.to_s + "</td></tr>"
+      total_dentista += tratamento.valor_dentista
+      total_clinica += tratamento.valor_clinica
       total += tratamento.valor
     end
-    saida += "<tr><td colspan='3' align='center'>Total</td><td align='right'>" + total.real.to_s + "</td></tr>"
+    saida += "<tr><td colspan='3' align='center'>Total</td><td align='right'>" + total.real.to_s + "</td>"
+    saida += "<td align='right'>"+ total_dentista.real.to_s + "<td align='right'>" + total_clinica.real.to_s + "</td></tr>"
     saida += "</table></div>"
     render :json => saida.to_json
   end

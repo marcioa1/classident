@@ -10,4 +10,12 @@ class Tratamento < ActiveRecord::Base
   named_scope :por_data, :order=>:data
   named_scope :entre, lambda{|inicio,fim| {:conditions=>["data>=? and data <=?", inicio,fim]}}
   named_scope :da_clinica, lambda{|clinicas| {:conditions=>["clinica_id in (?)",clinicas]}}
+  
+  def valor_dentista
+    valor * dentista.percentual / 100 
+  end
+  
+  def valor_clinica
+    valor * (100 - dentista.percentual) / 100 
+  end
 end

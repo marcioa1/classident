@@ -85,24 +85,44 @@ class ChequesController < ApplicationController
     @status = [["todos","todos"],["disponíveis","disponíveis"],
         ["devolvido 2 vezes","devolvido 2 vezes"],
         ["administração","administração"],
-        ["usados para pagamento","usados para pagamento"]]
+        ["usados para pagamento","usados para pagamento"],
+        ["destinação", "destinação"], ["devolvido","devolvido"],
+        ["reapresentado","reapresentado"], ["spc", "spc"]].sort!
     debugger
     @cheques = []
     if params[:status] == "todos"
-      @cheques = Cheque.por_bom_para.da_clinica(session[:clinica_id]).entre_datas(@data_inicial,@data_final)
+      @cheques = Cheque.por_bom_para.da_clinica(session[:clinica_id]).entre_datas(@data_inicial,@data_final).
+               nao_excluidos
     end
     if params[:status] == "disponíveis"
-      @cheques = Cheque.por_bom_para.da_clinica(session[:clinica_id]).entre_datas(@data_inicial,@data_final).disponiveis
+      @cheques = Cheque.por_bom_para.da_clinica(session[:clinica_id]).entre_datas(@data_inicial,@data_final).
+              disponiveis.nao_excluidos
     end
     if params[:status]== "devolvido 2 vezes"
-      @cheques = Cheque.por_bom_para.da_clinica(session[:clinica_id]).entre_datas(@data_inicial,@data_final).devolvido_duas_vezes
+      @cheques = Cheque.por_bom_para.da_clinica(session[:clinica_id]).entre_datas(@data_inicial,@data_final).
+              devolvido_duas_vezes.nao_excluidos
     end 
     if params[:status]=="administração"     
-      @cheques = Cheque.por_bom_para.da_clinica(session[:clinica_id]).entre_datas(@data_inicial,@data_final).entregues_a_administracao
+      @cheques = Cheque.por_bom_para.da_clinica(session[:clinica_id]).entre_datas(@data_inicial,@data_final).
+              entregues_a_administracao.nao_excluidos
     end
     if params[:status]=="usados para pagamento"
-      @cheques = Cheque.por_bom_para.da_clinica(session[:clinica_id]).entre_datas(@data_inicial,@data_final).usados_para_pagamento
+      @cheques = Cheque.por_bom_para.da_clinica(session[:clinica_id]).entre_datas(@data_inicial,@data_final).
+              usados_para_pagamento
     end  
+    if params[:status]=="destinação"
+      @cheques = Cheque.por_bom_para.da_clinica(session[:clinica_id]).entre_datas(@data_inicial,@data_final).
+              com_destinacao
+    end  
+    if params[:status]=="devolvido"
+      @cheques = Cheque.por_bom_para.da_clinica(session[:clinica_id]).devolvido(@data_inicial,@data_final)
+    end
+    if params[:status]=="reapresentado"
+      @cheques = Cheque.por_bom_para.da_clinica(session[:clinica_id]).reapresentado(@data_inicial,@data_final)
+    end
+    if params[:status]=="spc"
+      @cheques = Cheque.por_bom_para.da_clinica(session[:clinica_id]).spc(@data_inicial,@data_final)
+    end
      #TODO fazer parametros que faltam de situação de cheque
   end
   
@@ -133,7 +153,14 @@ class ChequesController < ApplicationController
   end
   
   def recebimento_confirmado
-     @cheques = Cheque.recebidos_na_administracao
+    if params[:datepicker]
+      @cheques = Cheque.recebidos_na_administracao(params[:datepicker].to_date,
+                     params[:datepicker2].to_date)
+   else
+     params[:datepicker] = Date.today - 15.days
+     params[:datepicker2] = Date.today
+      @cheques = []
+    end
   end
   
   def busca_disponiveis
