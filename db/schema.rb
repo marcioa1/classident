@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20091215152014) do
+ActiveRecord::Schema.define(:version => 20091221113341) do
 
   create_table "bancos", :force => true do |t|
     t.string   "numero"
@@ -118,6 +118,17 @@ ActiveRecord::Schema.define(:version => 20091215152014) do
 
   add_index "destinacaos", ["clinica_id"], :name => "index_destinacaos_on_clinica_id"
   add_index "destinacaos", ["id"], :name => "index_destinacaos_on_id"
+
+  create_table "dinheiros", :force => true do |t|
+    t.date     "data"
+    t.decimal  "valor",      :precision => 8, :scale => 2
+    t.string   "descricao"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "dinheiros", ["data"], :name => "index_dinheiros_on_data"
+  add_index "dinheiros", ["id"], :name => "index_dinheiros_on_id"
 
   create_table "fluxo_de_caixas", :force => true do |t|
     t.integer  "clinica_id"
