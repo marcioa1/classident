@@ -15,7 +15,8 @@ class FluxoDeCaixaController < ApplicationController
     end
     @recebimentos = Recebimento.da_clinica(session[:clinica_id]).no_dia(@fluxo.data).nao_excluidos
     @pagamentos = Pagamento.da_clinica(session[:clinica_id]).no_dia(@fluxo.data)
-    @lancamentos = @recebimentos + @pagamentos
+    @entradas = Entrada.da_clinica(session[:clinica_id]).do_mes(params[:data].to_date)
+    @lancamentos = @recebimentos + @pagamentos + @entradas
   end
 end
 #TODO fazer fluxo de caixa

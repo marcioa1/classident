@@ -1,0 +1,27 @@
+<% content_for :main do %>
+<fieldset>
+<legend>Editing entrada</legend>
+
+<% form_for(@entrada) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :data %><br />
+    <%= text_field_tag :datepicker, @entrada.data.to_s_br, :size=>10 %>
+  </p>
+  <p>
+    <%= f.label :valor %><br />
+    <%= f.text_field :valor, :size=>10 %>
+  </p>
+  <p>
+    <%= f.label :observação %><br />
+    <%= f.text_field :observacao, :size=>20 %>
+  </p>
+  <p>
+    <%= f.submit 'alterar' %>
+  </p>
+<% end %>
+
+<%= link_to 'voltar', entradas_path %>
+</fieldset >
+<% end %>

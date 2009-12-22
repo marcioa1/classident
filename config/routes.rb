@@ -1,5 +1,5 @@
 ActionController::Routing::Routes.draw do |map|
-  
+
   map.resources :bancos
   map.resources :cheques, :collection=>{:busca_disponiveis=>:get, :cheques_recebidos=>:get, 
        :recebe_cheques=>:get,:confirma_recebimento=>:get, 
@@ -9,7 +9,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :debitos
   map.resources :dentistas, :member=>{:abre=>:get, :producao=>:get}
   map.resources :destinacaos
-  map.resources :dinheiros
+  map.resources :entradas
   map.fluxo_de_caixa "fluxo_de_caixa", :controller=>"fluxo_de_caixa", :action=>"index"
   map.resources :formas_recebimentos
   map.resources :item_tabelas, :collection=>{:busca_descricao=>:get}

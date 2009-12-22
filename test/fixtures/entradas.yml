@@ -1,0 +1,11 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  data: 
+  valor: 
+  observacao: 
+
+two:
+  data: 
+  valor: 
+  observacao: 

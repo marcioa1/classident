@@ -1,0 +1,29 @@
+<% content_for :main do %>
+<h3>Entradas de dinheiro</h3>
+<%= link_to "anterior", entradas_path(:data => @data - 1.month)%>
+<%= @data.month.to_s + " / " + @data.year.to_s %>
+<%= link_to "próximo", entradas_path(:data => @data.next_month)%><br/><br/>
+<table>
+  <tr>
+    <th width="100px">Data</th>
+    <th width="100px">Valor</th>
+    <th width="200px">Observação</th>
+    <th>&nbsp;</th>
+    <th>&nbsp;</th>
+  </tr>
+
+<% @entradas.each do |entrada| %>
+  <tr>
+    <td align="center"><%=h entrada.data.to_s_br %></td>
+    <td align="right"><%=h entrada.valor.real %></td>
+    <td><%=h entrada.observacao %></td>
+    <td><%= link_to 'editar', edit_entrada_path(entrada) %></td>
+    <td><%= link_to 'excluir', entrada, :confirm => 'Tem certeza ?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'Nova entrada', new_entrada_path %>
+<% end %>

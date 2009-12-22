@@ -1,0 +1,18 @@
+<p>
+  <b>Data:</b>
+  <%=h @entrada.data %>
+</p>
+
+<p>
+  <b>Valor:</b>
+  <%=h @entrada.valor %>
+</p>
+
+<p>
+  <b>Observacao:</b>
+  <%=h @entrada.observacao %>
+</p>
+
+
+<%= link_to 'Edit', edit_entrada_path(@entrada) %> |
+<%= link_to 'Back', entradas_path %>
