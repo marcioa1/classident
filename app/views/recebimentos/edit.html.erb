@@ -59,7 +59,11 @@
   </fieldset>
   </div>
   <p>
+	<% if @recebimento.cheque.usado_para_pagamento? %>
+	  <%= link_to_function "Usado para pagamento", "abre_pagamento(#{@recebimento.cheque.pagamento.id})"  %>
+	<% else %>
     <%= f.submit 'Update' %>
+    <% end %>
   </p>
 <% end %>
 

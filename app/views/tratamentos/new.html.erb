@@ -14,7 +14,8 @@ Paciente : <%= @tratamento.paciente.nome %> ( Tabela: <%= @tratamento.paciente.t
   <%= f.label :codigo %> : 
   <%= f.select :item_tabela_id, options_for_select(@items), {}, html_options={  :onchange=>"selecionou_item_tabela(#{session[:clinica_id]});"} %>
   <p>
-    <%= f.label :descrição %> : <span id="descricao_item_tabela"></span>
+    <%= f.label :descrição %> : 
+    <%= f.text_field :descricao, :size=>50 %>
   </p>
   <p><%= f.label :valor %> :
 	<%= f.text_field :valor, :size=>10 %>

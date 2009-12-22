@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20091221223828) do
+ActiveRecord::Schema.define(:version => 20091222191621) do
 
   create_table "bancos", :force => true do |t|
     t.string   "numero"
@@ -277,7 +277,7 @@ ActiveRecord::Schema.define(:version => 20091221223828) do
     t.integer  "paciente_id"
     t.integer  "item_tabela_id"
     t.integer  "dentista_id"
-    t.decimal  "valor",          :precision => 9, :scale => 2
+    t.decimal  "valor"
     t.date     "data"
     t.string   "dente"
     t.integer  "orcamento_id"
@@ -285,10 +285,15 @@ ActiveRecord::Schema.define(:version => 20091221223828) do
     t.datetime "updated_at"
     t.integer  "clinica_id"
     t.boolean  "excluido"
+    t.decimal  "custo",                        :precision => 9, :scale => 2
+    t.string   "face"
+    t.string   "descricao",      :limit => 60
+    t.integer  "sequencial"
   end
 
   add_index "tratamentos", ["id"], :name => "index_tratamentos_on_id"
   add_index "tratamentos", ["paciente_id"], :name => "index_tratamentos_on_paciente_id"
+  add_index "tratamentos", ["sequencial"], :name => "index_tratamentos_on_sequencial"
 
   create_table "users", :force => true do |t|
     t.string   "login",                                :null => false

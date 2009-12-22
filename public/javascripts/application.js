@@ -27,8 +27,8 @@ function selecionou_item_tabela(clinica_id){
     $.getJSON('/item_tabelas/busca_descricao',{'id': $("#tratamento_item_tabela_id").selectedValues(),
           'clinica_id': clinica_id},
       function(data){
-       resultado = data.split("/");
-       $("#descricao_item_tabela").text(resultado[0]);         
+       resultado = data.split(";");
+       $("#tratamento_descricao").val(resultado[0]);         
        $("#tratamento_valor").val(resultado[1]);         
   });
 }
@@ -81,7 +81,6 @@ function alterou_data_cadastro(){
 
 
 function hoje(){
-    alert("hoje");
     $("#datepicker").datepicker('setDate', new Date());
 }
 
@@ -131,4 +130,8 @@ function selecionar(){
 
 function abre_cheque(id){
 	window.open("/cheques/"+ id,"abriu o cheque" ,"height=240,width=310,status=no");
+}
+
+function abre_pagamento(id){
+	window.open("/pagamentos/"+ id,"abre o pagamento" ,"height=240,width=310,status=no");
 }

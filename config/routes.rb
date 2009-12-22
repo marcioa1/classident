@@ -7,7 +7,8 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :conta_bancarias
   map.resources :conversao
   map.resources :debitos
-  map.resources :dentistas, :member=>{:abre=>:get, :producao=>:get}
+  map.resources :dentistas, :member=>{:abre=>:get, :producao=>:get}, 
+                    :collection=>{:pesquisar=>:get}
   map.resources :destinacaos
   map.resources :entradas
   map.fluxo_de_caixa "fluxo_de_caixa", :controller=>"fluxo_de_caixa", :action=>"index"
@@ -25,7 +26,7 @@ ActionController::Routing::Routes.draw do |map|
      item.resources :item_tabelas
   end
   map.resources :tipo_pagamentos
-  map.resources :tratamentos
+  map.resources :tratamentos, :member=>{:finalizar_procedimento=>:get}
   map.resources :users, :member =>[:troca_senha=>:get]
   map.resource :user_sessions
 

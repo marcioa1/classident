@@ -13,18 +13,12 @@ class TratamentosController < ApplicationController
   def create
     @tratamento = Tratamento.new(params[:tratamento])
     @tratamento.clinica_id = session[:clinica_id]
-    debugger
+    @tratamento.excluido = false
     Tratamento.transaction do
       respond_to do |format|
         if @tratamento.save
           if !@tratamento.data.nil?
-            debito = Debito.new
-            debito.paciente_id = @tratamento.paciente_id
-            debito.tratamento_id = @tratamento.id
-            debito.descricao = @tratamento.item_tabela.descricao
-            debito.valor = @tratamento.valor
-            debito.data = @tratamento.data
-            debito.save
+            @tratamento.finalizar_procedimento
           end
           format.html { redirect_to(abre_paciente_path(:id=>@tratamento.paciente_id)) }
           format.xml  { render :xml => @tratamento, :status => :created, :location => @dentista }
@@ -69,4 +63,12 @@ class TratamentosController < ApplicationController
       end
   end
   
+  def finalizar_procedimento
+    #TODO colocar isto em AJAX
+    @tratamento = Tratamento.find(params[:id])
+    @tratamento.data = Date.today
+    @tratamento.finalizar_procedimento
+    @tratamento.save
+    redirect_to abre_paciente_path(:id=>@tratamento.paciente_id)
+  end
 end

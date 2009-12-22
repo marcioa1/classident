@@ -166,6 +166,7 @@ class Converte
     while line = f.gets 
       registro = line.split(";")
       t = Tratamento.new
+      t.sequencial = registro[0].to_i
       t.paciente_id = registro[2].to_i
       t.item_tabela_id = registro[9].to_i
       if !registro[1].blank?
@@ -174,10 +175,14 @@ class Converte
       end
       t.valor = le_valor(registro[6])
       t.data = registro[7].to_date unless registro[7].blank?
-      t.dente = registro[4]
+      t.dente = registro[3]
+      t.face = registro[4]
+      t.descricao = registro[5]
       t.orcamento_id = registro[8].to_i
+      t.custo = le_valor(registro[12])
       t.excluido = registro[16].to_i != 0
       t.clinica_id = clinica.id
+      t.created_at = registro[14].to_date
       t.save
     end
     f.close

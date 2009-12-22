@@ -18,4 +18,18 @@ class Tratamento < ActiveRecord::Base
   def valor_clinica
     valor * (100 - dentista.percentual) / 100 
   end
+  
+  def nao_pode_alterar?
+    created_at < Date.today - 15.days
+  end
+  
+  def finalizar_procedimento
+    debito = Debito.new
+    debito.paciente_id = paciente_id
+    debito.tratamento_id = id
+    debito.descricao = item_tabela.descricao
+    debito.valor = valor
+    debito.data = data
+    debito.save
+  end
 end

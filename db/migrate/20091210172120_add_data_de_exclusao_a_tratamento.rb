@@ -1,6 +1,6 @@
 class AddDataDeExclusaoATratamento < ActiveRecord::Migration
   def self.up
-    add_column :tratamentos, :excluido, :boolean
+    add_column :tratamentos, :excluido, :boolean, :default=>false
   end
 
   def self.down

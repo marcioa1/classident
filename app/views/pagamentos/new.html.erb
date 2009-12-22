@@ -8,12 +8,12 @@
 <p><%= f.label :valor_restante %>
 	<%= f.text_field :valor_restante, :size=>9 %></p>
 	<p>
-	  <%= f.radio_button :opcao_restante,  :sem_restante, :onclick=>"cheque(0);"%> sem restante<br/>
-	  <%= f.radio_button :opcao_restante,  :pago_em_cheque, :onclick=>"cheque(1);" %> pago em cheque<br/>
-	  <%= f.radio_button :opcao_restante, :pago_em_dinheiro, :onclick=>"cheque(0);" %> pago em dinheiro<br/>
-	  <%= f.radio_button :opcao_restante, :fica_devendo, :onclick=>"cheque(0);"%> fica devendo<br/>
-	  <%= f.radio_button :opcao_restante, :ignora_restante, :onclick=>"cheque(0);"%> ignora restante<br/>
-	  <%= f.radio_button :opcao_restante, :recebe_troco, :onclick=>"cheque(0);"%> recebe_troco<br/>
+	  <%= f.radio_button :opcao_restante,  0, :onclick=>"cheque(0);"%> sem restante<br/>
+	  <%= f.radio_button :opcao_restante,  1, :onclick=>"cheque(1);" %> pago em cheque<br/>
+	  <%= f.radio_button :opcao_restante, 2, :onclick=>"cheque(0);" %> pago em dinheiro<br/>
+	  <%= f.radio_button :opcao_restante, 3, :onclick=>"cheque(0);"%> fica devendo<br/>
+	  <%= f.radio_button :opcao_restante, 4, :onclick=>"cheque(0);"%> ignora restante<br/>
+	  <%= f.radio_button :opcao_restante, 5, :onclick=>"cheque(0);"%> recebe_troco<br/>
 	</p>
 </div>
   <p><%= f.label :tipo_de_pagamento %> : 

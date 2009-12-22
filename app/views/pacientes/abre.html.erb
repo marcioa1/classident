@@ -8,9 +8,8 @@
         <li><a href="#fragment-2"><span>Cadastro</span></a></li>
         <li><a href="#fragment-3"><span>Extrato</span></a></li>
     </ul>
-    <div id="fragment-1">
-      <%= render :partial=>"tratamento" , :locals=>{:paciente=>@paciente} %>
-    </div>
+	<div id="fragment-1"><%= render :partial=>"tratamento" , :locals=>{:paciente=>@paciente} %>
+	</div>
     <div id="fragment-2">
       <%= render :partial=>"edit" , :locals=>{:paciente=>@paciente} %>
     </div>

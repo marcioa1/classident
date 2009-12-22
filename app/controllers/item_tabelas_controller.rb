@@ -132,7 +132,8 @@ class ItemTabelasController < ApplicationController
       preco_do_item = valor_item.first.preco
     end
     item_tabela = ItemTabela.find(params[:id])
-    result = item_tabela.descricao + "/" + preco_do_item.real.to_s
+    result = item_tabela.descricao + ";" + preco_do_item.real.to_s
+    debugger
     render :json => result.to_json
   end
 end

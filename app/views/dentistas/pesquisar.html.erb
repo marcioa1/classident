@@ -1,0 +1,34 @@
+<% content_for :main do %>
+<h3>Listando dentistas</h3>
+<% form_tag pesquisar_dentistas_path do %>
+  <%= radio_button_tag :ativo, true , params[:ativo]=="true" %> Ativos
+  <%= radio_button_tag :ativo, false, params[:ativo]=="false" %> Inativos
+  <%= button_to "pesquisar"%>
+<% end %>
+<table>
+  <tr>
+    <th width="200px">Nome</th>
+    <th width="80px">Telefone</th>
+    <th width="80px">Celular</th>
+    <th width="60px">Ativo</th>
+    <th>Percentual</th>
+    <th>Clínica(s)</th>
+  </tr>
+
+<% @dentistas.each do |dentista| %>
+  <tr>
+    <td><%= link_to dentista.nome, abre_dentista_path(:id=>dentista.id) %></td>
+    <td><%=h dentista.telefone %></td>
+    <td><%=h dentista.celular %></td>
+    <td><%=h dentista.ativo  ? "sim" : "não"  %></td>
+    <td align="center"><%= dentista.percentual %></td>
+    <td><%=h dentista.sigla_das_clinicas %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'Novo dentista', new_dentista_path %>
+
+<% end %>

@@ -4,8 +4,13 @@ class DentistasController < ApplicationController
   # GET /dentistas
   # GET /dentistas.xml
   def index
+    debugger
     if session[:clinica_id].to_i > 0
-      @dentistas = Clinica.find(session[:clinica_id]).dentistas.por_nome
+      if params[:inativos]
+        @dentistas = Clinica.find(session[:clinica_id]).dentistas.por_nome.ativos
+      else
+        @dentistas = Clinica.find(session[:clinica_id]).dentistas.por_nome.ativos
+      end
     else
       @dentistas = Dentista.por_nome
     end
@@ -47,6 +52,7 @@ class DentistasController < ApplicationController
   # POST /dentistas
   # POST /dentistas.xml
   def create
+    debugger
     @dentista = Dentista.new(params[:dentista])
     @dentista.clinicas = []
     clinicas = Clinica.all
@@ -105,7 +111,7 @@ class DentistasController < ApplicationController
     @dentista = Dentista.find(params[:id])  
     @clinicas = Clinica.all(:order=>:nome)
     @clinica_1 = "1"
-    @inicio = Date.today
+    @inicio = Date.today - 15.days
     @fim = Date.today
   end
   
@@ -147,4 +153,21 @@ class DentistasController < ApplicationController
     render :json => saida.to_json
   end
   
+  def pesquisar
+    debugger
+     if session[:clinica_id].to_i > 0
+        if params[:ativo]=="true"
+          @dentistas = Clinica.find(session[:clinica_id]).dentistas.por_nome.ativos
+        else
+          @dentistas = Clinica.find(session[:clinica_id]).dentistas.por_nome.inativos
+        end
+      else
+        @dentistas = Dentista.por_nome
+      end
+
+      respond_to do |format|
+        format.html # index.html.erb
+        format.xml  { render :xml => @dentistas }
+      end
+  end
 end

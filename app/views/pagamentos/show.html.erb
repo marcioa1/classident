@@ -1,4 +1,4 @@
-<% content_for :main do %>
+<%= stylesheet_link_tag 'plain_old_table.css'%>
 <p>
   <b>Tipo de pagamento</b>
   <%=h @pagamento.tipo_pagamento.nome %>
@@ -15,7 +15,12 @@
 
 <p>
   <b>Valor pago:</b>
-  <%=h @pagamento.valor_pago %>
+  <%=h @pagamento.valor_pago.real %>
+</p>
+<p>
+  <b>Valor restante:</b>
+  <%=h @pagamento.valor_restante.real %> - 
+  <%=h @pagamento.descricao_opcao_restante %>
 </p>
 
 <p>
@@ -24,34 +29,15 @@
 </p>
 
 <p>
-  <b>Nao lancar no livro caixa:</b>
-  <%=h @pagamento.nao_lancar_no_livro_caixa %>
+  <b>Lançar no livro caixa:</b>
+  <%=h @pagamento.nao_lancar_no_livro_caixa==true ? "n
+ão" : "sim" %>
 </p>
 
 <p>
-  <b>Data de exclusao:</b>
+  <b>Data de exclusão:</b>
   <%=h @pagamento.data_de_exclusao %>
 </p>
-<p>
-  Cheques utilizados <br/>
-  <table>
-	<tr>
-	  <th width="140px">Paciente</th>
-	  <th width="90px">Valor</th>
-	  <th width="120px">Banco</th>
-	  <th>Número</th>
-	</tr>
-  <% @pagamento.cheques.each() do |cheque| %>
-    <tr>
-      <td><%= cheque.recebimento.paciente.nome %></td>
-      <td align="right"><%= cheque.valor.real %></td>
-      <td><%= cheque.banco.numero + "-" + cheque.banco.nome %></td>
-      <td><%= cheque.numero %></td>
-    </tr>
-  <% end %>
-  </table>
-</p>
+<%= render :partial=>"pagamentos/cheques_utilizados" %>
 
-<%= link_to 'editar', edit_pagamento_path(@pagamento) %> |
-<%= link_to 'voltar', relatorio_pagamentos_path %>
-<% end %>
+<a href="javascript: self.close();">fechar</a>

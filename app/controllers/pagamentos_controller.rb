@@ -1,6 +1,6 @@
 class PagamentosController < ApplicationController
   
-  layout "adm"
+  layout "adm", :except=> :show
   before_filter :require_user
   # GET /pagamentos
   # GET /pagamentos.xml
@@ -38,6 +38,7 @@ class PagamentosController < ApplicationController
   def edit
     @tipos_pagamento = TipoPagamento.por_nome.collect{|obj| [obj.nome, obj.id]}
     @pagamento = Pagamento.find(params[:id])
+    @contas_bancarias = ContaBancaria.all.collect{|obj| [obj.nome, obj.id]}
   end
 
   # POST /pagamentos
@@ -119,4 +120,5 @@ class PagamentosController < ApplicationController
        format.xml  { render :xml => @pagamentos }
      end
    end
+   
 end

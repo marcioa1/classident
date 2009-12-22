@@ -1,6 +1,11 @@
 <% content_for :main do %>
 <h3>Listando dentistas</h3>
-
+<% form_tag :url=>dentistas_path , :method=>:get do %>
+  <%= radio_button_tag :ativo, true , true%> Ativos
+  <%= radio_button_tag :ativo, false %> Inativos
+  <%= link_to "pesquisar", dentistas_path(:ativo=>:ativo) %>
+  <%= button_to "pesquisar"%>
+<% end %>
 <table>
   <tr>
     <th width="200px">Nome</th>

@@ -102,9 +102,9 @@ class PacientesController < ApplicationController
     @pacientes =[]
     if !params[:codigo].blank?
       if session[:clinica_id].to_i == 0
-        @pacientes = Paciente.all(:conditions=>["codigo=?", params[:codigo]])
+        @pacientes = Paciente.all(:conditions=>["codigo=?", params[:codigo]], :order=>:nome)
       else
-        @pacientes = Paciente.all(:conditions=>["clinica_id=? and codigo=?", session[:clinica_id].to_i, params[:codigo].to_i])
+        @pacientes = Paciente.all(:conditions=>["clinica_id=? and codigo=?", session[:clinica_id].to_i, params[:codigo].to_i],:order=>:nome)
       end
       if !@pacientes.empty?
         if @pacientes.size==1
@@ -118,9 +118,9 @@ class PacientesController < ApplicationController
     else
       if params[:nome]
         if session[:clinica_id] == 0
-          @pacientes = Paciente.all(:conditions=>["nome like ?", params[:nome] + '%'])
+          @pacientes = Paciente.all(:conditions=>["nome like ?", params[:nome] + '%'],:order=>:nome)
         else
-          @pacientes = Paciente.all(:conditions=>["clinica_id= ? and nome like ?", session[:clinica_id].to_i, params[:nome] + '%'])
+          @pacientes = Paciente.all(:conditions=>["clinica_id= ? and nome like ?", session[:clinica_id].to_i, params[:nome] + '%'],:order=>:nome)
         end
       end 
     end 
