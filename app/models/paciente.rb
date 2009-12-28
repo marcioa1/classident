@@ -51,4 +51,12 @@ debugger
       return nome
     end
   end
+  
+  def nome_corrigido
+    result = ""
+    nome.split(" ").each() do |parte|
+      result += parte.capitalize + " "
+    end
+    result
+  end
 end

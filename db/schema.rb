@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20091222191621) do
+ActiveRecord::Schema.define(:version => 20091228201919) do
 
   create_table "bancos", :force => true do |t|
     t.string   "numero"
@@ -289,6 +289,9 @@ ActiveRecord::Schema.define(:version => 20091222191621) do
     t.string   "face"
     t.string   "descricao",      :limit => 60
     t.integer  "sequencial"
+    t.boolean  "mesial"
+    t.boolean  "oclusal"
+    t.boolean  "distal"
   end
 
   add_index "tratamentos", ["id"], :name => "index_tratamentos_on_id"

@@ -6,13 +6,20 @@ Paciente : <%= @tratamento.paciente.nome %> ( Tabela: <%= @tratamento.paciente.t
 <% form_for(@tratamento) do |f| %>
 
   <%= f.hidden_field :paciente_id %>
+  
   <p>
   	<%= f.label :dente %> : 
     <%= f.text_field :dente, :size=>10%>
   </p>
-  
+  <p>
+  	<%= f.check_box :mesial %> Mesial
+  	<%= f.check_box :distal %> Distal
+  	<%= f.check_box :oclusal %> Oclusal
+  </p>
+  <p>
   <%= f.label :codigo %> : 
   <%= f.select :item_tabela_id, options_for_select(@items), {}, html_options={  :onchange=>"selecionou_item_tabela(#{session[:clinica_id]});"} %>
+  </p>
   <p>
     <%= f.label :descrição %> : 
     <%= f.text_field :descricao, :size=>50 %>
@@ -20,9 +27,12 @@ Paciente : <%= @tratamento.paciente.nome %> ( Tabela: <%= @tratamento.paciente.t
   <p><%= f.label :valor %> :
 	<%= f.text_field :valor, :size=>10 %>
   </p>
+  <p><%= f.label :custo %> :
+	<%= f.text_field :custo, :size=>10 %>
+  </p>
   <p>
   	<%= f.label :dentista %>
-    <%= f.select :dentista_id, @dentistas%>
+    <%= f.select :dentista_id, @dentistas, :include_blank=>true%>
   </p>
   <p>
   	<%= f.label :data_de_término %>

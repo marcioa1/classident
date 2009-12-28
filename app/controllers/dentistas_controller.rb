@@ -122,10 +122,11 @@ class DentistasController < ApplicationController
     clinicas = params[:clinicas].split(",").to_a
     debugger
     @producao = dentista.busca_producao(inicio,fim,clinicas) 
-    saida = "<div id='lista'><table><tr><th width='120px'>Data</th>
+    saida = "<div id='lista'><table><tr><th width='105px'>Data</th>
          <th width='220px'>Paciente</th>
         <th width='220px'>Procedimento</th>
         <th width='90px'>Valor</th>
+        <th width='90px'>Custo</th>
         <th width='90px'>Dentista</th>
         <th width='90px'>Clínica</th>
         </tr>"
@@ -133,7 +134,7 @@ class DentistasController < ApplicationController
     total_dentista = 0.0
     total_clinica = 0.0
     @producao.each() do |tratamento|
-      saida += "<tr><td>"+ tratamento.data.to_s_br + "</td>"
+      saida += "<tr><td align='center'>"+ tratamento.data.to_s_br + "</td>"
       saida += "<td>" + tratamento.paciente.nome + "</td>"
       if tratamento.item_tabela.nil?
         saida += "<td>&nbsp;</td>"
@@ -141,6 +142,7 @@ class DentistasController < ApplicationController
         saida += "<td>" + tratamento.item_tabela.descricao + "</td>"
       end  
       saida += "<td align='right'>" + tratamento.valor.real.to_s + "</td>"
+      saida += "<td align='right'>" + tratamento.custo.real.to_s + "</td>"
       saida += "<td align='right'>" + tratamento.valor_dentista.real.to_s + "</td>"
       saida += "<td align='right'>" + tratamento.valor_clinica.real.to_s + "</td></tr>"
       total_dentista += tratamento.valor_dentista

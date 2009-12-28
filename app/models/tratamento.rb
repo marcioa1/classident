@@ -12,11 +12,11 @@ class Tratamento < ActiveRecord::Base
   named_scope :da_clinica, lambda{|clinicas| {:conditions=>["clinica_id in (?)",clinicas]}}
   
   def valor_dentista
-    valor * dentista.percentual / 100 
+    (valor - custo) * dentista.percentual / 100 
   end
   
   def valor_clinica
-    valor * (100 - dentista.percentual) / 100 
+    (valor - custo) * (100 - dentista.percentual) / 100 
   end
   
   def nao_pode_alterar?
@@ -32,4 +32,13 @@ class Tratamento < ActiveRecord::Base
     debito.data = data
     debito.save
   end
+  
+  def faces
+    result = ''
+    result += "M" if mesial
+    result += "D" if distal
+    result += "O" if oclusal
+    result
+  end
+
 end

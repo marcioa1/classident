@@ -1,27 +1,27 @@
-<h1>New debito</h1>
+<% content_for :main do %>
+<fieldset>
+<legend>Novo débito</legend>
 
 <% form_for(@debito) do |f| %>
   <%= f.error_messages %>
 
+    <%= f.hidden_field :paciente_id %>
   <p>
-    <%= f.label :paciente_id %><br />
-    <%= f.text_field :paciente_id %>
-  </p>
-  <p>
-    <%= f.label :tratamento_id %><br />
-    <%= f.text_field :tratamento_id %>
+  	<%= text_field_tag :datepicker, Date.today.to_s_br, :size=>10 %>
   </p>
   <p>
     <%= f.label :valor %><br />
-    <%= f.text_field :valor %>
+    <%= f.text_field :valor, :size=>12 %>
   </p>
   <p>
-    <%= f.label :descricao %><br />
+    <%= f.label :descrição %><br />
     <%= f.text_field :descricao %>
   </p>
   <p>
-    <%= f.submit 'Create' %>
+    <%= f.submit 'salvar' %>
   </p>
 <% end %>
 
-<%= link_to 'Back', debitos_path %>
+<%= link_to 'voltar', :back %>
+</fieldset>
+<% end %>

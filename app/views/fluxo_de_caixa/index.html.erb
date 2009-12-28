@@ -6,7 +6,7 @@ Saldo anterior em cheque : <%= @fluxo.saldo_em_cheque.real%><br/>
 
 <table>
   <tr>
-  	<th width="250px">Observação</th>
+  	<th width="350px">Observação</th>
     <th width="90px">Crédito Dinheiro</th>
     <th width="90px">Débito Dinheiro</th>
     <th width="90px">Saldo Dinheiro</th>
@@ -32,11 +32,11 @@ Saldo anterior em cheque : <%= @fluxo.saldo_em_cheque.real%><br/>
       <% if lancamento.formas_recebimento.nome.downcase =="dinheiro"%>
 	      <td align="right"><%= lancamento.valor.real %></td>
 	      <td>&nbsp;</td>
+	      <% saldo_dinheiro += lancamento.valor %>
 	      <td align="right"><%= saldo_dinheiro.real %></td>
 	      <td>&nbsp;</td>
 	      <td>&nbsp;</td>
-	      <% saldo_dinheiro += lancamento.valor %>
-	      <td><%= saldo_dinheiro.real %></td>
+	      <td align="right"><%= saldo_cheque.real %></td>
     	<% else %>
 		    <td>&nbsp;</td>
 		    <td>&nbsp;</td>
@@ -59,12 +59,17 @@ Saldo anterior em cheque : <%= @fluxo.saldo_em_cheque.real%><br/>
       <% end %>
       <td>&nbsp;</td>
       <td align="right"><%= lancamento.valor_pago.real %></td>
-      <% saldo_cheque -= lancamento.valor %>
+      <% saldo_cheque -= lancamento.valor_pago %>
       <td align="right"><%= saldo_cheque.real %></td>
     <% else %>
     <td><%= lancamento.observacao %></td>
     <td align="right"><%= lancamento.valor.real %></td>
+    <% saldo_dinheiro += lancamento.valor %>
     <td>&nbsp;</td>
+    <td align="right"><%= saldo_dinheiro.real %></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td align="right"><%= saldo_cheque.real %></td>
     <% end %>
   </tr>
 <% end %>

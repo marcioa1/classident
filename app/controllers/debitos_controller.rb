@@ -26,7 +26,7 @@ class DebitosController < ApplicationController
   # GET /debitos/new.xml
   def new
     @debito = Debito.new
-
+    @debito.paciente_id = params[:paciente_id]
     respond_to do |format|
       format.html # new.html.erb
       format.xml  { render :xml => @debito }
@@ -42,10 +42,10 @@ class DebitosController < ApplicationController
   # POST /debitos.xml
   def create
     @debito = Debito.new(params[:debito])
-
+    @debito.data = params[:datepicker].to_date
     respond_to do |format|
       if @debito.save
-        format.html { redirect_to(@debito) }
+        format.html { redirect_to(abre_paciente_path(:id=>@debito.paciente_id)) }
         format.xml  { render :xml => @debito, :status => :created, :location => @debito }
       else
         format.html { render :action => "new" }

@@ -8,6 +8,11 @@
     <%= f.label :paciente %> : <b> <%= @debito.paciente.nome %></b>
     <%= f.hidden_field :paciente_id %>
   </p>
+
+  <p>
+	<%= f.label :data %><br />
+  	<%= text_field_tag :datepicker, @debito.data.to_s_br, :size=>10 %>
+  </p>
   <p>
     <%= f.label :valor %><br />
     <%= f.text_field :valor, :size=>8 %>

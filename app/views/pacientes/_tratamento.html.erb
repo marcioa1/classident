@@ -1,13 +1,15 @@
-<%= link_to "novo procedimento" , new_tratamento_path(:paciente_id=>@paciente.id) unless session[:clinica_id].to_i == 0 %>
+<% if session[:clinica_id].to_i != 0 %>
+  <%= link_to "Novo procedimento" , new_tratamento_path(:paciente_id=>@paciente.id)  %> 
+<% end %>
 <br/><br/>
 <table>
   <tr>
 	<th>Dente</th>
 	<th>Face</th>
-    <th width="80px">Código</th>
+    <th width="40px">Código</th>
     <th width="190px">Descrição</th>
-    <th width="70px">Valor</th>
-    <th width="70px">Custo</th>
+    <th width="60px">Valor</th>
+    <th width="60px">Custo</th>
     <th>Dentista</th>
     <th>Data de realização</th>
   </tr>
@@ -20,7 +22,7 @@
 	  <%= link_to tratamento.dente, edit_tratamento_path(:id=>tratamento.id) %>
 	<% end %>
 	</td>
-	<td><%= tratamento.face %></td>
+	<td><%= tratamento.faces %></td>
     <td><%= tratamento.item_tabela.codigo  unless tratamento.item_tabela.nil? %></td>
     <td><%= tratamento.item_tabela.descricao unless tratamento.item_tabela.nil?%></td>
     <td align="right"><%= tratamento.valor.real%></td>
