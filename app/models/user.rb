@@ -3,6 +3,7 @@ class User < ActiveRecord::Base
   
   belongs_to :tipo_usuario
   belongs_to :clinica
+  belongs_to :alta
   
   named_scope :ativos, :conditions=>["ativo = 't'"]
   named_scope :por_nome, :order=>:nome

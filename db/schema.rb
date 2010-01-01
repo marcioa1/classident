@@ -9,7 +9,20 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20091228201919) do
+ActiveRecord::Schema.define(:version => 20100101122816) do
+
+  create_table "altas", :force => true do |t|
+    t.integer  "paciente_id"
+    t.date     "data_inicio"
+    t.string   "observacao"
+    t.integer  "user_id"
+    t.date     "date_termino"
+    t.integer  "user_id_termino"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "altas", ["paciente_id"], :name => "index_altas_on_paciente_id"
 
   create_table "bancos", :force => true do |t|
     t.string   "numero"

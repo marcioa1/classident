@@ -1,8 +1,12 @@
 class Paciente < ActiveRecord::Base
   belongs_to :tabela
+  has_many :altas
   has_many :tratamentos
   has_many :debitos
   has_many :recebimentos
+  
+  named_scope :da_clinica, lambda{|clinica_id| {:conditions=>["clinica_id=?", clinica_id]}}
+  named_scope :por_nome, :order=>:nome
   
   #validates_uniqueness_of :codigo
   
@@ -59,4 +63,9 @@ debugger
     end
     result
   end
+  
+  def em_debito?
+    saldo<0
+  end
+
 end

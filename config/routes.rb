@@ -1,12 +1,13 @@
 ActionController::Routing::Routes.draw do |map|
-
+ 
+  map.resources :altas
   map.resources :bancos
   map.resources :cheques, :collection=>{:busca_disponiveis=>:get, :cheques_recebidos=>:get, 
        :recebe_cheques=>:get,:confirma_recebimento=>:get, 
        :registra_recebimento_de_cheques=>:get, :recebimento_confirmado=>:get}
   map.resources :conta_bancarias
   map.resources :conversao
-  map.resources :debitos
+  map.resources :debitos, :collection=>{:pacientes_em_debito=>:get}
   map.resources :dentistas, :member=>{:abre=>:get, :producao=>:get}, 
                     :collection=>{:pesquisar=>:get}
   map.resources :destinacaos

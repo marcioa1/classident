@@ -81,4 +81,12 @@ class DebitosController < ApplicationController
       format.xml  { head :ok }
     end
   end
+  
+  def pacientes_em_debito
+    @pacientes = Paciente.da_clinica(session[:clinica_id]).por_nome
+    @em_debito = []
+    @pacientes.each do |pac|
+      @em_debito << pac if pac.em_debito?
+    end
+  end
 end

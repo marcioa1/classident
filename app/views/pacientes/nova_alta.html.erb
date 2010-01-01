@@ -1,0 +1,13 @@
+<% content_for :main do %>
+
+<% form_for @alta, :url=>:create_alta_paciente_path() do |f| %>
+  <p>
+    <%= f.label :data %>
+    <%= f.text_input :datepicker %>
+  </p>
+  <p>
+  	<%= f.submit :salvar %>
+  </p>
+<% end %>
+	
+<% end %>

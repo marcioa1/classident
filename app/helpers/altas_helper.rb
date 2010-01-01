@@ -1,0 +1,2 @@
+module AltasHelper
+end

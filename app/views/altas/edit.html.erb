@@ -1,0 +1,12 @@
+<h1>Editing alta</h1>
+
+<% form_for(@alta) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @alta %> |
+<%= link_to 'Back', altas_path %>

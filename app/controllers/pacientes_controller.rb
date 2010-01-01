@@ -133,4 +133,12 @@ class PacientesController < ApplicationController
     session[:paciente_nome] = @paciente.nome
   end
   
+  def nova_alta
+    @alta = Alta.new(:paciente_id => id)
+  end
+  
+  def create_alta
+    
+  end
+  
 end

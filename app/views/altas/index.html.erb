@@ -1,0 +1,18 @@
+<h1>Listing altas</h1>
+
+<table>
+  <tr>
+  </tr>
+
+<% @altas.each do |alta| %>
+  <tr>
+    <td><%= link_to 'Show', alta %></td>
+    <td><%= link_to 'Edit', edit_alta_path(alta) %></td>
+    <td><%= link_to 'Destroy', alta, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New alta', new_alta_path %>
