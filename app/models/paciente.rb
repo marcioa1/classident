@@ -36,7 +36,6 @@ class Paciente < ActiveRecord::Base
   end
   
   def gera_codigo()
-debugger
     ultimo = Paciente.last(:conditions=>["clinica_id=?", clinica_id])
     if ultimo.nil?
       codigo = 0
@@ -66,6 +65,12 @@ debugger
   
   def em_debito?
     saldo<0
+  end
+  
+  def em_alta?
+    return false if altas.blank?
+    ultima = altas.last(:order=>:created_at)
+    ultima.data_termino.nil?
   end
 
 end

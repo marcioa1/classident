@@ -5,12 +5,13 @@ class CreateAltas < ActiveRecord::Migration
       t.date :data_inicio
       t.string :observacao
       t.integer :user_id
-      t.date :date_termino
-      t.integer :user_id_termino
+      t.date :data_termino
+      t.integer :user_termino_id
       
       t.timestamps
     end
     add_index :altas, :paciente_id
+    add_index :altas, :user_termino_id
   end
 
   def self.down

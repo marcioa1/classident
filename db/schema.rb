@@ -16,13 +16,14 @@ ActiveRecord::Schema.define(:version => 20100101122816) do
     t.date     "data_inicio"
     t.string   "observacao"
     t.integer  "user_id"
-    t.date     "date_termino"
-    t.integer  "user_id_termino"
+    t.date     "data_termino"
+    t.integer  "user_termino_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   add_index "altas", ["paciente_id"], :name => "index_altas_on_paciente_id"
+  add_index "altas", ["user_termino_id"], :name => "index_altas_on_user_termino_id"
 
   create_table "bancos", :force => true do |t|
     t.string   "numero"

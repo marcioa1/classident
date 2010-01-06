@@ -24,4 +24,11 @@ class PacienteTest < ActiveSupport::TestCase
      assert p.credito == 0   
      assert p.saldo ==0
    end
+   
+   def test_alta
+     paciente = pacientes(:marcio)
+     assert paciente.em_alta? == true
+     outro = pacientes(:two)
+     assert outro.em_alta? == false
+   end
 end

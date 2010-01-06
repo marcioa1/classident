@@ -1,13 +1,24 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
 one:
-  paciete_id: 1
-  data: 2010-01-01 10:28:16
+  paciente: marcio
+  data_inicio: 2010-01-01 10:28:16
   observacao: MyString
-  user_id: 1
+  user: ricardo
+  data_termino: 2010-01-03
+  user_termino: ricardo
 
 two:
-  paciete_id: 1
-  data: 2010-01-01 10:28:16
+  paciente: marcio
+  data_inicio: 2010-01-01 10:28:16
   observacao: MyString
-  user_id: 1
+  user: ricardo
+  data_termino: nil
+  
+three:
+  paciente: two
+  data_inicio: 2010-01-01 10:28:16
+  observacao: MyString
+  user: ricardo
+  data_termino: 2010-01-06 10:28:16
+  user_termino: ricardo

@@ -18,7 +18,7 @@ class TratamentosController < ApplicationController
       respond_to do |format|
         if @tratamento.save
           if !@tratamento.data.nil?
-            @tratamento.finalizar_procedimento
+            @tratamento.finalizar_procedimento(current_user)
           end
           format.html { redirect_to(abre_paciente_path(:id=>@tratamento.paciente_id)) }
           format.xml  { render :xml => @tratamento, :status => :created, :location => @dentista }
@@ -67,7 +67,7 @@ class TratamentosController < ApplicationController
     #TODO colocar isto em AJAX
     @tratamento = Tratamento.find(params[:id])
     @tratamento.data = Date.today
-    @tratamento.finalizar_procedimento
+    @tratamento.finalizar_procedimento(current_user)
     @tratamento.save
     redirect_to abre_paciente_path(:id=>@tratamento.paciente_id)
   end

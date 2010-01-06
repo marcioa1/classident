@@ -23,7 +23,7 @@ class Tratamento < ActiveRecord::Base
     created_at < Date.today - 15.days
   end
   
-  def finalizar_procedimento
+  def finalizar_procedimento(user)
     debito = Debito.new
     debito.paciente_id = paciente_id
     debito.tratamento_id = id
@@ -31,6 +31,12 @@ class Tratamento < ActiveRecord::Base
     debito.valor = valor
     debito.data = data
     debito.save
+    if paciente.em_alta?
+      alta = paciente.altas.last(:order=>:id)
+      alta.data_termino = Time.now
+      alta.user_termino_id = user
+      alta.save
+    end
   end
   
   def faces
