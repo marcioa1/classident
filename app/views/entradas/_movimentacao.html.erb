@@ -1,0 +1,27 @@
+<Fieldset>
+<legend><%= titulo %> de dinheiro</legend>
+
+<table>
+  <tr>
+    <th width="100px">Data</th>
+    <th width="100px">Valor</th>
+    <th width="200px">Observação</th>
+    <th>&nbsp;</th>
+    <th>&nbsp;</th>
+  </tr>
+
+<% movimentacao.each do |mov| %>
+  <tr>
+    <td align="center"><%=h mov.data.to_s_br %></td>
+    <td align="right"><%=h mov.valor.abs.real %></td>
+    <td><%=h mov.observacao %></td>
+    <td><%= link_to 'editar', edit_entrada_path(mov) %></td>
+    <td><%= link_to 'excluir', mov, :confirm => 'Tem certeza ?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'Nova ' + titulo, new_entrada_path(:tipo=>titulo) %>
+</fieldset>

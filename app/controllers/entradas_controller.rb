@@ -9,7 +9,8 @@ class EntradasController < ApplicationController
     else
       @data = Date.today
     end  
-    @entradas = Entrada.do_mes(@data).da_clinica(session[:clinica_id])
+    @entradas = Entrada.entrada.do_mes(@data).da_clinica(session[:clinica_id])
+    @remessas = Entrada.remessa.do_mes(@data).da_clinica(session[:clinica_id])
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @entradas }
@@ -46,9 +47,13 @@ class EntradasController < ApplicationController
   # POST /entradas
   # POST /entradas.xml
   def create
+    tipo = params[:tipo]
     @entrada = Entrada.new(params[:entrada])
     @entrada.data = params[:datepicker].to_date
     @entrada.clinica_id = session[:clinica_id]
+    if tipo=="Remessa"
+      @entrada.valor = @entrada.valor * -1
+    end
     respond_to do |format|
       if @entrada.save
         flash[:notice] = 'Entrada alterada com sucesso.'

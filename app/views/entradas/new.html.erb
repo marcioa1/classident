@@ -1,11 +1,11 @@
 <% content_for :main do %>
 <fieldset>
 	
-  <legend>Nova entrada</legend>
+  <legend>Nova <%= params[:tipo] %></legend>
 
 <% form_for(@entrada) do |f| %>
   <%= f.error_messages %>
-
+  <%= text_field_tag :tipo, params[:tipo]%>
   <p>
     <%= f.label :data %><br />
     <%= text_field_tag :datepicker, @entrada.data.to_s_br,  :size=>10 %>
