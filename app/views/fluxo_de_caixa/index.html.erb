@@ -26,6 +26,7 @@ Saldo anterior em cheque : <%= @fluxo.saldo_em_cheque.real%><br/>
 <% saldo_dinheiro = @fluxo.saldo_em_dinheiro %>
 <% saldo_cheque = @fluxo.saldo_em_cheque %>
 <% @lancamentos.each() do |lancamento| %>
+<% debugger %>
   <tr>
     <% if lancamento.class.name == "Recebimento"%>
       <td><%= lancamento.paciente.nome %></td>
@@ -63,9 +64,15 @@ Saldo anterior em cheque : <%= @fluxo.saldo_em_cheque.real%><br/>
       <td align="right"><%= saldo_cheque.real %></td>
     <% else %>
     <td><%= lancamento.observacao %></td>
+    <% if lancamento.valor > 0 %>
     <td align="right"><%= lancamento.valor.real %></td>
     <% saldo_dinheiro += lancamento.valor %>
     <td>&nbsp;</td>
+    <% else %>
+      <td>&nbsp;</td>
+      <td align="right"><%= lancamento.valor.abs.real %></td>
+      <% saldo_dinheiro += lancamento.valor %>
+    <% end %>
     <td align="right"><%= saldo_dinheiro.real %></td>
     <td>&nbsp;</td>
     <td>&nbsp;</td>

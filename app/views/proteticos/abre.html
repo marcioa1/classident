@@ -1,0 +1,23 @@
+<% content_for :main do %>
+<div id="tabs">
+    <ul>
+        <li><a href="#fragment-1"><span>Cadastro</span></a></li>
+        <li><a href="#fragment-2"><span>Itens entregues</span></a></li>
+        <li><a href="#fragment-3"><span>Pagamento</span></a></li>
+        <li><a href="#fragment-4"><span>Tabela</span></a></li>
+    </ul>
+	<div id="fragment-1">
+	  <%= render :partial=>"edit" , :locals=>{:paciente=>@paciente} %>
+	</div>
+    <div id="fragment-2">
+      
+    </div>
+    <div id="fragment-3">
+      
+    </div>
+    <div id="fragment-4">
+      <%= render :partial=>"tabela" %>
+    </div>
+    
+</div>
+<% end %>

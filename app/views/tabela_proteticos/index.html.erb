@@ -1,0 +1,27 @@
+<% content_for :main do %>
+<h2>Listando tabela de protéticos</h2>
+
+<table>
+  <tr>
+	<th width="120px">Código</th>
+    <th width = "220px">Descrição</th>
+    <th width="100px">Valor</th>
+    <th>&nbsp;</th>
+    <th>&nbsp;</th>
+  </tr>
+
+<% @tabela_proteticos.each do |tabela_protetico| %>
+  <tr>
+	<td><%=h tabela_protetico.codigo%></td>
+    <td><%=h tabela_protetico.descricao %></td>
+    <td align="right"><%=h tabela_protetico.valor.real %></td>
+    <td><%= link_to 'editar', edit_tabela_protetico_path(tabela_protetico) %></td>
+    <td><%= link_to 'apagar', tabela_protetico, :confirm => 'Tem certeza ?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'Novo item', new_tabela_protetico_path %>
+<% end %>

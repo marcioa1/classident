@@ -16,8 +16,9 @@ class FluxoDeCaixaController < ApplicationController
     end
     @recebimentos = Recebimento.da_clinica(session[:clinica_id]).no_dia(@fluxo.data).nao_excluidos
     @pagamentos = Pagamento.da_clinica(session[:clinica_id]).no_dia(@fluxo.data)
-    @entradas = Entrada.da_clinica(session[:clinica_id]).do_mes(@fluxo.data)
-    @lancamentos = @recebimentos + @pagamentos + @entradas
+    @entradas = Entrada.entrada.da_clinica(session[:clinica_id]).do_mes(@fluxo.data)
+    @remessas = Entrada.remessa.da_clinica(session[:clinica_id]).do_mes(@fluxo.data)
+    @lancamentos = @recebimentos + @pagamentos + @entradas + @remessas
   end
 end
 #TODO separar entrada e saida em dinheiro e cheque

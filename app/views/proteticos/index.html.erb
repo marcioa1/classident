@@ -1,0 +1,25 @@
+<% content_for :main do %>
+<h2>Listando protéticos</h2>
+
+<table>
+  <tr>
+    <th width="220px">Nome</th>
+    <th width="150px">Telefone</th>
+    <th width="150px">Celular</th>
+    <th width="180px">Email</th>
+  </tr>
+
+<% @proteticos.each do |protetico| %>
+  <tr>
+    <td><%= link_to protetico.nome, abre_protetico_path(protetico) %></td>
+    <td><%=h protetico.telefone %></td>
+    <td><%=h protetico.celular %></td>
+    <td><%=h protetico.email %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'Novo protético', new_protetico_path %>
+<% end %>

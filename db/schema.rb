@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100101122816) do
+ActiveRecord::Schema.define(:version => 20100114171426) do
 
   create_table "altas", :force => true do |t|
     t.integer  "paciente_id"
@@ -239,6 +239,23 @@ ActiveRecord::Schema.define(:version => 20100101122816) do
   add_index "precos", ["clinica_id"], :name => "index_precos_on_clinica_id"
   add_index "precos", ["id"], :name => "index_precos_on_id"
 
+  create_table "proteticos", :force => true do |t|
+    t.string   "nome"
+    t.string   "logradouro"
+    t.string   "numero"
+    t.string   "complemento"
+    t.string   "telefone"
+    t.string   "celular"
+    t.string   "email"
+    t.string   "bairro"
+    t.string   "observacao"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "proteticos", ["id"], :name => "index_proteticos_on_id"
+  add_index "proteticos", ["nome"], :name => "index_proteticos_on_nome"
+
   create_table "recebimentos", :force => true do |t|
     t.integer  "paciente_id"
     t.integer  "clinica_id"
@@ -256,6 +273,17 @@ ActiveRecord::Schema.define(:version => 20100101122816) do
   add_index "recebimentos", ["clinica_id"], :name => "index_recebimentos_on_clinica_id"
   add_index "recebimentos", ["paciente_id"], :name => "index_recebimentos_on_paciente_id"
   add_index "recebimentos", ["sequencial"], :name => "index_recebimentos_on_sequencial"
+
+  create_table "tabela_proteticos", :force => true do |t|
+    t.integer  "protetico_id"
+    t.string   "codigo"
+    t.string   "descricao"
+    t.decimal  "valor",        :precision => 8, :scale => 2
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "tabela_proteticos", ["protetico_id"], :name => "index_tabela_proteticos_on_protetico_id"
 
   create_table "tabelas", :force => true do |t|
     t.string   "nome"

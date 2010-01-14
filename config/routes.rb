@@ -1,5 +1,5 @@
 ActionController::Routing::Routes.draw do |map|
- 
+
   map.resources :altas
   map.resources :bancos
   map.resources :cheques, :collection=>{:busca_disponiveis=>:get, :cheques_recebidos=>:get, 
@@ -20,12 +20,14 @@ ActionController::Routing::Routes.draw do |map|
   map.administracao "administracao", :controller=>"administracao", :action=>"index"
   map.resources :pagamentos, :collection=>{:relatorio=>:get}
   map.resources :precos
+  map.resources :proteticos, :member=>{:abre=>:get}
   map.resources :recebimentos, :collection=>{:relatorio=>:get, :das_clinicas=>:get}
   map.resources :tabelas, :collection=>{:print=>:get }
 
   map.resources :tabelas do |item|
      item.resources :item_tabelas
   end
+  map.resources :tabela_proteticos, :collection=>{:importa_tabela_base=>:get}
   map.resources :tipo_pagamentos
   map.resources :tratamentos, :member=>{:finalizar_procedimento=>:get}
   map.resources :users, :member =>[:troca_senha=>:get]

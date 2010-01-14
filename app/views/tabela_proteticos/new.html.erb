@@ -1,0 +1,28 @@
+<% content_for :main do %>
+<fieldset>
+<legend>Novo item</legend>
+
+<% form_for(@tabela_protetico) do |f| %>
+  <%= f.error_messages %>
+  <%= @tabela_protetico.protetico.nome unless @tabela_protetico.protetico.nil? %>
+  <%= f.hidden_field :protetico_id%>
+  <p>
+    <%= f.label :código %><br />
+    <%= f.text_field :codigo, :size=>10 %>
+  </p>
+  <p>
+    <%= f.label :descrição %><br />
+    <%= f.text_field :descricao, :size=>50 %>
+  </p>
+  <p>
+    <%= f.label :valor %><br />
+    <%= f.text_field :valor, :size=>9 %>
+  </p>
+  <p>
+    <%= f.submit 'salvar' %>
+  </p>
+<% end %>
+
+<%= link_to 'voltar', tabela_proteticos_path %>
+</fieldset>
+<% end %>

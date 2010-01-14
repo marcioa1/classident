@@ -1,0 +1,51 @@
+<% content_for :main do%>
+<fieldset>
+<legend>Novo protético</legend>
+
+<% form_for(@protetico) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :nome %><br />
+    <%= f.text_field :nome, :size=>40 %>
+  </p>
+  <p>
+    <%= f.label :logradouro %><br />
+    <%= f.text_field :logradouro, :size=>50 %>
+  </p>
+  <p>
+    <%= f.label :numero %><br />
+    <%= f.text_field :numero, :size=>10 %>
+  </p>
+  <p>
+    <%= f.label :complemento %><br />
+    <%= f.text_field :complemento, :size=>10 %>
+  </p>
+  <p>
+    <%= f.label :telefone %><br />
+    <%= f.text_field :telefone, :size=>15 %>
+  </p>
+  <p>
+    <%= f.label :celular %><br />
+    <%= f.text_field :celular, :size=>15 %>
+  </p>
+  <p>
+    <%= f.label :email %><br />
+    <%= f.text_field :email, :size=>40 %>
+  </p>
+  <p>
+    <%= f.label :bairro %><br />
+    <%= f.text_field :bairro %>
+  </p>
+  <p>
+    <%= f.label :observação %><br />
+    <%= f.text_field :observacao, :size=>35 %>
+  </p>
+  <p>
+    <%= f.submit 'salvar' %>
+  </p>
+<% end %>
+
+<%= link_to 'voltar', proteticos_path %>
+</fieldset>
+<% end %>

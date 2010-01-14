@@ -1,0 +1,23 @@
+<% content_for :main do %>
+<fieldset>
+<legend>Editando item</legend>
+
+<% form_for(@tabela_protetico) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :descrição %><br />
+    <%= f.text_field :descricao, :size=> 50 %>
+  </p>
+  <p>
+    <%= f.label :valor %><br />
+    <%= f.text_field :valor, :size=>9 %>
+  </p>
+  <p>
+    <%= f.submit 'salvar' %>
+  </p>
+<% end %>
+
+<%= link_to 'voltar', tabela_proteticos_path %>
+</fieldset>
+<% end %>
