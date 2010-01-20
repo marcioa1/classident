@@ -26,7 +26,7 @@ class ProteticosController < ApplicationController
   # GET /proteticos/new.xml
   def new
     @protetico = Protetico.new
-
+    @clinicas = Clinica.por_nome
     respond_to do |format|
       format.html # new.html.erb
       format.xml  { render :xml => @protetico }
@@ -36,13 +36,20 @@ class ProteticosController < ApplicationController
   # GET /proteticos/1/edit
   def edit
     @protetico = Protetico.find(params[:id])
+    @clinicas = Clinica.por_nome
   end
 
   # POST /proteticos
   # POST /proteticos.xml
   def create
     @protetico = Protetico.new(params[:protetico])
-
+    @protetico.clinicas = []
+    clinicas = Clinica.all
+    @clinicas.each() do |clinica|
+      if params["clinica_#{clinica.id.to_s}"]
+        @protetico.clinicas << clinica
+      end      
+    end
     respond_to do |format|
       if @protetico.save
         flash[:notice] = 'Protetico was successfully created.'
@@ -59,7 +66,13 @@ class ProteticosController < ApplicationController
   # PUT /proteticos/1.xml
   def update
     @protetico = Protetico.find(params[:id])
-
+    @protetico.clinicas = []
+    clinicas = Clinica.all
+    clinicas.each() do |clinica|
+      if params["clinica_#{clinica.id.to_s}"]
+        @protetico.clinicas << clinica
+      end      
+    end
     respond_to do |format|
       if @protetico.update_attributes(params[:protetico])
         flash[:notice] = 'Protetico was successfully updated.'
@@ -86,6 +99,12 @@ class ProteticosController < ApplicationController
   
   def abre
     @protetico = Protetico.find(params[:id])  
+    @clinicas = Clinica.por_nome
+  end
+  
+  def busca_tabela
+    @protetico = Protetico.find(params[:protetico_id])
+    render :json=>@protetico.tabela_proteticos.collect{|obj| [obj.descricao,obj.id]}.to_json
   end
   
 end

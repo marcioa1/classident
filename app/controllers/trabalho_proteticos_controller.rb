@@ -1,4 +1,5 @@
 class TrabalhoProteticosController < ApplicationController
+  layout "adm"
   # GET /trabalho_proteticos
   # GET /trabalho_proteticos.xml
   def index
@@ -26,8 +27,9 @@ class TrabalhoProteticosController < ApplicationController
   def new
     @paciente = Paciente.find(params[:paciente_id])
     @trabalho_protetico = TrabalhoProtetico.new
-    @dentistas = @paciente.clinica.dentistas.collect{|obj| [obj.nome,obj.id]}.sort
-    @proteticos = Protetico.por_nome
+    @trabalho_protetico.paciente = @paciente
+    @dentistas = @clinica.dentistas.collect{|obj| [obj.nome,obj.id]}.sort
+    @proteticos = @clinica.proteticos.collect{|obj| [obj.nome,obj.id]}.sort
 
     respond_to do |format|
       format.html # new.html.erb
@@ -50,8 +52,7 @@ class TrabalhoProteticosController < ApplicationController
 
     respond_to do |format|
       if @trabalho_protetico.save
-        flash[:notice] = 'TrabalhoProtetico was successfully created.'
-        format.html { redirect_to(@trabalho_protetico) }
+        format.html { redirect_to( abre_paciente_path(@trabalho_protetico.paciente)) }
         format.xml  { render :xml => @trabalho_protetico, :status => :created, :location => @trabalho_protetico }
       else
         format.html { render :action => "new" }

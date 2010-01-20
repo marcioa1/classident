@@ -71,8 +71,7 @@ class TabelaProteticosController < ApplicationController
 
     respond_to do |format|
       if @tabela_protetico.update_attributes(params[:tabela_protetico])
-        flash[:notice] = 'TabelaProtetico was successfully updated.'
-        format.html { redirect_to(tabela_proteticos_path) }
+        format.html { redirect_to abre_protetico_path(@tabela_protetico.protetico)  }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }
@@ -105,5 +104,11 @@ class TabelaProteticosController < ApplicationController
     end
     @protetico.save
     redirect_to abre_protetico_path(@protetico)
+  end
+  
+  def busca_valor
+    @item = TabelaProtetico.find(params[:item_id])
+    debugger
+    render :json=> @item.valor.to_json
   end
 end

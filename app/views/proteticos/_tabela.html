@@ -10,7 +10,7 @@
 <% @protetico.tabela_proteticos.each do |item| %>
   <tr>
   	<td><%= item.codigo%></td>
-    <td><%= item.descricao%></td>
+    <td><%= link_to item.descricao, edit_tabela_protetico_path(item)%></td>
     <td align="right"><%= item.valor.real%></td>
     <td>apagar</td>
   </tr>	

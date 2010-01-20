@@ -1,13 +1,13 @@
 <h2>Trabalhos pendentes</h2>
 <table>
   <tr>
-  	<th>Data da envio</th>
+    <th>Data da envio</th>
     <th>Descrição</th>
     <th>Valor</th>
   </tr>
 <% @pendentes_protetico.each do |trab| %>
   <tr>
-  	<td><%= trab.data_de_envio.to_s_br%></td>
+    <td><%= trab.data_de_envio.to_s_br%></td>
     <td><%= trab.tabela_protetico.descricao %></td>
     <td><%= trab.valor.real %></td>
   </tr>

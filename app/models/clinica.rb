@@ -6,6 +6,7 @@ class Clinica < ActiveRecord::Base
   has_many :cheques
   has_many :tratamentos
   has_many :destinacaos
+  has_and_belongs_to_many :proteticos
   
   named_scope :por_nome, :order=>:nome
   

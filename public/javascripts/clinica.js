@@ -28,7 +28,7 @@ function selecionou_cheque(elemento){
         resultado = parseFloat(anterior - valor)
     }
     if (total < resultado){
-	  alert("A soma dos valores dos cheques selecionados é maior que o valor do pagamento.");
+      alert("A soma dos valores dos cheques selecionados é maior que o valor do pagamento.");
     }
     $("#pagamento_valor_pago").val(resultado);
     $("#pagamento_valor_restante").val(total-resultado);
@@ -44,29 +44,53 @@ function selecionou_cheque(elemento){
 }
 
 function producao(){
-	var clinicas = $("#fragment-2 input:checkbox")
-	var selecionadas = ''
-	for (var i = 0; i < clinicas.length; i++) {
+    var clinicas = $("#fragment-2 input:checkbox")
+    var selecionadas = ''
+    for (var i = 0; i < clinicas.length; i++) {
       if ($("#" + clinicas[i].id).is(':checked')) {
         selecionadas += $("#"+ clinicas[i].id).val() + ",";
       } 
     }
-	$.getJSON("producao?datepicker='" + $("#datepicker").val() + 
-	       "'&datepicker2='" + $("#datepicker2").val() +
-	       "'&clinicas=" + selecionadas 
-	        , function(data){
-		$("#lista").replaceWith(data);
-	});
+    $.getJSON("producao?datepicker='" + $("#datepicker").val() + 
+           "'&datepicker2='" + $("#datepicker2").val() +
+           "'&clinicas=" + selecionadas 
+            , function(data){
+        $("#lista").replaceWith(data);
+    });
 }
 
 function cheque(mostra){
-	if (mostra==1){
-		$("#cheque_classident").show();
-		$("#pagamento_conta_bancaria_id").focus();
-		$("#pagamento_valor_cheque").val($("#pagamento_valor_restante").val());
-	}else {
-		$("#cheque_classident").hide();
-		$("#pagamento_numero_do_cheque").val("");
-		$("#pagamento_valor_cheque").val("");
-	}
+    if (mostra==1){
+        $("#cheque_classident").show();
+        $("#pagamento_conta_bancaria_id").focus();
+        $("#pagamento_valor_cheque").val($("#pagamento_valor_restante").val());
+    }else {
+        $("#cheque_classident").hide();
+        $("#pagamento_numero_do_cheque").val("");
+        $("#pagamento_valor_cheque").val("");
+    }
+}
+
+
+function escolheu_protetico(){
+    $("#trabalho_protetico_tabela_protetico_id").hide();
+    $.getJSON("/proteticos/busca_tabela",{'protetico_id': $("#trabalho_protetico_protetico_id").val() },
+       function(data){
+          $("#trabalho_protetico_tabela_protetico_id").html("");
+          saida = "";
+          for (var i = 0; i < data.length; i++){
+            saida = saida + data[i];
+            $("#trabalho_protetico_tabela_protetico_id").append(new Option(data[i][0],data[i][1]));
+          }
+    });
+    $("#trabalho_protetico_tabela_protetico_id").show();
+}
+
+function escolheu_item_da_tabela(){
+	alert("item");
+	$.getJSON("/tabela_proteticos/busca_valor",{'item_id': $("#trabalho_protetico_tabela_protetico_id").val() },
+       function(data){
+	alert(data);
+	     $("#trabalho_protetico_valor").val(data);
+	});
 }

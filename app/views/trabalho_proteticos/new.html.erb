@@ -3,34 +3,35 @@
 
 <% form_for(@trabalho_protetico) do |f| %>
   <%= f.error_messages %>
-
+  <%= f.hidden_field @trabalho_protetico.paciente_id %>
+  <p>
+    <%= f.label :protetico_id %><br />
+    <%= f.select :protetico_id, @proteticos, {:include_blank=>true}, :onchange=>"escolheu_protetico();" %>
+  </p>
   <p>
     <%= f.label :dentista_id %><br />
     <%= f.select :dentista_id, @dentistas, :include_blank=>true %>
   </p>
   <p>
-    <%= f.label :protetico_id %><br />
-    <%= f.text_field :protetico_id %>
-  </p>
-  <p>
     <%= f.label :dente %><br />
-    <%= f.text_field :dente %>
+    <%= f.text_field :dente, :size=>10 %>
   </p>
   <p>
     <%= f.label :data_de_envio %><br />
-    <%= f.date_select :data_de_envio %>
+    <%=text_field_tag :datepicker, Date.today.to_s_br, :size=>10 %>
+<% #TODO Colocar o dia da semana %>
   </p>
   <p>
-    <%= f.label :data_prevista_de_devolucao %><br />
-    <%= f.date_select :data_prevista_de_devolucao %>
+    <%= f.label :data_prevista_de_devolução %><br />
+    <%= text_field_tag :datepicker2, (Date.today + 5.days).to_s_br, :size=>10 %>
   </p>
   <p>
-    <%= f.label :data_de_devolucao %><br />
-    <%= f.date_select :data_de_devolucao %>
+    <%= f.label :data_de_devolução %><br />
+    <%= text_field_tag :datepicker3, '', :size=>10 %>
   </p>
   <p>
     <%= f.label :tabela_protetico_id %><br />
-    <%= f.text_field :tabela_protetico_id %>
+    <%= f.select :tabela_protetico_id,[],{}, :onchange=>"escolheu_item_da_tabela();" %>
   </p>
   <p>
     <%= f.label :valor %><br />

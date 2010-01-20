@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100119135434) do
+ActiveRecord::Schema.define(:version => 20100120151710) do
 
   create_table "altas", :force => true do |t|
     t.integer  "paciente_id"
@@ -85,6 +85,11 @@ ActiveRecord::Schema.define(:version => 20100119135434) do
   create_table "clinicas_dentistas", :id => false, :force => true do |t|
     t.integer "clinica_id"
     t.integer "dentista_id"
+  end
+
+  create_table "clinicas_proteticos", :id => false, :force => true do |t|
+    t.integer "clinica_id"
+    t.integer "protetico_id"
   end
 
   create_table "conta_bancarias", :force => true do |t|
