@@ -1,0 +1,64 @@
+<h1>Editing trabalho_protetico</h1>
+
+<% form_for(@trabalho_protetico) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :dentista_id %><br />
+    <%= f.text_field :dentista_id %>
+  </p>
+  <p>
+    <%= f.label :protetico_id %><br />
+    <%= f.text_field :protetico_id %>
+  </p>
+  <p>
+    <%= f.label :dente %><br />
+    <%= f.text_field :dente %>
+  </p>
+  <p>
+    <%= f.label :data_de_envio %><br />
+    <%= f.date_select :data_de_envio %>
+  </p>
+  <p>
+    <%= f.label :data_prevista_de_devolucao %><br />
+    <%= f.date_select :data_prevista_de_devolucao %>
+  </p>
+  <p>
+    <%= f.label :data_de_devolucao %><br />
+    <%= f.date_select :data_de_devolucao %>
+  </p>
+  <p>
+    <%= f.label :tabela_protetico_id %><br />
+    <%= f.text_field :tabela_protetico_id %>
+  </p>
+  <p>
+    <%= f.label :valor %><br />
+    <%= f.text_field :valor %>
+  </p>
+  <p>
+    <%= f.label :cor %><br />
+    <%= f.text_field :cor %>
+  </p>
+  <p>
+    <%= f.label :observacoes %><br />
+    <%= f.text_area :observacoes %>
+  </p>
+  <p>
+    <%= f.label :data_de_repeticao %><br />
+    <%= f.date_select :data_de_repeticao %>
+  </p>
+  <p>
+    <%= f.label :motivo_da_repeticao %><br />
+    <%= f.text_field :motivo_da_repeticao %>
+  </p>
+  <p>
+    <%= f.label :data_prevista_da_devolucao_da_repeticao %><br />
+    <%= f.date_select :data_prevista_da_devolucao_da_repeticao %>
+  </p>
+  <p>
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @trabalho_protetico %> |
+<%= link_to 'Back', trabalho_proteticos_path %>

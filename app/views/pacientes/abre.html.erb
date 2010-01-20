@@ -8,17 +8,22 @@
         <li><a href="#fragment-2"><span>Cadastro</span></a></li>
         <li><a href="#fragment-3"><span>Extrato</span></a></li>
         <li><a href="#fragment-4"><span>Alta</span></a></li>
+        <li><a href="#fragment-5"><span>Protético</span></a></li>
     </ul>
-	<div id="fragment-1"><%= render :partial=>"tratamento" , :locals=>{:paciente=>@paciente} %>
+	<div id="fragment-1"><%= render :partial=>"tratamento"  %>
 	</div>
     <div id="fragment-2">
-      <%= render :partial=>"edit" , :locals=>{:paciente=>@paciente} %>
+      <%= render :partial=>"edit"  %>
     </div>
     <div id="fragment-3">
-      <%= render :partial=>"extrato", :locals=>{:paciente=>@paciente} %>
+      <%= render :partial=>"extrato" %>
     </div>
     <div id="fragment-4">
-      <%= render :partial=>"alta", :locals=>{:paciente=>@paciente} %>	
+      <%= render :partial=>"alta" %>	
+    </div>
+    <div id="fragment-5">
+      <%= render :partial=>"protetico" %>
+      	
     </div>
 </div>
 <% end %>

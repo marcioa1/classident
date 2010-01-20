@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100114171426) do
+ActiveRecord::Schema.define(:version => 20100119135434) do
 
   create_table "altas", :force => true do |t|
     t.integer  "paciente_id"
@@ -314,6 +314,28 @@ ActiveRecord::Schema.define(:version => 20100114171426) do
   end
 
   add_index "tipo_usuarios", ["id"], :name => "index_tipo_usuarios_on_id"
+
+  create_table "trabalho_proteticos", :force => true do |t|
+    t.integer  "dentista_id"
+    t.integer  "protetico_id"
+    t.integer  "paciente_id"
+    t.string   "dente"
+    t.date     "data_de_envio"
+    t.date     "data_prevista_de_devolucao"
+    t.date     "data_de_devolucao"
+    t.integer  "tabela_protetico_id"
+    t.decimal  "valor",                                   :precision => 7, :scale => 2
+    t.string   "cor"
+    t.text     "observacoes"
+    t.date     "data_de_repeticao"
+    t.string   "motivo_da_repeticao"
+    t.date     "data_prevista_da_devolucao_da_repeticao"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "trabalho_proteticos", ["paciente_id"], :name => "index_trabalho_proteticos_on_paciente_id"
+  add_index "trabalho_proteticos", ["protetico_id"], :name => "index_trabalho_proteticos_on_protetico_id"
 
   create_table "tratamentos", :force => true do |t|
     t.integer  "paciente_id"

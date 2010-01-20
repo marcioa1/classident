@@ -1,0 +1,31 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  dentista_id: 1
+  protetico_id: 1
+  dente: MyString
+  data_de_envio: 2010-01-19
+  data_prevista_de_devolucao: 2010-01-19
+  data_de_devolucao: 2010-01-19
+  tabela_protetico_id: 1
+  valor: 9.99
+  cor: MyString
+  observacoes: MyText
+  data_de_repeticao: 2010-01-19
+  motivo_da_repeticao: MyString
+  data_prevista_da_devolucao_da_repeticao: 2010-01-19
+
+two:
+  dentista_id: 1
+  protetico_id: 1
+  dente: MyString
+  data_de_envio: 2010-01-19
+  data_prevista_de_devolucao: 2010-01-19
+  data_de_devolucao: 2010-01-19
+  tabela_protetico_id: 1
+  valor: 9.99
+  cor: MyString
+  observacoes: MyText
+  data_de_repeticao: 2010-01-19
+  motivo_da_repeticao: MyString
+  data_prevista_da_devolucao_da_repeticao: 2010-01-19

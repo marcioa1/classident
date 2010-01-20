@@ -1,0 +1,6 @@
+<p>
+  <%= link_to "novo trabalho", new_trabalho_protetico_path %>
+</p>
+<% if !@pendentes_protetico.empty? %>
+  <%= render :partial=> "trabalhos_pendentes" %>
+<% end %>

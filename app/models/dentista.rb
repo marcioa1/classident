@@ -1,6 +1,8 @@
 class Dentista < ActiveRecord::Base
   has_many :tratamentos
   has_and_belongs_to_many :clinicas
+  has_many :trabalho_proteticos
+  
   #named_scope :da_clinica, lambda{|clinica_id| {:conditions=>["clinica_id=?", clinica_id]}}
   named_scope :por_nome, :order=>:nome
   named_scope :ativos, :conditions=>["ativo=?", true]
