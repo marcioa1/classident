@@ -3,7 +3,7 @@
 
 <% form_for(@trabalho_protetico) do |f| %>
   <%= f.error_messages %>
-  <%= f.hidden_field @trabalho_protetico.paciente_id %>
+  <%= f.hidden_field :paciente_id %>
   <p>
     <%= f.label :protetico_id %><br />
     <%= f.select :protetico_id, @proteticos, {:include_blank=>true}, :onchange=>"escolheu_protetico();" %>
@@ -27,7 +27,7 @@
   </p>
   <p>
     <%= f.label :data_de_devolução %><br />
-    <%= text_field_tag :datepicker3, '', :size=>10 %>
+    <%= text_field_tag :datepicker3, @trabalho_protetico.data_de_devolucao.to_s_br, :size=>10 %>
   </p>
   <p>
     <%= f.label :tabela_protetico_id %><br />
@@ -35,16 +35,17 @@
   </p>
   <p>
     <%= f.label :valor %><br />
-    <%= f.text_field :valor %>
+    <%= f.text_field :valor, :size=>8 %>
   </p>
   <p>
     <%= f.label :cor %><br />
-    <%= f.text_field :cor %>
+    <%= f.text_field :cor, :size=>8 %>
   </p>
   <p>
-    <%= f.label :observacoes %><br />
-    <%= f.text_area :observacoes %>
+    <%= f.label :observações %><br />
+    <%= f.text_area :observacoes, :rows=>3, :columns=>50 %>
   </p>
+<fieldset><legend> aqui não está pronto ainda </legend>
   <p>
     <%= f.label :data_de_repeticao %><br />
     <%= f.date_select :data_de_repeticao %>
@@ -57,10 +58,11 @@
     <%= f.label :data_prevista_da_devolucao_da_repeticao %><br />
     <%= f.date_select :data_prevista_da_devolucao_da_repeticao %>
   </p>
+</fieldset>
   <p>
     <%= f.submit 'salvar' %>
   </p>
 <% end %>
 
-<%= link_to 'voltar', trabalho_proteticos_path %>
+<%= link_to 'voltar', abre_paciente_path(@trabalho_protetico.paciente) %>
 <% end %>

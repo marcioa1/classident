@@ -1,20 +1,25 @@
 <h2> Protético <strong><%= @protetico.nome %></string></h2>
-<p><%= link_to "importa tabela base", importa_tabela_base_tabela_proteticos_path(:protetico_id=>@protetico.id)%></p>
+<p><%= link_to "importa tabela base", importa_tabela_base_tabela_proteticos_path(:protetico_id=>@protetico.id) if session[:clinica_id].to_i==0%> </p>
 <table>
   <tr>
-	<th width="100px">Código</th>
-	<th width="220px">Descrição</th>
-	<th width="100px">Valor</th>
-	<th>&nbsp</th>
-  </tr>	
+    <th width="100px">Código</th>
+    <th width="220px">Descrição</th>
+    <th width="100px">Valor</th>
+    <th>&nbsp</th>
+  </tr> 
 <% @protetico.tabela_proteticos.each do |item| %>
   <tr>
-  	<td><%= item.codigo%></td>
-    <td><%= link_to item.descricao, edit_tabela_protetico_path(item)%></td>
+    <td><%= item.codigo %></td>
+    <td><% if session[:clinica_id].to_i==0 %>
+          <%= link_to item.descricao, edit_tabela_protetico_path(item) %>
+        <% else %>
+          <%= item.descricao %>
+        <% end %>
+    </td>
     <td align="right"><%= item.valor.real%></td>
-    <td>apagar</td>
-  </tr>	
+    <td><%= 'apagar' if session[:clinica_id].to_i ==0 %></td>
+  </tr> 
 <% end %>
 </table>
 <br/>
-<%= link_to "novo item", new_tabela_protetico_path(:protetico_id=>@protetico.id)%>
+<%= link_to "novo item", new_tabela_protetico_path(:protetico_id=>@protetico.id) if session[:clinica_id].to_i == 0%>

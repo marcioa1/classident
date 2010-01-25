@@ -1,6 +1,5 @@
 <p>
   <%= link_to "novo trabalho", new_trabalho_protetico_path(:paciente_id=>@paciente.id) %>
 </p>
-<% if !@pendentes_protetico.empty? %>
-  <%= render :partial=> "trabalhos_pendentes" %>
-<% end %>
+<%= render :partial=> "trabalhos_pendentes" unless @pendentes_protetico.empty?%>
+<%= render :partial=> "trabalhos_devolvidos" unless @devolvidos_protetico.empty?%>

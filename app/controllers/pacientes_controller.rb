@@ -131,7 +131,7 @@ class PacientesController < ApplicationController
     @tabelas = Tabela.ativas.collect{|obj| [obj.nome,obj.id]}
     
     @pendentes_protetico = TrabalhoProtetico.pendentes.do_paciente(@paciente.id)
-    
+    @devolvidos_protetico = TrabalhoProtetico.devolvidos.do_paciente(@paciente.id) 
     session[:paciente_id] = params[:id]
     session[:paciente_nome] = @paciente.nome
   end

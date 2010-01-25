@@ -108,7 +108,6 @@ class TabelaProteticosController < ApplicationController
   
   def busca_valor
     @item = TabelaProtetico.find(params[:item_id])
-    debugger
     render :json=> @item.valor.to_json
   end
 end

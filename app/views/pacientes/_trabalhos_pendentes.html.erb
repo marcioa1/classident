@@ -1,15 +1,24 @@
 <h2>Trabalhos pendentes</h2>
 <table>
   <tr>
-    <th>Data da envio</th>
-    <th>Descrição</th>
-    <th>Valor</th>
+    <th><br/>Data da envio</th>
+    <th><br/>Descrição</th>
+    <th><br/>Valor</th>
+    <th>Data prevista<br/>de devolução</th>
+    <th><br/>Data de devolução</th>
+    <th><br/>Protético</th>
+    <th><br/>Dentista</th>
   </tr>
 <% @pendentes_protetico.each do |trab| %>
   <tr>
     <td><%= trab.data_de_envio.to_s_br%></td>
-    <td><%= trab.tabela_protetico.descricao %></td>
+    <td><%= link_to trab.tabela_protetico.descricao, edit_trabalho_protetico_path(trab) %></td>
     <td><%= trab.valor.real %></td>
+    <td><%= trab.data_prevista_de_devolucao.to_s_br%></td>
+    <td><%= trab.data_de_devolucao.to_s_br %></td>
+    <td><%= trab.protetico.nome %></td>
+    <td><%= trab.dentista.nome %></td>
+
   </tr>
 
 <% end %>

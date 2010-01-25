@@ -1,3 +1,4 @@
+<% content_for :main do %>
 <p>
   <b>Dentista:</b>
   <%=h @trabalho_protetico.dentista_id %>
@@ -64,5 +65,6 @@
 </p>
 
 
-<%= link_to 'Edit', edit_trabalho_protetico_path(@trabalho_protetico) %> |
-<%= link_to 'Back', trabalho_proteticos_path %>
+<%= link_to 'editar', edit_trabalho_protetico_path(@trabalho_protetico) %> |
+<%= link_to 'voltar', trabalho_proteticos_path %>
+<% end %>

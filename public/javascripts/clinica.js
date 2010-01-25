@@ -79,18 +79,25 @@ function escolheu_protetico(){
           $("#trabalho_protetico_tabela_protetico_id").html("");
           saida = "";
           for (var i = 0; i < data.length; i++){
-            saida = saida + data[i];
+            if (i==0){
+              var primeiro_id = data[0][1] 
+              $.getJSON("/tabela_proteticos/busca_valor",{'item_id': primeiro_id },
+                 function(data2){
+                   $("#trabalho_protetico_valor").val(data2);
+                 });
+            }
             $("#trabalho_protetico_tabela_protetico_id").append(new Option(data[i][0],data[i][1]));
           }
     });
     $("#trabalho_protetico_tabela_protetico_id").show();
+//    alert("p: "+primeiro_id);
+    
+    
 }
 
 function escolheu_item_da_tabela(){
-	alert("item");
-	$.getJSON("/tabela_proteticos/busca_valor",{'item_id': $("#trabalho_protetico_tabela_protetico_id").val() },
+    $.getJSON("/tabela_proteticos/busca_valor",{'item_id': $("#trabalho_protetico_tabela_protetico_id").val() },
        function(data){
-	alert(data);
-	     $("#trabalho_protetico_valor").val(data);
-	});
+         $("#trabalho_protetico_valor").val(data);
+    });
 }

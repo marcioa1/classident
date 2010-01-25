@@ -1,10 +1,14 @@
 class ProteticosController < ApplicationController
   layout "adm"
+  before_filter :require_user
   # GET /proteticos
   # GET /proteticos.xml
   def index
-    @proteticos = Protetico.por_nome
-
+    if session[:clinica_id].to_i == 0 
+      @proteticos = Protetico.por_nome
+    else
+      @proteticos = @clinica.proteticos.por_nome
+    end
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @proteticos }
@@ -44,7 +48,7 @@ class ProteticosController < ApplicationController
   def create
     @protetico = Protetico.new(params[:protetico])
     @protetico.clinicas = []
-    clinicas = Clinica.all
+    @clinicas = Clinica.all
     @clinicas.each() do |clinica|
       if params["clinica_#{clinica.id.to_s}"]
         @protetico.clinicas << clinica
@@ -56,6 +60,7 @@ class ProteticosController < ApplicationController
         format.html { redirect_to(proteticos_path) }
         format.xml  { render :xml => @protetico, :status => :created, :location => @protetico }
       else
+         @clinicas = Clinica.por_nome
         format.html { render :action => "new" }
         format.xml  { render :xml => @protetico.errors, :status => :unprocessable_entity }
       end

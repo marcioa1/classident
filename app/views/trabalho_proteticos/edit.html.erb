@@ -1,48 +1,50 @@
-<h1>Editing trabalho_protetico</h1>
+<% content_for :main do %>
+<fieldset>
+<legend>Editando trabalho protético</legend>
 
 <% form_for(@trabalho_protetico) do |f| %>
   <%= f.error_messages %>
-
-  <p>
-    <%= f.label :dentista_id %><br />
-    <%= f.text_field :dentista_id %>
-  </p>
   <p>
     <%= f.label :protetico_id %><br />
-    <%= f.text_field :protetico_id %>
+    <%= f.select :protetico_id, @proteticos, {}, :onchange=>"escolheu_protetico();" %>
+  </p>
+  <p>
+    <%= f.label :dentista_id %><br />
+    <%= f.select :dentista_id, @dentistas %>
   </p>
   <p>
     <%= f.label :dente %><br />
-    <%= f.text_field :dente %>
+    <%= f.text_field :dente, :size=>10 %>
   </p>
   <p>
     <%= f.label :data_de_envio %><br />
-    <%= f.date_select :data_de_envio %>
+    <%= text_field_tag :datepicker, @trabalho_protetico.data_de_envio.to_s_br, :size=>10 %>
   </p>
   <p>
-    <%= f.label :data_prevista_de_devolucao %><br />
-    <%= f.date_select :data_prevista_de_devolucao %>
+    <%= f.label :data_prevista_de_devolução %><br />
+    <%= text_field_tag :datepicker2, @trabalho_protetico.data_prevista_de_devolucao.to_s_br, :size=>10 %>
   </p>
   <p>
-    <%= f.label :data_de_devolucao %><br />
-    <%= f.date_select :data_de_devolucao %>
+    <%= f.label :data_de_devolução %><br />
+    <%= text_field_tag :datepicker3, @trabalho_protetico.data_de_devolucao.to_s_br, :size=>10 %>
   </p>
   <p>
     <%= f.label :tabela_protetico_id %><br />
-    <%= f.text_field :tabela_protetico_id %>
+    <%= f.select :tabela_protetico_id,@trabalho_protetico.protetico.tabela_proteticos.collect{|obj| [obj.descricao,obj.id]}.sort,{}, :onchange=>"escolheu_item_da_tabela();" %>
   </p>
   <p>
     <%= f.label :valor %><br />
-    <%= f.text_field :valor %>
+    <%= f.text_field :valor, :size=>8 %>
   </p>
   <p>
     <%= f.label :cor %><br />
-    <%= f.text_field :cor %>
+    <%= f.text_field :cor, :size=>8 %>
   </p>
   <p>
-    <%= f.label :observacoes %><br />
-    <%= f.text_area :observacoes %>
+   	<%= f.label :observações %><br />
+    <%= f.text_area :observacoes, :rows=>3, :columns=>50 %>
   </p>
+<fieldset><legend> aqui não está pronto ainda </legend>
   <p>
     <%= f.label :data_de_repeticao %><br />
     <%= f.date_select :data_de_repeticao %>
@@ -55,10 +57,12 @@
     <%= f.label :data_prevista_da_devolucao_da_repeticao %><br />
     <%= f.date_select :data_prevista_da_devolucao_da_repeticao %>
   </p>
+</fieldset>
   <p>
-    <%= f.submit 'Update' %>
+    <%= f.submit 'Salvar' %>
   </p>
 <% end %>
 
-<%= link_to 'Show', @trabalho_protetico %> |
-<%= link_to 'Back', trabalho_proteticos_path %>
+<%= link_to 'voltar', abre_paciente_path(@trabalho_protetico.paciente) %>
+</fieldset>
+<% end %>

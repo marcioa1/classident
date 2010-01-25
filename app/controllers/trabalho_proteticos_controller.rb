@@ -40,16 +40,18 @@ class TrabalhoProteticosController < ApplicationController
   # GET /trabalho_proteticos/1/edit
   def edit
     @trabalho_protetico = TrabalhoProtetico.find(params[:id])
-    @dentistas = @paciente.clinica.dentistas.collect{|obj| [obj.nome,obj.id]}.sort
-    @proteticos = Protetico.por_nome
-    
+    @paciente = @trabalho_protetico.paciente
+    @dentistas = @clinica.dentistas.collect{|obj| [obj.nome,obj.id]}.sort
+    @proteticos = Protetico.por_nome.collect{|obj| [obj.nome,obj.id]}
   end
 
   # POST /trabalho_proteticos
   # POST /trabalho_proteticos.xml
   def create
     @trabalho_protetico = TrabalhoProtetico.new(params[:trabalho_protetico])
-
+    @trabalho_protetico.data_de_envio = params[:datepicker].to_date if params[:datepicker]
+    @trabalho_protetico.data_prevista_de_devolucao = params[:datepicker2].to_date if params[:datepicker2]
+    @trabalho_protetico.data_de_devolucao = params[:datepicker3].to_date if !params[:datepicker3].blank?
     respond_to do |format|
       if @trabalho_protetico.save
         format.html { redirect_to( abre_paciente_path(@trabalho_protetico.paciente)) }
@@ -69,7 +71,7 @@ class TrabalhoProteticosController < ApplicationController
     respond_to do |format|
       if @trabalho_protetico.update_attributes(params[:trabalho_protetico])
         flash[:notice] = 'TrabalhoProtetico was successfully updated.'
-        format.html { redirect_to(@trabalho_protetico) }
+        format.html { redirect_to(abre_paciente_path(@trabalho_protetico.paciente)) }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }
