@@ -107,11 +107,13 @@ class ProteticosController < ApplicationController
     @clinicas = Clinica.por_nome - Clinica.administracao
     if administracao?
       @trabalhos_pendentes = TrabalhoProtetico.do_protetico(@protetico.id).pendentes
-      @trabalhos_devolvidos = TrabalhoProtetico.do_protetico(@protetico.id).devolvidos
+      @trabalhos_devolvidos = TrabalhoProtetico.do_protetico(@protetico.id).devolvidos.nao_pagos
     else
       @trabalhos_pendentes = TrabalhoProtetico.do_protetico(@protetico.id).pendentes.da_clinica(session[:clinica_id])
-      @trabalhos_devolvidos = TrabalhoProtetico.do_protetico(@protetico.id).devolvidos.da_clinica(session[:clinica_id])
+      @trabalhos_devolvidos = TrabalhoProtetico.do_protetico(@protetico.id).devolvidos.
+             da_clinica(session[:clinica_id]).nao_pagos
     end
+    @pagamentos = Pagamento.ao_protetico(@protetico.id)
   end
   
   def busca_tabela

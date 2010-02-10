@@ -32,6 +32,7 @@
     <th>Livro caixa</th>
     <th>&nbsp;</th>
     <th>&nbsp;</th>
+    <th>&nbsp;</th>
   </tr>
 <% total = 0 %>
 <% @pagamentos.each do |pagamento| %>
@@ -43,6 +44,7 @@
     <td align="center"><%=h pagamento.nao_lancar_no_livro_caixa ? "sim" : "não" %></td>
     <td><%= link_to 'editar', edit_pagamento_path(pagamento) %></td>
     <td><%= link_to 'excluir', pagamento, :confirm => 'Tem certeza ?', :method => :delete %></td>
+    <td><%= link_to 'mostrar', '#', :onclick=>'javascript:abre_pagamento('+ pagamento.id.to_s + ')'%></td>
   </tr>
   <% total += pagamento.valor_pago  %>
 <% end %>

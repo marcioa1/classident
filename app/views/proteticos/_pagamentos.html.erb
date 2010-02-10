@@ -1,0 +1,20 @@
+<table>
+  <tr>
+    <th>Data</th>
+    <th>Valor</th>
+    <th>Cheques</th>
+  </tr>
+  <% @protetico.pagamentos.each do |pg| %>
+    <tr>
+      <td><%= pg.data_de_pagamento %></td>
+      <td><%= pg.valor_pago.real %></td>
+      <td>
+	      <% cheques = "" %>
+        <% pg.cheques.each do |cq| %>
+          <% cheques = cheques + cq.banco.nome +  " | " + cq.numero + " | " + cq.recebimento.paciente.nome + " | " + cq.valor.real.to_s + "<br/>" %>
+	      <% end %>
+	      <%= cheques %>
+	    </td>
+    </tr>
+  <% end %>
+</table>

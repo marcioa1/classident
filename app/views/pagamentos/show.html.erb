@@ -1,3 +1,4 @@
+
 <%= stylesheet_link_tag 'plain_old_table.css'%>
 <p>
   <b>Tipo de pagamento</b>
@@ -39,5 +40,6 @@
   <%=h @pagamento.data_de_exclusao %>
 </p>
 <%= render :partial=>"pagamentos/cheques_utilizados" %>
+<%= render :partial=>"trabalho_proteticos/trabalho_pagamento"%>
 
 <a href="javascript: self.close();">fechar</a>

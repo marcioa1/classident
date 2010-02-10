@@ -1,6 +1,6 @@
 class PagamentosController < ApplicationController
   
-  layout "adm", :except=> :show
+  layout "adm" , :except=> :show
   before_filter :require_user
   # GET /pagamentos
   # GET /pagamentos.xml
@@ -25,6 +25,17 @@ class PagamentosController < ApplicationController
   # GET /pagamentos/new
   # GET /pagamentos/new.xml
   def new
+    if params[:trabalho_protetico_id].blank?
+      session[:trabalho_protetico_id] = nil
+    else
+      session[:trabalho_protetico_id] = params[:trabalho_protetico_id] 
+    end
+    if !params[:protetico_id].blank? 
+       session[:protetico_id] = params[:protetico_id]
+       @protetico = Protetico.find(params[:protetico_id])
+    else 
+      session[:protetico_id] = nil 
+    end
     @tipos_pagamento = TipoPagamento.da_clinica(session[:clinica_id]).ativos.por_nome.collect{|obj| [obj.nome, obj.id]}
     @pagamento = Pagamento.new
     if params[:valor]
@@ -50,23 +61,30 @@ class PagamentosController < ApplicationController
     @pagamento = Pagamento.new(params[:pagamento])
     @pagamento.data_de_pagamento = params[:datepicker].to_date
     @pagamento.clinica_id = session[:clinica_id]
-    debugger
     if params[:opcao_restante]!="pago_em_cheque"
       @pagamento.conta_bancaria_id = nil
     end
+    @pagamento.protetico_id = session[:protetico_id] if !session[:protetico_id].nil?
     respond_to do |format|
       Pagamento.transaction do
-        debugger
-      cheques = Cheque.all(:conditions=>["id in (?)",params[:cheques_ids][0..(params[:cheques_ids].size-2)]])
-      @pagamento.cheques << cheques
-        if @pagamento.save
-          flash[:notice] = 'Pagamento criado com sucesso.'
-          format.html { redirect_to(@pagamento) }
-          format.xml  { render :xml => @pagamento, :status => :created, :location => @pagamento }
-        else
-          format.html { render :action => "new" }
-          format.xml  { render :xml => @pagamento.errors, :status => :unprocessable_entity }
-      end
+        cheques = Cheque.all(:conditions=>["id in (?)",params[:cheques_ids][0..(params[:cheques_ids].size-2)]])
+        @pagamento.cheques << cheques
+          if @pagamento.save
+            if !session[:trabalho_protetico_id].nil?
+              ids = session[:trabalho_protetico_id].split(",")
+              ids.each do |id|
+                trab = TrabalhoProtetico.find(id)
+                trab.pagamento_id = @pagamento.id
+                trab.save
+              end
+            end
+            flash[:notice] = 'Pagamento criado com sucesso.'
+            format.html { redirect_to(@pagamento) }
+            format.xml  { render :xml => @pagamento, :status => :created, :location => @pagamento }
+          else
+            format.html { render :action => "new" }
+            format.xml  { render :xml => @pagamento.errors, :status => :unprocessable_entity }
+        end
       end
     end
   end

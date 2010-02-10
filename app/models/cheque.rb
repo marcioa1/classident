@@ -11,15 +11,20 @@ class Cheque < ActiveRecord::Base
   named_scope :devolvido, lambda{|data_inicial, data_final| 
       {:conditions=>["data_Reapresentacao IS NULL and data_primeira_devolucao between ? and ?", data_inicial, data_final]}}
   named_scope :devolvido_duas_vezes, :conditions=>["data_segunda_devolucao NOT NULL"]
-  named_scope :disponiveis, :conditions=>["data_segunda_devolucao IS NULL and 
+  named_scope :disponiveis_na_clinica, :conditions=>["data_segunda_devolucao IS NULL and 
          data_spc IS NULL and data_solucao IS NULL and data_arquivo_morto IS NULL
          and data_entrega_administracao IS NULL and pagamento_id IS NULL
          and destinacao_id IS NULL"]
+  named_scope :disponiveis_na_administracao       , :conditions=>["data_segunda_devolucao IS NULL and 
+                data_spc IS NULL and data_solucao IS NULL and data_arquivo_morto IS NULL
+                and pagamento_id IS NULL
+                and destinacao_id IS NULL"]
   named_scope :entre_datas, lambda{|data_inicial, data_final| 
       {:conditions=>["bom_para between ? and ?", data_inicial, data_final]}}
   named_scope :nao_excluidos, :conditions=>["data_de_exclusao IS NULL"]
  
   named_scope :entregues_a_administracao, :conditions=>["data_entrega_administracao NOT NULL"]
+  named_scope :na_administracao, :conditions=>["data_recebimento_na_administracao IS NOT NULL"]
   named_scope :nao_recebidos, :conditions=>["data_recebimento_na_administracao IS NULL"]  
   named_scope :reapresentado, lambda{|data_inicial, data_final| 
       {:conditions=>["data_reapresentacao between ? and ?", data_inicial, data_final]}}

@@ -133,5 +133,11 @@ function abre_cheque(id){
 }
 
 function abre_pagamento(id){
-	window.open("/pagamentos/"+ id,"abre o pagamento" ,"height=240,width=310,status=no");
+	window.open("/pagamentos/"+ id,"abre o pagamento" ,"height=600,width=500,status=no,resizable=yes,scrollbars=yes");
+}
+
+function pesquisa_disponiveis(){
+   $.getJSON("/cheques/busca_disponiveis?valor=" + $("#pagamento_valor").val(), function(data){
+    $("#lista_de_cheques").replaceWith("<span id='lista_de_cheques'>" + data + "</span>");
+    });
 }

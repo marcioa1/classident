@@ -1,0 +1,24 @@
+<% if !@pagamento.trabalho_proteticos.empty? %>
+    <br/>
+    <hr >
+    <p/>
+    Pago ao protético : 
+    <%= @pagamento.protetico.nome%>
+    <table>
+      <tr>
+        <th width='260px'>Trabalho</th>
+        <th width='260px'>Paciente</th>
+        <th width='50px'>Valor</th>
+      </tr>
+    <% @pagamento.trabalho_proteticos.each do |trab| %>
+      <tr>
+        <td><%= trab.tabela_protetico.descricao %></td>
+        <td><%= trab.paciente.nome %></td>
+        <td align= 'right'><%=trab.valor.real %></td>
+      </tr>
+    <% end %>
+    </table>
+    <br/>
+    <hr>
+    
+<% end %>

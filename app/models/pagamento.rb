@@ -2,7 +2,10 @@ class Pagamento < ActiveRecord::Base
   belongs_to :clinica
   belongs_to :tipo_pagamento
   has_many :cheques
+  has_many :trabalho_proteticos
+  belongs_to :protetico
   
+  named_scope :ao_protetico, lambda{|protetico_id| {:conditions=>["protetico_id = ?", protetico_id]}}
   named_scope :no_dia, lambda{|dia|
        {:conditions=>["data_de_pagamento = ? ",dia]}}
   named_scope :por_data, :order=>:data_de_pagamento

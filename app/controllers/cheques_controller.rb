@@ -165,7 +165,7 @@ class ChequesController < ApplicationController
   
   def busca_disponiveis
     if administracao?
-      @cheques = Cheque.recebidos_na_administracao.disponiveis.por_valor.menores_que(params[:valor]);
+      @cheques = Cheque.disponiveis_na_administracao.por_valor.menores_que(params[:valor]);
     else
       @cheques = Cheque.da_clinica(session[:clinica_id]).disponiveis.por_valor.menores_que(params[:valor]);
     end
@@ -174,7 +174,7 @@ class ChequesController < ApplicationController
     @cheques.each() do |cheque|
       result +=  "<tr><td>" + cheque.bom_para.to_s_br + "</td>" 
       result += "<td><span id='valor_#{cheque.id}'>" + cheque.valor.real.to_s + "</span></td>"
-      result += "<td>" + cheque.sequencial.to_s + cheque.recebimento.paciente.nome + "</td>"
+      result += "<td>" + cheque.recebimento.paciente.nome + "</td>"
       result += "<td> <input type='checkbox' id='cheque_#{cheque.id}' onclick='selecionou_cheque(#{cheque.id});'</input></td> " 
       result += "</tr>"
     end

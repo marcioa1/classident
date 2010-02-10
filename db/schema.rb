@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100203130400) do
+ActiveRecord::Schema.define(:version => 20100210133540) do
 
   create_table "altas", :force => true do |t|
     t.integer  "paciente_id"
@@ -229,6 +229,7 @@ ActiveRecord::Schema.define(:version => 20100203130400) do
     t.integer  "opcao_restante"
     t.integer  "conta_bancaria_id"
     t.string   "numero_do_cheque"
+    t.integer  "protetico_id"
   end
 
   add_index "pagamentos", ["clinica_id"], :name => "index_pagamentos_on_clinica_id"
@@ -331,7 +332,7 @@ ActiveRecord::Schema.define(:version => 20100203130400) do
     t.date     "data_prevista_de_devolucao"
     t.date     "data_de_devolucao"
     t.integer  "tabela_protetico_id"
-    t.decimal  "valor",                                   :precision => 7, :scale => 2
+    t.decimal  "valor"
     t.string   "cor"
     t.text     "observacoes"
     t.date     "data_de_repeticao"
@@ -340,6 +341,7 @@ ActiveRecord::Schema.define(:version => 20100203130400) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "clinica_id"
+    t.integer  "pagamento_id"
   end
 
   add_index "trabalho_proteticos", ["paciente_id"], :name => "index_trabalho_proteticos_on_paciente_id"
