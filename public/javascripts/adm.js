@@ -13,3 +13,17 @@ alert (selecionados);
       alert(data);
     });
 }
+
+function pagar(valor,id){
+	anterior = $('#valor').text();
+//	anterior = anterior.replace(".","")
+//	anterior = anterior.replace(",", ".")
+	valor_total = parseFloat(anterior)
+	if ($("#pagar_" + id).is(':checked')==true)
+	  valor_total = valor_total + valor
+	else
+	  valor_total = valor_total - valor
+	$('#valor').text(valor_total)
+	$('#link_pagamento').replaceWith("<span id='link_pagamento'><a href='/pagamentos/new?valor=" + valor_total + "'>efetua pagamento</a></span>")
+	
+}

@@ -1,4 +1,6 @@
 class ContaBancariasController < ApplicationController
+ 
+  layout "adm"
   # GET /conta_bancarias
   # GET /conta_bancarias.xml
   def index
@@ -25,7 +27,7 @@ class ContaBancariasController < ApplicationController
   # GET /conta_bancarias/new.xml
   def new
     @conta_bancaria = ContaBancaria.new
-
+    @clinica_atual.s = Clinica.por_nome.collect{|cl| [cl.nome, cl.id]}
     respond_to do |format|
       format.html # new.html.erb
       format.xml  { render :xml => @conta_bancaria }
@@ -35,6 +37,7 @@ class ContaBancariasController < ApplicationController
   # GET /conta_bancarias/1/edit
   def edit
     @conta_bancaria = ContaBancaria.find(params[:id])
+    @clinica_atual.s = Clinica.por_nome.collect{|cl| [cl.nome, cl.id]}
   end
 
   # POST /conta_bancarias
@@ -45,7 +48,7 @@ class ContaBancariasController < ApplicationController
     respond_to do |format|
       if @conta_bancaria.save
         flash[:notice] = 'ContaBancaria was successfully created.'
-        format.html { redirect_to(@conta_bancaria) }
+        format.html { redirect_to(conta_bancarias_path) }
         format.xml  { render :xml => @conta_bancaria, :status => :created, :location => @conta_bancaria }
       else
         format.html { render :action => "new" }

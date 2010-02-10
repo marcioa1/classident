@@ -30,11 +30,15 @@ ActionController::Routing::Routes.draw do |map|
   end
   map.resources :tabela_proteticos, 
                 :collection=>{:importa_tabela_base=>:get,:busca_valor=>:get}
-  map.resources :tipo_pagamentos
+  map.resources :tipo_pagamentos, :member=>{:reativar=>:get}
   map.resources :trabalho_proteticos
   map.resources :tratamentos, :member=>{:finalizar_procedimento=>:get}
   map.resources :users, :member =>[:troca_senha=>:get]
   map.resource :user_sessions
+  
+  map.registra_devolucao_de_trabalho '/registra_devolucao_de_trabalho',
+             :controller=>'trabalho_proteticos',
+             :action=>'registra_devolucao_de_trabalho'
 
   map.selecionou_clinica "selecionou_clinica", :controller=>:clinicas, :action=>:selecionou_clinica
   map.root :controller => "user_sessions", :action => "new" # optional, this just sets the root route

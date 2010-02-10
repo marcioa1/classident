@@ -101,3 +101,13 @@ function escolheu_item_da_tabela(){
          $("#trabalho_protetico_valor").val(data);
     });
 }
+
+function devolve_trabalho(id){
+	$.get("/registra_devolucao_de_trabalho?id=" + id);
+	var d = new Date()
+	var curr_date = d.getDate();
+	var curr_month = d.getMonth();
+	curr_month++;
+	var curr_year = d.getFullYear();
+	$("#data_"+id).replaceWith(curr_date + "/" + curr_month + "/" + curr_year)
+}

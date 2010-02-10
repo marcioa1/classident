@@ -13,11 +13,10 @@ class UserSessionsController < ApplicationController
         if current_user.password == "1234"
           redirect_to troca_senha_user_path
         else
+         
           if current_user.clinica.nil?
-            session[:clinica] = "Administração"
-            session[:clinica_id] = 0
+            session[:clinica_id] = Clinica.find_by_sigla("AD").id
           else
-            session[:clinica] = current_user.clinica.nome
             session[:clinica_id] = current_user.clinica.id
           end
           redirect_to pesquisa_pacientes_path
@@ -30,7 +29,6 @@ class UserSessionsController < ApplicationController
 
     def destroy
       current_user_session.destroy
-      session[:carrinho] = nil
       flash[:notice] = "Obrigado pela visita !"
       redirect_to root_path
     end

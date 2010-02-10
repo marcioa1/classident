@@ -36,7 +36,7 @@ class DentistasController < ApplicationController
   # GET /dentistas/new.xml
   def new
     @dentista = Dentista.new
-    @clinicas = Clinica.all(:order=>:nome)
+    @clinica_atual.s = Clinica.all(:order=>:nome)
     respond_to do |format|
       format.html # new.html.erb
       format.xml  { render :xml => @dentista }
@@ -46,7 +46,7 @@ class DentistasController < ApplicationController
   # GET /dentistas/1/edit
   def edit
     @dentista = Dentista.find(params[:id])
-    @clinicas = Clinica.all(:order=>:nome)
+    @clinica_atual.s = Clinica.all(:order=>:nome)
   end
 
   # POST /dentistas
@@ -109,8 +109,8 @@ class DentistasController < ApplicationController
 
   def abre
     @dentista = Dentista.find(params[:id])  
-    @clinicas = Clinica.all(:order=>:nome)
-    @clinica_1 = "1"
+    @clinica_atual.s = Clinica.all(:order=>:nome)
+    @clinica_atual._1 = "1"
     @inicio = Date.today - 15.days
     @fim = Date.today
   end

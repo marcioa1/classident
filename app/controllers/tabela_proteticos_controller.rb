@@ -50,7 +50,7 @@ class TabelaProteticosController < ApplicationController
       if @tabela_protetico.save
         flash[:notice] = 'TabelaProtetico was successfully created.'
         format.html { 
-          if session[:clinica_id].to_i == 0
+          if administracao?
             redirect_to(tabela_proteticos_path) 
           else
             redirect_to abre_protetico_path(@tabela_protetico.protetico)

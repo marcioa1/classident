@@ -22,4 +22,4 @@
 <% end %>
 </table>
 <br/>
-<%= link_to "novo item", new_tabela_protetico_path(:protetico_id=>@protetico.id) if session[:clinica_id].to_i == 0%>
+<%= link_to "novo item", new_tabela_protetico_path(:protetico_id=>@protetico.id) if @administracao%>

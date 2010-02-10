@@ -26,7 +26,7 @@ class PacientesController < ApplicationController
   # GET /pacientes/new
   # GET /pacientes/new.xml
   def new
-    if session[:clinica_id].to_i == 0
+    if administracao?
       redirect_to administracao_path
     else
       @tabelas = Tabela.ativas.collect{|obj| [obj.nome,obj.id]}
@@ -101,7 +101,7 @@ class PacientesController < ApplicationController
     end  
     @pacientes =[]
     if !params[:codigo].blank?
-      if session[:clinica_id].to_i == 0
+      if administracao?
         @pacientes = Paciente.all(:conditions=>["codigo=?", params[:codigo]], :order=>:nome)
       else
         @pacientes = Paciente.all(:conditions=>["clinica_id=? and codigo=?", session[:clinica_id].to_i, params[:codigo].to_i],:order=>:nome)

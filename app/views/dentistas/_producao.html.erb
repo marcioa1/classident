@@ -1,6 +1,6 @@
     Entre : <%= text_field_tag :datepicker, @inicio.to_s_br, :size=>10 %>
     e : <%= text_field_tag :datepicker2, @fim.to_s_br, :size=>10 %>
-    <% if session[:clinica_id].to_i == 0 %>
+    <% if administracao? %>
       <br/>
       Clínicas :  
       <% @dentista.clinicas.each() do |clinica| %>

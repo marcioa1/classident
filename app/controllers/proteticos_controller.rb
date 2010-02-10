@@ -4,10 +4,10 @@ class ProteticosController < ApplicationController
   # GET /proteticos
   # GET /proteticos.xml
   def index
-    if session[:clinica_id].to_i == 0 
+    if administracao?
       @proteticos = Protetico.por_nome
     else
-      @proteticos = @clinica.proteticos.por_nome
+      @proteticos = @clinica_atual.proteticos.por_nome
     end
     respond_to do |format|
       format.html # index.html.erb
@@ -30,7 +30,7 @@ class ProteticosController < ApplicationController
   # GET /proteticos/new.xml
   def new
     @protetico = Protetico.new
-    @clinicas = Clinica.por_nome
+    @clinica_atual.s = Clinica.por_nome
     respond_to do |format|
       format.html # new.html.erb
       format.xml  { render :xml => @protetico }
@@ -40,7 +40,7 @@ class ProteticosController < ApplicationController
   # GET /proteticos/1/edit
   def edit
     @protetico = Protetico.find(params[:id])
-    @clinicas = Clinica.por_nome
+    @clinica_atual.s = Clinica.por_nome
   end
 
   # POST /proteticos
@@ -48,8 +48,8 @@ class ProteticosController < ApplicationController
   def create
     @protetico = Protetico.new(params[:protetico])
     @protetico.clinicas = []
-    @clinicas = Clinica.all
-    @clinicas.each() do |clinica|
+    @clinica_atual.s = Clinica.all
+    @clinica_atual.s.each() do |clinica|
       if params["clinica_#{clinica.id.to_s}"]
         @protetico.clinicas << clinica
       end      
@@ -60,7 +60,7 @@ class ProteticosController < ApplicationController
         format.html { redirect_to(proteticos_path) }
         format.xml  { render :xml => @protetico, :status => :created, :location => @protetico }
       else
-         @clinicas = Clinica.por_nome
+         @clinica_atual.s = Clinica.por_nome
         format.html { render :action => "new" }
         format.xml  { render :xml => @protetico.errors, :status => :unprocessable_entity }
       end
@@ -104,12 +104,20 @@ class ProteticosController < ApplicationController
   
   def abre
     @protetico = Protetico.find(params[:id])  
-    @clinicas = Clinica.por_nome
+    @clinicas = Clinica.por_nome - Clinica.administracao
+    if administracao?
+      @trabalhos_pendentes = TrabalhoProtetico.do_protetico(@protetico.id).pendentes
+      @trabalhos_devolvidos = TrabalhoProtetico.do_protetico(@protetico.id).devolvidos
+    else
+      @trabalhos_pendentes = TrabalhoProtetico.do_protetico(@protetico.id).pendentes.da_clinica(session[:clinica_id])
+      @trabalhos_devolvidos = TrabalhoProtetico.do_protetico(@protetico.id).devolvidos.da_clinica(session[:clinica_id])
+    end
   end
   
   def busca_tabela
     @protetico = Protetico.find(params[:protetico_id])
     render :json=>@protetico.tabela_proteticos.collect{|obj| [obj.descricao,obj.id]}.to_json
   end
+  
   
 end

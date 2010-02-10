@@ -6,17 +6,19 @@
     <th width="200px">Nome</th>
     <th>Ativo</th>
     <th>&nbsp;</th>
-    <th>&nbsp;</th>
-    <th>&nbsp;</th>
   </tr>
 
 <% @tipo_pagamentos.each do |tipo_pagamento| %>
   <tr>
-    <td><%=h tipo_pagamento.nome %></td>
-    <td><%=h tipo_pagamento.ativo ? "sim" : "não" %></td>
-    <td><%= link_to 'mostrar', tipo_pagamento %></td>
-    <td><%= link_to 'editar', edit_tipo_pagamento_path(tipo_pagamento) %></td>
-    <td><%= link_to 'desativar', tipo_pagamento, :confirm => 'Tem certeza ?', :method => :delete %></td>
+    <td><%= link_to tipo_pagamento.nome, edit_tipo_pagamento_path(tipo_pagamento) %></td>
+    <td><%=h tipo_pagamento.ativo? ? "sim" : "não" %></td>
+    <td>
+    <% if tipo_pagamento.ativo? %>
+      <%= link_to 'desativar', tipo_pagamento, :confirm => 'Tem certeza ?', :method => :delete %>
+    <% else %>
+      <%= link_to 'reativar', reativar_tipo_pagamento_path(tipo_pagamento) %>
+    <% end %>
+</td>
   </tr>
 <% end %>
 </table>

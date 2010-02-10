@@ -4,6 +4,7 @@
 
 <% form_for(@tipo_pagamento) do |f| %>
   <%= f.error_messages %>
+<%= f.hidden_field :clinica_id%>
   <p>
     <%= f.label :nome %><br />
     <%= f.text_field :nome %>

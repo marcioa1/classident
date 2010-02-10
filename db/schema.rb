@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100120151710) do
+ActiveRecord::Schema.define(:version => 20100203130400) do
 
   create_table "altas", :force => true do |t|
     t.integer  "paciente_id"
@@ -78,6 +78,7 @@ ActiveRecord::Schema.define(:version => 20100120151710) do
     t.string   "sigla"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "e_administracao"
   end
 
   add_index "clinicas", ["id"], :name => "index_clinicas_on_id"
@@ -96,6 +97,7 @@ ActiveRecord::Schema.define(:version => 20100120151710) do
     t.string   "nome"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "clinica_id"
   end
 
   add_index "conta_bancarias", ["id"], :name => "index_conta_bancarias_on_id"
@@ -337,6 +339,7 @@ ActiveRecord::Schema.define(:version => 20100120151710) do
     t.date     "data_prevista_da_devolucao_da_repeticao"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "clinica_id"
   end
 
   add_index "trabalho_proteticos", ["paciente_id"], :name => "index_trabalho_proteticos_on_paciente_id"

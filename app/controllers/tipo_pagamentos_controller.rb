@@ -4,7 +4,7 @@ class TipoPagamentosController < ApplicationController
   # GET /tipo_pagamentos
   # GET /tipo_pagamentos.xml
   def index
-    @tipo_pagamentos = TipoPagamento.all(:order=>:nome)
+    @tipo_pagamentos = TipoPagamento.da_clinica(session[:clinica_id]).por_nome
 
     respond_to do |format|
       format.html # index.html.erb
@@ -48,7 +48,7 @@ class TipoPagamentosController < ApplicationController
     respond_to do |format|
       if @tipo_pagamento.save
         flash[:notice] = 'TipoPagamento was successfully created.'
-        format.html { redirect_to(@tipo_pagamento) }
+        format.html { redirect_to(tipo_pagamentos_path) }
         format.xml  { render :xml => @tipo_pagamento, :status => :created, :location => @tipo_pagamento }
       else
         format.html { render :action => "new" }
@@ -78,7 +78,19 @@ class TipoPagamentosController < ApplicationController
   # DELETE /tipo_pagamentos/1.xml
   def destroy
     @tipo_pagamento = TipoPagamento.find(params[:id])
-    @tipo_pagamento.destroy
+    @tipo_pagamento.ativo = false
+    @tipo_pagamento.save
+
+    respond_to do |format|
+      format.html { redirect_to(tipo_pagamentos_url) }
+      format.xml  { head :ok }
+    end
+  end
+  
+  def reativar
+    @tipo_pagamento = TipoPagamento.find(params[:id])
+    @tipo_pagamento.ativo = true
+    @tipo_pagamento.save
 
     respond_to do |format|
       format.html { redirect_to(tipo_pagamentos_url) }

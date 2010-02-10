@@ -25,7 +25,7 @@
 <div id="container">
     <div id="cabecalho">
       <div id="logo"><%= image_tag "logo2.jpg"%>
-      <div id="login">Usuário : <%= current_user.nome %> ( <%= current_user.tipo_usuario.nome %> ) | <%= session[:clinica] %>
+      <div id="login">Usuário : <%= current_user.nome %> ( <%= current_user.tipo_usuario.nome %> ) | <%= @clinica_atual.nome %>
     <% if current_user.tipo_usuario.nivel < 2 %>
      | <a href="#" onClick='outra_clinica();'> outra clinica</a>
     <div id="seleciona_clinica" style="display:none;">
@@ -39,7 +39,7 @@
     
     <div id="principal">
         <div class="pd_menu_01">
-            <% if session[:clinica]=="Administração"%>
+            <% if session[:clinica_id]=="Administração"%>
               <%= render :partial=>"layouts/menu_adm" %>
             <% else %>
               <%= render :partial=>"layouts/menu_clinica" %>

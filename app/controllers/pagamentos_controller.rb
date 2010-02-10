@@ -25,8 +25,11 @@ class PagamentosController < ApplicationController
   # GET /pagamentos/new
   # GET /pagamentos/new.xml
   def new
-    @tipos_pagamento = TipoPagamento.por_nome.collect{|obj| [obj.nome, obj.id]}
+    @tipos_pagamento = TipoPagamento.da_clinica(session[:clinica_id]).ativos.por_nome.collect{|obj| [obj.nome, obj.id]}
     @pagamento = Pagamento.new
+    if params[:valor]
+      @pagamento.valor = params[:valor]
+    end
     @contas_bancarias = ContaBancaria.all.collect{|obj| [obj.nome, obj.id]}
     respond_to do |format|
       format.html # new.html.erb

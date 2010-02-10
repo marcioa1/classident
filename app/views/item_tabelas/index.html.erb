@@ -7,7 +7,7 @@
     <th width="220px">Descrição</th>
     <th>Ativo</th>
     <th width="60px">Preço</th>
-    <% if session[:clinica_id].to_i == 0 %>
+    <% if administracao? %>
       <th>&nbsp;</th>
       <th>&nbsp;</th>
     <% end %>

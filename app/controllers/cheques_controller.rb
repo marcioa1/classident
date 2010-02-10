@@ -164,7 +164,11 @@ class ChequesController < ApplicationController
   end
   
   def busca_disponiveis
-    @cheques = Cheque.disponiveis.por_valor.menores_que(params[:valor]);
+    if administracao?
+      @cheques = Cheque.recebidos_na_administracao.disponiveis.por_valor.menores_que(params[:valor]);
+    else
+      @cheques = Cheque.da_clinica(session[:clinica_id]).disponiveis.por_valor.menores_que(params[:valor]);
+    end
     result = "<table >"
     result += "<tr><th>Bom para</th><th>valor</th><th>Paciente</th><th>&nbsp;</th></tr>"
     @cheques.each() do |cheque|
