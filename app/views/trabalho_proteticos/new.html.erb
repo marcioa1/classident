@@ -4,6 +4,7 @@
 <% form_for(@trabalho_protetico) do |f| %>
   <%= f.error_messages %>
   <%= f.hidden_field :paciente_id %>
+  <%= f.hidden_field :clinica_id %>
   <p>
     <%= f.label :protetico_id %><br />
     <%= f.select :protetico_id, @proteticos, {:include_blank=>true}, :onchange=>"escolheu_protetico();" %>

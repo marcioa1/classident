@@ -30,7 +30,7 @@ class ProteticosController < ApplicationController
   # GET /proteticos/new.xml
   def new
     @protetico = Protetico.new
-    @clinica_atual.s = Clinica.por_nome
+    @clinica_atual = Clinica.por_nome
     respond_to do |format|
       format.html # new.html.erb
       format.xml  { render :xml => @protetico }
@@ -48,8 +48,8 @@ class ProteticosController < ApplicationController
   def create
     @protetico = Protetico.new(params[:protetico])
     @protetico.clinicas = []
-    @clinica_atual.s = Clinica.all
-    @clinica_atual.s.each() do |clinica|
+    @clinica_atual = Clinica.all
+    @clinica_atual.each() do |clinica|
       if params["clinica_#{clinica.id.to_s}"]
         @protetico.clinicas << clinica
       end      

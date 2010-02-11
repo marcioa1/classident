@@ -28,8 +28,9 @@ class TrabalhoProteticosController < ApplicationController
     @paciente = Paciente.find(params[:paciente_id])
     @trabalho_protetico = TrabalhoProtetico.new
     @trabalho_protetico.paciente = @paciente
-    @dentistas = @clinica_atual..dentistas.collect{|obj| [obj.nome,obj.id]}.sort
-    @proteticos = @clinica_atual..proteticos.collect{|obj| [obj.nome,obj.id]}.sort
+    @trabalho_protetico.clinica_id = session[:clinica_id]
+    @dentistas = @clinica_atual.dentistas.collect{|obj| [obj.nome,obj.id]}.sort
+    @proteticos = @clinica_atual.proteticos.collect{|obj| [obj.nome,obj.id]}.sort
 
     respond_to do |format|
       format.html # new.html.erb
@@ -41,7 +42,7 @@ class TrabalhoProteticosController < ApplicationController
   def edit
     @trabalho_protetico = TrabalhoProtetico.find(params[:id])
     @paciente = @trabalho_protetico.paciente
-    @dentistas = @clinica_atual..dentistas.collect{|obj| [obj.nome,obj.id]}.sort
+    @dentistas = @clinica_atual.dentistas.collect{|obj| [obj.nome,obj.id]}.sort
     @proteticos = Protetico.por_nome.collect{|obj| [obj.nome,obj.id]}
   end
 
