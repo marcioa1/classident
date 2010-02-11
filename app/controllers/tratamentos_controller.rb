@@ -7,7 +7,7 @@ class TratamentosController < ApplicationController
     @tratamento.paciente_id = @paciente.id
     @items = @paciente.tabela.item_tabelas.
         collect{|obj| [obj.codigo + " - " + obj.descricao,obj.id]}.insert(0,"")
-    @dentistas = @clinica_atual..dentistas.collect{|obj| [obj.nome,obj.id]}.sort
+    @dentistas = @clinica_atual.dentistas.collect{|obj| [obj.nome,obj.id]}.sort
   end
   
   def create
@@ -34,7 +34,7 @@ class TratamentosController < ApplicationController
     @tratamento = Tratamento.find(params[:id])
     @items = @tratamento.paciente.tabela.item_tabelas.
         collect{|obj| [obj.codigo + " - " + obj.descricao,obj.id]}
-    @dentistas = @clinica_atual..dentistas.collect{|obj| [obj.nome,obj.id]}
+    @dentistas = @clinica_atual.dentistas.collect{|obj| [obj.nome,obj.id]}
   end
   
   def update

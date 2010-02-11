@@ -1,52 +1,10 @@
 <% content_for :main do %>
-<fieldset>
+<fieldset class='fieldset_60'>
 <legend>Novo tratamento</legend>
 
-Paciente : <%= @tratamento.paciente.nome %> ( Tabela: <%= @tratamento.paciente.tabela.nome %> )<br/>
-<% form_for(@tratamento) do |f| %>
-
-  <%= f.hidden_field :paciente_id %>
-  
-  <p>
-  	<%= f.label :dente %> : 
-    <%= f.text_field :dente, :size=>10%>
-  </p>
-  <p>
-  	<%= f.check_box :mesial %> Mesial
-  	<%= f.check_box :distal %> Distal
-  	<%= f.check_box :oclusal %> Oclusal
-  </p>
-  <p>
-  <%= f.label :codigo %> : 
-  <%= f.select :item_tabela_id, options_for_select(@items), {}, html_options={  :onchange=>"selecionou_item_tabela(#{session[:clinica_id]});"} %>
-  </p>
-  <p>
-    <%= f.label :descrição %> : 
-    <%= f.text_field :descricao, :size=>50 %>
-  </p>
-  <p><%= f.label :valor %> :
-	<%= f.text_field :valor, :size=>10 %>
-  </p>
-  <p><%= f.label :custo %> :
-	<%= f.text_field :custo, :size=>10 %>
-  </p>
-  <p>
-  	<%= f.label :dentista %>
-    <%= f.select :dentista_id, @dentistas, :include_blank=>true %>
-  </p>
-  <p>
-  	<%= f.label :data_de_término %>
-  	<input type="text" id="datepicker" onchange="alterou_data_tratamento();", size="12">
-    <%= link_to "hoje", "#", :onclick=>"hoje();alterou_data_tratamento();"%>
-    <span style="display:none;">
-    <%= f.date_select :data , :order=>[:day, :month, :year],
-           :include_blank=>true %>
-    </span>
-  </p>
-  <p>
-  </p>
-  <%= f.submit "salvar"%>
-<% end %>
+<div class= 'destaque'>Paciente : <%= @tratamento.paciente.nome %> ( Tabela: <%= @tratamento.paciente.tabela.nome %> )</div>
+<br/>
+<%= render :partial=>'form'%>
 </fieldset>
 <%= link_to "voltar", abre_paciente_path(:id=>@tratamento.paciente_id) %>
 <% end %>

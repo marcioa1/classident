@@ -106,3 +106,16 @@ function devolve_trabalho(id){
 	var curr_year = d.getFullYear();
 	$("#data_"+id).replaceWith(curr_date + "/" + curr_month + "/" + curr_year)
 }
+
+function selecionou_estado(){
+	$(':checkbox').attr('checked', false)
+}
+
+function selecionou_face(){
+	$('#tratamento_estado_nenhum').attr('checked', true)
+}
+function todas_as_faces(){
+	selecionou_face()
+	$(':checkbox').attr('checked', $('#todas').is(':checked'))
+	
+}

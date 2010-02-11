@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100210133540) do
+ActiveRecord::Schema.define(:version => 20100211180404) do
 
   create_table "altas", :force => true do |t|
     t.integer  "paciente_id"
@@ -359,13 +359,16 @@ ActiveRecord::Schema.define(:version => 20100210133540) do
     t.datetime "updated_at"
     t.integer  "clinica_id"
     t.boolean  "excluido"
-    t.decimal  "custo",                        :precision => 9, :scale => 2
+    t.decimal  "custo"
     t.string   "face"
     t.string   "descricao",      :limit => 60
     t.integer  "sequencial"
     t.boolean  "mesial"
     t.boolean  "oclusal"
     t.boolean  "distal"
+    t.boolean  "vestibular"
+    t.boolean  "lingual"
+    t.string   "estado"
   end
 
   add_index "tratamentos", ["id"], :name => "index_tratamentos_on_id"

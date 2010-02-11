@@ -68,23 +68,25 @@ class PagamentosController < ApplicationController
     @pagamento.protetico_id = session[:protetico_id] if !session[:protetico_id].nil?
     respond_to do |format|
       Pagamento.transaction do
-        cheques = Cheque.all(:conditions=>["id in (?)",params[:cheques_ids][0..(params[:cheques_ids].size-2)]])
-        @pagamento.cheques << cheques
-          if @pagamento.save
-            if !session[:trabalho_protetico_id].nil?
-              ids = session[:trabalho_protetico_id].split(",")
-              ids.each do |id|
-                trab = TrabalhoProtetico.find(id)
-                trab.pagamento_id = @pagamento.id
-                trab.save
-              end
+        ids = params[:cheques_ids].split(",")
+        ids.each do |id|
+          @pagamento.cheques << Cheque.find(id)
+        end
+        if @pagamento.save
+          if !session[:trabalho_protetico_id].nil?
+            ids = session[:trabalho_protetico_id].split(",")
+            ids.each do |id|
+              trab = TrabalhoProtetico.find(id)
+              trab.pagamento_id = @pagamento.id
+              trab.save
             end
-            flash[:notice] = 'Pagamento criado com sucesso.'
-            format.html { redirect_to(@pagamento) }#TODO retornar para tela anterior
-            format.xml  { render :xml => @pagamento, :status => :created, :location => @pagamento }
-          else
-            format.html { render :action => "new" }
-            format.xml  { render :xml => @pagamento.errors, :status => :unprocessable_entity }
+          end
+          flash[:notice] = 'Pagamento criado com sucesso.'
+          format.html { redirect_to(relatorio_pagamentos_path) }#TODO retornar para tela anterior
+          format.xml  { render :xml => @pagamento, :status => :created, :location => @pagamento }
+        else
+          format.html { render :action => "new" }
+          format.xml  { render :xml => @pagamento.errors, :status => :unprocessable_entity }
         end
       end
     end
@@ -118,11 +120,15 @@ class PagamentosController < ApplicationController
         cheque.pagamento_id = nil
         cheque.save
       end
+      @pagamento.trabalho_proteticos.each do |trab|
+        trab.pagamento_id = -1
+        trab.save
+      end
       @pagamento.save
     end
 
     respond_to do |format|
-      format.html { redirect_to(pagamentos_url) }
+      format.html { redirect_to(relatorio_pagamentos_path) }
       format.xml  { head :ok }
     end
   end

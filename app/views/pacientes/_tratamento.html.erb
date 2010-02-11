@@ -4,8 +4,8 @@
 <br/><br/>
 <table>
   <tr>
-	<th>Dente</th>
-	<th>Face</th>
+	  <th>Dente</th>
+	  <th>Face</th>
     <th width="40px">Código</th>
     <th width="190px">Descrição</th>
     <th width="60px">Valor</th>
@@ -24,7 +24,7 @@
 	</td>
 	<td><%= tratamento.faces %></td>
     <td><%= tratamento.item_tabela.codigo  unless tratamento.item_tabela.nil? %></td>
-    <td><%= tratamento.item_tabela.descricao unless tratamento.item_tabela.nil?%></td>
+    <td><%= link_to tratamento.item_tabela.descricao, edit_tratamento_path(tratamento) unless tratamento.item_tabela.nil?%></td>
     <td align="right"><%= tratamento.valor.real%></td>
     <td align="right"><%= tratamento.custo.real%></td>
     <td><%= tratamento.dentista.nome %></td>

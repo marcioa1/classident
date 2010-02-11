@@ -40,10 +40,14 @@ class Tratamento < ActiveRecord::Base
   end
   
   def faces
-    result = ''
-    result += "M" if mesial
-    result += "D" if distal
-    result += "O" if oclusal
+    if estado == 'nenhum'
+      result = ''
+      result += "M" if mesial
+      result += "D" if distal
+      result += "O" if oclusal
+    else
+      result = estado
+    end
     result
   end
 
