@@ -1,21 +1,11 @@
 <fieldset class="fieldset_50">
-
-<% form_tag producao_dentista_path, :method=>:get do %>
-  <p>   
- Entre : <%= text_field_tag :datepicker, @inicio.to_s_br, :size=>10 %>
-    e : <%= text_field_tag :datepicker2 , @fim.to_s_br, :size=>10 %>
-    <%= button_to 'pesquisar' %>
-  </p>
-<% end %>
+	<%= render :partial=>'datas' %>
+	<br/><br/>
+	<%= button_to 'pesquisar', "javascript:pagamento_dentista();" %>
 </fieldset>
 <p>
-<table>
-  <tr>
-  	<th width="120px">Data</th>
-    <th width="90px">Valor</th>
-  </tr>
-</table>
+  <div id="lista_pagamento"></div>
 </p>
-<br/>
+
 <%= link_to 'voltar', dentistas_path %>
 

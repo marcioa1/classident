@@ -159,6 +159,15 @@ class DentistasController < ApplicationController
     render :json => saida.to_json
   end
   
+  def pagamento
+    saida = "<div id='lista'><table><tr><th width='105px'>Data</th>
+        <th width='90px'>Valor</th>
+        </tr>"
+         saida += "</table></div>"
+          render :json => saida.to_json
+          #TODO fazer esta pesquisa
+  end
+  
   def pesquisar
      if !administracao? 
         if params[:ativo]=="true"

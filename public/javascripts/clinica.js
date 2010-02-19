@@ -46,14 +46,29 @@ function producao(){
         selecionadas += $("#"+ clinicas[i].id).val() + ",";
       } 
     }
-    $.getJSON("producao?datepicker='" + $("#datepicker").val() + 
+    url = "producao?datepicker='" + $("#datepicker").val() + 
            "'&datepicker2='" + $("#datepicker2").val() +
-           "'&clinicas=" + selecionadas 
-            , function(data){
+           "'&clinicas=" + selecionadas
+    $.getJSON( url, function(data){
         $("#lista").replaceWith(data);
     });
 }
 
+function pagamento_dentista(){
+	var clinicas = $("#fragment-3 input:checkbox")
+    var selecionadas = ''
+    for (var i = 0; i < clinicas.length; i++) {
+      if ($("#" + clinicas[i].id).is(':checked')) {
+        selecionadas += $("#"+ clinicas[i].id).val() + ",";
+      } 
+    }
+    url = "pagamento?datepicker='" + $("#datepicker").val() + 
+           "'&datepicker2='" + $("#datepicker2").val() +
+           "'&clinicas=" + selecionadas
+    $.getJSON( url, function(data){
+        $("#lista_pagamento").replaceWith(data);
+    });
+}
 function cheque(mostra){
     if (mostra==1){
         $("#cheque_classident").show();
@@ -98,24 +113,24 @@ function escolheu_item_da_tabela(){
 }
 
 function devolve_trabalho(id){
-	$.get("/registra_devolucao_de_trabalho?id=" + id);
-	var d = new Date()
-	var curr_date = d.getDate();
-	var curr_month = d.getMonth();
-	curr_month++;
-	var curr_year = d.getFullYear();
-	$("#data_"+id).replaceWith(curr_date + "/" + curr_month + "/" + curr_year)
+    $.get("/registra_devolucao_de_trabalho?id=" + id);
+    var d = new Date()
+    var curr_date = d.getDate();
+    var curr_month = d.getMonth();
+    curr_month++;
+    var curr_year = d.getFullYear();
+    $("#data_"+id).replaceWith(curr_date + "/" + curr_month + "/" + curr_year)
 }
 
 function selecionou_estado(){
-	$(':checkbox').attr('checked', false)
+    $(':checkbox').attr('checked', false)
 }
 
 function selecionou_face(){
-	$('#tratamento_estado_nenhum').attr('checked', true)
+    $('#tratamento_estado_nenhum').attr('checked', true)
 }
 function todas_as_faces(){
-	selecionou_face()
-	$(':checkbox').attr('checked', $('#todas').is(':checked'))
-	
+    selecionou_face()
+    $(':checkbox').attr('checked', $('#todas').is(':checked'))
+    
 }
