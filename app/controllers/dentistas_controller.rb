@@ -109,8 +109,8 @@ class DentistasController < ApplicationController
 
   def abre
     @dentista = Dentista.find(params[:id])  
-    @clinica_atual.s = Clinica.all(:order=>:nome)
-    @clinica_atual._1 = "1"
+    @clinicas = Clinica.all(:order=>:nome)
+    @clinica_atual = Clinica.find(session[:clinica_id])
     @inicio = Date.today - 15.days
     @fim = Date.today
   end
@@ -119,8 +119,12 @@ class DentistasController < ApplicationController
     dentista = Dentista.find(params[:id])
     inicio = params[:datepicker].to_date
     fim = params[:datepicker2].to_date
-    clinicas = params[:clinicas].split(",").to_a
-    debugger
+    if params[:clinicas]
+      clinicas = params[:clinicas].split(",").to_a
+    else
+      clinicas = session[:clinica_id].to_a
+    end
+      debugger
     @producao = dentista.busca_producao(inicio,fim,clinicas) 
     saida = "<div id='lista'><table><tr><th width='105px'>Data</th>
          <th width='220px'>Paciente</th>
@@ -156,8 +160,7 @@ class DentistasController < ApplicationController
   end
   
   def pesquisar
-    debugger
-     if session[:clinica_id].to_i > 0
+     if !administracao? 
         if params[:ativo]=="true"
           @dentistas = Clinica.find(session[:clinica_id]).dentistas.por_nome.ativos
         else

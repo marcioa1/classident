@@ -1,9 +1,11 @@
 <% content_for :main do %>
 <h3>Listando dentistas</h3>
 <% form_tag pesquisar_dentistas_path do %>
-  <%= radio_button_tag :ativo, true , params[:ativo]=="true" %> Ativos
-  <%= radio_button_tag :ativo, false, params[:ativo]=="false" %> Inativos
-  <%= button_to "pesquisar"%>
+  <p>
+  <%= radio_button_tag :ativo, true , params[:ativo]=="true" -%> Ativos
+  <%= radio_button_tag :ativo, false, params[:ativo]=="false" -%> Inativos
+  &nbsp;&nbsp;&nbsp;<%= submit_tag "pesquisar"-%>
+  </p>
 <% end %>
 <table>
   <tr>
@@ -29,6 +31,6 @@
 
 <br />
 
-<%= link_to 'Novo dentista', new_dentista_path %>
+<%= link_to 'Novo dentista', new_dentista_path if administracao? %>
 
 <% end %>

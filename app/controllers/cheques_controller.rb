@@ -96,7 +96,7 @@ class ChequesController < ApplicationController
     end
     if params[:status] == "disponíveis"
       @cheques = Cheque.por_bom_para.da_clinica(session[:clinica_id]).entre_datas(@data_inicial,@data_final).
-              disponiveis.nao_excluidos
+              disponiveis_na_clinica.nao_excluidos
     end
     if params[:status]== "devolvido 2 vezes"
       @cheques = Cheque.por_bom_para.da_clinica(session[:clinica_id]).entre_datas(@data_inicial,@data_final).

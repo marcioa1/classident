@@ -1,10 +1,10 @@
 <% content_for :main do %>
 <fieldset >
-<legend><h3>Nova alta</h3></legend>
+<legend>Nova alta</legend>
 Paciente : <%= @alta.paciente.nome %>
 <% form_for(@alta) do |f| %>
   <%= f.error_messages %>
-  <%= f.text_field :paciente_id %>
+  <%= f.hidden_field :paciente_id %>
 <p>
     <%= f.label :data %> :
     <%= text_field_tag :datepicker, Date.today.to_s_br, :size=>10 %>

@@ -1,21 +1,28 @@
 <% content_for :main do %>
-Fluxo de caixa do dia <%= @fluxo.data.to_s_br %>
-<br/>
-Saldo anterior em dinheiro : <%= @fluxo.saldo_em_dinheiro.real%><br/>
-Saldo anterior em cheque : <%= @fluxo.saldo_em_cheque.real%><br/>
+<h3 style='padding-left: 10em;'>Fluxo de caixa do dia : <%= @fluxo.data.to_s_br %></h3>
+<table class='transparente'>
+  <tr>
+    <td>Saldo anterior em dinheiro :</td>
+    <td align='right'><%= @fluxo.saldo_em_dinheiro.real%></td>
+  </tr>
+  <tr>
+    <td>Saldo anterior em cheque : </td>
+    <td align='right'><%= @fluxo.saldo_em_cheque.real%></td>
+  </tr>
+</table>
 
 <table>
   <tr>
-  	<th width="350px">Observação</th>
+    <th width="350px"><br/>Observação</th>
     <th width="90px">Crédito Dinheiro</th>
     <th width="90px">Débito Dinheiro</th>
     <th width="90px">Saldo Dinheiro</th>
     <th width="90px">Crédito Cheque</th>
     <th width="90px">Débito Cheque</th>
-    <th width="90px">Saldo Cheque</th>
+    <th width="90px">Saldo<br/> Cheque</th>
   </tr>
   <tr>
-  	<td>Saldo de abertura</td>
+    <td>Saldo de abertura</td>
     <td>&nbsp;</td>
     <td>&nbsp;</td>
     <td align="right"><%= @fluxo.saldo_em_dinheiro.real %></td>
@@ -26,51 +33,49 @@ Saldo anterior em cheque : <%= @fluxo.saldo_em_cheque.real%><br/>
 <% saldo_dinheiro = @fluxo.saldo_em_dinheiro %>
 <% saldo_cheque = @fluxo.saldo_em_cheque %>
 <% @lancamentos.each() do |lancamento| %>
-<% debugger %>
   <tr>
     <% if lancamento.class.name == "Recebimento"%>
       <td><%= lancamento.paciente.nome %></td>
       <% if lancamento.formas_recebimento.nome.downcase =="dinheiro"%>
-	      <td align="right"><%= lancamento.valor.real %></td>
-	      <td>&nbsp;</td>
-	      <% saldo_dinheiro += lancamento.valor %>
-	      <td align="right"><%= saldo_dinheiro.real %></td>
-	      <td>&nbsp;</td>
-	      <td>&nbsp;</td>
-	      <td align="right"><%= saldo_cheque.real %></td>
-    	<% else %>
-		    <td>&nbsp;</td>
-		    <td>&nbsp;</td>
+        <td align="right"><%= lancamento.valor.real %></td>
+        <td>&nbsp;</td>
+        <% saldo_dinheiro += lancamento.valor %>
+        <td align="right"><%= saldo_dinheiro.real %></td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td align="right"><%= saldo_cheque.real %></td>
+      <% else %>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
             <td align="right"><%= saldo_dinheiro.real %></td>
-		    <td align="right"><%= lancamento.valor.real %></td>
-		    <td>&nbsp;</td>
-		    <% saldo_cheque += lancamento.valor %>
-		    <td align="right"><%= saldo_cheque.real %></td>
-	    <% end %>
+        <td align="right"><%= lancamento.valor.real %></td>
+        <td>&nbsp;</td>
+        <% saldo_cheque += lancamento.valor %>
+        <td align="right"><%= saldo_cheque.real %></td>
+      <% end %>
     <% elsif lancamento.class.name == "Pagamento" %>
       <td><%= lancamento.tipo_pagamento.nome %></td>
       <td>&nbsp;</td>
       <% if lancamento.opcao_restante == 2 %>
-        <td align="right"><%= lancamento.valor_restante.real %></td>
+        <td align="right" style='color: red;'><%= lancamento.valor_restante.real %></td>
         <% saldo_dinheiro -= lancamento.valor_restante %>
-        <td align="right"><%= saldo_dinheiro.real %></td>
       <% else %>
         <td>&nbsp;</td>
-        <td>&nbsp;</td>
       <% end %>
+      <td align="right"><%= saldo_dinheiro.real %></td>
       <td>&nbsp;</td>
-      <td align="right"><%= lancamento.valor_pago.real %></td>
+      <td align="right" style='color: red;'><%= lancamento.valor_pago.real %></td>
       <% saldo_cheque -= lancamento.valor_pago %>
       <td align="right"><%= saldo_cheque.real %></td>
     <% else %>
     <td><%= lancamento.observacao %></td>
     <% if lancamento.valor > 0 %>
-    <td align="right"><%= lancamento.valor.real %></td>
-    <% saldo_dinheiro += lancamento.valor %>
+      <td align="right"><%= lancamento.valor.real %></td>
+      <% saldo_dinheiro += lancamento.valor %>
     <td>&nbsp;</td>
     <% else %>
       <td>&nbsp;</td>
-      <td align="right"><%= lancamento.valor.abs.real %></td>
+      <td align="right" style='color: red;'><%= lancamento.valor.abs.real %></td>
       <% saldo_dinheiro += lancamento.valor %>
     <% end %>
     <td align="right"><%= saldo_dinheiro.real %></td>
@@ -82,7 +87,7 @@ Saldo anterior em cheque : <%= @fluxo.saldo_em_cheque.real%><br/>
 <% end %>
 </table>
 <p>
-  <%= link_to "anterior", fluxo_de_caixa_path(:data=>@fluxo.data - 1.day)%>	 | 
-  <%= link_to "próximo", fluxo_de_caixa_path(:data=>@fluxo.data + 1.day, :saldo_dinheiro=>saldo_dinheiro, :saldo_cheque => saldo_cheque)%>	
+  <%= link_to "anterior", fluxo_de_caixa_path(:data=>@fluxo.data - 1.day)%>  | 
+  <%= link_to "próximo", fluxo_de_caixa_path(:data=>@fluxo.data + 1.day, :saldo_dinheiro=>saldo_dinheiro, :saldo_cheque => saldo_cheque)%>  
 </p>
 <% end %>

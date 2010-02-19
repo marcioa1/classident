@@ -3,17 +3,17 @@
     <legend>Relatório de recebimentos</legend>
 <% form_tag relatorio_recebimentos_path do %>
    Início : <%= text_field_tag :datepicker ,@data_inicial.to_s_br, :size=>10  %> 
-    Fim : <%= text_field_tag :datepicker2, @data_final.to_s_br, :size=>10 %>
+    &nbsp;Fim : <%= text_field_tag :datepicker2, @data_final.to_s_br, :size=>10 %>
+	  <%= submit_tag "pesquisar"%>
+
 <p><%= render :partial => "formas_recebimentos/opcoes", :locals=>{:formas=>@formas_recebimento}%></p>
- 
-  <%= submit_tag "pesquisar"%>
 <% end %>
 </fieldset>
 <br/>
 <table>
   <tr>
     <th>Data</th>
-    <th width="180px">Paciente</th>
+    <th width="330px">Paciente</th>
     <th width="70px">Valor</th>
     <th width="120px">Observação</th>
     <th>Tipo</th>

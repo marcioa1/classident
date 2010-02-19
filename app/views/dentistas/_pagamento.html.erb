@@ -1,11 +1,10 @@
 <fieldset class="fieldset_50">
 
-<% form_tag producao_dentista_path do %>
-    Entre : <%= text_field_tag :datepicke2, @inicio %>
-    e : <%= text_field_tag :datepicker2 , @fim %><br/>
-    
-  <p>
-    <%= submit_tag 'pesquisar' %>
+<% form_tag producao_dentista_path, :method=>:get do %>
+  <p>   
+ Entre : <%= text_field_tag :datepicker, @inicio.to_s_br, :size=>10 %>
+    e : <%= text_field_tag :datepicker2 , @fim.to_s_br, :size=>10 %>
+    <%= button_to 'pesquisar' %>
   </p>
 <% end %>
 </fieldset>

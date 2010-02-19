@@ -5,11 +5,18 @@
 <% form_for(@user) do |f| %>
   <%= f.error_messages %>
   <br/>  
-  <%= f.label :senha %> : 
-  <%= f.password_field :password, :size=>8 %><br />
-  <%= f.label :confirmação_da_senha %> : 
-  <%= f.password_field :password_confirmation, :size=>8 %>
-  <br/><br/>
+  <table class='transparente'>
+    <tr>
+      <td><%= f.label :nova_senha %> :</td>
+      <td><%= f.password_field :password, :size=>8 %></td>
+    </tr>
+    <tr>
+      <td><%= f.label :confirmação_da_senha %> :</td>
+      <td><%= f.password_field :password_confirmation, :size=>8 %></td>
+    </tr>
+  </table>
+   
+  <br/>
   <%= f.submit "Salvar" %>
 <% end %>
 </fieldset>

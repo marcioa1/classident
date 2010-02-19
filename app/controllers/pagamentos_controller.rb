@@ -58,7 +58,6 @@ class PagamentosController < ApplicationController
   # POST /pagamentos
   # POST /pagamentos.xml
   def create
-    #FIXME não está salvando os cheques utilizados
     @pagamento = Pagamento.new(params[:pagamento])
     @pagamento.data_de_pagamento = params[:datepicker].to_date
     @pagamento.clinica_id = session[:clinica_id]

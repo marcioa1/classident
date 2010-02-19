@@ -8,12 +8,9 @@ class ApplicationController < ActionController::Base
   helper_method :current_user_session, :current_user
   before_filter :busca_clinicas
 
-  def administracao?
-    #TODO fazer isto aqui
-    session[:clinica_id].to_i ==0
-  end
   
   private
+  
     def require_user
       unless current_user
         store_location

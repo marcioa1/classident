@@ -1,5 +1,6 @@
 class PacientesController < ApplicationController
   layout "adm"
+  before_filter :require_user
   #TODO Pensar em um layout para clinica e outro para adm
   # GET /pacientes
   # GET /pacientes.xml

@@ -7,9 +7,10 @@
   <%= label_tag :data_final %> : <%= text_field_tag :datepicker2, @data_final.to_s_br, :size=>10  %>
   <%= label_tag :situação %> : 
  <%= select_tag :status, options_for_select(@status, params[:status]) %>
-  </p>
+<%= submit_tag "pesquisar"%>  
+</p>
 
-  <%= submit_tag "pesquisar"%>
+  
 <% end %>
 <br/>
 
@@ -45,11 +46,11 @@
         <% end %>
     </td>
     <td><%= status = case 
-		    when cheque.status == "usado pgto" then link_to cheque.status, cheque.pagamento(cheque.pagamento) 
- 	     else cheque.status
-		end %>
-	
-	</td>
+        when cheque.status == "usado pgto" then link_to cheque.status, '#', :onclick=>'javascript:abre_pagamento('+ cheque.pagamento_id.to_s + ')'
+       else cheque.status
+    end %>
+  
+  </td>
     <td><%= cheque.recebimento.data.to_s_br%></td>
   </tr>
   <% total += cheque.valor %>
@@ -57,7 +58,8 @@
   <tr>
     <td colspan="2" align="center">Total</td>
     <td align="right"><%= total.real%></td>
-    <td colspan="6" align="right"><%= link_to "enviar cheques selecionados p/ administração" , "#", :onclick=>"enviar_administracao();"  if params[:opcao]=="disponiveis"%></td>
+    <td colspan="6" align="right"><%= link_to "enviar cheques selecionados p/ administração" , "#", :onclick=>"enviar_administracao();"  if params[:status]=="disponíveis"%></td>
+<td>&nbsp;</td>
   </tr>
 </table>
 <% end %>
