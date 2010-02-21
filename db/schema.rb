@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100211180404) do
+ActiveRecord::Schema.define(:version => 20100219163736) do
 
   create_table "altas", :force => true do |t|
     t.integer  "paciente_id"
@@ -172,6 +172,18 @@ ActiveRecord::Schema.define(:version => 20100211180404) do
 
   add_index "formas_recebimentos", ["id"], :name => "index_formas_recebimentos_on_id"
 
+  create_table "indicacaos", :force => true do |t|
+    t.string   "descricao"
+    t.boolean  "ativo",      :default => true
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "indicacoes", :force => true do |t|
+    t.string  "descricao"
+    t.boolean "ativo",     :default => true
+  end
+
   create_table "item_tabelas", :force => true do |t|
     t.integer  "tabela_id"
     t.string   "codigo"
@@ -205,6 +217,7 @@ ActiveRecord::Schema.define(:version => 20100211180404) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "codigo"
+    t.integer  "indicacao_id"
   end
 
   add_index "pacientes", ["id"], :name => "index_pacientes_on_id"

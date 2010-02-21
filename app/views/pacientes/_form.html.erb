@@ -1,0 +1,51 @@
+<p>
+<%= f.label :nome %> : <%= f.text_field :nome, :size=>60 %>
+</p>
+<p>
+<%= f.label :tabela_id %> : <%= f.select :tabela_id, @tabelas %>
+<%= f.label :inicio_de_tratamento %> :
+<%= text_field_tag :datepicker2, Date.today.to_s_br, :size=>10 %>
+  </p>
+  <p>
+	<%= f.label :cep %> :
+    <%= f.text_field :cep, :size=>10 %>
+  </p>
+  <p>
+    <%= f.label :logradouro %> : 
+    <%= f.text_field :logradouro, :size=>60 %>
+  </p>
+  <p>
+    <%= f.label :numero %> :  <%= f.text_field :numero , :size=>10%>
+    <%= f.label :complemento %> : <%= f.text_field :complemento, :size=>10 %>
+  </p>
+  <p>
+    <%= f.label :bairro %> : 
+    <%= f.text_field :bairro, :size=>20 %>
+	<%= f.label :cidade %> : 
+    <%= f.text_field :cidade %>
+    <%= f.label :uf %> :
+    <%= f.text_field :uf, :size=>3 %>
+  </p>
+  <p>
+    <%= f.label :telefone %> :
+    <%= f.text_field :telefone, :size=>22 %>
+    <%= f.label :celular %> :
+    <%= f.text_field :celular , :size=>22%>
+  </p>  
+  <p>
+    <%= f.label :email %> : 
+    <%= f.text_field :email %>
+  </p>
+  <p>
+    <%= f.label :nascimento %> :
+<%= f.date_select :nascimento, options={:start_year=>1910, :order=>[:day, :month, :year] }%>
+    <%= f.label :cpf %> :
+    <%= f.text_field :cpf, :size=>12 %>
+    <%= f.label :sexo %> :
+    <%= f.radio_button :sexo, :m %> Masc
+    <%= f.radio_button :sexo, :f %> Fem
+   </p>
+  <p>
+  	<%= f.label :indicacao %>
+    <%= f.select :indicacao_id, @indicacoes %>
+  </p>

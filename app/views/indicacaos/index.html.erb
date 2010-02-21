@@ -1,0 +1,21 @@
+<% content_for :main do %>
+<h3>Listando indicacaos</h3>
+
+<table>
+  <tr>
+    <th width="150px">Descrição</th>
+    <th>Ativo</th>
+  </tr>
+
+<% @indicacaos.each do |indicacao| %>
+  <tr>
+    <td><%= link_to indicacao.descricao, edit_indicacao_path(indicacao) %></td>
+    <td><%= indicacao.ativo==true ?  "sim": "não" %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'Nova indicação', new_indicacao_path %>
+<% end %>

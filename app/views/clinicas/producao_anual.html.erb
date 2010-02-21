@@ -1,0 +1,45 @@
+<% content_for :main do %>
+<div id="titulo">Produção Anual</div>
+<% form_tag :url=>producao_anual_clinicas_path, :method=>:get do %>
+  <p>Ano : 
+  <%= select_year @date %>
+  <%= submit_tag "pesquisar" %><br/>
+  </p>
+<% end %>
+<table>
+	<tr>
+		<th>Nome</th>
+		<th>Jan</th>
+		<th>Fev</th>
+		<th>Mar</th>
+		<th>Abr</th>
+		<th>Mai</th>
+		<th>Jun</th>
+		<th>Jul</th>
+		<th>Ago</th>
+		<th>Set</th>
+		<th>Out</th>
+		<th>Nov</th>
+		<th>Dez</th>
+	</tr>
+<% total =[] %>
+<% (1..12).each do |mes| %>
+  <% total[mes] = 0 %>
+<% end %>
+<% @valores.each do |val| %>
+  <tr>
+	  <td><%= val[0] %></td>
+    <% (1..12).each do |mes| %>
+      <td align='right'><%= val[mes].real %></td>
+      <% total[mes] += val[mes]%>
+    <% end %>
+  </tr>
+<% end %>
+<tr>
+	<td>Total</td>
+	<% (1..12).each do |mes| %>
+	  <td><%= total[mes].real %></td>
+	<% end %>
+</tr>
+</table>
+<% end %>

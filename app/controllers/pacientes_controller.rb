@@ -17,7 +17,7 @@ class PacientesController < ApplicationController
   # GET /pacientes/1.xml
   def show
     @paciente = Paciente.find(params[:id])
-
+   
     respond_to do |format|
       format.html # show.html.erb
       format.xml  { render :xml => @paciente }
@@ -32,7 +32,7 @@ class PacientesController < ApplicationController
     else
       @tabelas = Tabela.ativas.collect{|obj| [obj.nome,obj.id]}
       @paciente = Paciente.new
-
+      @indicacoes = Indicacao.por_descricao.collect{|obj| [obj.descricao, obj.id]}
       respond_to do |format|
         format.html # new.html.erb
         format.xml  { render :xml => @paciente }
@@ -43,6 +43,7 @@ class PacientesController < ApplicationController
   # GET /pacientes/1/edit
   def edit
     @paciente = Paciente.find(params[:id])
+    @indicacoes = Indicacao.por_descricao.collect{|obj| [obj.descricao, obj.id]}
   end
 
   # POST /pacientes
@@ -69,7 +70,8 @@ class PacientesController < ApplicationController
   def update
     @paciente = Paciente.find(params[:id])
     @paciente.inicio_tratamento = params[:datepicker2].to_date
-    @paciente.nascimento = params[:datepicker].to_date
+    debugger
+ #   @paciente.nascimento = params[:datepicker].to_date
     respond_to do |format|
       if @paciente.update_attributes(params[:paciente])
         format.html { redirect_to(abre_paciente_path(:id=>@paciente.id)) }
@@ -130,7 +132,7 @@ class PacientesController < ApplicationController
   def abre
     @paciente = Paciente.find(params[:id])
     @tabelas = Tabela.ativas.collect{|obj| [obj.nome,obj.id]}
-    
+    @indicacoes = Indicacao.por_descricao.collect{|obj| [obj.descricao, obj.id]}
     @pendentes_protetico = TrabalhoProtetico.pendentes.do_paciente(@paciente.id)
     @devolvidos_protetico = TrabalhoProtetico.devolvidos.do_paciente(@paciente.id) 
     session[:paciente_id] = params[:id]

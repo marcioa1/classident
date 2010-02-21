@@ -4,17 +4,24 @@ class DentistasController < ApplicationController
   # GET /dentistas
   # GET /dentistas.xml
   def index
-    debugger
-    if session[:clinica_id].to_i > 0
-      if params[:inativos]
-        @dentistas = Clinica.find(session[:clinica_id]).dentistas.por_nome.ativos
+    params[:ativo] = "true" if params[:ativo].nil?
+    if administracao? 
+      if params[:ativo]=="true"
+        @dentistas = Dentista.por_nome.ativos
       else
-        @dentistas = Clinica.find(session[:clinica_id]).dentistas.por_nome.ativos
+        @dentistas = Dentista.por_nome.inativos
       end
     else
-      @dentistas = Dentista.por_nome
+      debugger
+      if params[:ativo]=="true"
+        @dentistas = Clinica.find(session[:clinica_id]).dentistas.por_nome.ativos
+      else
+        @dentistas = Clinica.find(session[:clinica_id]).dentistas.por_nome.inativos
+      end
     end
-
+    if !params[:iniciais].nil? and !params[:iniciais].blank?
+      @dentistas = @dentistas.que_iniciam_com(params[:iniciais])
+    end
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @dentistas }
@@ -169,19 +176,21 @@ class DentistasController < ApplicationController
   end
   
   def pesquisar
-     if !administracao? 
-        if params[:ativo]=="true"
-          @dentistas = Clinica.find(session[:clinica_id]).dentistas.por_nome.ativos
-        else
-          @dentistas = Clinica.find(session[:clinica_id]).dentistas.por_nome.inativos
-        end
+    debugger
+    params[:ativo] = "true" if params[:ativo].nil?
+     if administracao? 
+       @dentistas = Dentista.por_nome
+    else
+       if params[:ativo]=="true"
+        @dentistas = Clinica.find(session[:clinica_id]).dentistas.por_nome.ativos
       else
-        @dentistas = Dentista.por_nome
+        @dentistas = Clinica.find(session[:clinica_id]).dentistas.por_nome.inativos
       end
+    end
 
-      respond_to do |format|
-        format.html # index.html.erb
-        format.xml  { render :xml => @dentistas }
-      end
+    respond_to do |format|
+      format.html # index.html.erb
+      format.xml  { render :xml => @dentistas }
+    end
   end
 end

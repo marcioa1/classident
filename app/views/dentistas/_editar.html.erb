@@ -28,8 +28,8 @@
     <%= f.text_field :percentual, :size=>4 %> %
   </p>
   <p>
-    <%= f.label :ativo %><br />
     <%= f.check_box :ativo %>
+    <%= f.label :ativo %>
   </p>
   <fieldset>
     <legend>Clínicas onde atua :</legend>
@@ -39,7 +39,7 @@
     <% end %>
   </fieldset>
   <p>
-    <%= f.submit 'alterar' unless session[:clinica_id].to_i > 0 %>
+    <%= f.submit 'alterar' if administracao? %>
   </p>
 <% end %>
 </fieldset><br/>

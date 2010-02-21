@@ -1,0 +1,23 @@
+<% content_for :main do %>
+<Fieldset>
+<legend>Nova indicacao</legend>
+
+<% form_for(@indicacao) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :descrição %><br />
+    <%= f.text_field :descricao %>
+  </p>
+  <p>
+    <%= f.check_box :ativo %>
+    <%= f.label :ativo %>
+  </p>
+  <p>
+    <%= f.submit 'salvar' %>
+  </p>
+<% end %>
+
+<%= link_to 'voltar', indicacaos_path %>
+</fieldset>
+<% end %>

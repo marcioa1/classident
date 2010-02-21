@@ -5,6 +5,7 @@ class Paciente < ActiveRecord::Base
   has_many :debitos
   has_many :recebimentos
   has_many :trabalho_proteticos
+  belongs_to :indicacao
   
   named_scope :da_clinica, lambda{|clinica_id| {:conditions=>["clinica_id=?", clinica_id]}}
   named_scope :por_nome, :order=>:nome

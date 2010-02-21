@@ -39,7 +39,7 @@
     
     <div id="principal">
         <div class="pd_menu_01">
-            <% if session[:clinica_id]=="Administração"%>
+            <% if administracao? %>
               <%= render :partial=>"layouts/menu_adm" %>
             <% else %>
               <%= render :partial=>"layouts/menu_clinica" %>

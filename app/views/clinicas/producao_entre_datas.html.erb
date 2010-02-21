@@ -1,0 +1,51 @@
+<% content_for :main do %>
+<div id="titulo">
+Produção mensal
+</div>
+
+<% form_tag :url=>producao_entre_datas_clinicas_path do |f| %>
+  Entre :
+	<%= text_field_tag :datepicker,  @data_inicial.to_s_br, :size=>10  %>
+	&nbsp;a :
+	<%= text_field_tag :datepicker2, @data_final.to_s_br, :size=>10 %>
+  <%= submit_tag "pesquisar" %>
+<% end %>
+<br/>
+<% total_valor = 0.0 %>
+<% total_custo = 0.0 %>
+<% total_dentista = 0.0 %>
+<% total_clinica = 0.0 %>
+<table>
+	<tr>
+		<th width="400px">Nome</th>
+		<th width="60px">Percentual</th>
+		<th width="100px">Valor</th>
+		<th width="100px">Custo</th>
+		<th width="100px">Dentista</th>
+		<th width="100px">Clínica</th>
+	</tr>
+<% @valores.each do |v| %>
+	<tr>
+		<% valores = v .split("/")%>
+		<td><%= valores[5]  %></td>
+		<td align='right'><%= valores[0] %></td>
+		<td align='right'><%= valores[1].to_d.real %></td>
+		<td align='right'><%= valores[2].to_d.real %></td>
+		<td align='right'><%= valores[3].to_d.real %></td>
+		<td align='right'><%= valores[4].to_d.real %></td>
+		<% total_valor += valores[1].to_f %>
+		<% total_custo += valores[2].to_f %>
+		<% total_dentista += valores[3].to_f %>
+		<% total_clinica += valores[4].to_f %>
+	</tr>
+<% end %>
+<tr>
+	<td>Total</td>
+	<td> &nbsp;</td>
+	<td align='right'><%= total_valor.real %></td>
+	<td align='right'><%= total_custo.real %></td>
+	<td align='right'><%= total_dentista.real %></td>
+	<td align='right'><%= total_clinica.real %></td>
+</tr>
+</table>
+<% end %>

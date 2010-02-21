@@ -1,18 +1,22 @@
 <% content_for :main do %>
 <h3>Listando dentistas</h3>
-<% form_tag :url=>dentistas_path , :method=>:get do %>
-  <%= radio_button_tag :ativo, true , true%> Ativos
-  <%= radio_button_tag :ativo, false %> Inativos
-  <%= link_to "pesquisar", dentistas_path(:ativo=>:ativo) %>
-  <%= button_to "pesquisar"%>
+<% form_tag dentistas_path, :method=>:get do %>
+  <p>
+  <%= radio_button_tag :ativo, true , params[:ativo]=="true" -%> Ativos
+  <%= radio_button_tag :ativo, false, params[:ativo]=="false" -%> Inativos
+  &nbsp;&nbsp;&nbsp;
+  <%= label_tag :que_iniciam_com %> : 
+  <%= text_field_tag :iniciais, params[:iniciais] %>
+  &nbsp;&nbsp;&nbsp;<%= submit_tag "pesquisar"-%>
+  </p>
 <% end %>
 <table>
   <tr>
-    <th width="200px">Nome</th>
+    <th width="270px">Nome</th>
     <th width="80px">Telefone</th>
     <th width="80px">Celular</th>
-    <th width="60px">Ativo</th>
-    <th>Percentual</th>
+    <th width="50px">Ativo</th>
+    <th width="50px">Percentual</th>
     <th>Clínica(s)</th>
   </tr>
 
@@ -30,6 +34,6 @@
 
 <br />
 
-<%= link_to 'Novo dentista', new_dentista_path %>
+<%= link_to 'Novo dentista', new_dentista_path if administracao? %>
 
 <% end %>

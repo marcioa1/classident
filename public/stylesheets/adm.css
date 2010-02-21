@@ -52,6 +52,11 @@ fieldset{
     background :white;
 //  width: 45.2em;
 }
+#titulo{
+	padding-left: 10em;
+	padding-bottom: 0.5em;
+	font-size: 19px;
+}
 #rodape{
     background: #1C4EA3;
     margin-left: 5em;

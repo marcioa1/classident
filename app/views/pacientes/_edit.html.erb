@@ -1,56 +1,8 @@
 <fieldset class="fieldset_60">
-    <legend>Ficha de cadastro</legend>
+    <legend>Ficha de cadastro (<%= @paciente.id %>) </legend>
 <% form_for(@paciente) do |f| %>
   <%= f.error_messages %>
-<p>
-<%= f.label :nome %> : <%= f.text_field :nome, :size=>55 %>
-<%= f.label :cpf %> :
-    <%= f.text_field :cpf, :size=>12 %>
-</p>
-<p>
-<%= f.label :tabela_id %> : <%= f.select :tabela_id, @tabelas %>
-<%= f.label :inicio_tratamento %> :
- <%= text_field_tag :datepicker2 , @paciente.inicio_tratamento.to_s_br , :size=>12 %> 
-  </p>
- 
-  <p>
-	<%= f.label :cep %> :
-    <%= f.text_field :cep, :size=>10 %>
-  </p>
-  <p>
-    <%= f.label :logradouro %> : 
-    <%= f.text_field :logradouro, :size=>60 %>
-  </p>
-  <p>
-    <%= f.label :numero %> :  <%= f.text_field :numero , :size=>10%>
-    <%= f.label :complemento %> : <%= f.text_field :complemento, :size=>10 %>
-  </p>
-  <p>
-    <%= f.label :bairro %> : 
-    <%= f.text_field :bairro, :size=>20 %>
-	<%= f.label :cidade %> : 
-    <%= f.text_field :cidade %>
-    <%= f.label :uf %> :
-    <%= f.text_field :uf, :size=>3 %>
-  </p>
-  <p>
-    <%= f.label :telefone %> :
-    <%= f.text_field :telefone, :size=>22 %>
-    <%= f.label :celular %> :
-    <%= f.text_field :celular , :size=>22%>
-  </p>  
-  <p>
-    <%= f.label :email %> : 
-    <%= f.text_field :email %>
-  </p>
-  <p>
-    <%= f.label :nascimento %> :
-    <%= text_field_tag :datepicker , @paciente.nascimento.to_s_br , :size=>12%>
-   
-    <%= f.label :sexo %> :
-    <%= f.radio_button :sexo, :m %> Masc
-    <%= f.radio_button :sexo, :f %> Fem
-   </p>  
+  <%= render :partial=>'form', :locals=>{:f=>f} %>
   <p>
     <%= f.submit 'alterar' %>
   </p>

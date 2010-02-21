@@ -1,11 +1,11 @@
 ActionController::Routing::Routes.draw do |map|
 
-
   map.resources :altas
   map.resources :bancos
   map.resources :cheques, :collection=>{:busca_disponiveis=>:get, :cheques_recebidos=>:get, 
        :recebe_cheques=>:get,:confirma_recebimento=>:get, 
        :registra_recebimento_de_cheques=>:get, :recebimento_confirmado=>:get}
+  map.resource :clinicas, :collection=>{:producao_entre_datas=>:get, :producao_anual=>:get}
   map.resources :conta_bancarias
   map.resources :conversao
   map.resources :debitos, :collection=>{:pacientes_em_debito=>:get}
@@ -15,6 +15,8 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :entradas
   map.fluxo_de_caixa "fluxo_de_caixa", :controller=>"fluxo_de_caixa", :action=>"index"
   map.resources :formas_recebimentos
+  map.resources :indicacaos
+  
   map.resources :item_tabelas, :collection=>{:busca_descricao=>:get}
   map.resources :pacientes, :member=>{:abre=>:get}, :collection=>{:pesquisa=>:get}
 
