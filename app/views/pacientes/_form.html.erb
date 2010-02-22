@@ -2,7 +2,8 @@
 <%= f.label :nome %> : <%= f.text_field :nome, :size=>60 %>
 </p>
 <p>
-<%= f.label :tabela_id %> : <%= f.select :tabela_id, @tabelas %>
+<%= f.label :tabela_id %> : 
+<%= f.select :tabela_id, @tabelas %>
 <%= f.label :inicio_de_tratamento %> :
 <%= text_field_tag :datepicker2, Date.today.to_s_br, :size=>10 %>
   </p>

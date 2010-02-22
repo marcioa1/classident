@@ -12,7 +12,6 @@ class DentistasController < ApplicationController
         @dentistas = Dentista.por_nome.inativos
       end
     else
-      debugger
       if params[:ativo]=="true"
         @dentistas = Clinica.find(session[:clinica_id]).dentistas.por_nome.ativos
       else
@@ -120,6 +119,7 @@ class DentistasController < ApplicationController
     @clinica_atual = Clinica.find(session[:clinica_id])
     @inicio = Date.today - 15.days
     @fim = Date.today
+    @orcamentos = Orcamento.do_dentista(@dentista.id)
   end
   
   def producao

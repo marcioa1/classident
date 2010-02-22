@@ -113,27 +113,27 @@ function enviar_administracao(){
 }
 
 function selecionar(){
-	if($("#selecao").text()=="todos") {
-		$("#selecao").text("nenhum");
-		$("#tipo_pagamento_id").each(function(){
-		    $("#tipo_pagamento_id option").attr("selected","selected"); 
-		});
-		
-	}else {
-		$("#selecao").text("todos");
-		$("#tipo_pagamento_id").each(function(){
-		    $("#tipo_pagamento_id option").removeAttr("selected"); 
-		});
-		
-	}
+    if($("#selecao").text()=="todos") {
+        $("#selecao").text("nenhum");
+        $("#tipo_pagamento_id").each(function(){
+            $("#tipo_pagamento_id option").attr("selected","selected"); 
+        });
+        
+    }else {
+        $("#selecao").text("todos");
+        $("#tipo_pagamento_id").each(function(){
+            $("#tipo_pagamento_id option").removeAttr("selected"); 
+        });
+        
+    }
 }
 
 function abre_cheque(id){
-	window.open("/cheques/"+ id,"abriu o cheque" ,"height=240,width=310,status=no");
+    window.open("/cheques/"+ id,"abriu o cheque" ,"height=240,width=310,status=no");
 }
 
 function abre_pagamento(id){
-	window.open("/pagamentos/"+ id,"abre o pagamento" ,"height=600,width=500,status=no,resizable=yes,scrollbars=yes");
+    window.open("/pagamentos/"+ id,"abre o pagamento" ,"height=600,width=500,status=no,resizable=yes,scrollbars=yes");
 }
 
 function pesquisa_disponiveis(){

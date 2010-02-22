@@ -358,6 +358,36 @@ class Converte
     f.close
   end
   
+  def orcamento
+    puts "Convertendo orçamento ...."
+    f = File.open("doc/orcamento.txt" , "r")
+    Orcamento.delete_all
+    #FIXME  NA conversao real, não apagar tabela
+    clinica = Clinica.find_by_nome("Recreio")
+    line = f.gets
+    while line = f.gets 
+      registro = line.split(";")
+      o = Orcamento.new
+      o.id = registro[0]
+      o.data = registro[1].to_date
+      o.paciente_id = registro[2].to_i
+      o.dentista = Dentista.find_by_sequencial(registro[3].to_i)
+      o.numero = registro[4]
+      o.numero_de_parcelas = registro[6].to_i
+      o.valor_da_parcela = le_valor(registro[7])
+      o.vencimento_primeira_parcela = registro[8].to_date unless registro[8].blank?
+      #FIXME traduzir isto aqui para as formas conhecidas
+      o.forma_de_pagamento = 'cheque_pre' if registro[9]=='P'
+      o.forma_de_pagamento = 'a_vista' if registro[9]=='V'
+      o.forma_de_pagamento = 'cartao' if registro[9]=='C'
+      o.data_de_inicio = registro[10].to_date unless registro[10].blank?
+      o.valor_com_desconto = le_valor(registro[12])
+      o.desconto = registro[13].to_i
+      o.save
+    end
+    f.close
+  end
+  
   private
   
   def verifica_existencia_do_banco(numero)
@@ -377,4 +407,5 @@ class Converte
     aux = aux.sub(",",".")
     return aux
   end
+  
 end

@@ -7,6 +7,7 @@
         <li><a href="#fragment-1"><span>Cadastro</span></a></li>
         <li><a href="#fragment-2"><span>Produção</span></a></li>
         <li><a href="#fragment-3"><span>Pagamento</span></a></li>
+        <li><a href="#fragment-4"><span>Orçamentos</span></a></li>
     </ul>
     <div id="fragment-1">
 	    <%= render :partial=>"editar" , :locals=>{:dentista=>@dentista, :clinicas=>@clinica_atual} %>
@@ -18,5 +19,6 @@
     <div id="fragment-3">
        <%= render :partial=>"pagamento" , :locals=>{:dentista=>@dentista, :clinicas=>@clinica_atual} %>
     </div>
+    <div id='fragment-4'><%= render :partial=>'orcamentos_elaborados' %> </div>
 </div>
 <% end %>

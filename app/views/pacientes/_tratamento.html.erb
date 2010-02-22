@@ -1,4 +1,4 @@
-<% if session[:clinica_id].to_i != 0 %>
+<% if !administracao? %>
   <%= link_to "Novo procedimento" , new_tratamento_path(:paciente_id=>@paciente.id)  %> 
 <% end %>
 <br/><br/>
@@ -12,6 +12,7 @@
     <th width="60px">Custo</th>
     <th>Dentista</th>
     <th>Data de realização</th>
+    <th>Orçamento</th>
   </tr>
 <% Tratamento.do_paciente(@paciente.id).each()  do |tratamento|  %>
   <tr>
@@ -34,6 +35,7 @@
     <% else %>
       <%= tratamento.data.to_s_br%></td>
     <% end %>
+    <td align='center'><%= tratamento.orcamento.numero unless tratamento.orcamento.nil? %></td>
   </tr>
 <% end %>
 </table>

@@ -25,10 +25,14 @@ class OrcamentosController < ApplicationController
   # GET /orcamentos/new
   # GET /orcamentos/new.xml
   def new
+    params[:tratamento_ids] = Tratamento.ids_orcamento(params[:paciente_id]).join(",")
+    @paciente = Paciente.find(params[:paciente_id])
     @orcamento = Orcamento.new
     @orcamento.paciente = @paciente
     @orcamento.numero = Orcamento.proximo_numero(params[:paciente_id])
-    @paciente = Paciente.find(params[:paciente_id])
+    @orcamento.valor = Tratamento.valor_a_fazer(params[:paciente_id])
+    @orcamento.desconto = 0
+    @orcamento.valor_com_desconto = @orcamento.valor
     @dentistas = Clinica.find(session[:clinica_id]).dentistas.ativos.por_nome.collect{|obj| [obj.nome,obj.id]}
     respond_to do |format|
       format.html # new.html.erb
@@ -39,17 +43,22 @@ class OrcamentosController < ApplicationController
   # GET /orcamentos/1/edit
   def edit
     @orcamento = Orcamento.find(params[:id])
+    @paciente = @orcamento.paciente
+    @dentistas = Clinica.find(session[:clinica_id]).dentistas.ativos.por_nome.collect{|obj| [obj.nome,obj.id]}
   end
 
   # POST /orcamentos
   # POST /orcamentos.xml
   def create
     @orcamento = Orcamento.new(params[:orcamento])
-
+    @orcamento.data = params[:datepicker].to_date
+    @orcamento.vencimento_primeira_parcela = params[:datepicker2].to_date
+    @orcamento.data_de_inicio = params[:datepicker3].to_date unless params[:datepicker3].blank?
     respond_to do |format|
       if @orcamento.save
-        flash[:notice] = 'Orcamento was successfully created.'
-        format.html { redirect_to(@orcamento) }
+        Tratamento.associa_ao_orcamento(params[:tratamento_ids], @orcamento.id)
+         Debito.cria_debitos_do_orcamento(@orcamento.id) unless @orcamento.data_de_inicio.nil?
+        format.html { redirect_to(abre_paciente_path(@orcamento.paciente_id)) }
         format.xml  { render :xml => @orcamento, :status => :created, :location => @orcamento }
       else
         format.html { render :action => "new" }
@@ -62,11 +71,13 @@ class OrcamentosController < ApplicationController
   # PUT /orcamentos/1.xml
   def update
     @orcamento = Orcamento.find(params[:id])
-
+    @orcamento.data = params[:datepicker].to_date
+    @orcamento.vencimento_primeira_parcela = params[:datepicker2].to_date
+    @orcamento.data_de_inicio = params[:datepicker3].to_date unless params[:datepicker3].blank?
+    
     respond_to do |format|
       if @orcamento.update_attributes(params[:orcamento])
-        flash[:notice] = 'Orcamento was successfully updated.'
-        format.html { redirect_to(@orcamento) }
+        format.html { redirect_to(abre_paciente_path(@orcamento.paciente_id)) }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }

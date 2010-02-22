@@ -55,7 +55,7 @@ function producao(){
 }
 
 function pagamento_dentista(){
-	var clinicas = $("#fragment-3 input:checkbox")
+    var clinicas = $("#fragment-3 input:checkbox")
     var selecionadas = ''
     for (var i = 0; i < clinicas.length; i++) {
       if ($("#" + clinicas[i].id).is(':checked')) {
@@ -133,4 +133,25 @@ function todas_as_faces(){
     selecionou_face()
     $(':checkbox').attr('checked', $('#todas').is(':checked'))
     
+}
+function selecionou_tratamento(){
+    var todos = $(":checked")
+    var total = 0.0
+    for (i=0;i<todos.length;i++){
+        total = total + parseFloat(todos[i].value);
+    }
+    $('#orcamento_valor').val(total);
+}
+
+function calcula_valor_orcamento(){
+    total = parseFloat($('#orcamento_valor').val());
+    desconto = parseFloat($('#orcamento_desconto').val());
+    $('#orcamento_valor_com_desconto').val(total - (total * desconto / 100 ));
+    calcula_valor_da_parcela();
+}
+
+function calcula_valor_da_parcela(){
+    valor = parseFloat($('#orcamento_valor_com_desconto').val());
+    numero = $('#orcamento_numero_de_parcelas').val();
+    $('#orcamento_valor_da_parcela').val(valor / numero);
 }

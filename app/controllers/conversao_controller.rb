@@ -10,7 +10,8 @@ def index
 #  c.converte_debito
 #  c.converte_formas_recebimento
 #  c.dentista
-  c.tratamento
+#  c.tratamento
+   c.orcamento
 #  c.tipo_pagamento
 #  c.destinacao
 #  c.pagamento

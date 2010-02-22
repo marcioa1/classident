@@ -1,61 +1,20 @@
 <% content_for :main do %>
-<fieldset>
+<fieldset class='fieldset_50'>
 <legend>Novo orçamento</legend>
+<% @tratamentos = Tratamento.do_paciente(@paciente.id).nao_feito.sem_orcamento%>
+<% if @tratamentos.empty? %>
+  <h3>Não há procedimentos a serem orçados</h3>
+  <p>
+    <%= link_to 'voltar', abre_paciente_path(:id=>@paciente.id) %>
+  </p>
+<% else %>
+  <%= render :partial => 'tratamentos_a_fazer', :locals=>{:tratamentos=>@tratamentos} %>
+  <% form_for(@orcamento) do |f| %>
+    <%= f.error_messages %>
+    <%= render :partial=>'form', :locals=>{:f=>f} %>
+  <% end %>
 
-<% form_for(@orcamento) do |f| %>
-  <%= f.error_messages %>
-
-  <p>
-    <%= f.label :paciente %> : <%= @paciente.nome %>
-    <%= f.hidden_field :paciente_id  %>
-  </p>
-  <p>
-    <%= f.label :numero %><br />
-    <%= f.text_field :numero,:disabled=>true %>
-  </p>
-  <p>
-    <%= f.label :data %><br />
-    <%= text_field_tag :datepicker, Date.today.to_s_br, :size=>10 %>
-  </p>
-  <p>
-    <%= f.label :dentista %><br />
-    <%= f.select :dentista_id, @dentistas %>
-  </p>
-  <p>
-    <%= f.label :valor %><br />
-    <%= f.text_field :valor %>
-  </p>
-  <p>
-    <%= f.label :desconto %><br />
-    <%= f.text_field :desconto %>
-  </p>
-  <p>
-    <%= f.label :valor_final %><br />
-    <%= f.text_field :valor_final %>
-  </p>
-  <p>
-    <%= f.label :forma_pagamento %><br />
-    <%= f.radio_button :forma_pagamento, :cheque_pre %> Cheque pré
-    <%= f.radio_button :forma_pagamento, :a_vista %>À vista
-    <%= f.radio_button :forma_pagamento, :cartao %> Cartão
-  </p>
-  <p>
-    <%= f.label :número_de_parcelas %><br />
-    <%= f.text_field :numero_de_parcelas, :size=>3 %>
-  </p>
-  <p>
-    <%= f.label :vencimneto_primeira_parcela %><br />
-    <%= text_field_tag :datepicker2, Date.today.to_s_br ,:size=>10 %>
-  </p>
-  <p>
-    <%= f.label :valor_da_parcela %><br />
-    <%= f.text_field :valor_da_parcela %>
-  </p>
-  <p>
-    <%= f.submit 'salvar' %>
-  </p>
-<% end %>
-
-<%= link_to 'voltar', abre_paciente_path(:id=>@paciente.id) %>
-</fieldset>
+  <%= link_to 'voltar', abre_paciente_path(:id=>@paciente.id) %>
+  </fieldset>
+  <% end %>
 <% end %>

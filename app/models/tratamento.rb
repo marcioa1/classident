@@ -3,13 +3,33 @@ class Tratamento < ActiveRecord::Base
   belongs_to :item_tabela
   belongs_to :dentista
   belongs_to :clinica
+  belongs_to :orcamento
   
+  named_scope :da_clinica, lambda{|clinicas| {:conditions=>["clinica_id in (?)",clinicas]}}
   named_scope :do_paciente, lambda{|paciente_id| {:conditions=>["paciente_id = ? and excluido=?", paciente_id,false]}}
   named_scope :do_dentista, lambda{|dentista_id| {:conditions=>["dentista_id = ? ", dentista_id]}}
-  named_scope :nao_excluido, :conditions=>["excluido = ?",false]
-  named_scope :por_data, :order=>:data
   named_scope :entre, lambda{|inicio,fim| {:conditions=>["data>=? and data <=?", inicio,fim]}}
-  named_scope :da_clinica, lambda{|clinicas| {:conditions=>["clinica_id in (?)",clinicas]}}
+  named_scope :nao_excluido, :conditions=>["excluido = ?",false]
+  named_scope :nao_feito, :conditions=>["data IS NULL"]
+  named_scope :por_data, :order=>:data
+  named_scope :sem_orcamento, :conditions=>["orcamento_id IS NULL"]
+  
+  def self.valor_a_fazer(paciente_id)
+    Tratamento.sum(:valor, :conditions=>["paciente_id = ? and data IS NULL and excluido  = ? and orcamento_id IS NULL", paciente_id, false])
+  end
+  
+  def self.ids_orcamento(paciente_id)
+    Tratamento.all(:select=>:id, :conditions=>["paciente_id = ? and data IS NULL and excluido  = ? and orcamento_id IS NULL", paciente_id, false]).map{|obj| obj.id}
+  end
+  
+  
+  def self.associa_ao_orcamento(ids, orcamento_id)
+    ids.split(',').each do |id|  
+      t = Tratamento.find(id)
+      t.orcamento_id = orcamento_id
+      t.save
+    end
+  end
   
   def valor_dentista
     (valor - custo) * dentista.percentual / 100 

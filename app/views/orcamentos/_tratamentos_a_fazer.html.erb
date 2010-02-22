@@ -1,0 +1,25 @@
+<table>
+  <tr>
+    <th>Dente</th>
+    <th>Face</th>
+    <th width="40px">Código</th>
+    <th width="190px">Descrição</th>
+    <th width="60px">Valor</th>
+    <th>Dentista</th>
+    <th>&nbsp;</th>
+  </tr>
+<% tratamentos.each()  do |tratamento|  %>
+  <tr>
+  <td align="center">
+  <%= tratamento.dente %> 
+  </td>
+  <td><%= tratamento.faces %></td>
+    <td><%= tratamento.item_tabela.codigo  unless tratamento.item_tabela.nil? %></td>
+    <td><%= link_to tratamento.item_tabela.descricao, edit_tratamento_path(tratamento) unless tratamento.item_tabela.nil?%></td>
+    <td align="right"><%= tratamento.valor.real%></td>
+    <td><%= tratamento.dentista.nome %></td>
+    <td><%= check_box_tag :selecionado, tratamento.valor, true, :onclick=>'selecionou_tratamento()', :id=>tratamento.id %></td>
+
+  </tr>
+<% end %>
+</table>

@@ -7,12 +7,12 @@ class CreateOrcamentos < ActiveRecord::Migration
       t.references :dentista
       t.decimal :desconto
       t.decimal :valor
-      t.decimal :valor_final
-      t.string :forma_pagamento
+      t.decimal :valor_com_desconto
+      t.string :forma_de_pagamento
       t.integer :numero_de_parcelas
-      t.date :vencimneto_primeira_parcela
+      t.date :vencimento_primeira_parcela
       t.decimal :valor_da_parcela
-
+      t.date :data_de_inicio
       t.timestamps
     end
   end
