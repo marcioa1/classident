@@ -1,0 +1,58 @@
+<p>
+  <b>Paciente:</b>
+  <%=h @orcamento.paciente %>
+</p>
+
+<p>
+  <b>Numero:</b>
+  <%=h @orcamento.numero %>
+</p>
+
+<p>
+  <b>Data:</b>
+  <%=h @orcamento.data %>
+</p>
+
+<p>
+  <b>Dentista:</b>
+  <%=h @orcamento.dentista %>
+</p>
+
+<p>
+  <b>Desconto:</b>
+  <%=h @orcamento.desconto %>
+</p>
+
+<p>
+  <b>Valor:</b>
+  <%=h @orcamento.valor %>
+</p>
+
+<p>
+  <b>Valor final:</b>
+  <%=h @orcamento.valor_final %>
+</p>
+
+<p>
+  <b>Froma pagamento:</b>
+  <%=h @orcamento.froma_pagamento %>
+</p>
+
+<p>
+  <b>Numero de parcelas:</b>
+  <%=h @orcamento.numero_de_parcelas %>
+</p>
+
+<p>
+  <b>Vencimneto primeira parcela:</b>
+  <%=h @orcamento.vencimneto_primeira_parcela %>
+</p>
+
+<p>
+  <b>Valor da parcela:</b>
+  <%=h @orcamento.valor_da_parcela %>
+</p>
+
+
+<%= link_to 'Edit', edit_orcamento_path(@orcamento) %> |
+<%= link_to 'Back', orcamentos_path %>

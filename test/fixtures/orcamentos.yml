@@ -1,0 +1,27 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  paciente: 
+  numero: 1
+  data: 2010-02-21
+  dentista: 
+  desconto: 9.99
+  valor: 9.99
+  valor_final: 9.99
+  froma_pagamento: MyString
+  numero_de_parcelas: 1
+  vencimneto_primeira_parcela: 2010-02-21
+  valor_da_parcela: 9.99
+
+two:
+  paciente: 
+  numero: 1
+  data: 2010-02-21
+  dentista: 
+  desconto: 9.99
+  valor: 9.99
+  valor_final: 9.99
+  froma_pagamento: MyString
+  numero_de_parcelas: 1
+  vencimneto_primeira_parcela: 2010-02-21
+  valor_da_parcela: 9.99

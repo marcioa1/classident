@@ -135,6 +135,7 @@ class PacientesController < ApplicationController
     @indicacoes = Indicacao.por_descricao.collect{|obj| [obj.descricao, obj.id]}
     @pendentes_protetico = TrabalhoProtetico.pendentes.do_paciente(@paciente.id)
     @devolvidos_protetico = TrabalhoProtetico.devolvidos.do_paciente(@paciente.id) 
+    @orcamentos = @paciente.orcamentos
     session[:paciente_id] = params[:id]
     session[:paciente_nome] = @paciente.nome
   end

@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100219163736) do
+ActiveRecord::Schema.define(:version => 20100221222758) do
 
   create_table "altas", :force => true do |t|
     t.integer  "paciente_id"
@@ -195,6 +195,22 @@ ActiveRecord::Schema.define(:version => 20100219163736) do
 
   add_index "item_tabelas", ["id"], :name => "index_item_tabelas_on_id"
   add_index "item_tabelas", ["tabela_id"], :name => "index_item_tabelas_on_tabela_id"
+
+  create_table "orcamentos", :force => true do |t|
+    t.integer  "paciente_id"
+    t.integer  "numero"
+    t.date     "data"
+    t.integer  "dentista_id"
+    t.decimal  "desconto"
+    t.decimal  "valor"
+    t.decimal  "valor_final"
+    t.string   "forma_pagamento"
+    t.integer  "numero_de_parcelas"
+    t.date     "vencimneto_primeira_parcela"
+    t.decimal  "valor_da_parcela"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "pacientes", :force => true do |t|
     t.string   "nome"

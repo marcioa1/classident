@@ -1,0 +1,56 @@
+<h1>Editing orcamento</h1>
+
+<% form_for(@orcamento) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :paciente %><br />
+    <%= f.text_field :paciente %>
+  </p>
+  <p>
+    <%= f.label :numero %><br />
+    <%= f.text_field :numero %>
+  </p>
+  <p>
+    <%= f.label :data %><br />
+    <%= f.date_select :data %>
+  </p>
+  <p>
+    <%= f.label :dentista %><br />
+    <%= f.text_field :dentista %>
+  </p>
+  <p>
+    <%= f.label :desconto %><br />
+    <%= f.text_field :desconto %>
+  </p>
+  <p>
+    <%= f.label :valor %><br />
+    <%= f.text_field :valor %>
+  </p>
+  <p>
+    <%= f.label :valor_final %><br />
+    <%= f.text_field :valor_final %>
+  </p>
+  <p>
+    <%= f.label :froma_pagamento %><br />
+    <%= f.text_field :froma_pagamento %>
+  </p>
+  <p>
+    <%= f.label :numero_de_parcelas %><br />
+    <%= f.text_field :numero_de_parcelas %>
+  </p>
+  <p>
+    <%= f.label :vencimneto_primeira_parcela %><br />
+    <%= f.date_select :vencimneto_primeira_parcela %>
+  </p>
+  <p>
+    <%= f.label :valor_da_parcela %><br />
+    <%= f.text_field :valor_da_parcela %>
+  </p>
+  <p>
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @orcamento %> |
+<%= link_to 'Back', orcamentos_path %>

@@ -1,0 +1,40 @@
+<h1>Listing orcamentos</h1>
+
+<table>
+  <tr>
+    <th>Paciente</th>
+    <th>Numero</th>
+    <th>Data</th>
+    <th>Dentista</th>
+    <th>Desconto</th>
+    <th>Valor</th>
+    <th>Valor final</th>
+    <th>Froma pagamento</th>
+    <th>Numero de parcelas</th>
+    <th>Vencimneto primeira parcela</th>
+    <th>Valor da parcela</th>
+  </tr>
+
+<% @orcamentos.each do |orcamento| %>
+  <tr>
+    <td><%=h orcamento.paciente %></td>
+    <td><%=h orcamento.numero %></td>
+    <td><%=h orcamento.data %></td>
+    <td><%=h orcamento.dentista %></td>
+    <td><%=h orcamento.desconto %></td>
+    <td><%=h orcamento.valor %></td>
+    <td><%=h orcamento.valor_final %></td>
+    <td><%=h orcamento.froma_pagamento %></td>
+    <td><%=h orcamento.numero_de_parcelas %></td>
+    <td><%=h orcamento.vencimneto_primeira_parcela %></td>
+    <td><%=h orcamento.valor_da_parcela %></td>
+    <td><%= link_to 'Show', orcamento %></td>
+    <td><%= link_to 'Edit', edit_orcamento_path(orcamento) %></td>
+    <td><%= link_to 'Destroy', orcamento, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New orcamento', new_orcamento_path %>

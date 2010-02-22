@@ -1,4 +1,6 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :orcamentos
+
 
   map.resources :altas
   map.resources :bancos
