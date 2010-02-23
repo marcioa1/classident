@@ -100,10 +100,15 @@ class OrcamentosController < ApplicationController
   
   def relatorio
     if params[:datepicker].nil?
-      params[:datepicker] = Date.today
-      params[:datepicker2] = Date.today
+      params[:datepicker] = Date.today.to_s_br
+      params[:datepicker2] = Date.today.to_s_br
     end
-    @orcamentos = Orcamento.da_clinica(session[:clinica_id]).entre_datas(params[:datepicker].to_date, params[:datepicker2].to_date)
+    if params[:acima_de_um_valor]
+      @orcamentos = Orcamento.da_clinica(session[:clinica_id]).entre_datas(params[:datepicker].to_date, params[:datepicker2].to_date).acima_de(params[:valor])
+    else
+      @orcamentos = Orcamento.da_clinica(session[:clinica_id]).entre_datas(params[:datepicker].to_date, params[:datepicker2].to_date)
+      
+    end
     
   end
 end

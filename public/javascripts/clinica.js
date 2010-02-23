@@ -155,3 +155,10 @@ function calcula_valor_da_parcela(){
     numero = $('#orcamento_numero_de_parcelas').val();
     $('#orcamento_valor_da_parcela').val(valor / numero);
 }
+
+function definir_valor(){
+	if ($('#acima_de_um_valor').is(':checked'))
+	  $('#valor').focus();
+	else
+	  $('#valor').val('')
+}

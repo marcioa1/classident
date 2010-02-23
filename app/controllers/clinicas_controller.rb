@@ -51,4 +51,20 @@ class ClinicasController < ApplicationController
     end
   end
   
+  def relatorio_alta
+    if params[:datepicker].nil?
+      @data_inicial = Date.today
+      @data_final = Date.today
+    else
+      @data_inicial = params[:datepicker].to_date
+      @data_final = params[:datepicker2].to_date
+    end
+    debugger
+    if params[:somente_em_alta]
+      @altas = Alta.da_clinica(session[:clinica_id]).entre_datas(@data_inicial, @data_final).em_alta
+    else
+      @altas = Alta.da_clinica(session[:clinica_id]).entre_datas(@data_inicial, @data_final)
+    end
+  end
+  
 end

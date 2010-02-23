@@ -6,6 +6,9 @@
   <%= text_field_tag :datepicker, params[:datepicker], :size=>10 %>
   e :
   <%= text_field_tag :datepicker2,params[:datepicker2],:size=>10 %>
+  <%= check_box_tag :acima_de_um_valor,{},params[:acima_de_um_valor], options={:onclick=>'definir_valor();'} %>
+  Acima do valor :
+  <%= text_field_tag :valor , params[:valor], :size=>10 %>
   <%= submit_tag "pesquisar"%>
   </p>
 <% end %>

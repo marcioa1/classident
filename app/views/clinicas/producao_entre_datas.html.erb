@@ -4,11 +4,7 @@ Produção mensal
 </div>
 
 <% form_tag :url=>producao_entre_datas_clinicas_path do |f| %>
-  Entre :
-	<%= text_field_tag :datepicker,  @data_inicial.to_s_br, :size=>10  %>
-	&nbsp;a :
-	<%= text_field_tag :datepicker2, @data_final.to_s_br, :size=>10 %>
-  <%= submit_tag "pesquisar" %>
+  <%= render :partial=>'entre_datas' , :locals=>{:f=>f}%>
 <% end %>
 <br/>
 <% total_valor = 0.0 %>
