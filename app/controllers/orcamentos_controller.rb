@@ -97,4 +97,13 @@ class OrcamentosController < ApplicationController
       format.xml  { head :ok }
     end
   end
+  
+  def relatorio
+    if params[:datepicker].nil?
+      params[:datepicker] = Date.today
+      params[:datepicker2] = Date.today
+    end
+    @orcamentos = Orcamento.da_clinica(session[:clinica_id]).entre_datas(params[:datepicker].to_date, params[:datepicker2].to_date)
+    
+  end
 end

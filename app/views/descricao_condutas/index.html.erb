@@ -1,0 +1,22 @@
+<% content_for :main do %>
+<h3>Listando descrição de condutas</h3>
+
+<table>
+  <tr>
+    <th width="800">Descrição</th>
+    <th>&nbsp;</th>
+  </tr>
+
+<% @descricao_condutas.each do |descricao_conduta| %>
+  <tr>
+    <td><%= link_to descricao_conduta.descricao, edit_descricao_conduta_path(descricao_conduta)%></td>
+    <td><%= link_to 'apagar', descricao_conduta, :confirm => 'Tem certeza ?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'Nova descrição de conduta', new_descricao_conduta_path %>
+
+<% end %>

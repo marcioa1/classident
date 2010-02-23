@@ -1,0 +1,30 @@
+<% content_for :main do %>
+<h3>Orçamentos elaborados</h3>
+<% form_tag :url=>relatorio_orcamentos_path, :method=>:get do %>
+  <p>
+  Entre :
+  <%= text_field_tag :datepicker, params[:datepicker], :size=>10 %>
+  e :
+  <%= text_field_tag :datepicker2,params[:datepicker2],:size=>10 %>
+  <%= submit_tag "pesquisar"%>
+  </p>
+<% end %>
+<table>
+  <tr>
+    <th>Data</th>
+    <th>Paciente</th>
+    <th>Dentista</th>
+    <th>Valor final</th>
+    <th>Estado</th>
+  </tr>
+<% @orcamentos.each do |orca| %>
+  <tr>
+    <td align='center'><%= orca.data.to_s_br %></td>
+    <td><%= orca.paciente.nome %></td>
+    <td><%= orca.dentista.nome unless orca.dentista.nil?%></td>
+    <td align='right'><%= orca.valor_com_desconto.real %></td>
+    <td><%= orca.estado %></td>
+  </tr>
+<% end %>
+</table>
+<% end %>

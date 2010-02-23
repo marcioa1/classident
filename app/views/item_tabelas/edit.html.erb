@@ -13,8 +13,11 @@
     <%= f.text_field :descricao, :size=>30 %>
   </p>
   <p>
-    <%= f.label :ativo %><br />
-    <%= f.check_box :ativo %>
+    <%= f.check_box :ativo %><%= f.label :ativo %>
+  </p>
+  <p>
+    <%= f.label :descrição_da_conduta %><br/>
+    <%= f.select :descricao_conduta_id, @descricao_condutas , :include_blank=>true%>
   </p>
   <p>
     <%= f.submit 'alterar' %>

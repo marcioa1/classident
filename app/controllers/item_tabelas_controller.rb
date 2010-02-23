@@ -56,6 +56,7 @@ class ItemTabelasController < ApplicationController
     else
       @item_tabela = ItemTabela.find(params[:id])
       @tabela = @item_tabela.tabela
+      @descricao_condutas = DescricaoConduta.all.collect{|obj| [obj.descricao, obj.id]}
     end  
   end
 

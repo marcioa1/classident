@@ -18,7 +18,7 @@
     <td><%=h item_tabela.codigo %></td>
     <td><%=h item_tabela.descricao %></td>
     <td><%=h item_tabela.ativo ? "sim" : "não" %></td>
-    <% if session[:clinica_id].to_i==0 %>
+    <% if administracao? %>
        <td><%= link_to "preços", item_tabela %></td>
        <td><%= link_to 'Editar', edit_item_tabela_path(item_tabela) if current_user.pode_incluir_tabela %></td>
        <td><%= link_to 'Excluir', item_tabela, :confirm => 'Are you sure?', :method => :delete  if current_user.pode_incluir_tabela%></td>

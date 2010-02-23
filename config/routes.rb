@@ -1,6 +1,4 @@
 ActionController::Routing::Routes.draw do |map|
-  map.resources :orcamentos
-
 
   map.resources :altas
   map.resources :bancos
@@ -13,6 +11,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :debitos, :collection=>{:pacientes_em_debito=>:get}
   map.resources :dentistas, :member=>{:abre=>:get, :producao=>:get, :pagamento=>:get}, 
                     :collection=>{:pesquisar=>:get}
+  map.resources :descricao_condutas
   map.resources :destinacaos
   map.resources :entradas
   map.fluxo_de_caixa "fluxo_de_caixa", :controller=>"fluxo_de_caixa", :action=>"index"
@@ -20,6 +19,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :indicacaos
   
   map.resources :item_tabelas, :collection=>{:busca_descricao=>:get}
+  map.resources :orcamentos, :collection=>{:relatorio=>:get}
   map.resources :pacientes, :member=>{:abre=>:get}, :collection=>{:pesquisa=>:get}
 
   map.administracao "administracao", :controller=>"administracao", :action=>"index"

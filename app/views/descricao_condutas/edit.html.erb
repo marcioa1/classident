@@ -1,0 +1,18 @@
+<% content_for :main do %>
+<Fieldset>
+<legend>Editing descricao_conduta</legend>
+
+<% form_for(@descricao_conduta) do |f| %>
+  <%= f.error_messages %>
+  <p>
+    <%= f.label :descrição %> :<br/> 
+    <%= f.text_area :descricao, :cols=>40, :rows=>2 %>
+  </p>
+  <p>
+    <%= f.submit 'alterar' %>
+  </p>
+<% end %>
+
+<%= link_to 'voltar', descricao_condutas_path %>
+</fieldset>
+<% end %>
