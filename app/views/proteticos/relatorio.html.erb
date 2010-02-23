@@ -1,0 +1,20 @@
+<% content_for :main do %>
+<table>
+  <tr>
+    <th>Data prevista</th>
+    <th>Protético</th>
+    <th>Paciente</th>
+    <th>Descrição</th>
+    <th>Valor</th>
+  </tr>
+<% @pendentes.each do |pen| %>
+  <tr>
+    <td><%= pen.data_prevista_de_devolucao.to_s_br %></td>
+    <td><%= pen.protetico.nome %></td>
+    <td><%= pen.paciente.nome %></td>
+    <td><%= pen.tabela_protetico.descricao %></td>
+    <td><%= pen.valor.real %></td>
+  </tr>
+<% end %>
+</table>
+<% end %>

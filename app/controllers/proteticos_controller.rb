@@ -121,5 +121,8 @@ class ProteticosController < ApplicationController
     render :json=>@protetico.tabela_proteticos.collect{|obj| [obj.descricao,obj.id]}.to_json
   end
   
+  def relatorio
+    @pendentes = TrabalhoProtetico.pendentes
+  end
   
 end

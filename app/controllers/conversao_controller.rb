@@ -11,13 +11,14 @@ def index
 #  c.converte_formas_recebimento
 #  c.dentista
 #  c.tratamento
-   c.orcamento
+#   c.orcamento
 #  c.tipo_pagamento
 #  c.destinacao
 #  c.pagamento
 #  c.fluxo_de_caixa
 #  c.recebimento
 #  c.cheque
+   c.trabalho_protetico
 end
 
 end

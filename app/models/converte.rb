@@ -369,6 +369,7 @@ class Converte
       registro = line.split(";")
       o = Orcamento.new
       o.id = registro[0]
+      o.clinica_id = clinica.id
       o.data = registro[1].to_date
       o.paciente_id = registro[2].to_i
       o.dentista = Dentista.find_by_sequencial(registro[3].to_i)
@@ -386,6 +387,36 @@ class Converte
       o.save
     end
     f.close
+  end
+  
+  def trabalho_protetico
+     puts "Convertendo trabalho protético ...."
+      f = File.open("doc/noprotetico.txt" , "r")
+      TrabalhoProtetico.delete_all
+      #FIXME  NA conversao real, não apagar tabela
+      clinica = Clinica.find_by_nome("Recreio")
+      line = f.gets
+      while line = f.gets 
+        registro = line.split(";")
+        t = TrabalhoProtetico.new
+        t.clinica_id = clinica.id
+        t.id = registro[0]
+        t.dentista_id = 
+        t.protetico_id = 
+        t.paciente_id =
+        t.dente =
+        t.data_de_envio =
+        t.data_prevista_de_devolucao =
+        t.data_de_devolucao =
+        t.tabela_protetico =
+        t.valor = 
+        t.cor =
+        t.observacoes =
+        t.data_de_repeticao =
+        t.motivo_da_repeticao =
+        t.data_prevista_da_devolucao_da_repeticao =
+        t.pagamento_id =
+        
   end
   
   private
