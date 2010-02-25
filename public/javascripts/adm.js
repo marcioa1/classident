@@ -47,3 +47,13 @@ function pagar_dentista(valor,tratamento_id,dentista_id){
              valor_total + "&dentista_id=" + dentista_id + "'>efetua pagamento</a></span>"
     $('#link_pagamento').replaceWith(link)
 }
+
+function pagamento_dentista(dentista_id){
+    var clinicas = $("#fragment-3 input:checkbox")
+    url = "pagamento?inicio='" + $("#datepicker3").val() + 
+           "'&fim='" + $("#datepicker4").val() +
+           "'&dentista_id=" + dentista_id
+    $.getJSON( url, function(data){
+        $("#lista_pagamento").replaceWith(data);
+    });
+}

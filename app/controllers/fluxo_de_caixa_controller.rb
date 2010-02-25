@@ -21,4 +21,3 @@ class FluxoDeCaixaController < ApplicationController
     @lancamentos = @recebimentos + @pagamentos + @entradas + @remessas
   end
 end
-#TODO separar entrada e saida em dinheiro e cheque

@@ -175,10 +175,24 @@ class DentistasController < ApplicationController
   def pagamento
     saida = "<div id='lista'><table><tr><th width='105px'>Data</th>
         <th width='90px'>Valor</th>
+        <th width='200px'>Observação</th>
         </tr>"
-         saida += "</table></div>"
-          render :json => saida.to_json
-          #TODO fazer esta pesquisa
+        
+    inicio = params[:inicio].to_date
+    fim = params[:fim].to_date
+    @dentista = Dentista.find(params[:dentista_id])
+    @pagamentos = @dentista.pagamentos.entre_datas(inicio,fim).nao_excluidos
+    total = 0
+    @pagamentos.each do |pag|
+      saida += "<tr><td>" + pag.data_de_pagamento.to_s_br + "</td>" + 
+          "<td align='right'>" + pag.valor_pago.real.to_s + "</td>" + 
+          "<td>" + pag.observacao + "</td>" +
+         "</tr>"
+      total += pag.valor_pago
+    end
+    saida += "<tr><td align='center'>Total</td><td align='right'>" + total.real.to_s + "</td><td>&nbsp;</td></tr>"
+    saida += "</table></div>"
+    render :json => saida.to_json
   end
   
   def pesquisar
@@ -219,7 +233,6 @@ class DentistasController < ApplicationController
         <th width='100px'><br/>Valor parcela</th>
         <th><br/>Estado</th>
       </tr>"
-    #debugger
     @orcamentos = Orcamento.do_dentista(dentista.id).entre_datas(inicio,fim)
     @orcamentos.each do |orca|
       result += "<tr><td>" + orca.data.to_s_br + "</td><td>" + orca.paciente.nome + "</td><td align='right'>" 

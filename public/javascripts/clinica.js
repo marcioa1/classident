@@ -54,21 +54,6 @@ function producao(){
     });
 }
 
-function pagamento_dentista(){
-    var clinicas = $("#fragment-3 input:checkbox")
-    var selecionadas = ''
-    for (var i = 0; i < clinicas.length; i++) {
-      if ($("#" + clinicas[i].id).is(':checked')) {
-        selecionadas += $("#"+ clinicas[i].id).val() + ",";
-      } 
-    }
-    url = "pagamento?datepicker='" + $("#datepicker").val() + 
-           "'&datepicker2='" + $("#datepicker2").val() +
-           "'&clinicas=" + selecionadas
-    $.getJSON( url, function(data){
-        $("#lista_pagamento").replaceWith(data);
-    });
-}
 function cheque(mostra){
     if (mostra==1){
         $("#cheque_classident").show();

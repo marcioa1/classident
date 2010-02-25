@@ -1,7 +1,9 @@
 <fieldset class="fieldset_50">
-	<%= render :partial=>'datas' %>
-	<br/><br/>
-	<%= button_to 'pesquisar', "javascript:pagamento_dentista();" %>
+  Entre : <%= text_field_tag :datepicker3, @inicio.to_s_br, :size=>10 %>
+  &nbsp;&nbsp;&nbsp;e : <%= text_field_tag :datepicker4 , @fim.to_s_br, :size=>10 %>
+
+  <br/><br/>
+  <%= button_to 'pesquisar', "javascript:pagamento_dentista(#{@dentista.id});" %>
 </fieldset>
 <p>
   <div id="lista_pagamento"></div>
