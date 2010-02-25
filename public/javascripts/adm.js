@@ -34,3 +34,16 @@ function pagar(valor,id, id_protetico){
              "&protetico_id=" + id_protetico + "'>efetua pagamento</a></span>"
     $('#link_pagamento').replaceWith(link)
 }
+
+function pagar_dentista(valor,tratamento_id,dentista_id){
+    anterior = $('#valor').text();
+    valor_total = parseFloat(anterior)
+    if ($("#pagar_dentista_" + tratamento_id).is(':checked')==true)
+      valor_total = valor_total + valor
+    else
+      valor_total = valor_total - valor
+    $('#valor').text(valor_total)
+    var link = "<span id='link_pagamento'><a href='/pagamentos/new?valor=" + 
+             valor_total + "&dentista_id=" + dentista_id + "'>efetua pagamento</a></span>"
+    $('#link_pagamento').replaceWith(link)
+}

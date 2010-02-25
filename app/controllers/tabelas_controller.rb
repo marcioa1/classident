@@ -86,7 +86,8 @@ class TabelasController < ApplicationController
   # DELETE /tabelas/1.xml
   def destroy
     @tabela = Tabela.find(params[:id])
-    @tabela.destroy
+    @tabela.ativa = false
+    @tabela.save
 
     respond_to do |format|
       format.html { redirect_to(tabelas_url) }

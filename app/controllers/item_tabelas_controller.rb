@@ -42,6 +42,7 @@ class ItemTabelasController < ApplicationController
       @tabela = Tabela.find(params[:tabela_id])
       @item_tabela = ItemTabela.new
       @item_tabela.tabela_id = @tabela.id
+      @descricao_condutas = DescricaoConduta.all.collect{|obj| [obj.descricao, obj.id]}
       respond_to do |format|
         format.html # new.html.erb
         format.xml  { render :xml => @item_tabela }

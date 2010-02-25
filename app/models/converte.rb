@@ -19,8 +19,10 @@ class Converte
     while line = f.gets
       p = Paciente.new
       registro = line.split(";")
-      p.nome = registro[0]
+      p.nome = registro[0].nome_proprio
+      #TODO não pode ser assim, pois em outras clinicas haverá outro paciente com o mesmo id/sequencial
       p.id = registro[1].to_i
+      p.sequencial = registro[1].to_i
       p.tabela_id = registro[2].to_i
       p.clinica_id = clinica.id
       p.inicio_tratamento = registro[7].to_date
@@ -83,7 +85,7 @@ class Converte
     while line = f.gets 
       r = FormasRecebimento.new
       registro = line.split(";")
-      r.nome = registro[0]
+      r.nome = registro[0].nome_proprio
       r.id = registro[1].to_i
       r.save
     end
@@ -127,7 +129,7 @@ class Converte
       registro = line.split(";")
       t = Tabela.new
       t.id = registro[0].to_i
-      t.nome = registro[1]
+      t.nome = registro[1].nome_proprio
       t.ativa = (registro[5].to_i == 0)
       t.save
     end
@@ -199,7 +201,7 @@ class Converte
       registro = line.split(";")
       t = Dentista.new
       t.sequencial = registro[0].to_i
-      t.nome = registro[1]
+      t.nome = registro[1].nome_proprio
       t.cro = registro[2]
       t.ativo = registro[5].to_i==1
       t.percentual = registro[4].sub(",",".") unless registro[4].blank?
@@ -222,7 +224,7 @@ class Converte
         registro = line.split(";")
         t = TipoPagamento.new
         t.id = registro[0].to_i
-        t.nome = registro[1]
+        t.nome = registro[1].nome_proprio
         t.ativo = (registro[2].to_i==0)
         t.clinica_id = clinica.id
         t.save
@@ -282,6 +284,7 @@ class Converte
     f = File.open("doc/cheque.txt" , "r")
    # Banco.delete_all
     Cheque.delete_all
+    #TODO verificar se o cheque está disponível
     #FIXME  NA conversao real, não apagar tabela
     clinica = Clinica.find_by_nome("Recreio")
     line = f.gets
@@ -352,7 +355,7 @@ class Converte
       t = Destinacao.new
       t.clinica_id = clinica.id
       t.sequencial = registro[0]
-      t.nome = registro[1]
+      t.nome = registro[1].nome_proprio
       t.save
     end
     f.close
@@ -384,39 +387,135 @@ class Converte
       o.data_de_inicio = registro[10].to_date unless registro[10].blank?
       o.valor_com_desconto = le_valor(registro[12])
       o.desconto = registro[13].to_i
+      o.valor = o.valor_com_desconto / (100 - (o.desconto / 100)) * 100
       o.save
     end
     f.close
   end
   
+  def protetico
+    puts "Convertendo protéticos ...."
+    f = File.open("doc/protetico.txt" , "r")
+    Protetico.delete_all
+    #FIXME  NA conversao real, não apagar tabela
+    clinica = Clinica.find_by_nome("Recreio")
+    line = f.gets
+    while line = f.gets 
+      registro = line.split(";")
+      p = Protetico.new
+      p.sequencial = registro[0].to_i
+      p.clinicas << clinica
+      p.nome = registro[1].nome_proprio
+      p.logradouro = registro[2]
+      p.bairro = registro[3]
+      p.cidade = registro[4]
+      p.estado = registro[5]
+      p.cep = registro[6]
+      p.telefone = registro[7]
+      p.email = registro[8]
+      p.cpf = registro[9]
+      p.nascimento = registro[10].to_date unless registro[10].blank?
+      p.save
+    end
+    f.close 
+  end
+  
+  def tabela_protetico
+    #Tabela base
+    puts "Convertendo tabela base de protéticos ...."
+    f = File.open("doc/tabelaprotetico.txt" , "r")
+    TabelaProtetico.delete_all
+    #FIXME  NA conversao real, não apagar tabela
+    clinica = Clinica.find_by_nome("Recreio")
+    line = f.gets
+    while line = f.gets 
+      registro = line.split(";")
+      t = TabelaProtetico.new
+      t.sequencial = registro[0].to_i
+      t.protetico_id = nil
+      t.codigo = ''
+      t.descricao = registro[1]
+      t.valor = le_valor(registro[2])
+      t.save
+    end
+    f.close
+    # tabelas dos proteticos
+    puts "Convertendo tabela de protéticos ...."
+    f = File.open("doc/itemProtetico.txt" , "r")
+    line = f.gets
+    while line = f.gets 
+      registro = line.split(";")
+      t = TabelaProtetico.new
+      t.sequencial = registro[0].to_i
+      t.protetico_id = Protetico.find_by_sequencial(registro[1].to_i).id
+      t.codigo = ''
+      t.descricao = registro[2]
+      t.valor = le_valor(registro[3])
+      t.save
+    end
+    f.close
+  end
+  
   def trabalho_protetico
-     puts "Convertendo trabalho protético ...."
-      f = File.open("doc/noprotetico.txt" , "r")
-      TrabalhoProtetico.delete_all
-      #FIXME  NA conversao real, não apagar tabela
-      clinica = Clinica.find_by_nome("Recreio")
-      line = f.gets
-      while line = f.gets 
-        registro = line.split(";")
-        t = TrabalhoProtetico.new
-        t.clinica_id = clinica.id
-        t.id = registro[0]
-        t.dentista_id = 
-        t.protetico_id = 
-        t.paciente_id =
-        t.dente =
-        t.data_de_envio =
-        t.data_prevista_de_devolucao =
-        t.data_de_devolucao =
-        t.tabela_protetico =
-        t.valor = 
-        t.cor =
-        t.observacoes =
-        t.data_de_repeticao =
-        t.motivo_da_repeticao =
-        t.data_prevista_da_devolucao_da_repeticao =
-        t.pagamento_id =
-        
+    puts "Convertendo trabalho protético ...."
+    f = File.open("doc/noprotetico.txt" , "r")
+    TrabalhoProtetico.delete_all
+    #FIXME  NA conversao real, não apagar tabela
+    clinica = Clinica.find_by_nome("Recreio")
+    line = f.gets
+    linha = 0
+    while line = f.gets 
+      registro = line.split(";")
+      #puts linha #registro[1] + ";"  +registro[1] + ";" + registro[2]
+      linha += 1
+      t = TrabalhoProtetico.new
+      t.clinica_id = clinica.id
+      #FIXME Preciso da clinica também para achar o dentista
+      t.dentista_id = Dentista.find_by_sequencial(registro[10].to_i)
+      t.protetico = Protetico.find_by_sequencial(registro[0].to_i)
+      paciente = Paciente.find_by_sequencial(registro[1].to_i)
+      t.paciente = paciente #.id unless paciente.nil?
+      t.dente = registro[6]
+      begin
+        t.data_de_envio = registro[3].to_date unless registro[3].blank?
+        t.data_prevista_de_devolucao = registro[5].to_date unless registro[5].blank? or registro[5].nil?
+        t.data_de_devolucao = registro[4].to_date unless registro[4].blank?
+        t.data_de_repeticao = registro[12].to_date unless registro[12].blank?
+        t.data_prevista_da_devolucao_da_repeticao = registro[15].to_date unless registro[15].blank?
+      rescue
+      end
+      t.tabela_protetico_id = TabelaProtetico.find_by_sequencial(registro[8].to_i)
+      t.valor = le_valor(registro[7]) unless registro[7].nil?
+      t.cor = registro[11]
+      t.observacoes = registro[9]
+      t.motivo_da_repeticao = registro[13]
+      t.pagamento_id = 0
+      #TODO definir como registrar que foi pago
+      t.save
+    end
+    f.close
+  end
+  
+  def alta
+    puts "Convertendo altas ...."
+    Paciente.all.each do |p|  
+      t = Tratamento.all(:conditions=>['paciente_id = ? and data IS NULL', p])
+      if t.empty?
+        ultimo = Tratamento.last(:conditions=>['paciente_id = ? and data IS NOT NULL', p], :order=>'data desc')
+        alta = Alta.new
+        alta.clinica_id = 5
+        #FIXME fazer para todas as clínicas
+        alta.paciente = p
+        if ultimo.nil?
+          alta.data_inicio = Date.today
+        else
+          alta.data_inicio = ultimo.data
+        end
+        alta.observacao = 'gerada pela conversão'
+        alta.user_id = 1
+        alta.save
+      end
+    end
   end
   
   private
@@ -429,11 +528,9 @@ class Converte
   end
   
   def le_valor(val)
-    #debugger
+    return 0 if val.nil?
     aux = val.split(" ")[1]
-    if aux.nil? 
-      return 0
-    end
+    return 0 if aux.nil?
     aux = aux.sub(".","")
     aux = aux.sub(",",".")
     return aux

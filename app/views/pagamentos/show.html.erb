@@ -8,7 +8,12 @@
   <b>Data de pagamento:</b>
   <%=h @pagamento.data_de_pagamento.to_s_br %>
 </p>
-
+<% if !@pagamento.dentista.nil? %>
+<p>
+  <b>Dentista :</b>
+  <%=h @pagamento.dentista.nome %>
+</p>
+<% end %>
 <p>
   <b>Valor:</b>
   <%=h @pagamento.valor.real %>

@@ -1,24 +1,21 @@
-<table>
-  <tr>
-    <th><br/>Data</th>
-    <th><br/>Paciente</th>
-    <th width='100px'><br/>Valor</th>
-    <th><br/>Desconto</th>
-    <th width='100px'>Valor c/ desconto</th>
-    <th>Núm. de<br/> parcelas</th>
-    <th width='100px'><br/>Valor parcela</th>
-    <th><br/>Estado</th>
-  </tr>
-<% @orcamentos.each do |orca| %>
-  <tr>
-    <td><%= orca.data.to_s_br %></td>
-    <td><%= link_to orca.paciente.nome, abre_paciente_path(orca.paciente) %></td>
-    <td align='right'><%= orca.valor.real %></td>
-    <td align='right'><%= orca.desconto %></td>
-    <td align='right'><%= orca.valor_com_desconto.real %></td>
-    <td align='right'><%= orca.numero_de_parcelas %></td>
-    <td align='right'><%= orca.valor_da_parcela.real %></td>
-    <td><%= orca.id %> | <%= orca.estado %></td>
-  </tr>
-<% end %>
-</table>
+<fieldset class="fieldset_50">
+  Entre : <%= text_field_tag :datepicker5, @inicio.to_s_br, :size=>10 %>
+  &nbsp;&nbsp;&nbsp;e : <%= text_field_tag :datepicker6 , @fim.to_s_br, :size=>10 %>
+  <% if administracao? %>
+    <br/>
+    Clínicas :  
+    <% @dentista.clinicas.each() do |clinica| %>
+      <%= check_box_tag "orcamento_clinicas_#{clinica.id}",value= clinica.id,false %>  
+      <%= clinica.nome %> &nbsp;&nbsp;
+    <% end %>
+  <% else %>
+    <span style="display:none">
+      <%= check_box_tag "orcamento_clinica_"+ session[:clinica_id],session[:clinica_id], true %>  
+    </span>
+  <% end %>
+  <br/><br/>
+  <%= button_to 'pesquisar', "javascript:orcamento_dentista();" %>
+</fieldset>
+<br/>
+
+<div id="lista_orcamento"></div>

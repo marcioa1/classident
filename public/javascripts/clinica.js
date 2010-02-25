@@ -157,8 +157,24 @@ function calcula_valor_da_parcela(){
 }
 
 function definir_valor(){
-	if ($('#acima_de_um_valor').is(':checked'))
-	  $('#valor').focus();
-	else
-	  $('#valor').val('')
+  if ($('#acima_de_um_valor').is(':checked'))
+    $('#valor').focus();
+  else
+    $('#valor').val('')
+}
+
+function orcamento_dentista(){
+  var clinicas = $("#fragment-4 input:checkbox")
+  var selecionadas = ''
+  for (var i = 0; i < clinicas.length; i++) {
+    if ($("#" + clinicas[i].id).is(':checked')) {
+      selecionadas += $("#"+ clinicas[i].id).val() + ",";
+    } 
+  }
+  url = "orcamentos?inicio='" + $("#datepicker5").val() + 
+         "'&fim='" + $("#datepicker6").val() +
+         "'&clinicas=" + selecionadas
+  $.getJSON( url, function(data){
+      $("#lista_orcamento").replaceWith(data);
+  }); 
 }

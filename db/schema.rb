@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100223124130) do
+ActiveRecord::Schema.define(:version => 20100225001908) do
 
   create_table "altas", :force => true do |t|
     t.integer  "paciente_id"
@@ -244,6 +244,7 @@ ActiveRecord::Schema.define(:version => 20100223124130) do
     t.datetime "updated_at"
     t.integer  "codigo"
     t.integer  "indicacao_id"
+    t.integer  "sequencial"
   end
 
   add_index "pacientes", ["id"], :name => "index_pacientes_on_id"
@@ -254,21 +255,22 @@ ActiveRecord::Schema.define(:version => 20100223124130) do
     t.integer  "tipo_pagamento_id"
     t.date     "data_de_vencimento"
     t.date     "data_de_pagamento"
-    t.decimal  "valor",                     :precision => 9, :scale => 2
-    t.decimal  "valor_pago",                :precision => 9, :scale => 2
+    t.decimal  "valor"
+    t.decimal  "valor_pago"
     t.string   "observacao"
     t.boolean  "nao_lancar_no_livro_caixa"
     t.datetime "data_de_exclusao"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "sequencial"
-    t.decimal  "valor_terceiros",           :precision => 9, :scale => 2
-    t.decimal  "valor_cheque",              :precision => 9, :scale => 2
-    t.decimal  "valor_restante",            :precision => 9, :scale => 2
+    t.decimal  "valor_terceiros"
+    t.decimal  "valor_cheque"
+    t.decimal  "valor_restante"
     t.integer  "opcao_restante"
     t.integer  "conta_bancaria_id"
     t.string   "numero_do_cheque"
     t.integer  "protetico_id"
+    t.integer  "dentista_id"
   end
 
   add_index "pagamentos", ["clinica_id"], :name => "index_pagamentos_on_clinica_id"
@@ -298,6 +300,12 @@ ActiveRecord::Schema.define(:version => 20100223124130) do
     t.string   "observacao"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "sequencial"
+    t.string   "cidade"
+    t.string   "estado"
+    t.string   "cep"
+    t.string   "cpf"
+    t.date     "nascimento"
   end
 
   add_index "proteticos", ["id"], :name => "index_proteticos_on_id"
@@ -325,9 +333,10 @@ ActiveRecord::Schema.define(:version => 20100223124130) do
     t.integer  "protetico_id"
     t.string   "codigo"
     t.string   "descricao"
-    t.decimal  "valor",        :precision => 8, :scale => 2
+    t.decimal  "valor"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "sequencial"
   end
 
   add_index "tabela_proteticos", ["protetico_id"], :name => "index_tabela_proteticos_on_protetico_id"

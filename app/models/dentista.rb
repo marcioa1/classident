@@ -2,6 +2,7 @@ class Dentista < ActiveRecord::Base
   has_many :tratamentos
   has_and_belongs_to_many :clinicas
   has_many :trabalho_proteticos
+  has_many :pagamentos
   
   #named_scope :da_clinica, lambda{|clinica_id| {:conditions=>["clinica_id=?", clinica_id]}}
   named_scope :por_nome, :order=>:nome
@@ -34,7 +35,6 @@ class Dentista < ActiveRecord::Base
   end
   
   def busca_producao(inicio,fim,clinicas)
-    debugger
     resultado = Tratamento.do_dentista(id).por_data.entre(inicio, fim).da_clinica(clinicas)
   end
   

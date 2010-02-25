@@ -1,6 +1,9 @@
 <% content_for :main do %>
 <h3>Listando items da tabela <%= @tabela.nome %></h3>
-
+<p>
+  <%= link_to "Voltar à lista de tabelas", tabelas_path()%> | 
+  <%= link_to 'Novo item da tabela', new_item_tabela_path(:tabela_id=>@tabela.id) if current_user.pode_incluir_tabela and administracao?%>
+</p>
 <table>
   <tr>
     <th width="100px">Código</th>

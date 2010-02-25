@@ -32,10 +32,12 @@ class Tratamento < ActiveRecord::Base
   end
   
   def valor_dentista
+    custo = 0 if custo.nil?
     (valor - custo) * dentista.percentual / 100 
   end
   
   def valor_clinica
+    custo = 0 if custo.nil?
     (valor - custo) * (100 - dentista.percentual) / 100 
   end
   

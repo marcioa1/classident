@@ -71,7 +71,13 @@ class TabelaProteticosController < ApplicationController
 
     respond_to do |format|
       if @tabela_protetico.update_attributes(params[:tabela_protetico])
-        format.html { redirect_to abre_protetico_path(@tabela_protetico.protetico)  }
+        format.html { 
+          if administracao?
+            redirect_to tabela_proteticos_path 
+          else
+            redirect_to abre_protetico_path(@tabela_protetico.protetico)  
+          end
+          }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }

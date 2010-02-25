@@ -36,6 +36,12 @@ class PagamentosController < ApplicationController
     else 
       session[:protetico_id] = nil 
     end
+    if !params[:dentista_id].blank?
+      session[:dentista_id] = params[:dentista_id]
+      @dentista = Dentista.find(params[:dentista_id])
+    else
+      session[:dentista_id] = nil
+    end
     @tipos_pagamento = TipoPagamento.da_clinica(session[:clinica_id]).ativos.por_nome.collect{|obj| [obj.nome, obj.id]}
     @pagamento = Pagamento.new
     if params[:valor]
@@ -64,7 +70,8 @@ class PagamentosController < ApplicationController
     if params[:opcao_restante]!="pago_em_cheque"
       @pagamento.conta_bancaria_id = nil
     end
-    @pagamento.protetico_id = session[:protetico_id] if !session[:protetico_id].nil?
+    @pagamento.protetico_id = session[:protetico_id] unless session[:protetico_id].nil?
+    @pagamento.dentista_id = session[:dentista_id] unless session[:dentista_id].nil?
     respond_to do |format|
       Pagamento.transaction do
         ids = params[:cheques_ids].split(",")

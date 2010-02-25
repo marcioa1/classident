@@ -1,0 +1,12 @@
+<% if administracao? %>
+  <br/>
+  Clínicas :  
+  <% @dentista.clinicas.each() do |clinica| %>
+    <%= check_box_tag "aclinicas_#{clinica.id}",value= clinica.id,false %>  
+    <%= clinica.nome %> &nbsp;&nbsp;
+  <% end %>
+<% else %>
+  <span style="display:none">
+    <%= check_box_tag "aclinica_"+ session[:clinica_id],session[:clinica_id], true %>  
+  </span>
+<% end %>

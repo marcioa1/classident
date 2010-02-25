@@ -4,6 +4,7 @@ class Pagamento < ActiveRecord::Base
   has_many :cheques
   has_many :trabalho_proteticos
   belongs_to :protetico
+  belongs_to :dentista
   
   named_scope :ao_protetico, lambda{|protetico_id| {:conditions=>["protetico_id = ?", protetico_id]}}
   named_scope :no_dia, lambda{|dia|

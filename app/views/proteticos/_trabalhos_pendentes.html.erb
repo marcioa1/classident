@@ -11,15 +11,15 @@
   </tr>
 <% @trabalhos_pendentes.each do |trab| %>
   <tr>
-	<td><%= trab.paciente.nome%></td>
+	<td><%= trab.paciente.nome unless trab.paciente.nil? %></td>
     <td align='center'><%= trab.data_de_envio.to_s_br%></td>
-    <td><%= link_to trab.tabela_protetico.descricao, edit_trabalho_protetico_path(trab) %></td>
+    <td><%= link_to trab.tabela_protetico.descricao, edit_trabalho_protetico_path(trab) unless trab.tabela_protetico.nil? %></td>
     <td><%= trab.valor.real %></td>
     <td align='center'><%= trab.data_prevista_de_devolucao.to_s_br%></td>
     <td align='center'><span id=<%= "data_#{trab.id}" %> > 
       <%= link_to 'foi devolvido', '#', :onclick=>'javascript:devolve_trabalho('+ trab.id.to_s + ')' %>
        </span></td>
-    <td><%= trab.dentista.nome %></td>
+    <td><%= trab.dentista.nome unless trab.dentista.nil? %></td>
 
   </tr>
 

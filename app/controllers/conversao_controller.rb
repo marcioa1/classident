@@ -2,8 +2,8 @@ class ConversaoController < ApplicationController
 
 def index
   c = Converte.new
- # c.clinicas
-#  c.tabela
+  #c.clinicas
+ # c.tabela
 #  c.item_tabela
 #  c.converte_cadastro 
 #  c.mala_direta
@@ -11,14 +11,17 @@ def index
 #  c.converte_formas_recebimento
 #  c.dentista
 #  c.tratamento
-#   c.orcamento
+  c.orcamento
 #  c.tipo_pagamento
 #  c.destinacao
 #  c.pagamento
 #  c.fluxo_de_caixa
 #  c.recebimento
 #  c.cheque
-   c.trabalho_protetico
+#  c.protetico
+#  c.tabela_protetico
+#  c.trabalho_protetico
+#  c.alta
 end
 
 end

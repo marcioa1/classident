@@ -17,7 +17,10 @@
   </li>
   <li><a href="#">Financeiro</a>
     <ul>
+      <li><%= link_to "Tipo de pagamento", tipo_pagamentos_path %></li>
       <li><%= link_to "Formas de recebimento", formas_recebimentos_path %></li>    
+      <li><%= link_to "Pagamentos", relatorio_pagamentos_path %></li>
+      
       <li><%= link_to "Confirma recebimento de cheques", confirma_recebimento_cheques_path %></li>    
       <li><%= link_to "Cheques recebidos", recebimento_confirmado_cheques_path %></li>
       <li><%= link_to "Recebimentos", das_clinicas_recebimentos_path %></li>

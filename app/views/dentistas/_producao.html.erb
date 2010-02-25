@@ -1,20 +1,17 @@
+
 <fieldset class="fieldset_50">
 <%= render :partial=>'datas' %>
-    <% if administracao? %>
-      <br/>
-      Clínicas :  
-      <% @dentista.clinicas.each() do |clinica| %>
-        <%= check_box_tag "aclinicas_#{clinica.id}",value= clinica.id,false %>  
-        <%= clinica.nome %> &nbsp;&nbsp;
-      <% end %>
-    <% else %>
-      <span style="display:none">
-        <%= check_box_tag "aclinica_"+ session[:clinica_id],session[:clinica_id], true %>  
-      </span>
-      <% end %>
+<%= render :partial=>'escolhe_clinica' %>    
 <br/><br/><%= button_to "pesquisar" , "javascript:producao();"%>
 </fieldset>
+<% if administracao? %>
+  <div style='padding-left :60em;'>
+  Valor dos trabalhos selecionados : R$ <span id="valor">0</span>
+  <span id="link_pagamento">
+  <%= link_to "efetua pagamento ", new_pagamento_path() %>
+  </span>
+  </div>
+<% end %>
 <p>
   <div id="lista"></div>
 </p>
-

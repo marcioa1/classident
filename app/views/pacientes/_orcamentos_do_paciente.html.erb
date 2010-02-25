@@ -15,7 +15,7 @@
       <tr>
         <td align='center'><%= link_to orca.numero, edit_orcamento_path(orca) %></td>
         <td><%= orca.data.to_s_br %></td>
-        <td><%= link_to orca.dentista.nome, abre_dentista_path(orca.dentista) %></td>
+        <td><%= link_to orca.dentista.nome, abre_dentista_path(orca.dentista) unless orca.dentista.nil?%></td>
         <td align='right'><%= orca.valor.real %></td>
         <td align='right'><%= orca.desconto %></td>
         <td align='right'><%= orca.valor_com_desconto.real %></td>

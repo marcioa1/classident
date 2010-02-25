@@ -120,7 +120,7 @@ class PacientesController < ApplicationController
       end
     else
       if params[:nome]
-        if session[:clinica_id] == 0
+        if administracao?
           @pacientes = Paciente.all(:conditions=>["nome like ?", params[:nome] + '%'],:order=>:nome)
         else
           @pacientes = Paciente.all(:conditions=>["clinica_id= ? and nome like ?", session[:clinica_id].to_i, params[:nome] + '%'],:order=>:nome)

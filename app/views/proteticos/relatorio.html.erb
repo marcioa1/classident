@@ -1,4 +1,5 @@
 <% content_for :main do %>
+<h3>Relatório de protético</h3>
 <table>
   <tr>
     <th>Data prevista</th>
@@ -10,10 +11,10 @@
 <% @pendentes.each do |pen| %>
   <tr>
     <td><%= pen.data_prevista_de_devolucao.to_s_br %></td>
-    <td><%= pen.protetico.nome %></td>
-    <td><%= pen.paciente.nome %></td>
-    <td><%= pen.tabela_protetico.descricao %></td>
-    <td><%= pen.valor.real %></td>
+    <td><%= pen.protetico.nome unless pen.protetico.nil? %></td>
+    <td><%= pen.paciente.nome unless pen.paciente.nil?%></td>
+    <td><%= pen.tabela_protetico.descricao unless pen.tabela_protetico.nil? %></td>
+    <td align='right'><%= pen.valor.real %></td>
   </tr>
 <% end %>
 </table>

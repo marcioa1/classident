@@ -12,5 +12,6 @@ class Clinica < ActiveRecord::Base
   
   named_scope :por_nome, :order=>:nome
   named_scope :administracao, :conditions=>["sigla = 'AD'"]
+  named_scope :todas, :conditions=>["sigla <> 'AD'"]
   
 end
