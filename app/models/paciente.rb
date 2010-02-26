@@ -8,6 +8,9 @@ class Paciente < ActiveRecord::Base
   belongs_to :indicacao
   has_many :orcamentos
   
+  validates_presence_of :nome, :on => :create, :message => "Campo nome é obrigatório" 
+  validates_presence_of :tabela, :on => :create, :message => "Tabela obrigatória"  
+  
   named_scope :da_clinica, lambda{|clinica_id| {:conditions=>["clinica_id=?", clinica_id]}}
   named_scope :por_nome, :order=>:nome
   
