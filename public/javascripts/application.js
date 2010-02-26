@@ -19,7 +19,7 @@ function outra_clinica(){
 }
 
 function conta_caracteres(){
-    if ($("#nome").val().length > 5){
+    if ($("#nome").val().length > 2){
       $("#pesquisar_button").attr('disabled',false);    
     }else{
       $("#pesquisar_button").attr('disabled',true); 
@@ -80,11 +80,6 @@ function alterou_data_cadastro(){
       $("#paciente_nascimento_2i").selectOptions(mes+"");
       $("#paciente_nascimento_1i").selectOptions(ano+"");
     }
-}
-
-
-function hoje(){
-    $("#datepicker").datepicker('setDate', new Date());
 }
 
 function copia_valor(){

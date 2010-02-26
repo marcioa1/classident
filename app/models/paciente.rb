@@ -78,5 +78,20 @@ class Paciente < ActiveRecord::Base
     ultima = altas.last(:order=>:created_at)
     ultima.data_termino.nil?
   end
+  
+  def verifica_alta_automatica(user,clinica)
+    if !em_alta?
+      if Tratamento.do_paciente(self.id).nao_feito.empty?
+        alta = Alta.new
+        alta.paciente_id = self.id
+        alta.data_inicio = Date.today
+        alta.observacao = "Alta automática"
+        alta.user_id = user
+        alta.clinica_id = clinica
+        alta.save
+        self.altas << alta
+      end
+    end
+  end
 
 end

@@ -31,7 +31,9 @@
     <td><%= tratamento.dentista.nome %></td>
     <td align="center">
     <% if tratamento.data.to_s_br.blank? %>
-      <%= link_to "finalizar", finalizar_procedimento_tratamento_path(:id=>tratamento.id) %>
+      <span id="finalizar_<%=tratamento.id.to_s%>"  >
+        <%= link_to "finalizar", "#", :onclick=>'finalizar_tratamento(' + tratamento.id.to_s + ')' %>
+      </span>
     <% else %>
       <%= tratamento.data.to_s_br%></td>
     <% end %>

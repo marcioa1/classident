@@ -1,0 +1,22 @@
+<% content_for :main do %>
+<p>
+<% form_tag :url=>abandono_de_tratamento_clinicas_path do %>
+  Dias sem contato :
+  <%= text_field_tag :dias, params[:dias], :size=>8 %>
+  <%= submit_tag "pesquisar" %>
+<% end %>
+<br/>
+</p>
+<table>
+  <tr>
+    <th>Nome</th>
+    <th>Último registro</th>
+  </tr>
+<% @abandonos.each do |abandono| %>
+  <tr>
+    <td><%= abandono.nome %></td>
+    <td><%= abandono.ultima_intervencao.to_s_br %></td>
+  </tr>
+<% end %>
+</table>
+<% end %>

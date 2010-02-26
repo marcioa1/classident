@@ -38,37 +38,39 @@ class TratamentosController < ApplicationController
   end
   
   def update
-     @tratamento = Tratamento.find(params[:id])
-     
-      respond_to do |format|
-        if @tratamento.update_attributes(params[:tratamento])
-          if !@tratamento.data.nil?
-            @debito = Debito.find_by_tratamento_id(@tratamento.id)
-            if @debito.nil?
-              @debito = Debito.new
-              @debito.paciente_id = @tratamento.paciente_id
-              @debito.tratamento_id = @tratamento.id
-            end
-            @debito.descricao = @tratamento.item_tabela.descricao
-            @debito.valor = @tratamento.valor
-            @debito.data = @tratamento.data
-            @debito.save
+    @tratamento = Tratamento.find(params[:id])
+    @tratamento.data = params[:datepicker].to_date if params[:datepicker]
+    respond_to do |format|
+      if @tratamento.update_attributes(params[:tratamento])
+        if !@tratamento.data.nil?
+          @tratamento.paciente.verifica_alta_automatica
+          @debito = Debito.find_by_tratamento_id(@tratamento.id)
+          if @debito.nil?
+            @debito = Debito.new
+            @debito.paciente_id = @tratamento.paciente_id
+            @debito.tratamento_id = @tratamento.id
           end
-          format.html { redirect_to(abre_paciente_path(:id=>@tratamento.paciente_id)) }
-          format.xml  { head :ok }
-        else
-          format.html { render :action => "edit" }
-          format.xml  { render :xml => @tratamento.errors, :status => :unprocessable_entity }
+          @debito.descricao = @tratamento.item_tabela.descricao
+          @debito.valor = @tratamento.valor
+          @debito.data = @tratamento.data
+          @debito.save
         end
+        format.html { redirect_to(abre_paciente_path(:id=>@tratamento.paciente_id)) }
+        format.xml  { head :ok }
+      else
+        format.html { render :action => "edit" }
+        format.xml  { render :xml => @tratamento.errors, :status => :unprocessable_entity }
       end
+    end
   end
   
   def finalizar_procedimento
-    #TODO colocar isto em AJAX
     @tratamento = Tratamento.find(params[:id])
     @tratamento.data = Date.today
     @tratamento.finalizar_procedimento(current_user)
     @tratamento.save
-    redirect_to abre_paciente_path(:id=>@tratamento.paciente_id)
+    @tratamento.paciente.verifica_alta_automatica(current_user, session[:clinica_id])
+    render :nothing=>true
+    #TODO atualizar o grid de alta
   end
 end

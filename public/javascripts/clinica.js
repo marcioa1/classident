@@ -163,3 +163,10 @@ function orcamento_dentista(){
       $("#lista_orcamento").replaceWith(data);
   }); 
 }
+
+function finalizar_tratamento(tratamento_id){
+  $.get('/tratamentos/' + tratamento_id + '/finalizar_procedimento');
+  var d = new Date
+  data_formatada = d.getDate() + "/" + (d.getMonth()+1) + "/" + d.getFullYear()
+  $("#finalizar_" + tratamento_id).replaceWith(data_formatada)
+}

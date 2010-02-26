@@ -67,4 +67,12 @@ class ClinicasController < ApplicationController
     end
   end
   
+  def abandono_de_tratamento
+    if params[:dias].blank?
+      @abandonos = [[:nome=>'marcio', :ultima_intervencao=>Date.today - 30.days]]
+    else
+      @abandonos = []  
+    end
+  end
+  
 end

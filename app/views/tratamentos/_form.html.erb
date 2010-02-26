@@ -66,12 +66,7 @@
   </p>
   <p>
     <%= f.label :data_de_término %>
-    <input type="text" id="datepicker" onchange="alterou_data_tratamento();", size="12">
-    <%= link_to "hoje", "#", :onclick=>"hoje();alterou_data_tratamento();"%>
-    <span style="display:none;">
-    <%= f.date_select :data , :order=>[:day, :month, :year],
-           :include_blank=>true %>
-    </span>
+    <%= text_field_tag :datepicker, @tratamento.data.to_s_br, :size=>10 %>
   </p>
   <p>
   </p>
