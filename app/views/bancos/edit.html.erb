@@ -1,20 +1,23 @@
-<h1>Editing banco</h1>
+<% content_for :main do %>
+<fieldset>
+<legend>Editing banco</legend>
 
 <% form_for(@banco) do |f| %>
   <%= f.error_messages %>
 
   <p>
     <%= f.label :numero %><br />
-    <%= f.text_field :numero %>
+    <%= f.text_field :numero, :size=>5 %>
   </p>
   <p>
     <%= f.label :nome %><br />
     <%= f.text_field :nome %>
   </p>
   <p>
-    <%= f.submit 'Update' %>
+    <%= f.submit 'alterar' %>
   </p>
 <% end %>
 
-<%= link_to 'Show', @banco %> |
-<%= link_to 'Back', bancos_path %>
+<%= link_to 'voltar', bancos_path %>
+</fieldset>
+<% end %>

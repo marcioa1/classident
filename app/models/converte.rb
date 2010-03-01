@@ -3,7 +3,6 @@ class Converte
   def clinicas
     todas = Clinica.all
     todas.each() do |cli|
-      debugger
       cli.dentistas = []
       cli.save
     end
@@ -471,8 +470,10 @@ class Converte
       t = TrabalhoProtetico.new
       t.clinica_id = clinica.id
       #FIXME Preciso da clinica também para achar o dentista
-      t.dentista_id = Dentista.find_by_sequencial(registro[10].to_i)
-      t.protetico = Protetico.find_by_sequencial(registro[0].to_i)
+      dentista = Dentista.find_by_sequencial(registro[10].to_i)
+      t.dentista_id = dentista.id unless dentista.nil?
+      p = Protetico.find_by_sequencial(registro[0].to_i)
+      t.protetico = p unless p.nil?
       paciente = Paciente.find_by_sequencial(registro[1].to_i)
       t.paciente = paciente #.id unless paciente.nil?
       t.dente = registro[6]
@@ -484,7 +485,8 @@ class Converte
         t.data_prevista_da_devolucao_da_repeticao = registro[15].to_date unless registro[15].blank?
       rescue
       end
-      t.tabela_protetico_id = TabelaProtetico.find_by_sequencial(registro[8].to_i)
+      tabela = TabelaProtetico.find_by_sequencial(registro[8].to_i)
+      t.tabela_protetico = tabela unless tabela.nil?
       t.valor = le_valor(registro[7]) unless registro[7].nil?
       t.cor = registro[11]
       t.observacoes = registro[9]

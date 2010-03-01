@@ -1,5 +1,7 @@
 class BancosController < ApplicationController
  
+  layout "adm"
+  
   before_filter :require_user
   # GET /bancos
   # GET /bancos.xml
@@ -47,7 +49,7 @@ class BancosController < ApplicationController
     respond_to do |format|
       if @banco.save
         flash[:notice] = 'Banco was successfully created.'
-        format.html { redirect_to(@banco) }
+        format.html { redirect_to(bancos_path) }
         format.xml  { render :xml => @banco, :status => :created, :location => @banco }
       else
         format.html { render :action => "new" }
@@ -64,7 +66,7 @@ class BancosController < ApplicationController
     respond_to do |format|
       if @banco.update_attributes(params[:banco])
         flash[:notice] = 'Banco was successfully updated.'
-        format.html { redirect_to(@banco) }
+        format.html { redirect_to(bancos_path) }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }

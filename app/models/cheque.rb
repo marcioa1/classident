@@ -19,11 +19,13 @@ class Cheque < ActiveRecord::Base
                 data_spc IS NULL and data_solucao IS NULL and data_arquivo_morto IS NULL
                 and pagamento_id IS NULL
                 and destinacao_id IS NULL"]
+  named_scope :do_banco, lambda{|banco| {:conditions=>["banco_id=?", banco]}}
+  named_scope :do_valor, lambda{|valor| {:conditions=>["valor=?", valor]}}
+  
   named_scope :entre_datas, lambda{|data_inicial, data_final| 
       {:conditions=>["bom_para between ? and ?", data_inicial, data_final]}}
-  named_scope :nao_excluidos, :conditions=>["data_de_exclusao IS NULL"]
- 
   named_scope :entregues_a_administracao, :conditions=>["data_entrega_administracao IS NOT NULL"]
+  named_scope :nao_excluidos, :conditions=>["data_de_exclusao IS NULL"]
   named_scope :na_administracao, :conditions=>["data_recebimento_na_administracao IS NOT NULL"]
   named_scope :nao_recebidos, :conditions=>["data_recebimento_na_administracao IS NULL"]  
   named_scope :reapresentado, lambda{|data_inicial, data_final| 

@@ -122,7 +122,21 @@ class ProteticosController < ApplicationController
   end
   
   def relatorio
-    @pendentes = TrabalhoProtetico.pendentes
+    debugger
+    if params[:datepicker]
+      @inicio = params[:datepicker].to_date
+      @fim = params[:datepicker2].to_date
+    else
+      @inicio = Date.today
+      @fim = Date.today
+    end
+    @trabalhos_pendentes = TrabalhoProtetico.pendentes.entre_datas(@inicio,@fim).da_clinica(session[:clinica_id])
+    @trabalhos_devolvidos = TrabalhoProtetico.devolvidos.entre_datas(@inicio,@fim).da_clinica(session[:clinica_id])
+    if params[:protetico].to_i > 0
+      @trabalhos_pendentes = @trabalhos_pendentes.do_protetico(params[:protetico]) 
+      @trabalhos_devolvidos = @trabalhos_devolvidos.do_protetico(params[:protetico]) 
+    end
+    @proteticos = Clinica.find(session[:clinica_id]).proteticos.por_nome.collect{|obj| [obj.nome, obj.id.to_s]}.insert(0, '')
   end
   
 end

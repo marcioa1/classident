@@ -4,7 +4,8 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :bancos
   map.resources :cheques, :collection=>{:busca_disponiveis=>:get, :cheques_recebidos=>:get, 
        :recebe_cheques=>:get,:confirma_recebimento=>:get, 
-       :registra_recebimento_de_cheques=>:get, :recebimento_confirmado=>:get}
+       :registra_recebimento_de_cheques=>:get, :recebimento_confirmado=>:get, :pesquisa=>:get}
+                
   map.resource :clinicas, :collection=>{:producao_entre_datas=>:get, :producao_anual=>:get,
        :relatorio_alta=>:get, :abandono_de_tratamento=>:get }
   map.resources :conta_bancarias

@@ -1,21 +1,30 @@
 <% content_for :main do %>
 <h3>Relatório de protético</h3>
-<table>
-  <tr>
-    <th>Data prevista</th>
-    <th>Protético</th>
-    <th>Paciente</th>
-    <th>Descrição</th>
-    <th>Valor</th>
-  </tr>
-<% @pendentes.each do |pen| %>
-  <tr>
-    <td><%= pen.data_prevista_de_devolucao.to_s_br %></td>
-    <td><%= pen.protetico.nome unless pen.protetico.nil? %></td>
-    <td><%= pen.paciente.nome unless pen.paciente.nil?%></td>
-    <td><%= pen.tabela_protetico.descricao unless pen.tabela_protetico.nil? %></td>
-    <td align='right'><%= pen.valor.real %></td>
-  </tr>
+<p>
+<% form_tag relatorio_proteticos_path do %>
+  Entre : <%= text_field_tag :datepicker, @inicio.to_s_br, :size=>10 %>
+   e : <%= text_field_tag :datepicker2, @fim.to_s_br, :size=>10 %>
+   &nbsp;&nbsp;Protético : <%= select_tag "protetico", options_for_select(@proteticos, params[:protetico]), :include_blank=>true %>
+  &nbsp;&nbsp;<%= submit_tag "pesquisar" %>
 <% end %>
-</table>
+</p>
+<br/>
+<div id="tabs">
+    <ul>
+        <li><a href="#fragment-1"><span>Pendentes</span></a></li>
+        <li><a href="#fragment-2"><span>Devolvidos</span></a></li>
+        <li><a href="#fragment-3"><span>Repetidos</span></a></li>
+    </ul>
+    <div id="fragment-1">
+	    <%= render :partial=>"trabalhos_pendentes"  %>
+        
+    </div>
+    <div id="fragment-2">
+        <%=  render :partial=>"trabalhos_devolvidos"  %>
+    </div>
+    <div id="fragment-3">
+       <%=   %>
+    </div>
+</div>
+
 <% end %>

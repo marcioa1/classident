@@ -181,4 +181,14 @@ class ChequesController < ApplicationController
     result += "</table>"
     render :json =>result.to_json
   end
+  
+  def pesquisa
+    @bancos = Banco.por_nome.collect{|obj| [obj.nome, obj.id]}
+    if administracao?
+      @cheques = Cheque.na_administracao.do_banco(params[:banco])
+    else
+      @cheques = Cheque.da_clinica(session[:clinica_id]).do_banco(params[:banco])
+    end
+    @cheques = @cheques.do_valor(params[:valor].gsub(",",".")) if !params[:valor].blank?
+  end
 end

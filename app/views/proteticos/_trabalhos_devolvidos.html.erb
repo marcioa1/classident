@@ -1,0 +1,26 @@
+<h2>Trabalhos devolvidos</h2>
+<table>
+  <tr>
+    <th><br/>Paciente</th>
+    <th><br/>Data da envio</th>
+    <th><br/>Descrição</th>
+    <th><br/>Valor</th>
+    <th>Data prevista<br/>de devolução</th>
+    <th><br/>Data de devolução</th>
+    <th><br/>Dentista</th>
+    <th><br/>Protético</th>
+  </tr>
+<% @trabalhos_devolvidos.each do |trab| %>
+  <tr>
+	<td><%= trab.paciente.nome unless trab.paciente.nil? %></td>
+    <td align='center'><%= trab.data_de_envio.to_s_br%></td>
+    <td><%= link_to trab.tabela_protetico.descricao, edit_trabalho_protetico_path(trab) unless trab.tabela_protetico.nil? %></td>
+    <td align='right'><%= trab.valor.real %></td>
+    <td align='center'><%= trab.data_prevista_de_devolucao.to_s_br%></td>
+    <td align='center'><%= trab.data_de_devolucao.to_s_br %></td>
+    <td><%= trab.dentista.nome unless trab.dentista.nil? %></td>
+    <td><%= trab.protetico.nome unless trab.protetico.nil? %></td>
+  </tr>
+
+<% end %>
+</table>

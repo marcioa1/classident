@@ -3,19 +3,23 @@
   <table>
 	<tr>
 	  <th>Paciente</th>
+	  <th>Telefone</th>
+	  <th>Celular</th>
 	  <th>Saldo devedor</th>
 	</tr>
   <% total = 0.0 %>
   <% @em_debito.each() do |pac| %>
     <tr>
-	  <td><%= pac.nome %></td>
+	  <td><%= link_to pac.nome , abre_paciente_path(pac)%></td>
+	  <td><%= pac.telefone %></td>
+	  <td><%= pac.celular %></td>
 	  <td align="right" style="color:red;"><%= pac.saldo.real %></td>
 	  <% total += pac.saldo %>
     </tr>
   <% end %>
   <tr>
 	<td>Total</td>
-	<td align="right" style="color:red;"><%= total.real %></td>
+	<td colspan="3"align="right" style="color:red;"><%= total.real %></td>
   </tr>
   </table>
 <% end %>

@@ -17,14 +17,18 @@ class Paciente < ActiveRecord::Base
   #validates_uniqueness_of :codigo
   
   def extrato
-    result = (recebimentos + debitos).sort { |a,b| a.data<=>b.data }
+    result = []
+    recebimentos.each do |recebimento|
+      result << recebimento unless recebimento.excluido?
+    end
+    result = (result + debitos).sort { |a,b| a.data<=>b.data }
   end
   
   
   def debito
     total = 0
     debitos.each() do |debito|
-      total += debito.valor
+      total += debito.valor 
     end
     return total
   end

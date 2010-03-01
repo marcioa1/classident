@@ -21,7 +21,7 @@ describe Paciente do
   it "should have a saldo of 0 when created" do
     lambda{
       paciente = create_paciente()
-      paciente.saldo.should == 1
+      paciente.saldo.should  == 1
     }
   end
   

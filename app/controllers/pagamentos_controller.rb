@@ -106,7 +106,7 @@ class PagamentosController < ApplicationController
     respond_to do |format|
       if @pagamento.update_attributes(params[:pagamento])
         flash[:notice] = 'Pagamento was successfully updated.'
-        format.html { redirect_to(@pagamento) }
+        format.html { redirect_to(relatorio_pagamentos_path) }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }

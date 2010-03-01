@@ -13,6 +13,7 @@ class TrabalhoProtetico < ActiveRecord::Base
             {:conditions=>["paciente_id = ? ", paciente_id]}}
   named_scope :do_protetico, lambda {|protetico_id| 
             {:conditions=>["protetico_id = ? ", protetico_id]}}
+  named_scope :entre_datas, lambda{|inicio,fim| {:conditions=>["data_de_envio between ? and ? ", inicio,fim]}}
   named_scope :nao_pagos, :conditions=>['pagamento_id IS NULL']
   named_scope :pendentes, :conditions=>["data_de_devolucao IS NULL"]
 end
