@@ -1,3 +1,5 @@
 
 marcio:
-  nome: marcio aun migueis
+  nome: 'marcio aun migueis'
+  codigo: '1'
+  clinica_id: 5

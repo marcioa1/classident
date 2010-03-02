@@ -45,7 +45,7 @@ class Paciente < ActiveRecord::Base
     credito-debito
   end
   
-  def gera_codigo()
+  def gera_codigo(clinica_id)
     ultimo = Paciente.last(:conditions=>["clinica_id=?", clinica_id])
     if ultimo.nil?
       codigo = 0
@@ -56,7 +56,7 @@ class Paciente < ActiveRecord::Base
   end
   
   
-  def nome_e_clinica(clinica)
+  def nome_e_clinica(clinica_id)
     if clinica==0
       clinica = Clinica.find(clinica_id)
       return nome + "   (#{clinica.nome})"

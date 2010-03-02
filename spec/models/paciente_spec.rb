@@ -2,34 +2,33 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe Paciente do
-  fixtures :pacientes, :tabelas, :recebimentos, :debitos
+  fixtures :pacientes, :tabelas, :recebimentos, :debitos, :clinicas
   
-  it "should be invalid without a nome" do
-    lambda{
-      paciente = create_paciente(:nome=>nil)
-      paciente.errors.should be_invalid(:nome)
-    }.should_not change(Paciente, :count)
+  before(:each) do
+    @paciente = pacientes(:marcio)
+    @clinica = clinicas(:recreio)
+  end
+  
+  it "should has a debt of 50" do
+    @paciente.debito.real.should == BigDecimal.new('50').real
+  end
+  
+  it "deve ter um recebimento de 30" do
+    @paciente.credito.should == BigDecimal.new('30')
+  end
+  
+  it "should have a saldo of -20 " do
+      @paciente.saldo.should  == (-20)
+  end
+  
+  it "should has a table" do
+    @paciente.tabela != nil
+  end
+  
+  it "should has a codigo of 2" do
+    pac = Paciente.new
+    pac.codigo = pac.gera_codigo(@clinica.id)
+    pac.codigo.should == 2
   end
 
-  it "should be invalid without a tabela" do
-    lambda{
-      paciente = create_paciente(:tabela=>nil)
-      paciente.errors.should be_invalid(:tabela)
-    }.should_not change(Paciente, :count)
-  end
-  
-  it "should have a saldo of 0 when created" do
-    lambda{
-      paciente = create_paciente()
-      paciente.saldo.should  == 1
-    }
-  end
-  
-  private
-     def create_paciente(options={})
-       Paciente.create({
-         :nome => "Marcio", 
-         :tabela=> tabelas(:principal)
-       }.merge(options))
-     end
 end
