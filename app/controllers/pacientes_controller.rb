@@ -33,6 +33,7 @@ class PacientesController < ApplicationController
       @tabelas = Tabela.ativas.collect{|obj| [obj.nome,obj.id]}
       @paciente = Paciente.new
       @indicacoes = Indicacao.por_descricao.collect{|obj| [obj.descricao, obj.id]}
+      @ortodontistas = Dentista.ortodontistas.collect{|obj| [obj.nome,obj.id]}
       respond_to do |format|
         format.html # new.html.erb
         format.xml  { render :xml => @paciente }
@@ -51,9 +52,10 @@ class PacientesController < ApplicationController
   def create
     @paciente = Paciente.new(params[:paciente])
     @paciente.clinica_id = session[:clinica_id]
-    @paciente.codigo = @paciente.gera_codigo()
+    @paciente.codigo = @paciente.gera_codigo(session[:clinica_id])
     @paciente.inicio_tratamento = params[:datepicker2].to_date
-#    @paciente.nascimento = params[:datepicker].to_date
+    @paciente.data_da_suspensao_da_cobranca_de_orto = parasm[:datepicker3].to_date unless params[:datepicker3].blank?
+    @paciente.data_da_saida_da_lista_de_debitos = params[:datepicker4].to_date unless params[:datepicker4].blank?
     respond_to do |format|
       if @paciente.save
         format.html { redirect_to(pesquisa_pacientes_path) }
@@ -70,8 +72,8 @@ class PacientesController < ApplicationController
   def update
     @paciente = Paciente.find(params[:id])
     @paciente.inicio_tratamento = params[:datepicker2].to_date
-    debugger
- #   @paciente.nascimento = params[:datepicker].to_date
+    @paciente.data_da_suspensao_da_cobranca_de_orto = parasm[:datepicker3].to_date unless params[:datepicker3].blank?
+    @paciente.data_da_saida_da_lista_de_debitos = params[:datepicker4].to_date unless params[:datepicker4].blank?
     respond_to do |format|
       if @paciente.update_attributes(params[:paciente])
         format.html { redirect_to(abre_paciente_path(:id=>@paciente.id)) }
@@ -136,6 +138,8 @@ class PacientesController < ApplicationController
     @pendentes_protetico = TrabalhoProtetico.pendentes.do_paciente(@paciente.id)
     @devolvidos_protetico = TrabalhoProtetico.devolvidos.do_paciente(@paciente.id) 
     @orcamentos = @paciente.orcamentos
+    @ortodontistas = Dentista.ortodontistas.por_nome.collect{|obj| [obj.nome,obj.id]}
+    
     session[:paciente_id] = params[:id]
     session[:paciente_nome] = @paciente.nome
   end

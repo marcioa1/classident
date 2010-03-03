@@ -279,6 +279,7 @@ class Converte
   end
   
   def cheque
+    #TODO Os cheques das clíncas existem na administração. Preciso tratar isto
     puts "Convertendo cheques ...."
     f = File.open("doc/cheque.txt" , "r")
    # Banco.delete_all
@@ -324,6 +325,10 @@ class Converte
       t.data_spc = nil
       t.data_arquivo_morto = registro[30].to_date unless registro[30].blank?
       t.data_recebimento_na_administracao = nil
+      if registro[0].to_i == 62
+        debugger
+        achou=true
+      end
       if !registro[12].blank?
         pag = Pagamento.find_by_sequencial(registro[12].to_i)
         t.pagamento_id = pag.id unless pag.nil?

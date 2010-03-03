@@ -10,3 +10,4 @@
   <% end %>
 </tr>
 <% @total += recebimento.valor %>
+<% @por_clinica[recebimento.clinica.id] += recebimento.valor %>

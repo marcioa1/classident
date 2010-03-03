@@ -44,9 +44,12 @@ class Cheque < ActiveRecord::Base
     return "devolvido duas vezes em " + data_segunda_devolucao.to_s_br unless !devolvido_duas_vezes? 
     return "reapresentado em " + data_reapresentacao.to_s_br unless !reapresentado?
     return "devolvido uma vez em " + data_primeira_devolucao.to_s_br unless !devolvido_uma_vez?
-    return "usado pgto" if usado_para_pagamento?
+    return "usado pgto na adm" if usado_para_pagamento? and recebido_pela_administracao?
+    return "usado pgto na clínica" if usado_para_pagamento? and !recebido_pela_administracao?
     return "com destinação" if com_destinacao?
-    return "normal" unless !sem_devolucao? 
+    return "recebido pela adm" if recebido_pela_administracao?
+    return "entregue à adm" if entregue_a_administacao?
+    return "disponível" unless !sem_devolucao? 
   end
   
   def sem_devolucao?
@@ -79,6 +82,10 @@ class Cheque < ActiveRecord::Base
   
   def entregue_a_administracao?
     !data_entrega_administracao.nil?
+  end
+  
+  def recebido_pela_administracao?
+    !data_recebimento_na_administracao.nil?
   end
   
   def usado_para_pagamento?

@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100225001908) do
+ActiveRecord::Schema.define(:version => 20100303191715) do
 
   create_table "altas", :force => true do |t|
     t.integer  "paciente_id"
@@ -126,6 +126,7 @@ ActiveRecord::Schema.define(:version => 20100225001908) do
     t.string   "especialidade"
     t.decimal  "percentual",    :precision => 9, :scale => 2
     t.integer  "sequencial"
+    t.boolean  "ortodontista",                                :default => false
   end
 
   add_index "dentistas", ["sequencial"], :name => "index_dentistas_on_sequencial"
@@ -225,26 +226,34 @@ ActiveRecord::Schema.define(:version => 20100225001908) do
   create_table "pacientes", :force => true do |t|
     t.string   "nome"
     t.string   "logradouro"
-    t.string   "numero",            :limit => 10
-    t.string   "complemento",       :limit => 10
-    t.string   "telefone",          :limit => 50
-    t.string   "celular",           :limit => 50
-    t.string   "email",             :limit => 120
+    t.string   "numero",                                :limit => 10
+    t.string   "complemento",                           :limit => 10
+    t.string   "telefone",                              :limit => 50
+    t.string   "celular",                               :limit => 50
+    t.string   "email",                                 :limit => 120
     t.integer  "tabela_id"
     t.date     "inicio_tratamento"
     t.date     "nascimento"
-    t.string   "bairro",            :limit => 30
-    t.string   "cidade",            :limit => 30
-    t.string   "uf",                :limit => 2
-    t.string   "cep",               :limit => 9
-    t.string   "cpf",               :limit => 14
-    t.string   "sexo",              :limit => 1
+    t.string   "bairro",                                :limit => 30
+    t.string   "cidade",                                :limit => 30
+    t.string   "uf",                                    :limit => 2
+    t.string   "cep",                                   :limit => 9
+    t.string   "cpf",                                   :limit => 14
+    t.string   "sexo",                                  :limit => 1
     t.integer  "clinica_id"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "codigo"
     t.integer  "indicacao_id"
     t.integer  "sequencial"
+    t.boolean  "ortodontia"
+    t.integer  "ortodontista_id"
+    t.decimal  "mensalidade_de_ortodontia",                            :precision => 9, :scale => 2
+    t.boolean  "sair_da_lista_de_debitos"
+    t.string   "motivo_sair_da_lista_de_debitos"
+    t.date     "data_da_saida_da_lista_de_debitos"
+    t.date     "data_da_suspensao_da_cobranca_de_orto"
+    t.string   "motivo_suspensao_cobranca_orto"
   end
 
   add_index "pacientes", ["id"], :name => "index_pacientes_on_id"

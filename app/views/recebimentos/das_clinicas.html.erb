@@ -2,11 +2,18 @@
   <h3>Recebimento das clinicas</h3>
   <% form_tag das_clinicas_recebimentos_path do %>
   Entre : <%= text_field_tag :datepicker, params[:datepicker], :size=>10 %>
-  e : <%= text_field_tag :datepicker2, params[:datepicker2], :size=>10%><br/>
-  <%= render :partial =>"clinicas/opcoes", :locals=>{:clinicas=>@todas_as_clinicas} %>
-  <%= render :partial =>"formas_recebimentos/opcoes" , :locals=>{:formas=>@formas_recebimento }%>
+  e : <%= text_field_tag :datepicker2, params[:datepicker2], :size=>10%>
   <%= submit_tag "pesquisar"%>
+  <br/><br/>
+  <div style='float: right; '>
+  <%= render :partial =>"formas_recebimentos/opcoes" , :locals=>{:formas=>@formas_recebimento }%>
+  </div>
+  <%= render :partial =>"clinicas/opcoes", :locals=>{:clinicas=>@todas_as_clinicas} %>
   <% end %>
+  
+  <div id="conteudo">
+  <div id="resultado" style='padding-left: 0em;'>
+    <%= @recebimentos.size %> lançamentos.
   <table >
 	<tr>
 	  <th width="90px">Data</th>
@@ -16,6 +23,7 @@
 	  <th width="65px">Clínica</th>
 	</tr>
 	<% @total = 0 %>
+	<% @por_clinica = [0,0,0,0,0,0,0,0,0,0,0,0] %>
 	  <%= render :partial=>"recebimento" , :collection=>@recebimentos %>
 	<tr>
 	  <td colspan="2" align="center">Total : </td>
@@ -23,4 +31,18 @@
 	  <td colspan="2">&nbsp;</td>
 	</tr>
   </table>
+  </div>
+  <div id="grafico">
+    <% options = [] %>
+    <% clinica = 0 %>
+    <% @por_clinica.each do |cl| %>
+        <% if cl > 0 %>
+          <% options << [ Clinica.find(clinica).nome , (cl * 100 / @total).to_i ] %>
+        <% end %>
+        <% clinica += 1%>
+    <% end %>
+     <%= google_pie_chart(options, :width => 490, :height => 150) %>
+    
+  </div>
+  </div>
 <% end %>

@@ -17,10 +17,10 @@ def index
 #  c.pagamento
 #  c.fluxo_de_caixa
 #  c.recebimento
-#  c.cheque
+ c.cheque
 #  c.protetico
 #  c.tabela_protetico
-  c.trabalho_protetico
+#  c.trabalho_protetico
 #  c.alta
 end
 

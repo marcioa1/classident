@@ -7,6 +7,7 @@ class Paciente < ActiveRecord::Base
   has_many :trabalho_proteticos
   belongs_to :indicacao
   has_many :orcamentos
+  has_one :ortodontista, :class_name=>:dentista
   
   validates_presence_of :nome, :on => :create, :message => "Campo nome é obrigatório" 
   validates_presence_of :tabela, :on => :create, :message => "Tabela obrigatória"  
@@ -56,9 +57,9 @@ class Paciente < ActiveRecord::Base
   end
   
   
-  def nome_e_clinica(clinica_id)
-    if clinica==0
-      clinica = Clinica.find(clinica_id)
+  def nome_e_clinica(administracao)
+    if administracao
+      clinica = Clinica.find(self.clinica_id)
       return nome + "   (#{clinica.nome})"
     else
       return nome

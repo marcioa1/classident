@@ -32,7 +32,7 @@
   <% f.fields_for @recebimento.cheque do |c| %>
     <p>
        <%= c.label :banco %> : 
-       <%= c.select :banco_id, options_for_select(@bancos)  %>
+       <%= c.select :banco_id, options_for_select(@bancos), :include_blank=>true  %>
     </p>
     <p>
        <%= c.label :agencia %> : 
@@ -48,7 +48,7 @@
     </p>
     <p>
         <%= f.label :bom_para %>
-        <%= text_field_tag :datepicker2, Date.today.to_s_br, :size=>10 %>
+        <%= text_field_tag :datepicker2, '', :size=>10 %>
       </p>
   <% end %>
   </fieldset>

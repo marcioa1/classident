@@ -154,11 +154,13 @@ class ChequesController < ApplicationController
   
   def recebimento_confirmado
     if params[:datepicker]
+      @inicio = params[:datepicker].to_date
+      @fim = params[:datepicker2].to_date
       @cheques = Cheque.recebidos_na_administracao(params[:datepicker].to_date,
                      params[:datepicker2].to_date)
    else
-     params[:datepicker] = Date.today - 15.days
-     params[:datepicker2] = Date.today
+     @inicio = Date.today - 15.days
+     @fim = Date.today
       @cheques = []
     end
   end

@@ -30,11 +30,11 @@ class RecebimentosController < ApplicationController
     @formas_recebimentos = FormasRecebimento.por_nome.collect{|obj| [obj.nome,obj.id]}
     @recebimento = Recebimento.new
     @recebimento.cheque = Cheque.new
+ #   debugger
     @paciente = Paciente.find(session[:paciente_id])
     @recebimento.paciente = @paciente
     @recebimento.paciente_id = @paciente.id
     @recebimento.clinica_id = @paciente.clinica_id
-   # @recebimento.cheque.clinica_id = @paciente.clinica_id
     
     respond_to do |format|
       format.html # new.html.erb
@@ -45,6 +45,9 @@ class RecebimentosController < ApplicationController
   # GET /recebimentos/1/edit
   def edit
     @recebimento = Recebimento.find(params[:id])
+    if @recebimento.cheque.nil?
+      @recebimento.cheque = Cheque.new
+    end
     @bancos = Banco.all(:order=>:nome).collect{|obj| [obj.numero + " - " + obj.nome,obj.id]}
     @formas_recebimentos = FormasRecebimento.all.collect{|obj| [obj.nome,obj.id]}
     
@@ -53,17 +56,25 @@ class RecebimentosController < ApplicationController
   # POST /recebimentos
   # POST /recebimentos.xml
   def create
-    @recebimento = Recebimento.new(params[:recebimento])
+    debugger
+    @recebimento = Recebimento.new()
+    @recebimento.paciente_id = params[:recebimento][:paciente_id]
+    @recebimento.valor = params[:recebimento][:valor]
+    @recebimento.observacao = params[:recebimento][:observacao]
+    @recebimento.formas_recebimento_id = params[:recebimento][:formas_recebimento_id]
     @recebimento.data = params[:datepicker].to_date
-    @paciente = Paciente.find(params[:paciente_id])
-    @recebimento.paciente_id = @paciente.id
-    @recebimento.clinica_id = @paciente.clinica_id
-    @recebimento.cheque.clinica_id = @paciente.clinica_id
+    @recebimento.clinica_id = session[:clinica_id]
     
     if @recebimento.em_cheque?
+      @recebimento.cheque = Cheque.new
       @recebimento.cheque.bom_para = params[:datepicker2].to_date
       @recebimento.cheque.clinica_id = session[:clinica_id]
       @recebimento.cheque.paciente_id = @recebimento.paciente_id
+      @recebimento.cheque.banco_id = params[:recebimento][:cheque][:banco_id]
+      @recebimento.cheque.agencia = params[:recebimento][:cheque][:agencia]
+      @recebimento.cheque.numero  = params[:recebimento][:cheque][:numero]
+      @recebimento.cheque.conta_corrente  = params[:recebimento][:cheque][:conta_corrente]
+      @recebimento.cheque.valor = params[:recebimento][:cheque][:valor]
     else
       @recebimento.cheque = nil
     end
