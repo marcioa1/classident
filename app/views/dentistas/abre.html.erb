@@ -8,6 +8,9 @@
         <li><a href="#fragment-2"><span>Produção</span></a></li>
         <li><a href="#fragment-3"><span>Pagamento</span></a></li>
         <li><a href="#fragment-4"><span>Orçamentos</span></a></li>
+        <% if @dentista.ortodontista %>
+          <li><a href="#ortodontia"><span>Ortodontia</span></a></li>
+        <% end %>
     </ul>
     <div id="fragment-1">
 	    <%= render :partial=>"editar" , :locals=>{:dentista=>@dentista, :clinicas=>@clinica_atual} %>
@@ -20,5 +23,8 @@
        <%= render :partial=>"pagamento" , :locals=>{:dentista=>@dentista, :clinicas=>@clinica_atual} %>
     </div>
     <div id='fragment-4'><%= render :partial=>'orcamentos_elaborados' %> </div>
+    <% if @dentista.ortodontista %>
+      <div id="ortodontia"><%= render :partial=> 'pacientes_de_ortodontia' %></div>
+    <% end %>
 </div>
 <% end %>

@@ -7,12 +7,15 @@ class Paciente < ActiveRecord::Base
   has_many :trabalho_proteticos
   belongs_to :indicacao
   has_many :orcamentos
-  has_one :ortodontista, :class_name=>:dentista
+  belongs_to :ortodontista, :class_name=>"Dentista", :foreign_key=>'ortodontista_id'
+  belongs_to :dentista
   
   validates_presence_of :nome, :on => :create, :message => "Campo nome é obrigatório" 
   validates_presence_of :tabela, :on => :create, :message => "Tabela obrigatória"  
   
   named_scope :da_clinica, lambda{|clinica_id| {:conditions=>["clinica_id=?", clinica_id]}}
+  named_scope :de_ortodontia, :conditions=>["ortodontia = ?", true]
+  named_scope :fora_da_lista_de_debito, :conditions=>["sair_da_lista_de_debitos = ? ", true]
   named_scope :por_nome, :order=>:nome
   
   #validates_uniqueness_of :codigo

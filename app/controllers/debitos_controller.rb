@@ -89,4 +89,8 @@ class DebitosController < ApplicationController
       @em_debito << pac if pac.em_debito?
     end
   end
+  
+  def pacientes_fora_da_lista
+    @pacientes = Paciente.fora_da_lista_de_debito.da_clinica(session[:clinica_id])
+  end
 end

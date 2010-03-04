@@ -75,4 +75,8 @@ class ClinicasController < ApplicationController
     end
   end
   
+  def pacientes_de_ortodontia
+    @pacientes = Paciente.da_clinica(session[:clinica_id]).de_ortodontia.por_nome
+  end
+  
 end

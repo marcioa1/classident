@@ -3,6 +3,7 @@ class Dentista < ActiveRecord::Base
   has_and_belongs_to_many :clinicas
   has_many :trabalho_proteticos
   has_many :pagamentos
+  has_many :pacientes_de_ortodontia, :class_name=>"Paciente", :foreign_key=>"ortodontista_id"
   
   #named_scope :da_clinica, lambda{|clinica_id| {:conditions=>["clinica_id=?", clinica_id]}}
   named_scope :por_nome, :order=>:nome
@@ -24,7 +25,6 @@ class Dentista < ActiveRecord::Base
     do_dentista = (valor - custo ) * percentual / 100
     da_clinica = valor - custo - do_dentista
     return self.percentual.to_s + "/" + valor.to_s + "/" + custo.to_s + "/" + do_dentista.to_s  + "/" + da_clinica.to_s
- 
   end
   
   def sigla_das_clinicas

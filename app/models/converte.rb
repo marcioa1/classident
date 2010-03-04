@@ -20,11 +20,23 @@ class Converte
       registro = line.split(";")
       p.nome = registro[0].nome_proprio
       #TODO não pode ser assim, pois em outras clinicas haverá outro paciente com o mesmo id/sequencial
-      p.id = registro[1].to_i
       p.sequencial = registro[1].to_i
       p.tabela_id = registro[2].to_i
       p.clinica_id = clinica.id
+      p.cpf = registro[16]
+      p.sexo = registro[6].to_i ==0 ? "M" : "F"
       p.inicio_tratamento = registro[7].to_date
+      p.sair_da_lista_de_debitos = registro[29]
+      p.motivo_sair_da_lista_de_debitos = registro[30]
+      p.data_da_saida_da_lista_de_debitos = registro[32].to_date unless registro[32].blank?
+      if registro[34].to_i  > 0
+        ortodontista = Dentista.find_by_sequencial(registro[34].to_i)
+        p.ortodontia = true
+        p.ortodontista_id = ortodontista.id
+        p.mensalidade_de_ortodontia = le_valor(registro[33])
+      else
+        portodontia = false
+      end
       p.save
     end
     f.close
