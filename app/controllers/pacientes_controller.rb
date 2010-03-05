@@ -98,6 +98,7 @@ class PacientesController < ApplicationController
   end
   
   def pesquisa
+    params[:nome] = params[:nome].nome_proprio if params[:nome]
     session[:paciente_id] = nil
     if !session[:paciente_id].nil?
       @paciente = Paciente.find(session[:paciente_id])

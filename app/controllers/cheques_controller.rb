@@ -185,7 +185,7 @@ class ChequesController < ApplicationController
   end
   
   def pesquisa
-    @bancos = Banco.por_nome.collect{|obj| [obj.nome, obj.id]}
+    @bancos = Banco.por_nome.collect{|obj| [obj.nome, obj.id.to_s]}
     if administracao?
       @cheques = Cheque.na_administracao.do_banco(params[:banco])
     else

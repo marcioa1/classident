@@ -115,7 +115,8 @@ class Converte
       r = Recebimento.new
       registro = line.split(";")
       r.data = registro[1].to_date
-      r.paciente_id = registro[2].to_i
+      pac = Paciente.find_by_sequencial(registro[2].to_i)
+      r.paciente_id = pac.id unless pac.nil?
       r.formas_recebimento_id = registro[3].to_i
       r.valor = le_valor(registro[4])
       r.observacao = registro[7]
@@ -312,7 +313,8 @@ class Converte
       t.numero = registro[5]
       t.bom_para = registro[6].to_date
       t.valor = le_valor(registro[7])
-      t.paciente_id = registro[8].to_i
+      pac = Paciente.find_by_sequencial(registro[8].to_i)
+      t.paciente_id = pac.id unless pac.nil?
       t.data = registro[9].to_date
       if !registro[10].blank? && registro[10].to_i > 0
         d = Destinacao.find_by_sequencial(registro[10].to_i)

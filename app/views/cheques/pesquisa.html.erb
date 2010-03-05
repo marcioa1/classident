@@ -9,7 +9,7 @@
         <td>&nbsp;</td>
       </tr>
       <tr>
-        <td><%= select_tag :banco, options_for_select(@bancos) %></td>
+        <td><%= select_tag :banco, options_for_select(@bancos, params[:banco] )%></td>
         <td><%= text_field_tag :numero, params[:numero], :size=>10 %></td>
         <td><%= text_field_tag :valor, params[:valor], :size=>10 %></td>
         <td><%= submit_tag "Pesquisar"%></td>
@@ -37,7 +37,7 @@
         <td><%=cheque.numero%></td>
         <td><%=cheque.bom_para.to_s_br%></td>
         <td align='right'><%=cheque.valor.real%></td>
-        <td><%= cheque.recebimento.paciente.nome %></td>
+        <td><%= cheque.recebimento.paciente.nome unless cheque.recebimento.paciente.nil? %></td>
         <td>
           <% if cheque.usado_para_pagamento? %>
             <%= link_to cheque.status, "#", :onclick=>'abre_pagamento( ' + cheque.pagamento_id.to_s + ')'%>
