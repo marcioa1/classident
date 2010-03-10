@@ -1,0 +1,33 @@
+<% content_for :main do %>
+  <h3>Entrada no mês</h3>
+  <% form_tag :url=>entradas_no_mes_recebimentos_path do %>
+    <%= label_tag :mes %> / 
+    <%= label_tag :ano %>
+    <%= select_month Date.today %>
+    <%= select_year Date.today %>
+    <%= submit_tag "pesquisar" %>
+  <% end %>
+  <%= @cheques.size %>
+  <table>
+    <% for cheque in @cheques%>
+    <tr>
+      <td><%= cheque.id %></td>
+      <td><%= cheque.recebimentos.first.paciente.nome %></td>
+      <td><%= cheque.limpo?%></td>
+    </tr>
+    <% end %>
+  </table>
+  <table>
+    <tr>
+      <th>Dia</th>
+      <th>Valor</th>
+      
+    </tr>
+    <% (1..31).each do  |dia| %>
+      <tr>
+        <td><%= dia %></td>
+        <td align='right'><%= @entradas[dia].real %></td>
+      </tr>
+    <% end %>
+  </table>
+<% end %>

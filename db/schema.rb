@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100303191715) do
+ActiveRecord::Schema.define(:version => 20100308133656) do
 
   create_table "altas", :force => true do |t|
     t.integer  "paciente_id"
@@ -69,6 +69,8 @@ ActiveRecord::Schema.define(:version => 20100303191715) do
     t.integer  "destinacao_id"
     t.date     "data_destinacao"
     t.date     "data_de_exclusao"
+    t.integer  "recebimento_id_2"
+    t.integer  "recebimento_id_3"
   end
 
   add_index "cheques", ["recebimento_id"], :name => "index_cheques_on_recebimento_id"
@@ -325,13 +327,14 @@ ActiveRecord::Schema.define(:version => 20100303191715) do
     t.integer  "clinica_id"
     t.date     "data"
     t.integer  "formas_recebimento_id"
-    t.decimal  "valor",                 :precision => 9, :scale => 2
+    t.decimal  "valor"
     t.string   "observacao"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.date     "data_de_exclusao"
     t.string   "observacao_exclusao"
     t.integer  "sequencial"
+    t.integer  "cheque_id"
   end
 
   add_index "recebimentos", ["clinica_id"], :name => "index_recebimentos_on_clinica_id"

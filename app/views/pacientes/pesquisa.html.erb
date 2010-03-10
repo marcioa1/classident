@@ -19,6 +19,7 @@
 <br/>
 <% end %>
 
+
 <p>
     <% @pacientes.each do |paciente| %>
       <%= link_to paciente.nome_e_clinica(administracao?), abre_paciente_path(:id=>paciente.id) %><br/>

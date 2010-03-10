@@ -16,7 +16,7 @@ def index
 #  c.destinacao
 #  c.pagamento
 #  c.fluxo_de_caixa
-  c.recebimento
+#  c.recebimento
   c.cheque
 #  c.protetico
 #  c.tabela_protetico

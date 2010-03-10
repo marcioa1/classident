@@ -30,7 +30,6 @@ class RecebimentosController < ApplicationController
     @formas_recebimentos = FormasRecebimento.por_nome.collect{|obj| [obj.nome,obj.id]}
     @recebimento = Recebimento.new
     @recebimento.cheque = Cheque.new
- #   debugger
     @paciente = Paciente.find(session[:paciente_id])
     @recebimento.paciente = @paciente
     @recebimento.paciente_id = @paciente.id
@@ -45,12 +44,13 @@ class RecebimentosController < ApplicationController
   # GET /recebimentos/1/edit
   def edit
     @recebimento = Recebimento.find(params[:id])
+    @cheque = @recebimento.cheque
+    @paciente = @recebimento.paciente
     if @recebimento.cheque.nil?
       @recebimento.cheque = Cheque.new
     end
-    @bancos = Banco.all(:order=>:nome).collect{|obj| [obj.numero + " - " + obj.nome,obj.id]}
+    @bancos = Banco.por_nome.collect{|obj| [obj.nome,obj.id]}
     @formas_recebimentos = FormasRecebimento.all.collect{|obj| [obj.nome,obj.id]}
-    
   end
 
   # POST /recebimentos
@@ -66,26 +66,72 @@ class RecebimentosController < ApplicationController
     @recebimento.clinica_id = session[:clinica_id]
     
     if @recebimento.em_cheque?
-      @recebimento.cheque = Cheque.new
-      @recebimento.cheque.bom_para = params[:datepicker2].to_date
-      @recebimento.cheque.clinica_id = session[:clinica_id]
-      @recebimento.cheque.paciente_id = @recebimento.paciente_id
-      @recebimento.cheque.banco_id = params[:recebimento][:cheque][:banco_id]
-      @recebimento.cheque.agencia = params[:recebimento][:cheque][:agencia]
-      @recebimento.cheque.numero  = params[:recebimento][:cheque][:numero]
-      @recebimento.cheque.conta_corrente  = params[:recebimento][:cheque][:conta_corrente]
-      @recebimento.cheque.valor = params[:recebimento][:cheque][:valor]
+      @cheque = Cheque.new
+      @cheque.bom_para = params[:datepicker2].to_date
+      @cheque.clinica_id = session[:clinica_id]
+      @cheque.paciente_id = @recebimento.paciente_id
+      @cheque.banco_id = params[:banco_id]
+      @cheque.agencia = params[:agencia]
+      @cheque.numero  = params[:numero]
+      @cheque.conta_corrente  = params[:conta_corrente]
+      @cheque.valor = params[:valor]
     else
-      @recebimento.cheque = nil
+      @cheque = nil
     end
-    respond_to do |format|
-      if @recebimento.save 
-        format.html { redirect_to(abre_paciente_path(:id=>@recebimento.paciente_id)) }
-        format.xml  { render :xml => @recebimento, :status => :created, :location => @recebimento }
-      else
-        format.html { render :action => "new" }
-        format.xml  { render :xml => @recebimento.errors, :status => :unprocessable_entity }
-      end
+    if !params[:segundo_paciente].blank?
+      @recebimento2 = Recebimento.new
+      @recebimento2.paciente_id = params[:id_segundo_paciente]
+      @recebimento2.valor = params[:valor_paciente_2]
+      @recebimento2.observacao = params[:observacao_paciente_2]
+      @recebimento2.formas_recebimento_id = params[:recebimento][:formas_recebimento_id]
+      @recebimento2.data = params[:datepicker].to_date
+      @recebimento2.clinica_id = session[:clinica_id]
+    end
+    if !params[:terceiro_paciente].blank?
+      @recebimento3 = Recebimento.new
+      @recebimento3.paciente_id = params[:id_terceiro_paciente]
+      @recebimento3.valor = params[:valor_paciente_3]
+      @recebimento3.observacao = params[:observacao_paciente_3]
+      @recebimento3.formas_recebimento_id = params[:recebimento][:formas_recebimento_id]
+      @recebimento3.data = params[:datepicker].to_date
+      @recebimento3.clinica_id = session[:clinica_id]
+    end
+    Recebimento.transaction do
+      respond_to do |format|
+        if @recebimento2
+          @recebimento2.save 
+          @cheque.recebimento_id_2 = @recebimento2.id
+        end
+        if @recebimento3
+          @recebimento3.save
+          @cheque.recebimento_id_3 = @recebimento3.id
+        end
+        if @recebimento.em_cheque?
+          @cheque.save
+           if @recebimento2
+             @recebimento2.cheque = @cheque
+              @recebimento2.save 
+              @cheque.recebimento_id_2 = @r
+            end
+            if @recebimento3
+              @recebimento3.cheque = @cheque
+              @recebimento3.save
+            end
+        end
+        if @recebimento.save 
+          if @recebimento.em_cheque?
+            @cheque.recebimento_id = @recebimento.id
+            @cheque.save
+            @recebimento.cheque_id = @cheque.id
+            @recebimento.save
+          end
+          format.html { redirect_to(abre_paciente_path(:id=>@recebimento.paciente_id)) }
+          format.xml  { render :xml => @recebimento, :status => :created, :location => @recebimento }
+        else
+          format.html { render :action => "new" }
+          format.xml  { render :xml => @recebimento.errors, :status => :unprocessable_entity }
+        end
+      end #transaction
     end
   end
 
@@ -183,7 +229,26 @@ class RecebimentosController < ApplicationController
        entre_datas(inicio,fim).
        nas_formas(formas_selecionadas.split(",").to_a).
        nao_excluidos
-
+  end
+  
+  def entradas_no_mes
+    debugger
+    if params[:date]
+      @inicio = Date.new(params[:date][:year].to_i, params[:date][:month].to_i,1)
+      @fim = @inicio + 1.month - 1.day
+      @recebimentos = Recebimento.da_clinica(session[:clinica_id]).entre_datas(@inicio,@fim)
+      @entradas = []
+      (1..31).each do |dia| 
+        @entradas[dia] = 0
+      end
+      @cheques = []
+      @recebimentos.each do |rec|
+        @cheques << rec.cheque unless rec.cheque.nil?
+        if (!rec.em_cheque?) or (rec.em_cheque? && !rec.cheque.nil? ) #&& rec.cheque.limpo?)
+          @entradas[rec.data.day] += rec.valor
+        end
+      end
+    end
   end
   
 end

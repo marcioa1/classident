@@ -1,5 +1,5 @@
 class Cheque < ActiveRecord::Base
-  belongs_to :recebimento
+  has_many :recebimentos
   belongs_to :banco
   belongs_to :destinacao
   belongs_to :clinica 
@@ -48,7 +48,7 @@ class Cheque < ActiveRecord::Base
     return "usado pgto na clínica" if usado_para_pagamento? and !recebido_pela_administracao?
     return "com destinação" if com_destinacao?
     return "recebido pela adm" if recebido_pela_administracao?
-    return "entregue à adm" if entregue_a_administacao?
+    return "entregue à adm" if entregue_a_administracao?
     return "disponível" unless !sem_devolucao? 
   end
   
@@ -96,6 +96,14 @@ class Cheque < ActiveRecord::Base
     !destinacao_id.nil?
   end
     
+  def limpo?
+    return false if devolvido_duas_vezes? and !solucionado?
+    return false if spc?
+    return false if arquivo_morto?
+    return false if devolvido_uma_vez? and !devolvido_duas_vezes?
+    return true
+  end
+  
   def disponivel?
     return false if devolvido_duas_vezes?
     return false if spc?
@@ -103,6 +111,17 @@ class Cheque < ActiveRecord::Base
     return false if solucionado?
     return false if usado_para_pagamento?
     true
+  end
+  
+  def nome_dos_pacientes
+    result = ""
+    self.recebimentos.each do |rec|
+      result += rec.paciente.nome + ","
+    end
+    if result.size>1
+      result = result[0..(result.size-2)]
+    end
+    return result
   end
   
 end

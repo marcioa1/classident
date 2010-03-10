@@ -111,6 +111,20 @@ function selecionou_estado(){
     $(':checkbox').attr('checked', false)
 }
 
+function busca_pacientes_que_iniciam_com(text_field){
+  $("#linha_"+text_field).show();
+  $.getJSON('/pacientes/nomes_que_iniciam_com?nome=' + $("#" + text_field).val() + '&div=' + text_field,
+  function(data){
+    $("#nomes_" + text_field).replaceWith('<div id="nomes_' + text_field + '"  class="lista">' + data + '</div>');
+  });
+}
+
+function escolheu_nome_da_lista(nome,div,id){
+  $("#"+div).val(nome);
+  //alert(div)
+  $("#id_"+div).val(id);
+ $("#linha_"+ div).hide();
+}
 function selecionou_face(){
     $('#tratamento_estado_nenhum').attr('checked', true)
 }

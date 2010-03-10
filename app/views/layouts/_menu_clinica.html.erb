@@ -7,31 +7,33 @@
     </ul>
   </li>
   <li><a href="#">Clínica</a>
-  	<ul>
-  		<li><%= link_to "Produção entre datas", producao_entre_datas_clinicas_path %> </li>
+    <ul>
+      <li><%= link_to "Produção entre datas", producao_entre_datas_clinicas_path %> </li>
       <li><%= link_to "Produção anual" , producao_anual_clinicas_path %></li>
       <li><%= link_to "Orçamentos elaborados", relatorio_orcamentos_path %></li>
       <li><%= link_to "Relatório de protético", relatorio_proteticos_path %></li>
       <li><%= link_to "Relatório de alta", relatorio_alta_clinicas_path %></li>
       <li><%= link_to "Abandono de tratamento", abandono_de_tratamento_clinicas_path %></li>
       <li><%= link_to "Pacientes de ortodontia", pacientes_de_ortodontia_clinicas_path %></li>
-  	</ul>
+    </ul>
   </li>
   <li><a href="#">Paciente</a>
     <ul>
-	  <% if !session[:paciente_id].nil? %>
-	    <li><%= link_to session[:paciente_nome] , abre_paciente_path(:id=>session[:paciente_id])%></li>
-	  <% end %>
+    <% if !session[:paciente_id].nil? %>
+      <li><%= link_to session[:paciente_nome] , abre_paciente_path(:id=>session[:paciente_id])%></li>
+    <% end %>
       <li><%= link_to "Novo paciente", new_paciente_path %></li>
       <li><%= link_to "Pesquisa paciente", pesquisa_pacientes_path %></li>
     </ul>
   </li>
 <li><a href="#">Financeiro</a>
     <ul>
-	  <li><%= link_to "Fluxo de caixa", fluxo_de_caixa_path %></li>
+      <li><%= link_to "Recebimentos", relatorio_recebimentos_path %></li>
+      <li><%= link_to "Entradas no mês", entradas_no_mes_recebimentos_path %></li>
+      
+      <li><%= link_to "Fluxo de caixa", fluxo_de_caixa_path %></li>
       <li><%= link_to "Pagamentos", relatorio_pagamentos_path %></li>
       <li><%= link_to "Tipo de pagamento", tipo_pagamentos_path %></li>
-      <li><%= link_to "Recebimentos", relatorio_recebimentos_path %></li>
       <li><%= link_to "Cheques recebidos", cheques_recebidos_cheques_path %></li>
       <li><%= link_to "Pesquisa cheque", pesquisa_cheques_path %></li>
       <li><%= link_to "Entrada/Remessa de dinheiro", entradas_path %></li>

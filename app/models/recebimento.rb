@@ -2,11 +2,7 @@ class Recebimento < ActiveRecord::Base
   belongs_to :paciente
   belongs_to :formas_recebimento
   belongs_to :clinica
-  has_one :cheque
-  
-  accepts_nested_attributes_for :cheque, :allow_destroy => true, 
-        :reject_if => proc { |attributes| attributes['banco'].blank? }
-  
+  belongs_to :cheque
   
   named_scope :por_data, :order=>:data
   named_scope :entre_datas, lambda{|inicio,fim| 
@@ -33,7 +29,7 @@ class Recebimento < ActiveRecord::Base
   def excluido?
     !data_de_exclusao.nil?
   end
-  
+    
 # def cheque
 #    cheque = Cheque.find_by_recebimento_id(id)
 #  end

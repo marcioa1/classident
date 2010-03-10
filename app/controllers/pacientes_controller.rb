@@ -153,4 +153,20 @@ class PacientesController < ApplicationController
     
   end
   
+  def nomes_que_iniciam_com
+    if params[:nome]
+      if administracao?
+        @pacientes = Paciente.all(:conditions=>["nome like ?", params[:nome] + '%'],:order=>:nome)
+      else
+        @pacientes = Paciente.all(:conditions=>["clinica_id= ? and nome like ?", session[:clinica_id].to_i, params[:nome] + '%'],:order=>:nome)
+      end
+    end 
+    result = ''
+    @pacientes.each do |pac|
+      result += '<a href= "#" onclick="javascript:escolheu_nome_da_lista(\''+pac.nome+'\',' + '\'' + params[:div] + '\',' + pac.id.to_s + ')" >'+ pac.nome + "</a><br/>"
+    end
+    result += ''
+    render :json => result.to_json
+  end
+  
 end

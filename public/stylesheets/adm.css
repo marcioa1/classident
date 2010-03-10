@@ -138,3 +138,13 @@ fieldset{
 #valor_restante{
 	float: right;
 }
+
+.lista{
+   border:solid 1px #455A79;
+   clear:both;	
+   padding-top: 0.4em;
+   padding-bottom: 0.4em;
+   padding-left: 0.4em;
+   padding-right: 0.4em;
+   background-color: #D6AD70;
+}

@@ -1,69 +1,119 @@
 <% content_for :main do %>
 <fieldset class="fieldset_40">
 <legend>Editando recebimento</legend>
-
 <% form_for(@recebimento) do |f| %>
   <%= f.error_messages %>
+  <%= f.hidden_field :paciente_id %>
+  <%= f.hidden_field :clinica_id %>
+  <table class='transparente'>
+    <tr>
+      <td align='right'><%= f.label :paciente %> :</td>
+      <td><%= @paciente.nome %></td>
+    </tr>
+    <tr>
+      <td align='right'><%= f.label :data %></td>
+      <td><%= text_field_tag :datepicker, Date.today.to_s_br, :size=>10 %></td>
+    </tr>
+    <tr>
+      <td align='right'><%= f.label :forma_recebimento_id %> :</td>
+      <td><%= f.select :formas_recebimento_id, @formas_recebimentos, {}, html_options={  :onchange=>"selecionou_forma('recebimento_formas_recebimento_id');"} %></td>
+    </tr>
+    <tr>
+      <td align='right'><%= f.label :valor %> :</td>
+      <td><%= f.text_field :valor, :size=>10, :onblur=>"copia_valor();"  %></td>
+    </tr>
+    <tr>
+      <td align='right'><%= f.label :observação %> :</td>
+      <td><%= f.text_field :observacao %></td>
+    </tr>
+    
+  </table>
 
-  <p>
-    <%= f.label :paciente %> : <b><%= @recebimento.paciente.nome %></b>
-    <%= f.hidden_field :paciente_id %>
-  </p>
-    <%= f.hidden_field :clinica_id %>
-  <p>
-    <%= f.label :data %><br />
-    <%= text_field_tag :datepicker, @recebimento.data.to_s_br, :size=>10 %>
-
-  </p>
-  <p>
-    <%= f.label :forma_recebimento_id %><br />
-    <%= f.select :formas_recebimento_id , @formas_recebimentos, {}, html_options={:onchange=>"selecionou_forma('recebimento_formas_recebimento_id');"} %>
-  </p>
-  <p>
-    <%= f.label :valor %><br />
-    <%= f.text_field :valor, :size=>10, :onblur=>"copia_valor();"  %>
-  </p>
-  <p>
-    <%= f.label :observação %><br />
-    <%= f.text_field :observacao %>
-  </p>
-  <% if @recebimento.em_cheque? %>
-    <div id="cheque">
-  <% else %>
-    <div id="cheque" style="display:none;">
-  <% end %>
-    <fieldset>
+  <div id="cheque" style="display:yes;">
+    <fieldset class='fieldset_50'>
     <legend> dados do cheque</legend>
-  <% f.fields_for :cheque do |c| %>
-    <p>
-       <%= c.label :banco %> : 
-       <%= c.select :banco_id, options_for_select(@bancos)  %>
-    </p>
-    <p>
-       <%= c.label :agencia %> : 
-       <%= c.text_field :agencia, :size=>7 %>
-       <%= c.label :conta_corrente %> : 
-       <%= c.text_field :conta_corrente, :size=>7 %>
-       <%= c.label :número %> : 
-       <%= c.text_field :numero, :size=>7 %>
-    </p>
-    <p>
-      <%= c.label :valor %>
-      <%= c.text_field :valor, :size=>8%>
-    </p>
-    <p>
-        <%= f.label :bom_para %>
-	        <%= text_field_tag :datepicker2, @recebimento.cheque.bom_para.to_s_br, :size=>10 %>
-      </p>
-  <% end %>
+  
+  <table class='transparente'>
+    <tr>
+      <td align='right'><%= label_tag :banco %> : </td>
+      <td><%= select :cheque,:banco_id, options_for_select(@bancos,@cheque.banco.id) %>
+        
+        </td>
+    </tr>
+    <tr>
+      <td align='right'><%= label_tag :agencia %> :</td>
+      <td>   <%= text_field_tag :agencia, @cheque.agencia, :size=>8 %>
+         <%= label_tag :conta_corrente %> : 
+         <%= text_field_tag :conta_corrente, @cheque.conta_corrente, :size=>7 %>
+         <%= label_tag :número %> : 
+         <%= text_field_tag :numero, @cheque.numero,:size=>7 %></td>
+    </tr>
+    <tr>
+      <td align='right'><%= label_tag :valor_do_cheque %> : </td>
+      <td><%= text_field_tag :valor, @cheque.valor.real, :size=>8%></td>
+    </tr>
+    <tr>
+      <td align='right'><%= f.label :bom_para %> : </td>
+      <td><%= text_field_tag :datepicker2, @cheque.bom_para.to_s_br, :size=>10 %></td>
+    </tr>
+    <tr>
+      <td colspan="2"><hr></td>
+    </tr>
+    <tr>
+      <td align='right'><%= label_tag :segundo_paciente %> : </td>
+      <td><%= text_field_tag :segundo_paciente,@cheque.recebimentos[1].paciente.nome, :size=>30 %>
+        <%= hidden_field_tag :id_segundo_paciente , @cheque.recebimentos[1].paciente.id %> 
+        <%= link_to "pesquisar", "#" , :onclick=>"busca_pacientes_que_iniciam_com('segundo_paciente')"%>
+      </td>
+    </tr>
+    <tr id='linha_segundo_paciente' style='display:none;'>
+      <td>&nbsp;</td>
+      <td>
+        
+        <div id="nomes_segundo_paciente" class='lista'>
+          
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td align='right'><%= label_tag :valor %> : </td>
+      <td><%= text_field_tag :valor_paciente_2 , @cheque.recebimentos[1].valor.real, :size=>10 %></td>
+    </tr>
+    <tr>
+      <td align='right'><%= label_tag :observação %> : </td>
+      <td><%= text_field_tag :observacao_paciente_2 , @cheque.recebimentos[1].observacao, :size=>30 %></td>
+    </tr>
+    <tr>
+      <td colspan="2"><hr></td>
+    </tr>
+    <tr>
+      <td align='right'><%= label_tag :terceiro_paciente %> : </td>
+      <td><%= text_field_tag :terceiro_paciente,@cheque.recebimentos[2].paciente.nome, :size=>30 %>
+        <%= hidden_field_tag :id_terceiro_paciente , @cheque.recebimentos[2].paciente.id %>
+        <%= link_to "pesquisar", "#" , :onclick=>"busca_pacientes_que_iniciam_com('terceiro_paciente')"%></td>
+    </tr>
+     <tr id='linha_terceiro_paciente' style='display:none;'>
+        <td>&nbsp;</td>
+        <td>
+          <div id="nomes_terceiro_paciente" class='lista'>
+            
+          </div>
+        </td>
+      </tr>
+    <tr>
+      <td align='right'><%= label_tag :valor %> : </td>
+      <td><%= text_field_tag :valor_paciente_3 , @cheque.recebimentos[2].valor.real, :size=>10 %></td>
+    </tr>
+    <tr>
+      <td align='right'><%= label_tag :observação %> : </td>
+      <td><%= text_field_tag :observacao_paciente_3 , @cheque.recebimentos[2].observacao, :size=>30 %></td>
+    </tr>
+  </table>
+ 
   </fieldset>
   </div>
   <p>
-	<% if @recebimento.cheque.usado_para_pagamento? %>
-	  <%= link_to_function "Usado para pagamento", "abre_pagamento(#{@recebimento.cheque.pagamento.id})"  %>
-	<% else %>
-    <%= f.submit 'Update' %>
-    <% end %>
+    <%= f.submit 'salvar' %>
   </p>
 <% end %>
 

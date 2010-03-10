@@ -22,13 +22,13 @@ ActionController::Routing::Routes.draw do |map|
   
   map.resources :item_tabelas, :collection=>{:busca_descricao=>:get}
   map.resources :orcamentos, :collection=>{:relatorio=>:get}
-  map.resources :pacientes, :member=>{:abre=>:get}, :collection=>{:pesquisa=>:get}
+  map.resources :pacientes, :member=>{:abre=>:get}, :collection=>{:pesquisa=>:get, :nomes_que_iniciam_com=>:get}
 
   map.administracao "administracao", :controller=>"administracao", :action=>"index"
   map.resources :pagamentos, :collection=>{:relatorio=>:get}
   map.resources :precos
   map.resources :proteticos, :member=>{:abre=>:get}, :collection=>{:busca_tabela=>:get, :relatorio=>:get}
-  map.resources :recebimentos, :collection=>{:relatorio=>:get, :das_clinicas=>:get}
+  map.resources :recebimentos, :collection=>{:relatorio=>:get, :das_clinicas=>:get, :entradas_no_mes=>:get}
   map.resources :tabelas, :collection=>{:print=>:get }
 
   map.resources :tabelas do |item|
