@@ -6,6 +6,6 @@
 # two:
 #   column: value
 first:
-  paciente: marcio
+  paciente_id: 1 #marcio
   valor: 30
   data_de_exclusao: nil

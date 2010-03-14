@@ -7,6 +7,7 @@ describe Paciente do
   before(:each) do
     @paciente = pacientes(:marcio)
     @clinica = clinicas(:recreio)
+    @tabela = tabelas(:principal)
   end
   
   it "should has a debt of 50" do
@@ -28,7 +29,20 @@ describe Paciente do
   it "should has a codigo of 2" do
     pac = Paciente.new
     pac.codigo = pac.gera_codigo(@clinica.id)
-    pac.codigo.should == 2
+    pac.codigo.should == 3
   end
-
+  
+  it "should belongs to tabela Classident" do
+    @paciente.tabela.should be == @tabela
+  end
+  
+  it "nao é de ortodontia" do
+    @paciente.ortodontia.should be(false)
+  end
+  
+  it "não deve estar em alta" do
+    @paciente.altas.size.should == 0
+    @paciente.em_alta?.should be(false)
+  end
+  
 end

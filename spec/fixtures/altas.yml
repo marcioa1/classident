@@ -1,0 +1,7 @@
+one:
+  paciente_id: 1
+  data_inicio: 2010-01-01 10:28:16
+  observacao: teste_alta
+  user: ricardo
+  data_termino: nil
+  user_termino: ricardo

@@ -1,3 +1,5 @@
 
 principal:
+  id: 1
   nome: classident
+  ativa: true
