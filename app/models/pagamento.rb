@@ -5,17 +5,22 @@ class Pagamento < ActiveRecord::Base
   has_many :trabalho_proteticos
   belongs_to :protetico
   belongs_to :dentista
+  has_many :custos, :class_name => "Pagamento",
+      :foreign_key => "pagamento_id"
+  belongs_to :pagamento, :class_name => "Pagamento"
   
   named_scope :ao_protetico, lambda{|protetico_id| {:conditions=>["protetico_id = ?", protetico_id]}}
-  named_scope :no_dia, lambda{|dia|
-       {:conditions=>["data_de_pagamento = ? ",dia]}}
-  named_scope :por_data, :order=>:data_de_pagamento
+  named_scope :da_clinica, lambda{|clinica_id| {:conditions=>["clinica_id = ?", clinica_id]}}
   named_scope :entre_datas, lambda{|inicio,fim| 
        {:conditions=>["data_de_pagamento >= ? and data_de_pagamento <= ?", inicio,fim]}}
+  named_scope :filhos, lambda{|pagamento_id| {:conditions=>["pagamento_id = ?", pagamento_id]}}
+  named_scope :no_dia, lambda{|dia|
+       {:conditions=>["data_de_pagamento = ? ",dia]}}
   named_scope :tipos, lambda{|tipos| 
             {:conditions=>["tipo_pagamento_id in (?)", tipos]}}
   named_scope :nao_excluidos, :conditions=>["data_de_exclusao IS NULL"]
-  named_scope :da_clinica, lambda{|clinica_id| {:conditions=>["clinica_id = ?", clinica_id]}}
+  named_scope :pela_administracao, :conditions=>["pagamento_id IS NOT NULL"]
+  named_scope :por_data, :order=>:data_de_pagamento
        
   def descricao_opcao_restante
     return "Sem valor restante" if opcao_restante==0  
@@ -24,6 +29,10 @@ class Pagamento < ActiveRecord::Base
     return "Fica devendo" if opcao_restante == 3
     return "Ignora" if opcao_restante == 4
     return "Recebe troco" if opcao_restante == 5
+  end
+  
+  def pagamento_das_clinicas?
+    !Pagamento.filhos(self.id).empty?
   end
   
 end

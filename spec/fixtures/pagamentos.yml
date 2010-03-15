@@ -1,0 +1,18 @@
+ao_dentista:
+    id: 1
+    data_de_pagamento: #{Date.today}
+    valor: 1000
+    pagamento_id: nil
+    
+do_centro:
+    id: 2
+    data_de_pagamento: #{Date.today}
+    valor: 400
+    pagamento_id: 1
+    
+de_sc:
+    id: 3
+    data_de_pagamento: #{Date.today}
+    valor: 600
+    pagamento_id: 1
+    

@@ -130,6 +130,7 @@ class DentistasController < ApplicationController
     else
       clinicas = session[:clinica_id].to_a
     end
+    debugger
     @producao = dentista.busca_producao(inicio,fim,clinicas) 
     saida = "<div id='lista'><table><tr><th width='105px'>Data</th>
          <th width='220px'><br/>Paciente</th>

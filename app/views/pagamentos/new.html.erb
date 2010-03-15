@@ -19,6 +19,8 @@
       <%= f.radio_button :opcao_restante, 5, :onclick=>"cheque(0);"%> recebe_troco<br/>
     </p>
 </div>
+<%= text_field_tag :dentista_id , @dentista.id if @dentista %>
+
   <p><%= f.label :tipo_de_pagamento %> : 
     <%= f.select :tipo_pagamento_id, @tipos_pagamento %>
   </p>
@@ -27,12 +29,9 @@
     <%= text_field_tag :datepicker, Date.today.to_s_br, :size=>10 %>
  </p>
   <p>
-    <%= f.label :valor_original %> : <%= f.text_field :valor, :size=>10 , :onblur=>'$("#disponiveis").show();'%>
+    <%= f.label :valor %> : <%= f.text_field :valor, :size=>10 , :onblur=>'$("#disponiveis").show();'%>
   </p>
-  <p>
-    <%= f.label :valor_pago %> : 
-    <%= f.text_field :valor_pago, :size=>10 %>
-  </p>
+  
   <p>
     <%= f.label :observação %> : 
     <%= f.text_field :observacao, :size=>40 %>
@@ -52,6 +51,27 @@
       <%= f.text_field :valor_cheque, :size=>8 %>
     </fieldset>
   </div>
+  <% if administracao? %>
+  <div id="custo_das_clinicas" style="display:true">
+  	<fieldset>
+	    <legend>Custos das clínicas</legend>
+	    <table class='transparente'>
+		    <tr>
+			    <td>&nbsp;</td>
+			   	<td>Clínicas :</td>
+		      <td>Valores :</td>
+		    </tr> 
+	    <% @dentista.clinicas.each do |clinica| %>
+		      <td><%= check_box_tag "custo_clinica_#{clinica.id}", '', true%></td>
+		      <td><%= clinica.nome %></td>
+		      <td><%= text_field_tag "valor_#{clinica.id}", {}, :size=>8 %></td>
+		    </tr>
+	    <% end %>
+	    </table>
+	    <p></p>
+    </fieldset>
+  </div>
+  <% end %>
   <%= hidden_field_tag :cheques_ids %>
   <p>
     <%= f.submit 'Criar' %>

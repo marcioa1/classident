@@ -15,7 +15,7 @@ class Cheque < ActiveRecord::Base
          data_spc IS NULL and data_solucao IS NULL and data_arquivo_morto IS NULL
          and data_entrega_administracao IS NULL and pagamento_id IS NULL
          and destinacao_id IS NULL"]
-  named_scope :disponiveis_na_administracao       , :conditions=>["data_segunda_devolucao IS NULL and 
+  named_scope :disponiveis_na_administracao, :conditions=>["data_segunda_devolucao IS NULL and 
                 data_spc IS NULL and data_solucao IS NULL and data_arquivo_morto IS NULL
                 and pagamento_id IS NULL
                 and destinacao_id IS NULL"]

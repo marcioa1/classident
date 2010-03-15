@@ -28,7 +28,7 @@ function selecionou_cheque(elemento){
     $("#pagamento_valor_pago").val(resultado);
     $("#pagamento_valor_restante").val(total-resultado);
     // verifica cheques selecionados
-    var todos = $("table input:checkbox");
+    var todos = $("#lista_de_cheques input:checkbox");
     var selecionados = ""
     for (var i = 0; i < todos.length; i++) {
       if ($("#" + todos[i].id).is(':checked')) {
