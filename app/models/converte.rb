@@ -66,7 +66,7 @@ class Converte
       f.close
   end
   
-  def converte_debito
+  def debito
     puts "Convertendo débitos ...."
     f = File.open("doc/debito.txt" , "r")
     #FIXME  NA conversao real, não apagar tabela
@@ -76,7 +76,9 @@ class Converte
     while line = f.gets 
       d = Debito.new
       registro = line.split(";")
-      d.paciente_id = registro[0].to_i
+      pac = Paciente.find_by_sequencial(registro[0].to_i)
+      puts pac.nome
+      d.paciente_id = pac.id unless pac.nil?
       d.data = registro[1].to_date
       d.valor = le_valor(registro[2])
       d.descricao = registro[3]
@@ -355,6 +357,7 @@ class Converte
       t.save
       if !rec.nil?
         rec.cheque_id = t.id
+        rec.observacao = t.banco.nome + " - " t.numero if rec.observacao.nil? or rec.observacao.blank?
         rec.save
       end
     end

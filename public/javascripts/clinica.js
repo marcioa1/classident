@@ -7,33 +7,23 @@ function limpa_codigo(){
 }
 
 function selecionou_cheque(elemento){
-	var total_de_cheques = parseFloat($('#total_dos_cheques').val());
-	alert(total_de_cheques);
-    var total = $("#pagamento_valor_pago").val();
-    var valor = $("#valor_" + elemento).text();
+  var total_de_cheques = 0.0
+  var todos = $("#lista_de_cheques :checked");
+  var selecionados = ""
+  for (var i = 0; i < todos.length; i++) {
+    id_cheque = (todos[i].id).split("_")[1]
+    selecionados += id_cheque + ",";
+    var valor = $("#valor_" + id_cheque).text();
     valor = valor.replace(".","");
     valor = parseFloat(valor.replace(",", "."))
-    var resultado = 0.0
-    if ($("#cheque_"+elemento).is(':checked')) {
-        resultado = parseFloat(total_de_cheques + valor)
-    }else {
-        resultado = parseFloat(total_de_cheques - valor)
-    }
-alert(resultado)
-    if (total < resultado){
-      alert("A soma dos valores dos cheques selecionados é maior que o valor do pagamento.");
-    }
-    $("#total_dos_cheques").val(resultado);
-    $("#pagamento_valor_restante").val(total-resultado);
-    // verifica cheques selecionados
-    var todos = $("#lista_de_cheques input:checkbox");
-    var selecionados = ""
-    for (var i = 0; i < todos.length; i++) {
-      if ($("#" + todos[i].id).is(':checked')) {
-        selecionados += (todos[i].id).split("_")[1] + ",";
-      } 
-    }
-    $("#cheques_ids").val(selecionados);
+    total_de_cheques += valor
+  }
+  $("#cheques_ids").val(selecionados);
+  var total_a_pagar = $("#pagamento_valor_pago").val();
+  if (total_a_pagar < total_de_cheques){
+    alert("A soma dos valores dos cheques selecionados é maior que o valor do pagamento.");
+  }
+  $("#pagamento_valor_restante").val(total_a_pagar-total_de_cheques);
 }
 
 function producao(){

@@ -64,7 +64,6 @@ class PagamentosController < ApplicationController
   # POST /pagamentos
   # POST /pagamentos.xml
   def create
-    debugger
     @pagamento = Pagamento.new(params[:pagamento])
     @pagamento.data_de_pagamento = params[:datepicker].to_date
     @pagamento.clinica_id = session[:clinica_id]
@@ -94,7 +93,7 @@ class PagamentosController < ApplicationController
             dentista = Dentista.find(params[:dentista_id])
             dentista.clinicas.each do |cli|
               Pagamento.create(:clinica_id=>cli.id, :data_de_pagamento=>@pagamento.data_de_pagamento,
-                 :pagamento_id=>@pagamento.id, :valor_pago=>params['valor_#{cli.id}'], :tipo_pagamento_id=>@pagamento.tipo_pagamento_id,
+                 :pagamento_id=>@pagamento.id, :valor_pago=>params['valor_'+ cli.id.to_s ], :tipo_pagamento_id=>@pagamento.tipo_pagamento_id,
                  :observacao=>'pago pela adm', :nao_lancar_no_livro_caixa=>true)
             end
           end
@@ -160,8 +159,11 @@ class PagamentosController < ApplicationController
        @data_final = Date.today
      end
      @pagamentos = Pagamento.da_clinica(session[:clinica_id]).nao_excluidos.por_data.entre_datas(@data_inicial, @data_final).tipos(params[:tipo_pagamento_id])
-     @pela_administracao = Pagamento.pela_administracao.entre_datas(@data_inicial, @data_final)
-     @pagamentos += @pela_administracao
+    # debugger
+     if params[:pela_adm]
+       @pela_administracao = Pagamento.pela_administracao.entre_datas(@data_inicial, @data_final).da_clinica(session[:clinica_id])
+       @pagamentos += @pela_administracao
+     end
      respond_to do |format|
        format.html # index.html.erb
        format.xml  { render :xml => @pagamentos }

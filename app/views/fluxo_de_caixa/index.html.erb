@@ -1,5 +1,6 @@
 <% content_for :main do %>
 <h3 style='padding-left: 10em;'>Fluxo de caixa do dia : <%= @fluxo.data.to_s_br %></h3>
+
 <table class='transparente'>
   <tr>
     <td>Saldo anterior em dinheiro :</td>
@@ -32,6 +33,7 @@
   </tr>
 <% saldo_dinheiro = @fluxo.saldo_em_dinheiro %>
 <% saldo_cheque = @fluxo.saldo_em_cheque %>
+<% saldo_cheque = 0.0 if saldo_cheque.nil? %>
 <% @lancamentos.each() do |lancamento| %>
   <tr>
     <% if lancamento.class.name == "Recebimento"%>

@@ -8,9 +8,10 @@ class Cheque < ActiveRecord::Base
   named_scope :por_bom_para, :order=>:bom_para
   named_scope :com_destinacao, :conditions=>["destinacao_id IS NOT NULL"]
   named_scope :da_clinica, lambda{|clinica_id| {:conditions=>["clinica_id=?",clinica_id]}}
-  named_scope :devolvido, lambda{|data_inicial, data_final| 
+  named_scope :devolvidos, lambda{|data_inicial, data_final| 
       {:conditions=>["data_Reapresentacao IS NULL and data_primeira_devolucao between ? and ?", data_inicial, data_final]}}
   named_scope :devolvido_duas_vezes, :conditions=>["data_segunda_devolucao IS NOT NULL"]
+  named_scope :devolvido_duas_vezes_entre_datas, lambda{|data_inicial, data_final| {:conditions=>["data_segunda_devolucao between ? and ? ", data_inicial, data_final ]}}
   named_scope :disponiveis_na_clinica, :conditions=>["data_segunda_devolucao IS NULL and 
          data_spc IS NULL and data_solucao IS NULL and data_arquivo_morto IS NULL
          and data_entrega_administracao IS NULL and pagamento_id IS NULL
@@ -25,15 +26,18 @@ class Cheque < ActiveRecord::Base
   named_scope :entre_datas, lambda{|data_inicial, data_final| 
       {:conditions=>["bom_para between ? and ?", data_inicial, data_final]}}
   named_scope :entregues_a_administracao, :conditions=>["data_entrega_administracao IS NOT NULL"]
-  named_scope :nao_excluidos, :conditions=>["data_de_exclusao IS NULL"]
   named_scope :na_administracao, :conditions=>["data_recebimento_na_administracao IS NOT NULL"]
+  named_scope :nao_excluidos, :conditions=>["data_de_exclusao IS NULL"]
+  named_scope :nao_reapresentados, :conditions=>["data_reapresentacao IS NULL"]
   named_scope :nao_recebidos, :conditions=>["data_recebimento_na_administracao IS NULL"]  
-  named_scope :reapresentado, lambda{|data_inicial, data_final| 
+  named_scope :reapresentados, lambda{|data_inicial, data_final| 
       {:conditions=>["data_reapresentacao between ? and ?", data_inicial, data_final]}}
   named_scope :recebidos_na_administracao, lambda{|data_inicial, data_final| 
           {:conditions=>["data_recebimento_na_administracao between ? and ?", data_inicial, data_final]}}
   named_scope :por_valor, :order=>"valor desc"
   named_scope :menores_que, lambda{|valor| {:conditions=>["valor<?", valor]}}
+  named_scope :sem_segunda_devolucao, :conditions=>["data_segunda_devolucao IS NULL"]
+  named_scope :sem_solucao, :conditions=>['data_solucao IS NULL']
   named_scope :spc, lambda{|data_inicial, data_final| 
       {:conditions=>["data_spc between ? and ?", data_inicial, data_final]}}
   named_scope :usados_para_pagamento, :conditions=>["pagamento_id IS NOT NULL"]

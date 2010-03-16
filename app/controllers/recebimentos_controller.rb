@@ -232,21 +232,38 @@ class RecebimentosController < ApplicationController
   end
   
   def entradas_no_mes
-    debugger
+    @data = Date.today
+    @entradas = []
+    @devolvidos = []
+    @reapresentados = []
+    @devolvido_duas_vezes = []
     if params[:date]
       @inicio = Date.new(params[:date][:year].to_i, params[:date][:month].to_i,1)
+      @data = @inicio
       @fim = @inicio + 1.month - 1.day
       @recebimentos = Recebimento.da_clinica(session[:clinica_id]).entre_datas(@inicio,@fim)
-      @entradas = []
       (1..31).each do |dia| 
         @entradas[dia] = 0
+        @devolvidos[dia] = 0
+        @reapresentados[dia] = 0
+        @devolvido_duas_vezes[dia] = 0
       end
-      @cheques = []
       @recebimentos.each do |rec|
-        @cheques << rec.cheque unless rec.cheque.nil?
         if (!rec.em_cheque?) or (rec.em_cheque? && !rec.cheque.nil? ) #&& rec.cheque.limpo?)
           @entradas[rec.data.day] += rec.valor
         end
+      end
+      @cheques_devolvidos = Cheque.devolvidos(@inicio,@fim).nao_reapresentados.nao_excluidos
+      @cheques_devolvidos.each do |chq|
+        @devolvidos[chq.data_devolucao.day] += chq.valor
+      end
+      @cheques_reapresentados = Cheque.reapresentados(@inicio,@fim).nao_excluidos.sem_segunda_devolucao
+      @cheques_reapresentados.each do |chq|
+        @reapresentados[chq.data_reapresentacao.day] += chq.valor
+      end
+      @devolvidos_de_novo = Cheque.devolvido_duas_vezes_entre_datas(@inicio, @fim).nao_excluidos.sem_solucao
+      @devolvidos_de_novo.each do |chq|
+        @devolvido_duas_vezes[chq.data_segunda_devolucao.day] += chq.valor
       end
     end
   end

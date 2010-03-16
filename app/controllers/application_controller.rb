@@ -63,3 +63,4 @@ class ApplicationController < ActionController::Base
     
 end
 #TODO usar this no jquery
+#TODO fazer pagamento ao dentista de convênio, registrando o custo para cada clínica ?

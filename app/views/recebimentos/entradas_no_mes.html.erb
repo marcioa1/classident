@@ -1,33 +1,46 @@
 <% content_for :main do %>
   <h3>Entrada no mês</h3>
+  <p>
   <% form_tag :url=>entradas_no_mes_recebimentos_path do %>
     <%= label_tag :mes %> / 
     <%= label_tag :ano %>
-    <%= select_month Date.today %>
-    <%= select_year Date.today %>
+    <%= select_month @data %>
+    <%= select_year @data %>
     <%= submit_tag "pesquisar" %>
   <% end %>
-  <%= @cheques.size %>
-  <table>
-    <% for cheque in @cheques%>
-    <tr>
-      <td><%= cheque.id %></td>
-      <td><%= cheque.recebimentos.first.paciente.nome %></td>
-      <td><%= cheque.limpo?%></td>
-    </tr>
-    <% end %>
-  </table>
+  </p>
+  <br/>
   <table>
     <tr>
-      <th>Dia</th>
-      <th>Valor</th>
-      
+      <th><br/>Dia</th>
+      <th width='120px'><br/>Valor</th>
+      <th width='120px'><br/>Devolvidos</th>
+      <th width='120px'><br/>Reapresentados</th>
+      <th width='120px'>Devolvidos segunda vez</th>
+      <th width='120px'>Saldo</th>
     </tr>
+    <% total = [0,0,0,0]%>
     <% (1..31).each do  |dia| %>
       <tr>
-        <td><%= dia %></td>
+        <td align='right'><%= dia %></td>
         <td align='right'><%= @entradas[dia].real %></td>
+        <td align='right'><%= @devolvidos[dia].real %></td>
+        <td align='right'><%= @reapresentados[dia].real %></td>
+        <td align='right'><%= @devolvido_duas_vezes[dia].real %></td>
+        <td align='right'><%= (@entradas[dia] - @devolvidos[dia] + @reapresentados[dia] - @devolvido_duas_vezes[dia]).real %></td>
       </tr>
+      <% total[0] += @entradas[dia].real %>
+      <% total[1] += @devolvidos[dia].real %>
+      <% total[2] += @reapresentados[dia].real %>
+      <% total[3] += @devolvido_duas_vezes[dia].real %>
     <% end %>
+    <tr>
+      <td>Total</td>
+      <td align='right'><%= total[0].real %></td>
+      <td align='right'><%= total[1].real %></td>
+      <td align='right'><%= total[2].real %></td>
+      <td align='right'><%= total[3].real %></td>
+      <td align='right'><%= (total[0] - total[1] + total[2] - total[3]).real %></td>
+    </tr>
   </table>
 <% end %>

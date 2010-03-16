@@ -16,6 +16,7 @@ class Pagamento < ActiveRecord::Base
   named_scope :filhos, lambda{|pagamento_id| {:conditions=>["pagamento_id = ?", pagamento_id]}}
   named_scope :no_dia, lambda{|dia|
        {:conditions=>["data_de_pagamento = ? ",dia]}}
+  named_scope :no_livro_caixa, :conditions=>['nao_lancar_no_livro_caixa = ?', false]
   named_scope :tipos, lambda{|tipos| 
             {:conditions=>["tipo_pagamento_id in (?)", tipos]}}
   named_scope :nao_excluidos, :conditions=>["data_de_exclusao IS NULL"]

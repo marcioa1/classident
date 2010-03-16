@@ -85,7 +85,9 @@ class DebitosController < ApplicationController
   def pacientes_em_debito
     @pacientes = Paciente.da_clinica(session[:clinica_id]).por_nome
     @em_debito = []
+    @tabelas = Tabela.ativas.por_nome
     @pacientes.each do |pac|
+      #puts pac.nome + " > " + pac.saldo.real.to_s
       @em_debito << pac if pac.em_debito?
     end
   end
