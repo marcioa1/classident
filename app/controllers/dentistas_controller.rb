@@ -130,7 +130,6 @@ class DentistasController < ApplicationController
     else
       clinicas = session[:clinica_id].to_a
     end
-    debugger
     @producao = dentista.busca_producao(inicio,fim,clinicas) 
     saida = "<div id='lista'><table><tr><th width='105px'>Data</th>
          <th width='220px'><br/>Paciente</th>
@@ -183,12 +182,13 @@ class DentistasController < ApplicationController
     fim = params[:fim].to_date
     @dentista = Dentista.find(params[:dentista_id])
     @pagamentos = @dentista.pagamentos.entre_datas(inicio,fim).nao_excluidos
-    total = 0
+    total = 0.0
     @pagamentos.each do |pag|
       saida += "<tr><td>" + pag.data_de_pagamento.to_s_br + "</td>" + 
           "<td align='right'>" + pag.valor_pago.real.to_s + "</td>" + 
           "<td>" + pag.observacao + "</td>" +
          "</tr>"
+         debugger
       total += pag.valor_pago
     end
     saida += "<tr><td align='center'>Total</td><td align='right'>" + total.real.to_s + "</td><td>&nbsp;</td></tr>"

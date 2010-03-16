@@ -7,25 +7,23 @@ function limpa_codigo(){
 }
 
 function selecionou_cheque(elemento){
-    var total = $("#pagamento_valor").val();
+	var total_de_cheques = parseFloat($('#total_dos_cheques').val());
+	alert(total_de_cheques);
+    var total = $("#pagamento_valor_pago").val();
     var valor = $("#valor_" + elemento).text();
     valor = valor.replace(".","");
     valor = parseFloat(valor.replace(",", "."))
-    var anterior = 0.0
-    anterior = parseFloat($("#pagamento_valor_pago").val());
-    if (isNaN(anterior)){
-      anterior = 0.0;
-    }
     var resultado = 0.0
     if ($("#cheque_"+elemento).is(':checked')) {
-        resultado = parseFloat(anterior + valor)
+        resultado = parseFloat(total_de_cheques + valor)
     }else {
-        resultado = parseFloat(anterior - valor)
+        resultado = parseFloat(total_de_cheques - valor)
     }
+alert(resultado)
     if (total < resultado){
       alert("A soma dos valores dos cheques selecionados é maior que o valor do pagamento.");
     }
-    $("#pagamento_valor_pago").val(resultado);
+    $("#total_dos_cheques").val(resultado);
     $("#pagamento_valor_restante").val(total-resultado);
     // verifica cheques selecionados
     var todos = $("#lista_de_cheques input:checkbox");

@@ -175,7 +175,7 @@ class ChequesController < ApplicationController
     result += "<tr><th>Bom para</th><th>valor</th><th>Paciente</th><th>&nbsp;</th></tr>"
     @cheques.each() do |cheque|
       result +=  "<tr><td><a href='javascript:abre_cheque(#{cheque.id})'>" + cheque.bom_para.to_s_br + "</a></td>" 
-      result += "<td><span id='valor_#{cheque.id}'>" + cheque.valor.real.to_s + "</span></td>"
+      result += "<td align='right'><span id='valor_#{cheque.id}'>" + cheque.valor.real.to_s + "</span></td>"
       result += "<td>" + cheque.nome_dos_pacientes + "</td>"
       result += "<td> <input type='checkbox' id='cheque_#{cheque.id}' onclick='selecionou_cheque(#{cheque.id});'</input></td> " 
       result += "</tr>"

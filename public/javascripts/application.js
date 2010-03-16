@@ -135,7 +135,7 @@ function abre_pagamento(id){
 }
 
 function pesquisa_disponiveis(){
-   $.getJSON("/cheques/busca_disponiveis?valor=" + $("#pagamento_valor").val(), function(data){
+   $.getJSON("/cheques/busca_disponiveis?valor=" + $("#pagamento_valor_pago").val(), function(data){
     $("#lista_de_cheques").replaceWith("<span id='lista_de_cheques'>" + data + "</span>");
     });
 }
