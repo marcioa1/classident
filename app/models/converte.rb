@@ -35,7 +35,7 @@ class Converte
         p.ortodontista_id = ortodontista.id
         p.mensalidade_de_ortodontia = le_valor(registro[33])
       else
-        portodontia = false
+        p.ortodontia = false
       end
       p.save
     end
@@ -51,7 +51,7 @@ class Converte
       while line = f.gets
         registro = line.split(";")
      #   puts registro[0]
-        p = Paciente.find_by_nome(registro[0])
+        p = Paciente.find_by_nome(registro[0].nome_proprio)
         if !p.nil?
           p.logradouro = registro[3]
           p.bairro = registro[4]
@@ -77,7 +77,7 @@ class Converte
       d = Debito.new
       registro = line.split(";")
       pac = Paciente.find_by_sequencial(registro[0].to_i)
-      puts pac.nome
+     # puts pac.nome
       d.paciente_id = pac.id unless pac.nil?
       d.data = registro[1].to_date
       d.valor = le_valor(registro[2])
@@ -357,7 +357,7 @@ class Converte
       t.save
       if !rec.nil?
         rec.cheque_id = t.id
-        rec.observacao = t.banco.nome + " - " t.numero if rec.observacao.nil? or rec.observacao.blank?
+        rec.observacao = t.banco.nome + " - " + t.numero if rec.observacao.nil? or rec.observacao.blank?
         rec.save
       end
     end

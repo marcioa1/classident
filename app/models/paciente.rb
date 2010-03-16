@@ -14,6 +14,7 @@ class Paciente < ActiveRecord::Base
   validates_presence_of :tabela, :on => :create, :message => "Tabela obrigatória"  
   
   named_scope :da_clinica, lambda{|clinica_id| {:conditions=>["clinica_id=?", clinica_id]}}
+  named_scope :de_clinica, :conditions=>["ortodontia = ?", false]
   named_scope :de_ortodontia, :conditions=>["ortodontia = ?", true]
   named_scope :fora_da_lista_de_debito, :conditions=>["sair_da_lista_de_debitos = ? ", true]
   named_scope :por_nome, :order=>:nome

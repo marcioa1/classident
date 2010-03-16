@@ -7,7 +7,7 @@ def index
 #  c.item_tabela
 #  c.dentista
 #  c.converte_cadastro 
-#  c.mala_direta
+  c.mala_direta
 #  c.debito
 #  c.converte_formas_recebimento
 #  c.tratamento

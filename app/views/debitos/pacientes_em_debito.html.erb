@@ -1,22 +1,26 @@
 <% content_for :main do %>
   <h3>Pacientes em débito</h3>
-  <fieldset class='fieldset_50'>
+  
   <% form_tag :url=>pacientes_em_debito_debitos_path do %>
     <% cont = 0 %>
+    <fieldset class='fieldset_60'>
     <table class='transparente'>
       <% @tabelas.each() do |tab| %>
         <% if cont % 5 == 0 %>
           </tr><tr>
         <% end %>
-        <td><%= check_box_tag "tabela_#{tab.id}",value = tab.id,false %>  
+        <td><%= check_box_tag "tabela_#{tab.id}",value = tab.id,params['tabela_' + tab.id.to_s] %>  
         <%= tab.nome %> </td>
         <% cont += 1%>
        <% end %>
     </tr>
-    <tr><td><%= submit_tag "pesquisar" %></td></tr>
     </table>
+    </fieldset>
+    <%  params[:tipo] = 'clinica' if !params[:tipo] %>
+    <%= radio_button_tag :tipo, :clinica, params[:tipo]=='clinica'  %> da clínica
+    <%= radio_button_tag :tipo, :ortodontia, params[:tipo]=='ortodontia' %> de ortodontia
+    <%= submit_tag "pesquisar" %>
   <% end %>
-  </fieldset>
   <br/>
   <table>
   <tr>
