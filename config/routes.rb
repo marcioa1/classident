@@ -7,7 +7,8 @@ ActionController::Routing::Routes.draw do |map|
        :registra_recebimento_de_cheques=>:get, :recebimento_confirmado=>:get, :pesquisa=>:get}
                 
   map.resource :clinicas, :collection=>{:producao_entre_datas=>:get, :producao_anual=>:get,
-       :relatorio_alta=>:get, :abandono_de_tratamento=>:get, :pacientes_de_ortodontia =>:get }
+       :relatorio_alta=>:get, :abandono_de_tratamento=>:get, :pacientes_de_ortodontia =>:get,
+       :fechamento_mes=>:get }
   map.resources :conta_bancarias
   map.resources :conversao
   map.resources :debitos, :collection=>{:pacientes_em_debito=>:get, :pacientes_fora_da_lista=>:get}

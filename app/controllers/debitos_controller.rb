@@ -100,6 +100,13 @@ class DebitosController < ApplicationController
   end
   
   def pacientes_fora_da_lista
-    @pacientes = Paciente.fora_da_lista_de_debito.da_clinica(session[:clinica_id])
+    if params[:datepicker]
+      @data_inicial = params[:datepicker].to_date
+      @data_final = params[:datepicker2].to_date
+    else
+      @data_inicial = Date.today - 1.month
+      @data_final = Date.today
+    end
+    @pacientes = Paciente.fora_da_lista_de_debito_entre(@data_inicial, @data_final).da_clinica(session[:clinica_id])
   end
 end

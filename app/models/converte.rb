@@ -286,8 +286,9 @@ class Converte
       t = FluxoDeCaixa.new
       t.clinica_id = clinica.id
       t.data = registro[0].to_date
-      t.saldo_em_dinheiro = registro[1].split(" ")[1]
-      t.saldo_em_cheque = registro[2].split(" ")[1]
+      t.saldo_em_dinheiro = le_valor(registro[1])
+      t.saldo_em_cheque = le_valor(registro[2])
+      puts t.saldo_em_dinheiro
       t.save
     end
     f.close

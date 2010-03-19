@@ -12,8 +12,9 @@ class Pagamento < ActiveRecord::Base
   named_scope :ao_protetico, lambda{|protetico_id| {:conditions=>["protetico_id = ?", protetico_id]}}
   named_scope :da_clinica, lambda{|clinica_id| {:conditions=>["clinica_id = ?", clinica_id]}}
   named_scope :entre_datas, lambda{|inicio,fim| 
-       {:conditions=>["data_de_pagamento >= ? and data_de_pagamento <= ?", inicio,fim]}}
+       {:conditions=>["data_de_pagamento between ? and ?", inicio,fim]}}
   named_scope :filhos, lambda{|pagamento_id| {:conditions=>["pagamento_id = ?", pagamento_id]}}
+  named_scope :fora_do_livro_caixa, :conditions=>['nao_lancar_no_livro_caixa = ?', true]
   named_scope :no_dia, lambda{|dia|
        {:conditions=>["data_de_pagamento = ? ",dia]}}
   named_scope :no_livro_caixa, :conditions=>['nao_lancar_no_livro_caixa = ?', false]
@@ -22,6 +23,7 @@ class Pagamento < ActiveRecord::Base
   named_scope :nao_excluidos, :conditions=>["data_de_exclusao IS NULL"]
   named_scope :pela_administracao, :conditions=>["pagamento_id IS NOT NULL"]
   named_scope :por_data, :order=>:data_de_pagamento
+#  named_scope :total,  :sum('valor_pago') #conditions=>['sum valor_pago where data between ? and ? ', '2009-01-01', '2009-01-31']
        
   def descricao_opcao_restante
     return "Sem valor restante" if opcao_restante==0  

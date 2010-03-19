@@ -20,8 +20,11 @@
   <%= javascript_include_tag 'adm.js'%>
   <%= javascript_include_tag 'clinica.js' %>
 </head>
-
-<body>
+<% if administracao? %>
+  <body style='background-color: #F6FDB8;'>
+<% else %>
+  <body style='background-color: #E6EDF8;'>
+<% end %>
 <div id="container">
     <div id="cabecalho">
       <div id="logo"><%= image_tag "logo2.jpg"%>

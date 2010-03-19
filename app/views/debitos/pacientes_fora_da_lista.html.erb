@@ -1,5 +1,13 @@
 <% content_for :main do %>
-<h3>Pacientes for da lista de débito</h3>
+<h3>Pacientes fora da lista de débito</h3>
+<fieldset>
+<% form_tag :url=>pacientes_fora_da_lista_debitos_path do %>
+  Entre : <%= text_field_tag :datepicker , @data_inicial.to_s_br, :size=>10 %>
+  &nbsp;&nbsp; e : <%= text_field_tag :datepicker2 , @data_final.to_s_br, :size=>10 %>
+  <%= submit_tag "pesquisar"%>
+<% end %>
+</fieldset>
+<p/>
 <table>
   <tr>
     <th>Nome</th>
@@ -9,7 +17,7 @@
 <% @pacientes.each do |pac| %>
   <tr>
     <td><%= pac.nome %></td>
-    <td><%= pac.data_da_saida_da_lista_de_debitos.to_s_br %></td>
+    <td align='center'><%= pac.data_da_saida_da_lista_de_debitos.to_s_br %></td>
     <td><%= pac.motivo_sair_da_lista_de_debitos %></td>
   </tr>
 <% end %>

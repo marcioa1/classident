@@ -17,6 +17,8 @@ class Paciente < ActiveRecord::Base
   named_scope :de_clinica, :conditions=>["ortodontia = ?", false]
   named_scope :de_ortodontia, :conditions=>["ortodontia = ?", true]
   named_scope :fora_da_lista_de_debito, :conditions=>["sair_da_lista_de_debitos = ? ", true]
+  named_scope :fora_da_lista_de_debito_entre, lambda{|inicio,fim| {:conditions=>["sair_da_lista_de_debitos = ? 
+    and data_da_saida_da_lista_de_debitos between ? and ?", true, inicio,fim]}}
   named_scope :por_nome, :order=>:nome
   
   #validates_uniqueness_of :codigo

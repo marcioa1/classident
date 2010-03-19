@@ -7,7 +7,7 @@ def index
 #  c.item_tabela
 #  c.dentista
 #  c.converte_cadastro 
-  c.mala_direta
+#  c.mala_direta
 #  c.debito
 #  c.converte_formas_recebimento
 #  c.tratamento
@@ -15,7 +15,7 @@ def index
 #  c.tipo_pagamento
 #  c.destinacao
 #  c.pagamento
-#  c.fluxo_de_caixa
+  c.fluxo_de_caixa
 #  c.recebimento
 #  c.cheque
 #  c.protetico

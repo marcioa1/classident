@@ -9,7 +9,7 @@
 	</tr>
   <% @pagamento.cheques.each() do |cheque| %>
     <tr>
-      <td><%= cheque.recebimento.paciente.nome %></td>
+      <td><%= cheque.nome_dos_pacientes %></td>
       <td align="right"><%= cheque.valor.real %></td>
       <td><%= cheque.banco.numero + "-" + cheque.banco.nome %></td>
       <td><%= cheque.numero %></td>

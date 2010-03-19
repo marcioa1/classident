@@ -21,6 +21,7 @@
   </p>
   <table>
     <th>seq</th>
+    <th>Banco</th>
     <th>Agência</th>
     <th>Número</th>
     <th>Bom para</th>
@@ -33,11 +34,12 @@
     <% @cheques.each do |cheque| %>
       <tr>
         <td><%= cheque.id %></td>
+        <td><%= cheque.banco.nome %></td>
         <td><%=cheque.agencia%></td>
         <td><%=cheque.numero%></td>
         <td><%=cheque.bom_para.to_s_br%></td>
         <td align='right'><%=cheque.valor.real%></td>
-        <td><%= cheque.recebimento.paciente.nome unless cheque.recebimento.paciente.nil? %></td>
+        <td><%= cheque.nome_dos_pacientes  %></td>
         <td>
           <% if cheque.usado_para_pagamento? %>
             <%= link_to cheque.status, "#", :onclick=>'abre_pagamento( ' + cheque.pagamento_id.to_s + ')'%>

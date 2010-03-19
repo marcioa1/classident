@@ -1,0 +1,29 @@
+<% content_for :main do %>
+  <h3>Fechamento de mês</h3>
+  <% form_tag :url=>fechamento_mes_clinicas_path do %>
+    Ano : 
+    <%= select_year @data %>
+    <%= submit_tag 'pesquisar' %>
+  <% end %>
+  <p/>
+  <table>
+    <tr>
+      <th>Mês</th>
+      <th width='100px'>Abertura</th>
+      <th width='100px'>Pagamento</th>
+      <th width='100px'>Recebimento</th>
+      <th width='100px'>Remessa</th>
+      <th width='100px'>Saldo</th>
+    </tr>
+    <% (1..12).each do |mes| %>
+      <tr>
+        <td><%= mes %></td>
+        <td align='right'><%= @abertura[mes].real %></td>
+        <td align='right'><%= @pagamento[mes].real %></td>
+        <td align='right'><%= @recebimento[mes].real %></td>
+        <td align='right'><%= @remessa[mes].real %></td>
+        <td align='right'><%= @abertura[mes].real - @pagamento[mes].real + @recebimento[mes].real - @remessa[mes].real %></td>
+      </tr>
+    <% end %>
+  </table>
+<% end %>
