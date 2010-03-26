@@ -4,7 +4,7 @@ class ItemTabelasController < ApplicationController
   # GET /item_tabelas.xml
   def index
     @tabela = Tabela.find(params[:tabela_id])
-    @item_tabelas = ItemTabela.all(:conditions=>["tabela_id=?",@tabela.id])
+    @item_tabelas = ItemTabela.all(:conditions=>["tabela_id=?",@tabela.id], :order=>'codigo')
 
     respond_to do |format|
       format.html # index.html.erb
@@ -16,9 +16,9 @@ class ItemTabelasController < ApplicationController
   # GET /item_tabelas/1.xml
   def show
     @item_tabela = ItemTabela.find(params[:id])
-    @clinica_atual.s = Clinica.all(:order=>:nome)
+    @clinicas = Clinica.all(:order=>:nome)
     @preco = Array.new
-    @clinica_atual.s.each do |clinica|
+    @clinicas.each do |clinica|
       preco = Preco.find_by_item_tabela_id_and_clinica_id(@item_tabela.id,
                   clinica.id)
       if preco.nil?
@@ -110,8 +110,8 @@ class ItemTabelasController < ApplicationController
   
   def grava_precos
     @item_tabela = ItemTabela.find(params[:item_tabela_id])
-    @clinica_atual.s = Clinica.all()
-    @clinica_atual.s.each do |clinica|
+    @clinicas = Clinica.all()
+    @clinicas.each do |clinica|
       valor_convertido = params["preco_" + clinica.id.to_s].gsub(",",".")
       preco = Preco.find_by_item_tabela_id_and_clinica_id(
            @item_tabela.id,clinica.id) 

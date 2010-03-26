@@ -1,5 +1,8 @@
 <% content_for :main do %>
 <h3>Listando dentistas</h3>
+<p>
+<%= link_to 'Novo dentista', new_dentista_path if administracao? %>
+</p>
 <% form_tag dentistas_path, :method=>:get do %>
   <p>
   <%= radio_button_tag :ativo, true , params[:ativo]=="true" -%> Ativos

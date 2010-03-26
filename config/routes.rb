@@ -13,7 +13,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :conversao
   map.resources :debitos, :collection=>{:pacientes_em_debito=>:get, :pacientes_fora_da_lista=>:get}
   map.resources :dentistas, :member=>{:abre=>:get, :producao=>:get, :pagamento=>:get,:orcamentos=>:get}, 
-                    :collection=>{:pesquisar=>:get }
+                    :collection=>{:pesquisar=>:get, :producao_geral=>:get }
   map.resources :descricao_condutas
   map.resources :destinacaos
   map.resources :entradas
@@ -22,7 +22,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :indicacaos
   
   map.resources :item_tabelas, :collection=>{:busca_descricao=>:get}
-  map.resources :orcamentos, :collection=>{:relatorio=>:get}
+  map.resources :orcamentos, :collection=>{:relatorio=>:get, :aproveitamento=>:get}
   map.resources :pacientes, :member=>{:abre=>:get}, :collection=>{:pesquisa=>:get, :nomes_que_iniciam_com=>:get}
 
   map.administracao "administracao", :controller=>"administracao", :action=>"index"

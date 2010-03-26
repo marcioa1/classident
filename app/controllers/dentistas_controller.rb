@@ -42,7 +42,7 @@ class DentistasController < ApplicationController
   # GET /dentistas/new.xml
   def new
     @dentista = Dentista.new
-    @clinica_atual.s = Clinica.all(:order=>:nome)
+    @clinicas = Clinica.todas.por_nome
     respond_to do |format|
       format.html # new.html.erb
       format.xml  { render :xml => @dentista }
@@ -52,7 +52,7 @@ class DentistasController < ApplicationController
   # GET /dentistas/1/edit
   def edit
     @dentista = Dentista.find(params[:id])
-    @clinica_atual.s = Clinica.all(:order=>:nome)
+    @clinicas = Clinica.all(:order=>:nome)
   end
 
   # POST /dentistas

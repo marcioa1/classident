@@ -40,7 +40,7 @@ class ProteticosController < ApplicationController
   # GET /proteticos/1/edit
   def edit
     @protetico = Protetico.find(params[:id])
-    @clinica_atual.s = Clinica.por_nome
+    @clinicas = Clinica.por_nome
   end
 
   # POST /proteticos
@@ -60,7 +60,7 @@ class ProteticosController < ApplicationController
         format.html { redirect_to(proteticos_path) }
         format.xml  { render :xml => @protetico, :status => :created, :location => @protetico }
       else
-         @clinica_atual.s = Clinica.por_nome
+         @clinicas = Clinica.por_nome
         format.html { render :action => "new" }
         format.xml  { render :xml => @protetico.errors, :status => :unprocessable_entity }
       end

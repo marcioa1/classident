@@ -15,7 +15,7 @@
 <%= form.select :tipo_usuario_id, @tipos_usuario %>
 <br/><br/>
 <%= form.label :clinicas %><br/>
-<%= form.select :clinica_id, @clinica_atual.s, :include_blank=>true %>
+<%= form.select :clinica_id, @clinicas, :include_blank=>true %>
 <br/><br/>
 <%= form.check_box :ativo %>
 <%= form.label :ativo %>

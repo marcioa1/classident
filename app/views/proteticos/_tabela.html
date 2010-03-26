@@ -10,7 +10,7 @@
 <% @protetico.tabela_proteticos.each do |item| %>
   <tr>
     <td><%= item.codigo %></td>
-    <td><% if session[:clinica_id].to_i==0 %>
+    <td><% if administracao? %>
           <%= link_to item.descricao, edit_tabela_protetico_path(item) %>
         <% else %>
           <%= item.descricao %>

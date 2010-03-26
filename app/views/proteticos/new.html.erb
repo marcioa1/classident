@@ -43,7 +43,7 @@
   </p>
 <fieldset>
     <legend>Clínicas onde atua :</legend>
-    <% @clinica_atual.s.each() do |clinica| %>
+    <% @clinicas.each() do |clinica| %>
       <%= check_box_tag "clinica_#{clinica.id}", clinica.id, checked=@protetico.clinicas.include?(clinica) %>  
     <%= clinica.nome %><br/>
     <% end %>

@@ -51,24 +51,24 @@
       <%= f.text_field :valor_cheque, :size=>8 %>
     </fieldset>
   </div>
-  <% if administracao? %>
+  <% if administracao? && @dentista.present? %>
   <div id="custo_das_clinicas" style="display:true">
-  	<fieldset>
-	    <legend>Custos das clínicas</legend>
-	    <table class='transparente'>
-		    <tr>
-			    <td>&nbsp;</td>
-			   	<td>Clínicas :</td>
-		      <td>Valores :</td>
-		    </tr> 
-	    <% @dentista.clinicas.each do |clinica| %>
-		      <td><%= check_box_tag "custo_clinica_#{clinica.id}", '', true%></td>
-		      <td><%= clinica.nome %></td>
-		      <td><%= text_field_tag "valor_#{clinica.id}", {}, :size=>8 %></td>
-		    </tr>
-	    <% end %>
-	    </table>
-	    <p></p>
+    <fieldset>
+      <legend>Custos das clínicas</legend>
+      <table class='transparente'>
+        <tr>
+          <td>&nbsp;</td>
+          <td>Clínicas :</td>
+          <td>Valores :</td>
+        </tr> 
+      <% @dentista.clinicas.each do |clinica| %>
+          <td><%= check_box_tag "custo_clinica_#{clinica.id}", '', true%></td>
+          <td><%= clinica.nome %></td>
+          <td><%= text_field_tag "valor_#{clinica.id}", {}, :size=>8 %></td>
+        </tr>
+      <% end %>
+      </table>
+      <p></p>
     </fieldset>
   </div>
   <% end %>

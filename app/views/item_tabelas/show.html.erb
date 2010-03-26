@@ -26,7 +26,7 @@
 <table>
 <% form_tag grava_precos_path do %>
   <%= hidden_field_tag :item_tabela_id, @item_tabela.id %>
-  <% @clinica_atual.s.each do |clinica| %>
+  <% @clinicas.each do |clinica| %>
     <tr>
       <td><%= clinica.nome %></td>
       <td>R$ <%= text_field_tag "preco_" + clinica.id.to_s, @preco[clinica.id].real

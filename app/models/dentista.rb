@@ -5,6 +5,8 @@ class Dentista < ActiveRecord::Base
   has_many :pagamentos
   has_many :pacientes_de_ortodontia, :class_name=>"Paciente", :foreign_key=>"ortodontista_id"
   
+  validates_presence_of :nome, :cro, :message => "não pode ser vazio ( em branco )."
+  
   #named_scope :da_clinica, lambda{|clinica_id| {:conditions=>["clinica_id=?", clinica_id]}}
   named_scope :por_nome, :order=>:nome
   named_scope :ativos, :conditions=>["ativo=?", true]

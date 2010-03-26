@@ -27,7 +27,7 @@ class ContaBancariasController < ApplicationController
   # GET /conta_bancarias/new.xml
   def new
     @conta_bancaria = ContaBancaria.new
-    @clinica_atual.s = Clinica.por_nome.collect{|cl| [cl.nome, cl.id]}
+    @clinicas = Clinica.por_nome.collect{|cl| [cl.nome, cl.id]}
     respond_to do |format|
       format.html # new.html.erb
       format.xml  { render :xml => @conta_bancaria }
@@ -37,7 +37,7 @@ class ContaBancariasController < ApplicationController
   # GET /conta_bancarias/1/edit
   def edit
     @conta_bancaria = ContaBancaria.find(params[:id])
-    @clinica_atual.s = Clinica.por_nome.collect{|cl| [cl.nome, cl.id]}
+    @clinicas = Clinica.por_nome.collect{|cl| [cl.nome, cl.id]}
   end
 
   # POST /conta_bancarias
@@ -51,6 +51,7 @@ class ContaBancariasController < ApplicationController
         format.html { redirect_to(conta_bancarias_path) }
         format.xml  { render :xml => @conta_bancaria, :status => :created, :location => @conta_bancaria }
       else
+        @clinicas = Clinica.por_nome.collect{|cl| [cl.nome, cl.id]}
         format.html { render :action => "new" }
         format.xml  { render :xml => @conta_bancaria.errors, :status => :unprocessable_entity }
       end
