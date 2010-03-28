@@ -1,6 +1,7 @@
 class DentistasController < ApplicationController
   layout "adm"
   before_filter :require_user
+  before_filter :quinze_dias, :on=>:producao_geral
   # GET /dentistas
   # GET /dentistas.xml
   def index
@@ -118,7 +119,7 @@ class DentistasController < ApplicationController
     @clinica_atual = Clinica.find(session[:clinica_id])
     @inicio = Date.today - 15.days
     @fim = Date.today
-    @orcamentos = [] #Orcamento.do_dentista(@dentista.id)
+    @orcamentos = Orcamento.do_dentista(@dentista.id)
   end
   
   def producao
@@ -247,5 +248,12 @@ class DentistasController < ApplicationController
     result += "</table></div>"
     render :json => result.to_json
   end
+  
+  def producao_geral
+    
+    @todos = Dentista.ativos.por_nome
+  end
+  
+ 
   
 end

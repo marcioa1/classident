@@ -1,5 +1,8 @@
 class OrcamentosController < ApplicationController
   layout "adm"
+  
+  before_filter :quinze_dias
+  
   # GET /orcamentos
   # GET /orcamentos.xml
   def index
@@ -109,6 +112,10 @@ class OrcamentosController < ApplicationController
       @orcamentos = Orcamento.da_clinica(session[:clinica_id]).entre_datas(params[:datepicker].to_date, params[:datepicker2].to_date)
       
     end
-    
   end
+
+  def aproveitamento
+    @orcamentos = Orcamento.por_dentista.entre_datas(@data_inicial, @data_final)
+  end
+
 end

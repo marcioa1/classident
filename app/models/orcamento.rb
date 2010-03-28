@@ -9,6 +9,7 @@ class Orcamento < ActiveRecord::Base
   named_scope :do_dentista, lambda{|dentista_id| {:conditions=>['dentista_id = ?', dentista_id]}}
   named_scope :do_paciente, lambda{|paciente_id| {:conditions=>['paciente_id = ?', paciente_id]}}
   named_scope :entre_datas, lambda{|data_inicial, data_final| {:conditions=>['data between ? and ?', data_inicial, data_final]}}
+  named_scope :por_dentista, :order=>:dentista_id
   named_scope :ultimo_codigo, :order=>["numero DESC"]
 
 

@@ -1,3 +1,40 @@
 <% content_for :main do %>
-  Pendente
+  <% form_tag :url=>producao_geral_dentistas_path do %>
+    <%= label_tag "Entre : " %>
+    <%= text_field_tag :datepicker, @data_inicial.to_s_br, :size=>10 %>
+    <%= label_tag " e : " %>
+    <%= text_field_tag :datepicker2, @data_final.to_s_br, :size=>10 %>
+    <%= submit_tag "pesquisar"%>
+  <% end %>
+  <p/>
+  <table>
+    <tr>
+      <th>Dentista</th>
+      <th>Percentual</th>
+      <th width='110'>Valor</th>
+      <th width='110'>Custo</th>
+      <th width='110'>Do dentista</th>
+      <th width='110'>Da clínica</th>
+    </tr>
+    <% total = Array.new(5, 0)%>
+    <% @todos.each do |dentista| %>
+      <tr>
+        <td><%= dentista.nome %></td>
+        <% val = dentista.producao_entre_datas(@data_inicial,@data_final).split("/")%>
+        <% ind = 0 %>
+        <% val.each do |valor| %>
+          <td align='right'><%= valor.to_f.real %></td>
+          <% total[ind] += valor.to_f %>
+          <% ind += 1 %>
+        <% end %>
+      </tr>
+    <% end %>
+    <tr>
+      <td colspan="2" align='right'>Total : </td>
+      <% (1..4).each do |ind| %>
+        <td align='right'><%= total[ind].real %></td>
+      <% end %>
+    </tr>
+    
+  </table>
 <% end %>

@@ -13,7 +13,8 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :conversao
   map.resources :debitos, :collection=>{:pacientes_em_debito=>:get, :pacientes_fora_da_lista=>:get}
   map.resources :dentistas, :member=>{:abre=>:get, :producao=>:get, :pagamento=>:get,:orcamentos=>:get}, 
-                    :collection=>{:pesquisar=>:get, :producao_geral=>:get }
+                    :collection=>{:pesquisar=>:get, :producao_geral=>:get, 
+                    :producao_geral => :get }
   map.resources :descricao_condutas
   map.resources :destinacaos
   map.resources :entradas

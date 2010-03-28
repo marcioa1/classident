@@ -396,7 +396,8 @@ class Converte
       o.id = registro[0]
       o.clinica_id = clinica.id
       o.data = registro[1].to_date
-      o.paciente_id = registro[2].to_i
+      pac = Paciente.find_by_sequencial(registro[2].to_i)
+      o.paciente_id = pac.id
       o.dentista = Dentista.find_by_sequencial(registro[3].to_i)
       o.numero = registro[4]
       o.numero_de_parcelas = registro[6].to_i

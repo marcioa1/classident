@@ -8,6 +8,7 @@ class Paciente < ActiveRecord::Base
   belongs_to :indicacao
   has_many :orcamentos
   belongs_to :ortodontista, :class_name=>"Dentista", :foreign_key=>'ortodontista_id'
+  belongs_to :clinica
   belongs_to :dentista
   
   validates_presence_of :nome, :on => :create, :message => "Campo nome é obrigatório" 

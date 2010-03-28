@@ -8,6 +8,15 @@ class ApplicationController < ActionController::Base
   helper_method :current_user_session, :current_user
   before_filter :busca_clinicas
 
+  def quinze_dias
+    if params[:datepicker]
+       @data_inicial = params[:datepicker].to_date
+       @data_final = params[:datepicker2].to_date
+     else
+       @data_inicial = Date.today - 15.days
+       @data_final = Date.today
+     end
+  end
   
   private
   
