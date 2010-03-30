@@ -1,0 +1,31 @@
+%p
+%table
+  %tr
+    %th 
+      %br Dentista
+    %th 
+      %br Em aberto
+    %th 
+      %br Aprovado
+    %th 
+      %br Total aberto
+    %th 
+      %br Total aprovado
+    %th 
+      = '% de' 
+      %br aproveitamento
+  - @dentistas.each do |dentista|
+    - unless (@aberto_por_dentista[dentista.id] + @iniciado_por_dentista[dentista.id] ) == 0
+      %tr
+        %td 
+          =dentista.nome + dentista.id.to_s
+        %td{:align=>'right'}  
+          = @aberto_por_dentista[dentista.id]
+        %td{:align=>'right'}  
+          = @iniciado_por_dentista[dentista.id]
+        %td{:align=>'right'} 
+          =  @total_aberto_por_dentista[dentista.id].real
+        %td{:align=>'right'}  
+          = @total_iniciado_por_dentista[dentista.id].real
+        %td{:align=>'right'}  
+          =   (@iniciado_por_dentista[dentista.id] * 100) / (@aberto_por_dentista[dentista.id] + @iniciado_por_dentista[dentista.id] )

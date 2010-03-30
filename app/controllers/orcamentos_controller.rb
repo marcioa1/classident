@@ -116,6 +116,28 @@ class OrcamentosController < ApplicationController
 
   def aproveitamento
     @orcamentos = Orcamento.por_dentista.entre_datas(@data_inicial, @data_final)
+    @aberto_por_clinica = Array.new(10,0)
+    @iniciado_por_clinica = Array.new(10,0)
+    @total_aberto_por_clinica = Array.new(10,0)
+    @total_iniciado_por_clinica = Array.new(10,0)
+    @aberto_por_dentista = Array.new(10,0)
+    @iniciado_por_dentista = Array.new(10,0)
+    @total_aberto_por_dentista = Array.new(10,0)
+    @total_iniciado_por_dentista = Array.new(10,0)
+    @clinicas = Clinica.todas
+    @clinicas.each do |clinica|
+      @aberto_por_clinica[clinica.id] = Orcamento.em_aberto.entre_datas(@data_inicial, @data_final).da_clinica(clinica.id).size
+      @iniciado_por_clinica[clinica.id] = Orcamento.iniciado.entre_datas(@data_inicial, @data_final).da_clinica(clinica.id).size
+      @total_aberto_por_clinica[clinica.id] = Orcamento.em_aberto.entre_datas(@data_inicial, @data_final).da_clinica(clinica.id).sum(:valor_com_desconto)
+      @total_iniciado_por_clinica[clinica.id] = Orcamento.iniciado.entre_datas(@data_inicial, @data_final).da_clinica(clinica.id).sum(:valor_com_desconto)
+    end
+    @dentistas = Dentista.ativos.por_nome
+    @dentistas.each do |dentista|
+      @aberto_por_dentista[dentista.id] = Orcamento.em_aberto.entre_datas(@data_inicial, @data_final).do_dentista(dentista.id).size
+      @iniciado_por_dentista[dentista.id] = Orcamento.iniciado.entre_datas(@data_inicial, @data_final).do_dentista(dentista.id).size
+      @total_aberto_por_dentista[dentista.id] = Orcamento.em_aberto.entre_datas(@data_inicial, @data_final).do_dentista(dentista.id).sum(:valor_com_desconto)
+      @total_iniciado_por_dentista[dentista.id] = Orcamento.iniciado.entre_datas(@data_inicial, @data_final).do_dentista(dentista.id).sum(:valor_com_desconto)
+    end
   end
 
 end

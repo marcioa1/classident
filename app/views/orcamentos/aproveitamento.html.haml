@@ -1,0 +1,26 @@
+- content_for :main do
+  %h3 Aproveitamento de Orçamento
+  - form_tag :url=>producao_geral_dentistas_path do
+    = label_tag "Entre : " 
+    = text_field_tag 'datepicker', @data_inicial.to_s_br, :size=>10 
+    = label_tag " e : " 
+    = text_field_tag 'datepicker2', @data_final.to_s_br, :size=>10 
+    = submit_tag "pesquisar"
+  %p
+  #tabs
+    %ul
+      %li
+        %a{ :href=>"#detalhado"}
+          %span Detalhado
+      %li
+        %a{ :href=>"#por_clinica"}
+          %span Por clínica
+      %li
+        %a{ :href=>"#por_dentista"}
+          %span Por dentista
+    #detalhado
+      = render :partial=>"aproveitamento_detalhado"  
+    #por_clinica
+      = render :partial=>"aproveitamento_por_clinica"  
+    #por_dentista
+      = render :partial=>"aproveitamento_por_dentista"  

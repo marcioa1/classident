@@ -8,7 +8,9 @@ class Tratamento < ActiveRecord::Base
   named_scope :da_clinica, lambda{|clinicas| {:conditions=>["clinica_id in (?)",clinicas]}}
   named_scope :do_paciente, lambda{|paciente_id| {:conditions=>["paciente_id = ? and excluido=?", paciente_id,false]}}
   named_scope :do_dentista, lambda{|dentista_id| {:conditions=>["dentista_id = ? ", dentista_id]}}
+  named_scope :do_orcamento, lambda{|orcamento_id| {:conditions=>["orcamento_id = ? ", orcamento_id]}}
   named_scope :entre, lambda{|inicio,fim| {:conditions=>["data>=? and data <=?", inicio,fim]}}
+  named_scope :feito, :conditions=>["data IS NOT NULL"]
   named_scope :nao_excluido, :conditions=>["excluido = ?",false]
   named_scope :nao_feito, :conditions=>["data IS NULL"]
   named_scope :por_data, :order=>:data

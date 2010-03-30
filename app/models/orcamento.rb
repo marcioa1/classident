@@ -8,20 +8,33 @@ class Orcamento < ActiveRecord::Base
   named_scope :da_clinica, lambda{|clinica_id| {:conditions=>['clinica_id = ? ', clinica_id]}}
   named_scope :do_dentista, lambda{|dentista_id| {:conditions=>['dentista_id = ?', dentista_id]}}
   named_scope :do_paciente, lambda{|paciente_id| {:conditions=>['paciente_id = ?', paciente_id]}}
+  named_scope :em_aberto, :conditions=>['data_de_inicio IS NULL']
   named_scope :entre_datas, lambda{|data_inicial, data_final| {:conditions=>['data between ? and ?', data_inicial, data_final]}}
+  named_scope :iniciado, :conditions=>['data_de_inicio IS NOT NULL']
   named_scope :por_dentista, :order=>:dentista_id
   named_scope :ultimo_codigo, :order=>["numero DESC"]
 
 
   def estado
     nao_feito = Tratamento.first(:conditions=>['orcamento_id = ? and data IS NULL', self.id])
+    feito     = Tratamento.first(:conditions=>['orcamento_id = ? and data IS NOT NULL', self.id])
     return 'em aberto' if data_de_inicio.nil?
+    return 'iniciado' if nao_feito.present? and feito.present?
     return 'terminado' if nao_feito.blank?
     'aceito'
   end
   
   def em_aberto?
     data_de_inicio.nil?
+  end
+  
+  def aprovado?
+    !em_aberto?
+  end
+  
+  def iniciado?
+    result = Tratamento.do_paciente(self.paciente_id).feito.do_orcamento(self.id)
+    result.present?
   end
   
   def self.proximo_numero(paciente_id)

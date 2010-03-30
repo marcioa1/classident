@@ -1,0 +1,20 @@
+%p
+%table
+  %tr
+    %th Clínica
+    %th Em aberto
+    %th Aprovado
+    %th Total aberto
+    %th Total aprovado
+  - @clinicas.each do |clinica|
+    %tr
+      %td 
+        =clinica.nome
+      %td{:align=>'right'}  
+        = @aberto_por_clinica[clinica.id]
+      %td{:align=>'right'}  
+        = @iniciado_por_clinica[clinica.id]
+      %td{:align=>'right'} 
+        =  @total_aberto_por_clinica[clinica.id].real
+      %td{:align=>'right'}  
+        = @total_iniciado_por_clinica[clinica.id].real
