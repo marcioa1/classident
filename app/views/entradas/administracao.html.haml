@@ -1,0 +1,37 @@
+- content_for :main do
+  %h3 Entrada de dinheiro
+  %p
+  - form_tag :url=>administracao_entradas_path do
+    = render :partial=>'diversos/entre_datas'
+  %p
+  %table
+    %tr
+      %th Data
+      %th Clínica
+      %th Observação
+      %th Valor
+      %th Confirmação
+    - total = 0
+    - @entradas.each do |entrada|
+      %tr
+        %td 
+          =entrada.data.to_s_br
+        %td 
+          =entrada.clinica.nome
+        %td 
+          =entrada.observacao
+        %td{:align=>'right'}
+          =entrada.valor.abs.real
+        %td{:align=>'center'}
+          - if entrada.confirmada?
+            = entrada.data_da_confirmacao_da_entrada.to_s_br
+          - else
+            = check_box_tag 'entrada_' + entrada.id.to_s
+        - total += entrada.valor
+    %tr
+      %td{:colspan=>"3", :align=>'center'}
+        Total :
+      %td{:align=>'right'}
+        = total.abs.real
+      %td
+        = button_to_function "registrar",  :onclick=>'registra_confirmacao_de_recebimento()'

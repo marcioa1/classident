@@ -1,6 +1,7 @@
 class EntradasController < ApplicationController
   layout "adm"
   before_filter :require_user
+  before_filter :quinze_dias, :only=>:administracao
   # GET /entradas
   # GET /entradas.xml
   def index
@@ -94,4 +95,9 @@ class EntradasController < ApplicationController
       format.xml  { head :ok }
     end
   end
+  
+  def administracao
+    @entradas = Entrada.remessa.entre_datas(@data_inicial, @data_final)
+  end
+  
 end

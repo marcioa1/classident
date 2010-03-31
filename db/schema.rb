@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100315173226) do
+ActiveRecord::Schema.define(:version => 20100331032318) do
 
   create_table "altas", :force => true do |t|
     t.integer  "paciente_id"
@@ -152,11 +152,12 @@ ActiveRecord::Schema.define(:version => 20100315173226) do
 
   create_table "entradas", :force => true do |t|
     t.date     "data"
-    t.decimal  "valor",      :precision => 8, :scale => 2
+    t.decimal  "valor",                           :precision => 8, :scale => 2
     t.string   "observacao"
     t.integer  "clinica_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.datetime "data_confirmacao_do_recebimento"
   end
 
   add_index "entradas", ["clinica_id"], :name => "index_entradas_on_clinica_id"

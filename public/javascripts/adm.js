@@ -57,3 +57,8 @@ function pagamento_dentista(dentista_id){
         $("#lista_pagamento").replaceWith(data);
     });
 }
+
+function registra_confirmacao_de_recebimento(){
+  entradas = $('input:checked').val()
+  alert(entradas.length)
+}

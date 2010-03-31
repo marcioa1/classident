@@ -1,7 +1,7 @@
 class OrcamentosController < ApplicationController
   layout "adm"
   
-  before_filter :quinze_dias
+  before_filter :quinze_dias, :only=>:aproveitamento
   
   # GET /orcamentos
   # GET /orcamentos.xml

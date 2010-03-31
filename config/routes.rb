@@ -17,7 +17,7 @@ ActionController::Routing::Routes.draw do |map|
                     :producao_geral => :get }
   map.resources :descricao_condutas
   map.resources :destinacaos
-  map.resources :entradas
+  map.resources :entradas, :collection=>{ :administracao => :get }
   map.fluxo_de_caixa "fluxo_de_caixa", :controller=>"fluxo_de_caixa", :action=>"index"
   map.resources :formas_recebimentos
   map.resources :indicacaos
