@@ -58,7 +58,19 @@ function pagamento_dentista(dentista_id){
     });
 }
 
-function registra_confirmacao_de_recebimento(){
-  entradas = $('input:checked').val()
-  alert(entradas.length)
+function registra_confirmacao_de_entrada(){
+  entradas = $('input:checked')
+  id_str = ''
+  $.each(entradas, function(index,value){
+    aux = ((value.id).split('_'))
+    id_str += aux[1] + ','
+  })
+  jQuery.ajax({
+     url : "/entradas/registra_confirmacao_de_entrada",
+     type: 'POST',
+     data: {data: id_str},
+     success: function(data){
+       $('input:submit').click();  
+     }
+  });
 }

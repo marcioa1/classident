@@ -152,12 +152,12 @@ ActiveRecord::Schema.define(:version => 20100331032318) do
 
   create_table "entradas", :force => true do |t|
     t.date     "data"
-    t.decimal  "valor",                           :precision => 8, :scale => 2
+    t.decimal  "valor"
     t.string   "observacao"
     t.integer  "clinica_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.datetime "data_confirmacao_do_recebimento"
+    t.datetime "data_confirmacao_da_entrada"
   end
 
   add_index "entradas", ["clinica_id"], :name => "index_entradas_on_clinica_id"

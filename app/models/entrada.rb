@@ -10,9 +10,10 @@ class Entrada < ActiveRecord::Base
       data_inicial, data_final]}}
   named_scope :entrada, :conditions=>["valor > 0"]
   named_scope :remessa, :conditions=>["valor < 0"]
+  named_scope :confirmado, :conditions=>['data_confirmacao_da_entrada IS NOT NULL']
   
   def confirmada?
-    data_confirmacao_do_recebimento.present?  
+    data_confirmacao_da_entrada.present?  
   end
   
 end

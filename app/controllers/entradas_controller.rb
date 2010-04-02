@@ -100,4 +100,13 @@ class EntradasController < ApplicationController
     @entradas = Entrada.remessa.entre_datas(@data_inicial, @data_final)
   end
   
+  def registra_confirmacao_de_entrada
+    entrada_ids = params[:data].split(',')
+    entrada_ids.each do |id|
+      debugger
+      Entrada.update(id, :data_confirmacao_da_entrada => Time.now)
+    end
+    head :ok
+  end
+  
 end

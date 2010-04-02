@@ -24,7 +24,7 @@
           =entrada.valor.abs.real
         %td{:align=>'center'}
           - if entrada.confirmada?
-            = entrada.data_da_confirmacao_da_entrada.to_s_br
+            = entrada.data_confirmacao_da_entrada.to_s_br
           - else
             = check_box_tag 'entrada_' + entrada.id.to_s
         - total += entrada.valor
@@ -34,4 +34,4 @@
       %td{:align=>'right'}
         = total.abs.real
       %td
-        = button_to_function "registrar",  :onclick=>'registra_confirmacao_de_recebimento()'
+        = button_to_function "registrar",  :onclick=>'registra_confirmacao_de_entrada()'

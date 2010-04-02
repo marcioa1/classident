@@ -18,4 +18,5 @@ class FluxoDeCaixa < ActiveRecord::Base
        :saldo_em_dinheiro => saldo_em_dinheiro,
        :clinica_id => clinica_id)
   end
+  
 end

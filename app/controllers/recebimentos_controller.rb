@@ -233,21 +233,15 @@ class RecebimentosController < ApplicationController
   
   def entradas_no_mes
     @data = Date.today
-    @entradas = []
-    @devolvidos = []
-    @reapresentados = []
-    @devolvido_duas_vezes = []
+    @entradas = Array.new(31,0)
+    @devolvidos = Array.new(31,0)
+    @reapresentados = Array.new(31,0)
+    @devolvido_duas_vezes = Array.new(31,0)
     if params[:date]
       @inicio = Date.new(params[:date][:year].to_i, params[:date][:month].to_i,1)
       @data = @inicio
       @fim = @inicio + 1.month - 1.day
       @recebimentos = Recebimento.da_clinica(session[:clinica_id]).entre_datas(@inicio,@fim)
-      (1..31).each do |dia| 
-        @entradas[dia] = 0
-        @devolvidos[dia] = 0
-        @reapresentados[dia] = 0
-        @devolvido_duas_vezes[dia] = 0
-      end
       @recebimentos.each do |rec|
         if (!rec.em_cheque?) or (rec.em_cheque? && !rec.cheque.nil? ) #&& rec.cheque.limpo?)
           @entradas[rec.data.day] += rec.valor

@@ -132,6 +132,14 @@ class PacientesController < ApplicationController
     end 
   end
   
+  
+  def pesquisa_nomes
+    debugger
+    nomes = Paciente.all(:select=>:nome, :conditions=>["nome like ?", "#{params[:term]}%" ])  
+    debugger
+    render :json => nomes.map(&:nome).to_json
+  end
+  
   def abre
     @paciente = Paciente.find(params[:id])
     @tabelas = Tabela.ativas.collect{|obj| [obj.nome,obj.id]}

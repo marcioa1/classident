@@ -1,5 +1,18 @@
 
+
 <% content_for :main do%>
+<script type="text/javascript">
+  $(function() {
+      
+      $("#iniciais").autocomplete({
+        source: "pesquisa_nomes",
+        minLength: 6,
+        select: function(event,ui){
+          alert(ui.item.value);
+        }
+      });
+    });
+</script>
   <% form_tag pesquisa_pacientes_path do %>
 <table class="transparente">
   <tr>
@@ -9,6 +22,9 @@
   <tr>
     <td>Paciente : </td>
     <td><%= text_field_tag :nome , params[:nome], :size=>40, :onkeyup=>"conta_caracteres();", :onfocus=>"limpa_codigo();" %></td>
+    <td><div class="ui-widget">
+    <input id="iniciais"></div>
+    </td>
   </tr>
   <tr>
     <td>&nbsp;</td>

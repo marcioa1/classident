@@ -1,4 +1,4 @@
-<Fieldset>
+<Fieldset class='fieldset_50'>
 <legend><%= titulo %> de dinheiro</legend>
 
 <table>
@@ -6,6 +6,9 @@
     <th width="100px">Data</th>
     <th width="100px">Valor</th>
     <th width="200px">Observação</th>
+    <% if titulo.downcase == 'remessa'%>
+      <th width='200px'>Confirmado</th>
+    <% end %>
     <th>&nbsp;</th>
     <th>&nbsp;</th>
   </tr>
@@ -15,8 +18,11 @@
     <td align="center"><%=h mov.data.to_s_br %></td>
     <td align="right"><%=h mov.valor.abs.real %></td>
     <td><%=h mov.observacao %></td>
-    <td><%= link_to 'editar', edit_entrada_path(mov) %></td>
-    <td><%= link_to 'excluir', mov, :confirm => 'Tem certeza ?', :method => :delete %></td>
+    <% if titulo.downcase == 'remessa'%>
+      <td align='center'><%=h mov.data_confirmacao_da_entrada.to_s_br if mov.data_confirmacao_da_entrada %></td>
+    <% end %>
+    <td><%= link_to 'editar', edit_entrada_path(mov) if !mov.confirmada? %></td>
+    <td><%= link_to 'excluir', mov, :confirm => 'Tem certeza ?', :method => :delete if !mov.confirmada?%></td>
   </tr>
 <% end %>
 </table>

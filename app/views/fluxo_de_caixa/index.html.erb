@@ -32,6 +32,7 @@
     <td align="right"><%= @fluxo.saldo_em_cheque.real %></td>
   </tr>
 <% saldo_dinheiro = @fluxo.saldo_em_dinheiro %>
+<% saldo_dinheiro = 0 if saldo_dinheiro.nil? %>
 <% saldo_cheque = @fluxo.saldo_em_cheque %>
 <% saldo_cheque = 0.0 if saldo_cheque.nil? %>
 <% @lancamentos.each() do |lancamento| %>
@@ -78,6 +79,7 @@
     <% else %>
       <td>&nbsp;</td>
       <td align="right" style='color: red;'><%= lancamento.valor.abs.real %></td>
+      <% debugger %>
       <% saldo_dinheiro += lancamento.valor %>
     <% end %>
     <td align="right"><%= saldo_dinheiro.real %></td>

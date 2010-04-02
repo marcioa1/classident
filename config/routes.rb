@@ -17,14 +17,16 @@ ActionController::Routing::Routes.draw do |map|
                     :producao_geral => :get }
   map.resources :descricao_condutas
   map.resources :destinacaos
-  map.resources :entradas, :collection=>{ :administracao => :get }
+  map.resources :entradas, :collection=>{ :administracao => :get, :registra_confirmacao_de_entrada => :post }
   map.fluxo_de_caixa "fluxo_de_caixa", :controller=>"fluxo_de_caixa", :action=>"index"
   map.resources :formas_recebimentos
   map.resources :indicacaos
   
   map.resources :item_tabelas, :collection=>{:busca_descricao=>:get}
   map.resources :orcamentos, :collection=>{:relatorio=>:get, :aproveitamento=>:get}
-  map.resources :pacientes, :member=>{:abre=>:get}, :collection=>{:pesquisa=>:get, :nomes_que_iniciam_com=>:get}
+  map.resources :pacientes, 
+                :member=>{:abre=>:get}, 
+                :collection=>{:pesquisa=>:get,:nomes_que_iniciam_com=>:get, :pesquisa_nomes=> :get}
 
   map.administracao "administracao", :controller=>"administracao", :action=>"index"
   map.resources :pagamentos, :collection=>{:relatorio=>:get}
