@@ -4,6 +4,8 @@ class Recebimento < ActiveRecord::Base
   belongs_to :clinica
   belongs_to :cheque
   
+  validates_presence_of :valor, :message => "Não pode ser em branco."
+  
   named_scope :por_data, :order=>:data
   named_scope :entre_datas, lambda{|inicio,fim| 
        {:conditions=>["data >= ? and data <= ?", inicio,fim]}}
@@ -28,6 +30,31 @@ class Recebimento < ActiveRecord::Base
   
   def excluido?
     !data_de_exclusao.nil?
+  end
+  
+  def observacao_do_recebimento
+    if self.observacao.nil? 
+      if self.em_cheque?
+        if self.cheque.present? 
+          return self.cheque.observacao
+        else
+          return '.'
+        end
+      else 
+        return '-'
+      end
+    else
+      if self.em_cheque?
+        if self.cheque.nil?
+          return self.observacao
+        else
+          debugger
+          return self.observacao + " - " + self.cheque.observacao 
+        end
+      else
+        return self.observacao
+      end
+    end
   end
     
 # def cheque

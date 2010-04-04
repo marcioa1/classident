@@ -4,7 +4,6 @@
     <%= link_to "Novo débito", new_debito_path(:paciente_id=>@paciente.id) %>
   <% end %>
 <br/><br/>
-<% #TODO fazer link de novo débito %>
 <table>
   <tr>
     <th>Data</th>
@@ -25,7 +24,8 @@
       <td>&nbsp;</td>
       <% saldo -= lancamento.valor %>
     <% else %>
-      <td><%= lancamento.observacao %></td>
+    <% #debugger%>
+      <td><%= lancamento.observacao_do_recebimento %></td>
       <td>&nbsp;</td>
       <td align="right"><%= link_to lancamento.valor.real, edit_recebimento_path(lancamento) %></td>
       <% saldo += lancamento.valor %>

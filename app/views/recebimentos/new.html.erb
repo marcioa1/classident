@@ -30,14 +30,14 @@
     
   </table>
 
-  <div id="cheque" style="display:none;">
+  <div id="cheque" style="display:nonee;">
     <fieldset class='fieldset_50'>
     <legend> dados do cheque</legend>
   
   <table class='transparente'>
     <tr>
       <td align='right'><%= label_tag :banco %> : </td>
-      <td><%= select_tag :banco_id, options_for_select(@bancos), :include_blank=>true  %></td>
+      <td><%= select_tag :banco_id, options_for_select(@bancos.insert(0, ''), params[:banco_id])  %></td>
     </tr>
     <tr>
       <td align='right'><%= label_tag :agencia %> :</td>
@@ -45,15 +45,15 @@
          <%= label_tag :conta_corrente %> : 
          <%= text_field_tag :conta_corrente, '', :size=>7 %>
          <%= label_tag :número %> : 
-         <%= text_field_tag :numero, '',:size=>7 %></td>
+         <%= text_field_tag :numero, params[:numero] ,:size=>7 %></td>
     </tr>
     <tr>
       <td align='right'><%= label_tag :valor_do_cheque %> : </td>
-      <td><%= text_field_tag :valor, '', :size=>8%></td>
+      <td><%= text_field_tag :valor, params[:valor], :size=>8%></td>
     </tr>
     <tr>
       <td align='right'><%= f.label :bom_para %> : </td>
-      <td><%= text_field_tag :datepicker2, '', :size=>10 %></td>
+      <td><%= text_field_tag :datepicker2, Date.today.to_s_br, :size=>10 %></td>
     </tr>
     <tr>
       <td colspan="2"><hr></td>
@@ -114,6 +114,6 @@
   </p>
 <% end %>
 
-<%= link_to 'voltar', abre_paciente_path(:id=>@recebimento.paciente_id) %>
+<%= link_to 'voltar', abre_pacientes_path(:id=>@recebimento.paciente_id) %>
 </fieldset >
 <% end %>

@@ -55,7 +55,7 @@ class TrabalhoProteticosController < ApplicationController
     @trabalho_protetico.data_de_devolucao = params[:datepicker3].to_date if !params[:datepicker3].blank?
     respond_to do |format|
       if @trabalho_protetico.save
-        format.html { redirect_to( abre_paciente_path(@trabalho_protetico.paciente)) }
+        format.html { redirect_to( abre_pacientes_path(@trabalho_protetico.paciente)) }
         format.xml  { render :xml => @trabalho_protetico, :status => :created, :location => @trabalho_protetico }
       else
         format.html { render :action => "new" }
@@ -72,7 +72,7 @@ class TrabalhoProteticosController < ApplicationController
     respond_to do |format|
       if @trabalho_protetico.update_attributes(params[:trabalho_protetico])
         flash[:notice] = 'TrabalhoProtetico was successfully updated.'
-        format.html { redirect_to(abre_paciente_path(@trabalho_protetico.paciente)) }
+        format.html { redirect_to(abre_pacientes_path(@trabalho_protetico.paciente)) }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }

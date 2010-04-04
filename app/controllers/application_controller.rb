@@ -72,4 +72,4 @@ class ApplicationController < ActionController::Base
     
 end
 #TODO usar this no jquery
-#TODO fazer pagamento ao dentista de convênio, registrando o custo para cada clínica ?
+#TODO retornar livro caixa se lançar anterior ao dia do fluxo

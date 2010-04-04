@@ -42,7 +42,7 @@ describe Paciente do
   
   it "não deve estar em alta" do
     @paciente.altas.size.should == 0
-    @paciente.em_alta?.should be(false)
+    @paciente.should_not be_em_alta
   end
   
 end

@@ -9,11 +9,11 @@ describe Clinica do
    end
  
   it "deve ter dois paciente" do
-    @clinica.pacientes.size.should be == 2
+    @clinica.pacientes.should have(2).pacientes
   end
   
   it "deve ter uma clinica" do
-    Clinica.todas.size.should be == 1
+    Clinica.todas.should have(1).paciente
   end    
   
 end

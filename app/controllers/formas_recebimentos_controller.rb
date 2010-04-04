@@ -62,7 +62,7 @@ class FormasRecebimentosController < ApplicationController
     respond_to do |format|
       if @formas_recebimento.update_attributes(params[:formas_recebimento])
         flash[:notice] = 'FormasRecebimento was successfully updated.'
-        format.html { redirect_to(@formas_recebimento) }
+        format.html { redirect_to(formas_recebimentos_path) }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }

@@ -10,14 +10,14 @@ describe Entrada do
   end
   
   it "Should be confirmada" do
-    @entrada1.confirmada?.should == true
-    @entrada2.confirmada?.should == false
+    @entrada1.should be_confirmada
+    @entrada2.should_not be_confirmada
   end
   
   it "Deve ter uma entrada confirmada" do  
     entradas_confirmadas = []
     entradas_confirmadas << @entrada1 if @entrada1.confirmada?
     entradas_confirmadas << @entrada2 if @entrada2.confirmada?
-    entradas_confirmadas.size.should be == 1
+    entradas_confirmadas.should have(1).entrada
   end
 end

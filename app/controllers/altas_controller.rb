@@ -48,7 +48,7 @@ class AltasController < ApplicationController
     respond_to do |format|
       if @alta.save
         flash[:notice] = 'Alta criada com sucesso.'
-        format.html { redirect_to(abre_paciente_path(:id=>@alta.paciente_id)) }
+        format.html { redirect_to(abre_pacientes_path(:id=>@alta.paciente_id)) }
         format.xml  { render :xml => @alta, :status => :created, :location => @alta }
       else
         format.html { render :action => "new" }

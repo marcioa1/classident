@@ -139,3 +139,11 @@ function pesquisa_disponiveis(){
     $("#lista_de_cheques").replaceWith("<span id='lista_de_cheques'>" + data + "</span>");
     });
 }
+
+function formata_valor(elemento){
+  elemento.priceFormat({  
+     prefix: "",  
+     centsSeparator: ",",  
+     thousandsSeparator: "."  
+  });
+}

@@ -3,12 +3,17 @@
 <% content_for :main do%>
 <script type="text/javascript">
   $(function() {
-      
+      function busca_por_nome(nome){
+        window.location = "/pacientes/abre?nome="+nome
+      }
+
       $("#iniciais").autocomplete({
         source: "pesquisa_nomes",
         minLength: 6,
+        maxLength: 12,
         select: function(event,ui){
-          alert(ui.item.value);
+          nome = ui.item.value;
+          busca_por_nome(nome);
         }
       });
     });
@@ -21,9 +26,10 @@
   </tr>
   <tr>
     <td>Paciente : </td>
-    <td><%= text_field_tag :nome , params[:nome], :size=>40, :onkeyup=>"conta_caracteres();", :onfocus=>"limpa_codigo();" %></td>
-    <td><div class="ui-widget">
-    <input id="iniciais"></div>
+    <!-- ><td><%= hidden_field_tag :nome , params[:nome], :size=>40, :onkeyup=>"conta_caracteres();", :onfocus=>"limpa_codigo();" %></td>-->
+    <td>
+    <div class="ui-widget">
+      <input id="iniciais" size="40"></div>
     </td>
   </tr>
   <tr>
@@ -37,7 +43,7 @@
 
 <p>
     <% @pacientes.each do |paciente| %>
-      <%= link_to paciente.nome_e_clinica(administracao?), abre_paciente_path(:id=>paciente.id) %><br/>
+      <%= link_to paciente.nome_e_clinica(administracao?), abre_pacientes_path(:id=>paciente.id) %><br/>
     <% end %>
 </p>
 <% end %>

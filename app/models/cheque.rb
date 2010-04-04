@@ -5,6 +5,11 @@ class Cheque < ActiveRecord::Base
   belongs_to :clinica 
   belongs_to :pagamento
   
+  validates_presence_of :banco, :on => :create, :message => "Não pode ser vazio"
+  validates_presence_of :numero, :on => :create, :message => "Não pode ser vazio"
+  validates_presence_of :valor, :message => "can't be blank"
+  validates_numericality_of :valor, :message => "is not a number"
+  
   named_scope :por_bom_para, :order=>:bom_para
   named_scope :com_destinacao, :conditions=>["destinacao_id IS NOT NULL"]
   named_scope :da_clinica, lambda{|clinica_id| {:conditions=>["clinica_id=?",clinica_id]}}
@@ -128,5 +133,13 @@ class Cheque < ActiveRecord::Base
     return result
   end
   
+  def observacao
+    result = ''
+    result += self.banco.nome + '/' if self.banco.present?
+    result += self.agencia + '/' if self.agencia.present?
+    result += self.conta_corrente + '/' if self.conta_corrente.present?
+    result += self.numero if self.numero.present?
+    result
+  end
 end
 #TODO Discutir qual cheque é disponivel

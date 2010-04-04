@@ -10,7 +10,7 @@ describe Pagamento do
   end
    
   it "deve ter dois custos" do
-    @adm.custos.size.should be == 2
+    @adm.custos.should have(2).pagamentos
   end
   
   it "o total dos custos deve ser igual ao pagamento original" do
@@ -20,12 +20,12 @@ describe Pagamento do
   end
   
   it "deve ser identificado por id 1" do
-    @centro.pagamento.id.should be == 1
+    @centro.pagamento.id.should == 1
     @sc.pagamento.id.should be == 1
   end
   
   it "deve ser um pagamento_pai" do
-    @adm.pagamento_das_clinicas?.should be == true
+    @adm.should be_pagamento_das_clinicas
   end
   
   

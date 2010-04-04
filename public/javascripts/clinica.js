@@ -23,7 +23,8 @@ function selecionou_cheque(elemento){
   if (total_a_pagar < total_de_cheques){
     alert("A soma dos valores dos cheques selecionados é maior que o valor do pagamento.");
   }
-  $("#pagamento_valor_restante").val(total_a_pagar-total_de_cheques);
+  $("#pagamento_valor_restante").val(parseInt((total_a_pagar - total_de_cheques) * 100));
+  formata_valor($("#pagamento_valor_restante"))
 }
 
 function producao(){

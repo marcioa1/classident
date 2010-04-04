@@ -4,10 +4,10 @@
    clinica_id: 1
    valor: -123.00
    data: '2010-03-30'
-   data_confirmacao_do_recebimento: '2010-03-31'
+   data_confirmacao_da_entrada: '2010-03-31'
 
  two:
    clinica_id: 1
    valor: -210.00
    data:  '2010-03-30'
-   data_confirmacao_do_recebimento: nil
+   data_confirmacao_da_entrada: nil

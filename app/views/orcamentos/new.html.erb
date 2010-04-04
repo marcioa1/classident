@@ -5,7 +5,7 @@
 <% if @tratamentos.empty? %>
   <h3>Não há procedimentos a serem orçados</h3>
   <p>
-    <%= link_to 'voltar', abre_paciente_path(:id=>@paciente.id) %>
+    <%= link_to 'voltar', abre_pacientes_path(:id=>@paciente.id) %>
   </p>
 <% else %>
   <%= render :partial => 'tratamentos_a_fazer', :locals=>{:tratamentos=>@tratamentos} %>
@@ -14,7 +14,7 @@
     <%= render :partial=>'form', :locals=>{:f=>f} %>
   <% end %>
 
-  <%= link_to 'voltar', abre_paciente_path(:id=>@paciente.id) %>
+  <%= link_to 'voltar', abre_pacientes_path(:id=>@paciente.id) %>
   </fieldset>
   <% end %>
 <% end %>

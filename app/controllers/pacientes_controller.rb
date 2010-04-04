@@ -1,7 +1,6 @@
 class PacientesController < ApplicationController
   layout "adm"
   before_filter :require_user
-  #TODO Pensar em um layout para clinica e outro para adm
   # GET /pacientes
   # GET /pacientes.xml
   def index
@@ -76,7 +75,7 @@ class PacientesController < ApplicationController
     @paciente.data_da_saida_da_lista_de_debitos = params[:datepicker4].to_date unless params[:datepicker4].blank?
     respond_to do |format|
       if @paciente.update_attributes(params[:paciente])
-        format.html { redirect_to(abre_paciente_path(:id=>@paciente.id)) }
+        format.html { redirect_to(abre_pacientes_path(:id=>@paciente.id)) }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }
@@ -114,7 +113,7 @@ class PacientesController < ApplicationController
       end
       if !@pacientes.empty?
         if @pacientes.size==1
-          redirect_to abre_paciente_path(:id=>@pacientes.first.id)
+          redirect_to abre_pacientes_path(:id=>@pacientes.first.id)
         else
         end 
       else
@@ -134,14 +133,16 @@ class PacientesController < ApplicationController
   
   
   def pesquisa_nomes
-    debugger
-    nomes = Paciente.all(:select=>:nome, :conditions=>["nome like ?", "#{params[:term]}%" ])  
-    debugger
+    nomes = Paciente.all(:select=>:nome, :conditions=>["nome like ?", "#{params[:term].nome_proprio}%" ])  
     render :json => nomes.map(&:nome).to_json
   end
   
   def abre
-    @paciente = Paciente.find(params[:id])
+    if params[:nome]
+      @paciente = Paciente.find_by_nome(params[:nome])
+    else
+      @paciente = Paciente.find(params[:id])
+    end
     @tabelas = Tabela.ativas.collect{|obj| [obj.nome,obj.id]}
     @indicacoes = Indicacao.por_descricao.collect{|obj| [obj.descricao, obj.id]}
     @pendentes_protetico = TrabalhoProtetico.pendentes.do_paciente(@paciente.id)
@@ -149,7 +150,7 @@ class PacientesController < ApplicationController
     @orcamentos = @paciente.orcamentos
     @ortodontistas = Dentista.ortodontistas.por_nome.collect{|obj| [obj.nome,obj.id]}
     
-    session[:paciente_id] = params[:id]
+    session[:paciente_id] = @paciente.id
     session[:paciente_nome] = @paciente.nome
   end
   

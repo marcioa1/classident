@@ -57,15 +57,11 @@ class RecebimentosController < ApplicationController
   # POST /recebimentos.xml
   def create
     debugger
-    @recebimento = Recebimento.new()
-    @recebimento.paciente_id = params[:recebimento][:paciente_id]
-    @recebimento.valor = params[:recebimento][:valor]
-    @recebimento.observacao = params[:recebimento][:observacao]
-    @recebimento.formas_recebimento_id = params[:recebimento][:formas_recebimento_id]
+    @recebimento = Recebimento.new(params[:recebimento])
     @recebimento.data = params[:datepicker].to_date
-    @recebimento.clinica_id = session[:clinica_id]
     
     if @recebimento.em_cheque?
+     # @cheque.error.add_on_blank(:cheque, :valor) if params[:banco_id].to_i == 0
       @cheque = Cheque.new
       @cheque.bom_para = params[:datepicker2].to_date
       @cheque.clinica_id = session[:clinica_id]
@@ -75,10 +71,14 @@ class RecebimentosController < ApplicationController
       @cheque.numero  = params[:numero]
       @cheque.conta_corrente  = params[:conta_corrente]
       @cheque.valor = params[:valor]
+      @recebimento.cheque == @cheque
+      @recebimento.errors.add(:banco, 'não pode ser branco') if !@cheque.banco.present?
+      @recebimento.errors.add(:numero, 'do cheque não pode ser branco') if !@cheque.numero.present?
+      @recebimento.errors.add(:valor, ' do cheque não pode ser branco') if !@cheque.valor.present?
     else
       @cheque = nil
     end
-    if !params[:segundo_paciente].blank?
+    if params[:segundo_paciente].present?
       @recebimento2 = Recebimento.new
       @recebimento2.paciente_id = params[:id_segundo_paciente]
       @recebimento2.valor = params[:valor_paciente_2]
@@ -86,8 +86,9 @@ class RecebimentosController < ApplicationController
       @recebimento2.formas_recebimento_id = params[:recebimento][:formas_recebimento_id]
       @recebimento2.data = params[:datepicker].to_date
       @recebimento2.clinica_id = session[:clinica_id]
+      @recebimento2.cheque == @cheque
     end
-    if !params[:terceiro_paciente].blank?
+    if params[:terceiro_paciente].present?
       @recebimento3 = Recebimento.new
       @recebimento3.paciente_id = params[:id_terceiro_paciente]
       @recebimento3.valor = params[:valor_paciente_3]
@@ -95,39 +96,44 @@ class RecebimentosController < ApplicationController
       @recebimento3.formas_recebimento_id = params[:recebimento][:formas_recebimento_id]
       @recebimento3.data = params[:datepicker].to_date
       @recebimento3.clinica_id = session[:clinica_id]
+      @recebimento3.cheque == cheque
     end
     Recebimento.transaction do
       respond_to do |format|
-        if @recebimento2
-          @recebimento2.save 
-          @cheque.recebimento_id_2 = @recebimento2.id
-        end
-        if @recebimento3
-          @recebimento3.save
-          @cheque.recebimento_id_3 = @recebimento3.id
-        end
-        if @recebimento.em_cheque?
-          @cheque.save
-           if @recebimento2
-             @recebimento2.cheque = @cheque
-              @recebimento2.save 
-              @cheque.recebimento_id_2 = @r
-            end
-            if @recebimento3
-              @recebimento3.cheque = @cheque
-              @recebimento3.save
-            end
-        end
-        if @recebimento.save 
-          if @recebimento.em_cheque?
-            @cheque.recebimento_id = @recebimento.id
-            @cheque.save
-            @recebimento.cheque_id = @cheque.id
-            @recebimento.save
-          end
-          format.html { redirect_to(abre_paciente_path(:id=>@recebimento.paciente_id)) }
+        # if @recebimento2
+        #   @recebimento2.save 
+        #   @cheque.recebimento_id_2 = @recebimento2.id
+        # end
+        # if @recebimento3
+        #   @recebimento3.save
+        #   @cheque.recebimento_id_3 = @recebimento3.id
+        # end
+        # if @recebimento.em_cheque?
+        #   @cheque.save
+        #    if @recebimento2
+        #      @recebimento2.cheque = @cheque
+        #       @recebimento2.save 
+        #       @cheque.recebimento_id_2 = @r
+        #     end
+        #     if @recebimento3
+        #       @recebimento3.cheque = @cheque
+        #       @recebimento3.save
+        #     end
+        # end
+        if (@recebimento.em_cheque? && @cheque.valid?) && @recebimento.save 
+          # if @recebimento.em_cheque?
+          #   @cheque.recebimento_id = @recebimento.id
+          #   @cheque.save
+          #   @recebimento.cheque_id = @cheque.id
+          #   @recebimento.save
+          # end
+          format.html { redirect_to(abre_pacientes_path(:id=>@recebimento.paciente_id)) }
           format.xml  { render :xml => @recebimento, :status => :created, :location => @recebimento }
         else
+          @paciente = Paciente.find(session[:paciente_id])
+          @bancos = Banco.all(:order=>:nome).collect{|obj| [obj.numero + " - " + obj.nome,obj.id]}
+          @formas_recebimentos = FormasRecebimento.por_nome.collect{|obj| [obj.nome,obj.id]}
+          
           format.html { render :action => "new" }
           format.xml  { render :xml => @recebimento.errors, :status => :unprocessable_entity }
         end
@@ -150,7 +156,7 @@ class RecebimentosController < ApplicationController
 
     respond_to do |format|
       if @recebimento.update_attributes(params[:recebimento])
-        format.html { redirect_to(abre_paciente_path(:id=>@recebimento.paciente_id)) }
+        format.html { redirect_to(abre_pacientes_path(:id=>@recebimento.paciente_id)) }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }
@@ -233,10 +239,10 @@ class RecebimentosController < ApplicationController
   
   def entradas_no_mes
     @data = Date.today
-    @entradas = Array.new(31,0)
-    @devolvidos = Array.new(31,0)
-    @reapresentados = Array.new(31,0)
-    @devolvido_duas_vezes = Array.new(31,0)
+    @entradas = Array.new(32,0)
+    @devolvidos = Array.new(32,0)
+    @reapresentados = Array.new(32,0)
+    @devolvido_duas_vezes = Array.new(32,0)
     if params[:date]
       @inicio = Date.new(params[:date][:year].to_i, params[:date][:month].to_i,1)
       @data = @inicio
