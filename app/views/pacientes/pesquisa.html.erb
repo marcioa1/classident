@@ -1,5 +1,3 @@
-
-
 <% content_for :main do%>
 <script type="text/javascript">
   $(function() {
@@ -29,7 +27,7 @@
     <!-- ><td><%= hidden_field_tag :nome , params[:nome], :size=>40, :onkeyup=>"conta_caracteres();", :onfocus=>"limpa_codigo();" %></td>-->
     <td>
     <div class="ui-widget">
-      <input id="iniciais" size="40"></div>
+      <input id="iniciais" size="40" class="ui-autocomplete-input"></div>
     </td>
   </tr>
   <tr>
