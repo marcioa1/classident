@@ -23,7 +23,6 @@ class Dentista < ActiveRecord::Base
   end
   
   def producao_entre_datas(inicio,fim)
-    puts "dentista : "  + self.id.to_s
     custo = Tratamento.sum(:custo,:conditions=>['dentista_id = ? and data between ? and ? and not excluido ', self.id, inicio, fim]).to_f
     valor = Tratamento.sum(:valor,:conditions=>['dentista_id = ? and data between ? and ? and not excluido ', self.id, inicio, fim]).to_f
     #FIXME
