@@ -13,7 +13,7 @@ class Converte
     f = File.open("doc/cadastro.txt" , "r")
     #FIXME  NA conversao real, não apagar tabela
     Paciente.delete_all
-    clinica = Clinica.find_by_nome("Recreio")
+    clinica = Clinica.find_by_sigla("Recreio")
     line = f.gets
     while line = f.gets
       p = Paciente.new
@@ -46,7 +46,7 @@ class Converte
     #TODO considerar que pode haver outras pessoas que não sejam pacientes
      puts "Convertendo mala direta ..."
       f = File.open("doc/maladireta.txt" , "r")
-      clinica = Clinica.find_by_nome("Recreio")
+      clinica = Clinica.find_by_sigla("Recreio")
       line = f.gets
       while line = f.gets
         registro = line.split(";")
@@ -71,7 +71,7 @@ class Converte
     f = File.open("doc/debito.txt" , "r")
     #FIXME  NA conversao real, não apagar tabela
     Debito.delete_all
-    clinica = Clinica.find_by_nome("Recreio")
+    clinica = Clinica.find_by_sigla("Recreio")
     line = f.gets
     while line = f.gets 
       d = Debito.new
@@ -93,7 +93,7 @@ class Converte
     f = File.open("doc/formarec.txt" , "r")
     #FIXME  NA conversao real, não apagar tabela
     FormasRecebimento.delete_all
-    clinica = Clinica.find_by_nome("Recreio")
+    clinica = Clinica.find_by_sigla("Recreio")
     line = f.gets
     while line = f.gets 
       r = FormasRecebimento.new
@@ -111,7 +111,7 @@ class Converte
     f = File.open("doc/recebimento.txt" , "r")
     #FIXME  NA conversao real, não apagar tabela
     Recebimento.delete_all
-    clinica = Clinica.find_by_nome("Recreio")
+    clinica = Clinica.find_by_sigla("Recreio")
     line = f.gets
     while line = f.gets 
       r = Recebimento.new
@@ -134,17 +134,21 @@ class Converte
   
   def tabela
     puts "Convertendo tabelas ...."
-    f = File.open("doc/tabela_nova.txt" , "r")
+    f = File.open("doc/convertidos/tabela_nova.txt" , "r")
     Tabela.delete_all
     #FIXME  NA conversao real, não apagar tabela
-    clinica = Clinica.find_by_nome("Recreio")
-    line = f.gets
+    clinica = '' 
     while line = f.gets 
-      registro = line.split(";")
+      registro = line.split('"')[1].split(";")
+      if clinica != registro[6]
+        clinica = registro[6]
+        @clinica = Clinica.find_by_sigla(clinica)
+      end
       t = Tabela.new
-      t.id = registro[0].to_i
+      t.sequencial = registro[0].to_i
       t.nome = registro[1].nome_proprio
-      t.ativa = (registro[5].to_i == 0)
+      t.ativa = (registro[5].to_i == 'Verdadeiro')
+      t.clinica = clinica
       t.save
     end
     f.close
@@ -152,21 +156,33 @@ class Converte
   
   def item_tabela
     puts "Convertendo item das tabelas ...."
-    f = File.open("doc/item_tabela.txt" , "r")
+    f = File.open("doc/convertidos/item_tabela.txt" , "r")
     ItemTabela.delete_all
+    Preco.delete_all
     #FIXME  NA conversao real, não apagar tabela
-    clinica = Clinica.find_by_nome("Recreio")
-    line = f.gets
+    clinica = ''
     while line = f.gets 
-      registro = line.split(";")
-      t = ItemTabela.new
-      t.id = registro[0].to_i
-      t.tabela_id = registro[1].to_i
-      t.codigo = registro[2]
-      t.descricao = registro[3]
-      t.save
-      Preco.create(:item_tabela_id=> t.id, :clinica_id=>clinica.id, 
-               :preco=>registro[4].split(" ")[1])
+      registro = line.split('"')[1].split(";")
+      if clinica != registro[7]
+        debugger
+        clinica = registro[7]
+        @clinica = Clinica.find_by_sigla(clinica)
+      end
+      tabela = Tabela.find_by_sequencial_and_clinica(registro[1].to_i,clinica)
+      if !tabela.nil?
+        t = ItemTabela.new
+        t.sequencial = registro[0].to_i
+        t.clinica = clinica
+        t.tabela_id = tabela.id
+        t.codigo = registro[2]
+        t.descricao = registro[3]
+        if t.save
+          valor = le_valor(registro[4])
+          Preco.create(:item_tabela_id=> t.id, :clinica_id=>@clinica.id, :preco=> valor)
+        else
+           #TODO registro de log de erro
+        end
+      end
     end
     f.close
   end
@@ -177,7 +193,7 @@ class Converte
     f = File.open("doc/odontograma.txt" , "r")
     Tratamento.delete_all
     #FIXME  NA conversao real, não apagar tabela
-    clinica = Clinica.find_by_nome("Recreio")
+    clinica = Clinica.find_by_sigla("Recreio")
     line = f.gets
     while line = f.gets 
       registro = line.split(";")
@@ -209,7 +225,7 @@ class Converte
     f = File.open("doc/dentista.txt" , "r")
     Dentista.delete_all
     #FIXME  NA conversao real, não apagar tabela
-    clinica = Clinica.find_by_nome("Recreio")
+    clinica = Clinica.find_by_sigla("Recreio")
     line = f.gets
     while line = f.gets 
       registro = line.split(";")
@@ -232,7 +248,7 @@ class Converte
       f = File.open("doc/tipo_pagamento.txt" , "r")
       TipoPagamento.delete_all
       #FIXME  NA conversao real, não apagar tabela
-      clinica = Clinica.find_by_nome("Recreio")
+      clinica = Clinica.find_by_sigla("Recreio")
       line = f.gets
       while line = f.gets 
         registro = line.split(";")
@@ -251,7 +267,7 @@ class Converte
       f = File.open("doc/pagamento.txt" , "r")
       Pagamento.delete_all
       #FIXME  NA conversao real, não apagar tabela
-      clinica = Clinica.find_by_nome("Recreio")
+      clinica = Clinica.find_by_sigla("Recreio")
       line = f.gets
       while line = f.gets 
         registro = line.split(";")
@@ -279,7 +295,7 @@ class Converte
     f = File.open("doc/saldos.txt" , "r")
     FluxoDeCaixa.delete_all
     #FIXME  NA conversao real, não apagar tabela
-    clinica = Clinica.find_by_nome("Recreio")
+    clinica = Clinica.find_by_sigla("Recreio")
     line = f.gets
     while line = f.gets 
       registro = line.split(";")
@@ -302,7 +318,7 @@ class Converte
     Cheque.delete_all
     #TODO verificar se o cheque está disponível
     #FIXME  NA conversao real, não apagar tabela
-    clinica = Clinica.find_by_nome("Recreio")
+    clinica = Clinica.find_by_sigla("Recreio")
     line = f.gets
     while line = f.gets 
       registro = line.split(";")
@@ -370,7 +386,7 @@ class Converte
     f = File.open("doc/destinacao.txt" , "r")
     Destinacao.delete_all
     #FIXME  NA conversao real, não apagar tabela
-    clinica = Clinica.find_by_nome("Recreio")
+    clinica = Clinica.find_by_sigla("Recreio")
     line = f.gets
     while line = f.gets 
       registro = line.split(";")
@@ -388,7 +404,7 @@ class Converte
     f = File.open("doc/orcamento.txt" , "r")
     Orcamento.delete_all
     #FIXME  NA conversao real, não apagar tabela
-    clinica = Clinica.find_by_nome("Recreio")
+    clinica = Clinica.find_by_sigla("Recreio")
     line = f.gets
     while line = f.gets 
       registro = line.split(";")
@@ -421,7 +437,7 @@ class Converte
     f = File.open("doc/protetico.txt" , "r")
     Protetico.delete_all
     #FIXME  NA conversao real, não apagar tabela
-    clinica = Clinica.find_by_nome("Recreio")
+    clinica = Clinica.find_by_sigla("Recreio")
     line = f.gets
     while line = f.gets 
       registro = line.split(";")
@@ -449,7 +465,7 @@ class Converte
     f = File.open("doc/tabelaprotetico.txt" , "r")
     TabelaProtetico.delete_all
     #FIXME  NA conversao real, não apagar tabela
-    clinica = Clinica.find_by_nome("Recreio")
+    clinica = Clinica.find_by_sigla("Recreio")
     line = f.gets
     while line = f.gets 
       registro = line.split(";")
@@ -484,7 +500,7 @@ class Converte
     f = File.open("doc/noprotetico.txt" , "r")
     TrabalhoProtetico.delete_all
     #FIXME  NA conversao real, não apagar tabela
-    clinica = Clinica.find_by_nome("Recreio")
+    clinica = Clinica.find_by_sigla("Recreio")
     line = f.gets
     linha = 0
     while line = f.gets 
@@ -555,10 +571,10 @@ class Converte
   
   def le_valor(val)
     return 0 if val.nil?
-    aux = val.split(" ")[1]
-    return 0 if aux.nil?
-    aux = aux.sub(".","")
-    aux = aux.sub(",",".")
+    #aux = val.split(" ")[1]
+    #return 0 if aux.nil?
+    aux = val.sub(".","")
+    aux = val.sub(",",".")
     return aux
   end
   

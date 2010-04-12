@@ -7,3 +7,5 @@ db/test.sqlite3
 db/production.sqlite3
 doc/*.old
 doc/*.txt
+doc/anteriores/*.*
+doc/convertidos/*.*

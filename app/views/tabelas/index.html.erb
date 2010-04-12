@@ -4,6 +4,7 @@
 <table>
   <tr>
     <th width="150px">Tabela</th>
+    <th>Clínica</th>
     <th>Ativa</th>
     <% if administracao? %>
       <th>&nbsp;</th>
@@ -13,6 +14,7 @@
 <% @tabelas.each do |tabela| %>
   <tr>
     <td><%= link_to tabela.nome, item_tabelas_path(:tabela_id=>tabela.id) %></td>
+    <td><%= tabela.clinica %></td>
     <td><%= tabela.ativa ? "sim" : "não" %></td>
     <% if administracao? %>
     <td><%= link_to 'Editar', edit_tabela_path(tabela) if current_user.pode_incluir_tabela %></td>
