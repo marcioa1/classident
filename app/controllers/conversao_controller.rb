@@ -1,27 +1,27 @@
 class ConversaoController < ApplicationController
 
 def index
-  c = Converte.new
-#  c.clinicas
-  c.tabela
-  c.item_tabela
-#  c.dentista
-#  c.converte_cadastro 
-#  c.mala_direta
-#  c.debito
-#  c.converte_formas_recebimento
-#  c.tratamento
-#  c.orcamento
-#  c.tipo_pagamento
-#  c.destinacao
-#  c.pagamento
-#  c.fluxo_de_caixa
-#  c.recebimento
-#  c.cheque
-#  c.protetico
-#  c.tabela_protetico
-#  c.trabalho_protetico
-#  c.alta
+  converte = Converte.new
+#  converte.clinicas
+#  converte.tabela
+#  converte.item_tabela
+#  converte.dentista
+#  converte.cadastro 
+#  converte.mala_direta
+#  converte.debito
+  converte.formas_recebimento
+#  converte.tratamento
+#  converte.orcamento
+  converte.tipo_pagamento
+#  converte.destinacao
+  converte.pagamento
+#  converte.fluxo_de_caixa
+  converte.recebimento
+  converte.cheque
+#  converte.protetico
+#  converte.tabela_protetico
+#  converte.trabalho_protetico
+#  converte.alta
 end
 
 end

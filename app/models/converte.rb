@@ -8,36 +8,39 @@ class Converte
     end
   end  
 
-  def converte_cadastro 
+  def cadastro 
     puts "Convertendo cadastro ..."
-    f = File.open("doc/cadastro.txt" , "r")
-    #FIXME  NA conversao real, não apagar tabela
+    f = File.open("doc/convertidos/cadastro.txt" , "r")
     Paciente.delete_all
-    clinica = Clinica.find_by_sigla("Recreio")
-    line = f.gets
+    clinica = ''
     while line = f.gets
-      p = Paciente.new
-      registro = line.split(";")
-      p.nome = registro[0].nome_proprio
-      #TODO não pode ser assim, pois em outras clinicas haverá outro paciente com o mesmo id/sequencial
-      p.sequencial = registro[1].to_i
-      p.tabela_id = registro[2].to_i
-      p.clinica_id = clinica.id
-      p.cpf = registro[16]
-      p.sexo = registro[6].to_i ==0 ? "M" : "F"
-      p.inicio_tratamento = registro[7].to_date
-      p.sair_da_lista_de_debitos = registro[29]
-      p.motivo_sair_da_lista_de_debitos = registro[30]
-      p.data_da_saida_da_lista_de_debitos = registro[32].to_date unless registro[32].blank?
+      registro = busca_registro(line)
+      if clinica != registro[40]
+        clinica  = registro[40]
+       # debugger
+        @clinica = Clinica.find_by_sigla(clinica)
+      end
+      p                       = Paciente.new
+      p.nome                  = registro[0].nome_proprio
+      p.sequencial            = registro[1].to_i
+      p.tabela_id             = registro[2].to_i 
+      p.clinica_id            = @clinica.id unless @clinica.nil?
+      p.cpf                   = registro[16]
+      p.sexo                  = registro[6].to_i ==0 ? "M" : "F"
+      p.inicio_tratamento     = registro[7].to_date unless !Date.valid?(registro[7])
+      p.sair_da_lista_de_debitos          = registro[29]
+      p.motivo_sair_da_lista_de_debitos   = registro[30]
+      p.data_da_saida_da_lista_de_debitos = registro[31].to_date unless !Date.valid?(registro[31])
       if registro[34].to_i  > 0
         ortodontista = Dentista.find_by_sequencial(registro[34].to_i)
         p.ortodontia = true
-        p.ortodontista_id = ortodontista.id
+        #FIXME Tem que importar dentista primeiro
+        p.ortodontista_id = 1 #ortodontista.id
         p.mensalidade_de_ortodontia = le_valor(registro[33])
       else
         p.ortodontia = false
       end
-      p.save
+      p.save!
     end
     f.close
   end
@@ -88,45 +91,57 @@ class Converte
     f.close
   end
   
-  def converte_formas_recebimento
+  def formas_recebimento
     puts "Convertendo formas de recebimentos ...."
-    f = File.open("doc/formarec.txt" , "r")
+    f = File.open("doc/convertidos/forma_rec.txt" , "r")
     #FIXME  NA conversao real, não apagar tabela
     FormasRecebimento.delete_all
-    clinica = Clinica.find_by_sigla("Recreio")
-    line = f.gets
+    clinica = ''
     while line = f.gets 
-      r = FormasRecebimento.new
-      registro = line.split(";")
-      r.nome = registro[0].nome_proprio
-      r.id = registro[1].to_i
-      r.save
+      registro = busca_registro(line)
+      if clinica != registro[3]
+        clinica = registro[3]
+        @clinica = Clinica.find_by_sigla(clinica)
+      end
+      forma_adm = FormasRecebimento.find_by_nome(registro[0].strip)
+      if forma_adm.nil?
+        forma_adm = FormasRecebimento.new
+        forma_adm.nome = registro[0].strip
+        forma_adm.save
+      end
+      
+      forma_cli            = FormaRecebimentoTemp.new
+      forma_cli.seq        = registro[1].to_i
+      forma_cli.id_adm     = forma_adm.id
+      forma_cli.clinica_id = @clinica_id
+      forma_cli.save
     end
     f.close
-    
   end
   
   def recebimento
     puts "Convertendo recebimentos ...."
-    f = File.open("doc/recebimento.txt" , "r")
-    #FIXME  NA conversao real, não apagar tabela
+    f = File.open("doc/convertidos/recebimento.txt" , "r")
     Recebimento.delete_all
-    clinica = Clinica.find_by_sigla("Recreio")
-    line = f.gets
+    clinica = ''
     while line = f.gets 
-      r = Recebimento.new
-      registro = line.split(";")
-      r.data = registro[1].to_date
-      pac = Paciente.find_by_sequencial(registro[2].to_i)
-      r.paciente_id = pac.id unless pac.nil?
-      r.formas_recebimento_id = registro[3].to_i
-      r.valor = le_valor(registro[4])
-      r.observacao = registro[7]
-      r.sequencial = registro[8].to_i
-      r.clinica_id = clinica.id
-      r.data_de_exclusao = registro[12].to_date unless registro[12].blank?
-      r.observacao_exclusao = registro[14]
-    #  puts registro[8]
+      r          = Recebimento.new
+      registro   = busca_registro(line)
+      if clinica != registro[15]
+        clinica  = registro[15]
+        @clinica = Clinica.find_by_sigla(clinica)
+      end
+      r.data                  = registro[1].to_date
+      paciente                = Paciente.find_by_sequencialand_clinica_id(registro[2].to_i, @clinica_id)
+      r.paciente_id           = paciente.id unless paciente.nil?
+      forma_recebimento       = FormaRecebimentoTemp.find_by_sequencial_and_clinica_id(registro[3].to_i, @clinica.id)
+      r.formas_recebimento_id = forma_recebimento.id_adm
+      r.valor                 = le_valor(registro[4])
+      r.observacao            = registro[7]
+      r.sequencial            = registro[8].to_i
+      r.clinica_id            = @clinica.id
+      r.data_de_exclusao      = registro[12].to_date unless registro[12].blank?
+      r.observacao_exclusao   = registro[14]
       r.save
     end
     f.close
@@ -245,18 +260,21 @@ class Converte
   
   def tipo_pagamento
      puts "Convertendo tipos de pagamentos ...."
-      f = File.open("doc/tipo_pagamento.txt" , "r")
+      f = File.open("doc/convertidos/tipo_pagamento.txt" , "r")
       TipoPagamento.delete_all
-      #FIXME  NA conversao real, não apagar tabela
-      clinica = Clinica.find_by_sigla("Recreio")
+      clinica = ''
       line = f.gets
       while line = f.gets 
-        registro = line.split(";")
+        registro = busca_registro(line)
+        if clinica != registro[3]
+          clinica  = registro[3]
+          @clinica = Clinica.find_by_sigla(clinica)
+        end
         t = TipoPagamento.new
-        t.id = registro[0].to_i
-        t.nome = registro[1].nome_proprio
-        t.ativo = (registro[2].to_i==0)
-        t.clinica_id = clinica.id
+        t.seq        = registro[0].to_i
+        t.nome       = registro[1].nome_proprio
+        t.ativo      = (registro[2]=='Verdadeiro')
+        t.clinica_id = @clinica.id
         t.save
       end
       f.close
@@ -264,27 +282,31 @@ class Converte
   
   def pagamento
     puts "Convertendo pagamentos ...."
-      f = File.open("doc/pagamento.txt" , "r")
+      f = File.open("doc/convertidos/pagamento.txt" , "r")
       Pagamento.delete_all
-      #FIXME  NA conversao real, não apagar tabela
-      clinica = Clinica.find_by_sigla("Recreio")
-      line = f.gets
+      clinica = ''
       while line = f.gets 
-        registro = line.split(";")
-        t = Pagamento.new
-        t.clinica_id = clinica.id
-        t.tipo_pagamento_id = registro[1].to_i
+        registro = busca_registro(line)
+        if clinica != registro[18]
+          clinica  = registro[18]
+          @clinica = Clinica.find_by_sigla(clinica)
+        end
+        t                   = Pagamento.new
+        t.clinica_id        = @clinica.id
+        @tipo_pagamento     = TipoPagamento.find_by_seq_and_clinica_id(regsitro[6].to_i,@clinia.id)
+        t.tipo_pagamento_id = @tipo_pagamento.id
+        t.sequencial        = registro[6].to_i
         t.data_de_pagamento = registro[3].to_date
-        t.sequencial = registro[6].to_i
-        t.valor_pago = le_valor(registro[2])
-        t.observacao = registro[4]
-        t.valor_restante = le_valor(registro[13]) unless registro[13].blank?
-        t.valor_cheque = le_valor(registro[11]) unless registro[11].blank?
-        t.valor_terceiros = le_valor(registro[10]) unless registro[10].blank?
+        t.sequencial        = registro[6].to_i
+        t.valor_pago        = le_valor(registro[2])
+        t.observacao        = registro[4]
+        t.valor_restante    = le_valor(registro[13]) unless registro[13].blank?
+        t.valor_cheque      = le_valor(registro[11]) unless registro[11].blank?
+        t.valor_terceiros   = le_valor(registro[10]) unless registro[10].blank?
         t.conta_bancaria_id = registro[14].to_i unless registro[14].to_i == -1 
-        t.numero_do_cheque = registro[15]
+        t.numero_do_cheque  = registro[15]
         t.nao_lancar_no_livro_caixa = (registro[16].to_i!= 0)
-        t.data_de_exclusao = registro[17].to_date unless registro[17].blank?
+        t.data_de_exclusao          = registro[17].to_date unless registro[17].blank?
         t.save
       end
       f.close
@@ -292,19 +314,21 @@ class Converte
   
   def fluxo_de_caixa
     puts "Convertendo fluxo de caixa ...."
-    f = File.open("doc/saldos.txt" , "r")
+    f = File.open("doc/convertidos/saldos.txt" , "r")
     FluxoDeCaixa.delete_all
     #FIXME  NA conversao real, não apagar tabela
-    clinica = Clinica.find_by_sigla("Recreio")
-    line = f.gets
+    clinica = ''  #Clinica.find_by_sigla("Recreio")
     while line = f.gets 
-      registro = line.split(";")
+      registro = busca_registro(line)
+      if clinica != registro[3]
+        clinica = registro[3]
+        @clinica = Clinica.find_by_sigla(registro[3])
+      end
       t = FluxoDeCaixa.new
-      t.clinica_id = clinica.id
+      t.clinica_id = @clinica.id
       t.data = registro[0].to_date
       t.saldo_em_dinheiro = le_valor(registro[1])
       t.saldo_em_cheque = le_valor(registro[2])
-      puts t.saldo_em_dinheiro
       t.save
     end
     f.close
@@ -313,28 +337,31 @@ class Converte
   def cheque
     #TODO Os cheques das clíncas existem na administração. Preciso tratar isto
     puts "Convertendo cheques ...."
-    f = File.open("doc/cheque.txt" , "r")
+    f = File.open("doc/convertidos/cheque.txt" , "r")
    # Banco.delete_all
     Cheque.delete_all
     #TODO verificar se o cheque está disponível
     #FIXME  NA conversao real, não apagar tabela
-    clinica = Clinica.find_by_sigla("Recreio")
-    line = f.gets
+    clinica = ''
     while line = f.gets 
-      registro = line.split(";")
-      t = Cheque.new
-      t.clinica_id = clinica.id
-      t.sequencial = registro[0].to_i
+      registro = busca_registro(line)
+      if clinica != registro[31]
+        clinica = registro[31]
+        @clinica = Clinica.find_by_sigla(clinica)
+      end
+      t                 = Cheque.new
+      t.clinica_id      = @clinica.id
+      t.sequencial      = registro[0].to_i
       verifica_existencia_do_banco(registro[2].to_i)
-      t.banco_id = Banco.find_by_numero(registro[2].to_i).id
-      t.agencia = registro[3]
-      t.conta_corrente = registro[4]
-      t.numero = registro[5]
-      t.bom_para = registro[6].to_date
-      t.valor = le_valor(registro[7])
-      pac = Paciente.find_by_sequencial(registro[8].to_i)
-      t.paciente_id = pac.id unless pac.nil?
-      t.data = registro[9].to_date
+      t.banco_id        = Banco.find_by_numero(registro[2].to_i).id
+      t.agencia         = registro[3]
+      t.conta_corrente  = registro[4]
+      t.numero          = registro[5]
+      t.bom_para        = registro[6].to_date
+      t.valor           = le_valor(registro[7])
+      paciente          = Paciente.find_by_sequencial_and_clinica_id(registro[8].to_i, @clinica.id)
+      t.paciente_id     = paciente.id unless pac.nil?
+      t.data            = registro[9].to_date
       if !registro[10].blank? && registro[10].to_i > 0
         d = Destinacao.find_by_sequencial(registro[10].to_i)
         if !d.nil?
@@ -342,30 +369,30 @@ class Converte
           t.data_destinacao = registro[11].to_date
         end
       end
-      rec = Recebimento.find_by_sequencial(registro[29].to_i)
-      t.recebimento_id = rec.id unless rec.nil?
-      t.segundo_paciente = registro[15].to_i
-      t.terceiro_paciente = registro[16].to_i
-      t.data_primeira_devolucao = registro[18].to_date unless registro[18].blank?
+      rec                         = Recebimento.find_by_sequencial_and_clinica_id(registro[29].to_i, @clinica.id)
+      t.recebimento_id            = rec.id unless rec.nil?
+      t.segundo_paciente          = registro[15].to_i
+      t.terceiro_paciente         = registro[16].to_i
+      t.data_primeira_devolucao   = registro[18].to_date unless registro[18].blank?
       t.motivo_primeira_devolucao = registro[19] unless registro[19].blank?
       t.data_lancamento_primeira_devolucao = registro[20].to_date unless registro[20].blank?
-      t.data_reapresentacao = registro[21].to_date unless registro[21].blank?
-      t.data_segunda_devolucao = registro[22].to_date unless registro[22].blank?
-      t.motivo_segunda_devolucao = registro[23]
-      t.data_solucao = registro[24].to_date unless registro[24].blank?
-      t.descricao_solucao = registro[25]
-      t.reapresentacao = nil
-      t.data_spc = nil
+      t.data_reapresentacao       = registro[21].to_date unless registro[21].blank?
+      t.data_segunda_devolucao    = registro[22].to_date unless registro[22].blank?
+      t.motivo_segunda_devolucao  = registro[23]
+      t.data_solucao              = registro[24].to_date unless registro[24].blank?
+      t.descricao_solucao         = registro[25]
+      t.reapresentacao            = nil
+      t.data_spc                  = nil
       t.data_arquivo_morto = registro[30].to_date unless registro[30].blank?
       t.data_recebimento_na_administracao = nil
       if !registro[12].blank?
-        pag = Pagamento.find_by_sequencial(registro[12].to_i)
+        pag            = Pagamento.find_by_sequencial_and_clinica_id(registro[12].to_i, @clinica_id)
         t.pagamento_id = pag.id unless pag.nil?
       else
         t.pagamento_id = nil
       end
       if registro[13].to_i != 0
-        t.data_entrega_administracao = registro[14].to_date
+        t.data_entrega_administracao        = registro[14].to_date
         t.data_recebimento_na_administracao = registro[14].to_date
       else
         t.data_recebimento_na_administracao = nil
@@ -373,7 +400,7 @@ class Converte
       t.data_de_exclusao = registro[28].to_date unless registro[28].blank?
       t.save
       if !rec.nil?
-        rec.cheque_id = t.id
+        rec.cheque_id  = t.id
         rec.observacao = t.banco.nome + " - " + t.numero if rec.observacao.nil? or rec.observacao.blank?
         rec.save
       end
@@ -560,6 +587,7 @@ class Converte
     end
   end
   
+  
   private
   
   def verifica_existencia_do_banco(numero)
@@ -578,4 +606,8 @@ class Converte
     return aux
   end
   
+  def busca_registro(line)
+    line.split('"')[1].split(";")
+  end
+
 end
