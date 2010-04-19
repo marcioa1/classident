@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100414023230) do
+ActiveRecord::Schema.define(:version => 20100419004006) do
 
   create_table "altas", :force => true do |t|
     t.integer  "paciente_id"
@@ -71,6 +71,7 @@ ActiveRecord::Schema.define(:version => 20100414023230) do
     t.date     "data_de_exclusao"
     t.integer  "recebimento_id_2"
     t.integer  "recebimento_id_3"
+    t.date     "data_caso_perdido"
   end
 
   add_index "cheques", ["recebimento_id"], :name => "index_cheques_on_recebimento_id"
@@ -175,6 +176,15 @@ ActiveRecord::Schema.define(:version => 20100414023230) do
 
   add_index "fluxo_de_caixas", ["clinica_id"], :name => "index_fluxo_de_caixas_on_clinica_id"
 
+  create_table "forma_recebimento_temps", :force => true do |t|
+    t.integer  "seq"
+    t.integer  "clinica_id"
+    t.string   "nome"
+    t.integer  "id_adm"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "forma_recebimentos_temp", :force => true do |t|
     t.integer  "id_adm"
     t.integer  "sequencial"
@@ -213,7 +223,7 @@ ActiveRecord::Schema.define(:version => 20100414023230) do
     t.datetime "updated_at"
     t.integer  "descricao_conduta_id"
     t.integer  "sequencial"
-    t.string   "clinica"
+    t.integer  "clinica_id"
   end
 
   add_index "item_tabelas", ["id"], :name => "index_item_tabelas_on_id"
@@ -371,7 +381,7 @@ ActiveRecord::Schema.define(:version => 20100414023230) do
     t.boolean  "ativa"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "clinica"
+    t.integer  "clinica_id"
     t.integer  "sequencial"
   end
 

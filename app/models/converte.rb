@@ -50,7 +50,6 @@ class Converte
      puts "Convertendo mala direta ..."
       f = File.open("doc/maladireta.txt" , "r")
       clinica = Clinica.find_by_sigla("Recreio")
-      line = f.gets
       while line = f.gets
         registro = line.split(";")
      #   puts registro[0]
@@ -70,21 +69,23 @@ class Converte
   end
   
   def debito
+    # Depende de tratamento
     puts "Convertendo débitos ...."
-    f = File.open("doc/debito.txt" , "r")
-    #FIXME  NA conversao real, não apagar tabela
+    f = File.open("doc/convertidos/debito.txt" , "r")
     Debito.delete_all
-    clinica = Clinica.find_by_sigla("Recreio")
-    line = f.gets
+    clinica = ''
     while line = f.gets 
+      registro = busca_registro(line)
+      if clinica != registro.last
+        clinica = registro.last
+        @clinica = Clinica.find_by_sigla(clinica)
+      end
       d = Debito.new
-      registro = line.split(";")
-      pac = Paciente.find_by_sequencial(registro[0].to_i)
-     # puts pac.nome
-      d.paciente_id = pac.id unless pac.nil?
-      d.data = registro[1].to_date
-      d.valor = le_valor(registro[2])
-      d.descricao = registro[3]
+      paciente        = Paciente.find_by_sequencial_and_clinica_id(registro[0].to_i, @clinica.id)
+      d.paciente_id   = paciente.id unless pac.nil?
+      d.data          = registro[1].to_date
+      d.valor         = le_valor(registro[2])
+      d.descricao     = registro[3]
       d.tratamento_id = registro[10].to_i
       d.save
     end
@@ -99,8 +100,8 @@ class Converte
     clinica = ''
     while line = f.gets 
       registro = busca_registro(line)
-      if clinica != registro[3]
-        clinica = registro[3]
+      if clinica != registro.last
+        clinica = registro.last
         @clinica = Clinica.find_by_sigla(clinica)
       end
       forma_adm = FormasRecebimento.find_by_nome(registro[0].strip)
@@ -127,20 +128,20 @@ class Converte
     while line = f.gets 
       r          = Recebimento.new
       registro   = busca_registro(line)
-      if clinica != registro[15]
-        clinica  = registro[15]
+      if clinica != registro.last
+        clinica  = registro.last
         @clinica = Clinica.find_by_sigla(clinica)
       end
       r.data                  = registro[1].to_date
-      paciente                = Paciente.find_by_sequencialand_clinica_id(registro[2].to_i, @clinica_id)
+      paciente                = Paciente.find_by_sequencial_and_clinica_id(registro[2].to_i, @clinica_id)
       r.paciente_id           = paciente.id unless paciente.nil?
-      forma_recebimento       = FormaRecebimentoTemp.find_by_sequencial_and_clinica_id(registro[3].to_i, @clinica.id)
-      r.formas_recebimento_id = forma_recebimento.id_adm
+      forma_recebimento       = FormaRecebimentoTemp.find_by_seq_and_clinica_id(registro[3].to_i, @clinica.id)
+      r.formas_recebimento_id = forma_recebimento.id_adm if forma_recebimento.present?
       r.valor                 = le_valor(registro[4])
       r.observacao            = registro[7]
       r.sequencial            = registro[8].to_i
       r.clinica_id            = @clinica.id
-      r.data_de_exclusao      = registro[12].to_date unless registro[12].blank?
+      r.data_de_exclusao      = registro[12].to_date if Date.valid?(registro[12])
       r.observacao_exclusao   = registro[14]
       r.save
     end
@@ -202,34 +203,39 @@ class Converte
     f.close
   end
   
-  def tratamento
+  def odontograma
+    # depende de dentista
     #TODO colocar descricao do tratamento na tabela e na conversão
     puts "Convertendo tratamentos ...."
-    f = File.open("doc/odontograma.txt" , "r")
+    f = File.open("doc/convertidos/odontograma.txt" , "r")
     Tratamento.delete_all
     #FIXME  NA conversao real, não apagar tabela
-    clinica = Clinica.find_by_sigla("Recreio")
-    line = f.gets
+    clinica = ''
     while line = f.gets 
-      registro = line.split(";")
-      t = Tratamento.new
-      t.sequencial = registro[0].to_i
-      t.paciente_id = registro[2].to_i
-      t.item_tabela_id = registro[9].to_i
+      registro = busca_registro(line)
+      if clinica != registro.last
+        clinica  = registro.last
+        @clinica = Clinica.find_by_sigla(clinica)
+      end
+      t                 = Tratamento.new
+      t.sequencial      = registro[0].to_i
+      paciente          = Paciente.find_by_sequencial_and_clinica_id(registro[2].to_i, @clinica.id)
+      t.paciente_id     = paciente.id if paciente.present?
+      t.item_tabela_id  = registro[9].to_i
       if !registro[1].blank?
         dentista = Dentista.find_by_sequencial(registro[1].to_i)
-        t.dentista_id = dentista.id unless dentista.nil?
+        t.dentista_id  = dentista.id unless dentista.nil?
       end
-      t.valor = le_valor(registro[6])
-      t.data = registro[7].to_date unless registro[7].blank?
-      t.dente = registro[3]
-      t.face = registro[4]
-      t.descricao = registro[5]
-      t.orcamento_id = registro[8].to_i
-      t.custo = le_valor(registro[12])
-      t.excluido = registro[16].to_i != 0
-      t.clinica_id = clinica.id
-      t.created_at = registro[14].to_date
+      t.valor          = le_valor(registro[6])
+      t.data           = registro[7].to_date if Date.valid?(registro[7])
+      t.dente          = registro[3]
+      t.face           = registro[4]
+      t.descricao      = registro[5]
+      t.orcamento_id   = registro[8].to_i
+      t.custo          = le_valor(registro[12])
+      t.excluido       = registro[16].to_i != 0
+      t.clinica_id     = @clinica.id
+      t.created_at     = registro[14].to_date
       t.save
     end
     f.close
@@ -237,22 +243,29 @@ class Converte
   
   def dentista
     puts "Convertendo dentistas ...."
-    f = File.open("doc/dentista.txt" , "r")
+    f = File.open("doc/convertidos/dentista.txt" , "r")
     Dentista.delete_all
-    #FIXME  NA conversao real, não apagar tabela
-    clinica = Clinica.find_by_sigla("Recreio")
-    line = f.gets
+    clinica = ''
     while line = f.gets 
-      registro = line.split(";")
-      t = Dentista.new
-      t.sequencial = registro[0].to_i
-      t.nome = registro[1].nome_proprio
-      t.cro = registro[2]
-      t.ativo = registro[5].to_i==1
-      t.percentual = registro[4].sub(",",".") unless registro[4].blank?
-      t.especialidade = registro[3]
-      t.save
-      clinica.dentistas << t
+      registro = busca_registro(line)
+      if clinica != registro.last
+        clinica.save if !clinica.blank?
+        clinica  = registro.last
+        @clinica = Clinica.find_by_sigla(clinica)
+        if @clinica.nil?
+          debugger
+        end
+      end
+      dentista                 = Dentista.new
+      dentista.sequencial      = registro[0].to_i
+      dentista.nome            = registro[1].nome_proprio
+      dentista.cro             = registro[2]
+      dentista.ativo           = registro[5] == 'True'
+      dentista.percentual      = registro[4].sub(",",".") unless registro[4].blank?
+      dentista.especialidade   = registro[3]
+      dentista.save
+#      debugger
+      @clinica.dentistas << dentista
     end
     clinica.save
     f.close
@@ -263,11 +276,10 @@ class Converte
       f = File.open("doc/convertidos/tipo_pagamento.txt" , "r")
       TipoPagamento.delete_all
       clinica = ''
-      line = f.gets
       while line = f.gets 
         registro = busca_registro(line)
-        if clinica != registro[3]
-          clinica  = registro[3]
+        if clinica != registro.last
+          clinica  = registro.last
           @clinica = Clinica.find_by_sigla(clinica)
         end
         t = TipoPagamento.new
@@ -287,16 +299,19 @@ class Converte
       clinica = ''
       while line = f.gets 
         registro = busca_registro(line)
-        if clinica != registro[18]
-          clinica  = registro[18]
+        if clinica != registro.last
+          clinica  = registro.last
           @clinica = Clinica.find_by_sigla(clinica)
         end
         t                   = Pagamento.new
         t.clinica_id        = @clinica.id
-        @tipo_pagamento     = TipoPagamento.find_by_seq_and_clinica_id(regsitro[6].to_i,@clinia.id)
-        t.tipo_pagamento_id = @tipo_pagamento.id
-        t.sequencial        = registro[6].to_i
-        t.data_de_pagamento = registro[3].to_date
+        @tipo_pagamento     = TipoPagamento.find_by_seq_and_clinica_id(registro[6].to_i,@clinica.id)
+        t.tipo_pagamento_id = @tipo_pagamento.id if !@tipo_pagamento.nil?
+        begin
+          t.data_de_pagamento = registro[3].to_date if Date.valid?(registro[3])
+        rescue
+          debugger
+        end
         t.sequencial        = registro[6].to_i
         t.valor_pago        = le_valor(registro[2])
         t.observacao        = registro[4]
@@ -335,6 +350,7 @@ class Converte
   end
   
   def cheque
+    # depende de destinacao, recebimento, pagamento
     #TODO Os cheques das clíncas existem na administração. Preciso tratar isto
     puts "Convertendo cheques ...."
     f = File.open("doc/convertidos/cheque.txt" , "r")
@@ -345,64 +361,74 @@ class Converte
     clinica = ''
     while line = f.gets 
       registro = busca_registro(line)
-      if clinica != registro[31]
-        clinica = registro[31]
+      if clinica != registro.last
+        clinica = registro.last
         @clinica = Clinica.find_by_sigla(clinica)
       end
       t                 = Cheque.new
       t.clinica_id      = @clinica.id
       t.sequencial      = registro[0].to_i
-      verifica_existencia_do_banco(registro[2].to_i)
-      t.banco_id        = Banco.find_by_numero(registro[2].to_i).id
-      t.agencia         = registro[3]
-      t.conta_corrente  = registro[4]
-      t.numero          = registro[5]
-      t.bom_para        = registro[6].to_date
-      t.valor           = le_valor(registro[7])
-      paciente          = Paciente.find_by_sequencial_and_clinica_id(registro[8].to_i, @clinica.id)
-      t.paciente_id     = paciente.id unless pac.nil?
-      t.data            = registro[9].to_date
-      if !registro[10].blank? && registro[10].to_i > 0
-        d = Destinacao.find_by_sequencial(registro[10].to_i)
+      verifica_existencia_do_banco(registro[1].to_i)
+      t.banco_id        = Banco.find_by_numero(registro[1].to_i).id
+      t.agencia         = registro[2]
+      t.conta_corrente  = registro[3]
+      t.numero          = registro[4]
+      t.bom_para        = registro[5].to_date if Date.valid?(registro[5])
+      t.valor           = le_valor(registro[6])
+      paciente          = Paciente.find_by_sequencial_and_clinica_id(registro[7].to_i, @clinica.id)
+      t.paciente_id     = paciente.id unless paciente.nil?
+      t.data            = registro[8].to_date if Date.valid?(registro[8])
+      if !registro[10].blank? && registro[9].to_i > 0
+        d = Destinacao.find_by_sequencial_and_clinica_id(registro[9].to_i, @clinica.id)
         if !d.nil?
-          t.destinacao_id = d.id 
-          t.data_destinacao = registro[11].to_date
+          t.destinacao_id   = d.id 
+          t.data_destinacao = registro[10].to_date if Date.valid?(registro[10])
         end
       end
-      rec                         = Recebimento.find_by_sequencial_and_clinica_id(registro[29].to_i, @clinica.id)
-      t.recebimento_id            = rec.id unless rec.nil?
-      t.segundo_paciente          = registro[15].to_i
-      t.terceiro_paciente         = registro[16].to_i
-      t.data_primeira_devolucao   = registro[18].to_date unless registro[18].blank?
-      t.motivo_primeira_devolucao = registro[19] unless registro[19].blank?
-      t.data_lancamento_primeira_devolucao = registro[20].to_date unless registro[20].blank?
-      t.data_reapresentacao       = registro[21].to_date unless registro[21].blank?
-      t.data_segunda_devolucao    = registro[22].to_date unless registro[22].blank?
-      t.motivo_segunda_devolucao  = registro[23]
-      t.data_solucao              = registro[24].to_date unless registro[24].blank?
-      t.descricao_solucao         = registro[25]
-      t.reapresentacao            = nil
-      t.data_spc                  = nil
-      t.data_arquivo_morto = registro[30].to_date unless registro[30].blank?
-      t.data_recebimento_na_administracao = nil
-      if !registro[12].blank?
-        pag            = Pagamento.find_by_sequencial_and_clinica_id(registro[12].to_i, @clinica_id)
-        t.pagamento_id = pag.id unless pag.nil?
-      else
-        t.pagamento_id = nil
+      pagamento                   = Pagamento.find_by_sequencial_and_clinica_id(registro[11].to_i, @clinica.id)
+      t.pagamento_id              = pagamento.id if pagamento.present?
+      if registro[12] ==  'Verdadeiro'
+        t.data_entrega_administracao = registro[13] if Date.valid?(registro[13])
       end
-      if registro[13].to_i != 0
-        t.data_entrega_administracao        = registro[14].to_date
-        t.data_recebimento_na_administracao = registro[14].to_date
+      if registro[14].to_i > 0
+        paciente2                 = Paciente.find_by_sequencial_and_clinica_id(registro[14].to_i, @clinica.id)
+        t.segundo_paciente        = paciente2.id if paciente2.present?
+      end
+      if registro[15].to_i > 0
+        paciente3                 = Paciente.find_by_sequencial_and_clinica_id(registro[15].to_i, @clinica.id)
+        t.terceiro_paciente       = paciente3.id if paciente3.present?
+      end
+      t.data_primeira_devolucao   = registro[17].to_date if Date.valid?(registro[17])
+      t.motivo_primeira_devolucao = registro[18] unless registro[18].blank?
+      t.data_lancamento_primeira_devolucao = registro[19].to_date if Date.valid?(registro[19])
+      t.data_reapresentacao       = registro[20].to_date if Date.valid?(registro[20])
+      t.data_segunda_devolucao    = registro[21].to_date if Date.valid?(registro[21])
+      t.motivo_segunda_devolucao  = registro[22]
+      t.data_solucao              = registro[23].to_date if Date.valid?(registro[23])
+      t.descricao_solucao         = registro[24]
+      t.data_caso_perdido         = registro[25]
+      t.data_segunda_devolucao    = registro[26] if Date.valid?(registro[26])
+      recebimento                 = Recebimento.find_by_sequencial_and_clinica_id(registro[27].to_i, @clinica.id)
+      t.recebimento_id            = recebimento.id if recebimento.present?
+      t.data_de_exclusao          = registro[28] if Date.valid?(registro[28])
+      t.data_arquivo_morto        = registro[29].to_date if Date.valid?(registro[29])
+      t.pagamento_id              = nil
+      if registro[11].to_i > 0
+        pagamento                 = Pagamento.find_by_sequencial_and_clinica_id(registro[11].to_i, @clinica.id)
+        t.pagamento_id            = pagamento.id if pagamento.present?
+      end
+      if registro[12] == 'Verdadeiro'
+        t.data_entrega_administracao        = registro[10].to_date if Date.valid?(registro[10])
+        t.data_recebimento_na_administracao = registro[10].to_date if Date.valid?(registro[10])
       else
         t.data_recebimento_na_administracao = nil
       end
-      t.data_de_exclusao = registro[28].to_date unless registro[28].blank?
+      t.data_de_exclusao       = registro[28].to_date if Date.valid?(registro[28])
       t.save
-      if !rec.nil?
-        rec.cheque_id  = t.id
-        rec.observacao = t.banco.nome + " - " + t.numero if rec.observacao.nil? or rec.observacao.blank?
-        rec.save
+      if recebimento.present?
+        recebimento.cheque_id  = t.id
+        recebimento.observacao = t.banco.nome + " - " + t.numero if !recebimento.observacao.present?
+        recebimento.save
       end
     end
     f.close
@@ -410,17 +436,19 @@ class Converte
   
   def destinacao
     puts "Convertendo destinacao ...."
-    f = File.open("doc/destinacao.txt" , "r")
+    f = File.open("doc/convertidos/destinacao.txt" , "r")
     Destinacao.delete_all
-    #FIXME  NA conversao real, não apagar tabela
-    clinica = Clinica.find_by_sigla("Recreio")
-    line = f.gets
+    clinica = ''
     while line = f.gets 
-      registro = line.split(";")
-      t = Destinacao.new
-      t.clinica_id = clinica.id
+      registro = busca_registro(line)
+      if clinica != registro.last
+        clinica  = registro.last
+        @clinica = Clinica.find_by_sigla(clinica)
+      end
+      t            = Destinacao.new
+      t.clinica_id = @clinica.id
       t.sequencial = registro[0]
-      t.nome = registro[1].nome_proprio
+      t.nome       = registro[1].nome_proprio
       t.save
     end
     f.close
@@ -432,7 +460,6 @@ class Converte
     Orcamento.delete_all
     #FIXME  NA conversao real, não apagar tabela
     clinica = Clinica.find_by_sigla("Recreio")
-    line = f.gets
     while line = f.gets 
       registro = line.split(";")
       o = Orcamento.new
@@ -465,7 +492,6 @@ class Converte
     Protetico.delete_all
     #FIXME  NA conversao real, não apagar tabela
     clinica = Clinica.find_by_sigla("Recreio")
-    line = f.gets
     while line = f.gets 
       registro = line.split(";")
       p = Protetico.new
@@ -493,7 +519,6 @@ class Converte
     TabelaProtetico.delete_all
     #FIXME  NA conversao real, não apagar tabela
     clinica = Clinica.find_by_sigla("Recreio")
-    line = f.gets
     while line = f.gets 
       registro = line.split(";")
       t = TabelaProtetico.new
@@ -508,7 +533,6 @@ class Converte
     # tabelas dos proteticos
     puts "Convertendo tabela de protéticos ...."
     f = File.open("doc/itemProtetico.txt" , "r")
-    line = f.gets
     while line = f.gets 
       registro = line.split(";")
       t = TabelaProtetico.new
@@ -528,7 +552,6 @@ class Converte
     TrabalhoProtetico.delete_all
     #FIXME  NA conversao real, não apagar tabela
     clinica = Clinica.find_by_sigla("Recreio")
-    line = f.gets
     linha = 0
     while line = f.gets 
       registro = line.split(";")
