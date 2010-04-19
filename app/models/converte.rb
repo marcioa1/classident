@@ -82,7 +82,7 @@ class Converte
       end
       d = Debito.new
       paciente        = Paciente.find_by_sequencial_and_clinica_id(registro[0].to_i, @clinica.id)
-      d.paciente_id   = paciente.id unless pac.nil?
+      d.paciente_id   = paciente.id unless paciente.nil?
       d.data          = registro[1].to_date
       d.valor         = le_valor(registro[2])
       d.descricao     = registro[3]

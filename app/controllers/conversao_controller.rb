@@ -6,8 +6,8 @@ def index
 #  converte.tabela
 #  converte.item_tabela
 #  converte.dentista #
-  converte.orcamento
-  converte.odontograma
+#  converte.orcamento
+#  converte.odontograma
   converte.debito
 #  converte.cadastro  #
 #  converte.mala_direta  #
