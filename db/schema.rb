@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100419004006) do
+ActiveRecord::Schema.define(:version => 20100419024630) do
 
   create_table "altas", :force => true do |t|
     t.integer  "paciente_id"
@@ -130,6 +130,7 @@ ActiveRecord::Schema.define(:version => 20100419004006) do
     t.decimal  "percentual",    :precision => 9, :scale => 2
     t.integer  "sequencial"
     t.boolean  "ortodontista",                                :default => false
+    t.integer  "clinica_id"
   end
 
   add_index "dentistas", ["sequencial"], :name => "index_dentistas_on_sequencial"
@@ -245,6 +246,7 @@ ActiveRecord::Schema.define(:version => 20100419004006) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "clinica_id"
+    t.integer  "sequencial"
   end
 
   create_table "pacientes", :force => true do |t|

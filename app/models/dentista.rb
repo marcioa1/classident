@@ -8,7 +8,6 @@ class Dentista < ActiveRecord::Base
   validates_presence_of :nome, :cro, :percentual, :message => "não pode ser vazio ( em branco )."
   validates_numericality_of :percentual
   
-  #named_scope :da_clinica, lambda{|clinica_id| {:conditions=>["clinica_id=?", clinica_id]}}
   named_scope :por_nome, :order=>:nome
   named_scope :ativos, :conditions=>["ativo=?", true]
   named_scope :inativos, :conditions=>["ativo=?", false]

@@ -223,7 +223,7 @@ class Converte
       t.paciente_id     = paciente.id if paciente.present?
       t.item_tabela_id  = registro[9].to_i
       if !registro[1].blank?
-        dentista = Dentista.find_by_sequencial(registro[1].to_i)
+        dentista = Dentista.find_by_sequencial_and_clinica_id(registro[1].to_i, @clinica.id)
         t.dentista_id  = dentista.id unless dentista.nil?
       end
       t.valor          = le_valor(registro[6])
@@ -231,11 +231,12 @@ class Converte
       t.dente          = registro[3]
       t.face           = registro[4]
       t.descricao      = registro[5]
-      t.orcamento_id   = registro[8].to_i
+      orcamento        = Orcamento.find_by_sequencial_and_clinica_id(registro[8].to_i, @clinica.id)
+      t.orcamento_id   = orcamento.id if orcamento.present?
       t.custo          = le_valor(registro[12])
       t.excluido       = registro[16].to_i != 0
       t.clinica_id     = @clinica.id
-      t.created_at     = registro[14].to_date
+      t.created_at     = registro[14].to_date if Date.valid?(registro[14])
       t.save
     end
     f.close
@@ -249,25 +250,23 @@ class Converte
     while line = f.gets 
       registro = busca_registro(line)
       if clinica != registro.last
-        clinica.save if !clinica.blank?
+        @clinica.save if !clinica.blank?
         clinica  = registro.last
         @clinica = Clinica.find_by_sigla(clinica)
-        if @clinica.nil?
-          debugger
-        end
       end
       dentista                 = Dentista.new
       dentista.sequencial      = registro[0].to_i
-      dentista.nome            = registro[1].nome_proprio
-      dentista.cro             = registro[2]
+      dentista.clinica_id      = @clinica.id
+      dentista.nome            = registro[1].strip.nome_proprio
+      dentista.cro             = registro[2].strip
+      dentista.cro             = '?' if dentista.cro.blank?
       dentista.ativo           = registro[5] == 'True'
       dentista.percentual      = registro[4].sub(",",".") unless registro[4].blank?
       dentista.especialidade   = registro[3]
       dentista.save
-#      debugger
       @clinica.dentistas << dentista
     end
-    clinica.save
+    @clinica.save
     f.close
   end
   
@@ -456,31 +455,36 @@ class Converte
   
   def orcamento
     puts "Convertendo orçamento ...."
-    f = File.open("doc/orcamento.txt" , "r")
+    f = File.open("doc/convertidos/orcamento.txt" , "r")
     Orcamento.delete_all
     #FIXME  NA conversao real, não apagar tabela
-    clinica = Clinica.find_by_sigla("Recreio")
+    clinica = ''
     while line = f.gets 
-      registro = line.split(";")
-      o = Orcamento.new
-      o.id = registro[0]
-      o.clinica_id = clinica.id
-      o.data = registro[1].to_date
-      pac = Paciente.find_by_sequencial(registro[2].to_i)
-      o.paciente_id = pac.id
-      o.dentista = Dentista.find_by_sequencial(registro[3].to_i)
-      o.numero = registro[4]
-      o.numero_de_parcelas = registro[6].to_i
-      o.valor_da_parcela = le_valor(registro[7])
-      o.vencimento_primeira_parcela = registro[8].to_date unless registro[8].blank?
+      registro = busca_registro(line)
+      if clinica != registro.last
+        clinica  = registro.last
+        @clinica = Clinica.find_by_sigla(clinica)
+      end
+      o                             = Orcamento.new
+      o.sequencial                  = registro[0].to_i
+      o.clinica_id                  = @clinica.id
+      o.data                        = registro[1].to_date if Date.valid?(registro[1])
+      paciente                      = Paciente.find_by_sequencial_and_clinica_id(registro[2].to_i, @clinica.id)
+      o.paciente_id                 = paciente.id if paciente.present?
+      dentista                      = Dentista.find_by_sequencial_and_clinica_id(registro[3].to_i, @clinica.id)
+      o.dentista_id                 = dentista.id if dentista.present?
+      o.numero                      = registro[4]
+      o.numero_de_parcelas          = registro[6].to_i
+      o.valor_da_parcela            = le_valor(registro[7])
+      o.vencimento_primeira_parcela = registro[8].to_date if Date.valid?(registro[8])
       #FIXME traduzir isto aqui para as formas conhecidas
-      o.forma_de_pagamento = 'cheque_pre' if registro[9]=='P'
-      o.forma_de_pagamento = 'a_vista' if registro[9]=='V'
-      o.forma_de_pagamento = 'cartao' if registro[9]=='C'
-      o.data_de_inicio = registro[10].to_date unless registro[10].blank?
-      o.valor_com_desconto = le_valor(registro[12])
-      o.desconto = registro[13].to_i
-      o.valor = o.valor_com_desconto / (100 - (o.desconto / 100)) * 100
+      o.forma_de_pagamento          = 'cheque pre' if registro[9]=='P'
+      o.forma_de_pagamento          = 'a vista' if registro[9]=='V'
+      o.forma_de_pagamento          = 'cartao' if registro[9]=='C'
+      o.data_de_inicio              = registro[10].to_date if  Date.valid?(registro[10])
+      o.valor_com_desconto          = le_valor(registro[12])
+      o.desconto                    = registro[13].to_i
+      o.valor                       = o.valor_com_desconto / (100 - (o.desconto / 100)) * 100
       o.save
     end
     f.close
@@ -547,6 +551,7 @@ class Converte
   end
   
   def trabalho_protetico
+    # depende de orçamento
     puts "Convertendo trabalho protético ...."
     f = File.open("doc/noprotetico.txt" , "r")
     TrabalhoProtetico.delete_all
@@ -621,7 +626,7 @@ class Converte
   end
   
   def le_valor(val)
-    return 0 if val.nil?
+    return 0 if val.nil? || val.blank?
     #aux = val.split(" ")[1]
     #return 0 if aux.nil?
     aux = val.sub(".","")
