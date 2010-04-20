@@ -6,6 +6,7 @@ class CreateTabelas < ActiveRecord::Migration
       t.timestamps
     end
     add_index :tabelas, :id
+    Tabela.create!(:id=>1, :nome=>'Inexistente', :ativa=>false)
   end
 
   def self.down

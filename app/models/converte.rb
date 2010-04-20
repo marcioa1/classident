@@ -11,22 +11,31 @@ class Converte
   def cadastro 
     puts "Convertendo cadastro ..."
     f = File.open("doc/convertidos/cadastro.txt" , "r")
+    tabela_inexistente = Tabela.find_by_nome('Inexistente')
     Paciente.delete_all
     clinica = ''
     while line = f.gets
       registro = busca_registro(line)
-      if clinica != registro[40]
-        clinica  = registro[40]
-       # debugger
+      if clinica != registro.last
+        clinica  = registro.last
         @clinica = Clinica.find_by_sigla(clinica)
+        if @clinica.nil?
+          debugger
+        end
       end
+      # puts registro[0]
       p                       = Paciente.new
       p.nome                  = registro[0].nome_proprio
       p.sequencial            = registro[1].to_i
-      p.tabela_id             = registro[2].to_i 
+      tabela                  = Tabela.find_by_sequencial_and_clinica_id(registro[2].to_i, @clinica.id)
+      if tabela.present?
+        p.tabela_id           = tabela.id 
+      else
+        p.tabela_id           = tabela_inexistente.id
+      end
       p.clinica_id            = @clinica.id unless @clinica.nil?
       p.cpf                   = registro[16]
-      p.sexo                  = registro[6].to_i ==0 ? "M" : "F"
+      p.sexo                  = registro[6].to_i == 0 ? "M" : "F"
       p.inicio_tratamento     = registro[7].to_date unless !Date.valid?(registro[7])
       p.sair_da_lista_de_debitos          = registro[29]
       p.motivo_sair_da_lista_de_debitos   = registro[30]
@@ -34,8 +43,7 @@ class Converte
       if registro[34].to_i  > 0
         ortodontista = Dentista.find_by_sequencial(registro[34].to_i)
         p.ortodontia = true
-        #FIXME Tem que importar dentista primeiro
-        p.ortodontista_id = 1 #ortodontista.id
+        p.ortodontista_id = ortodontista.id
         p.mensalidade_de_ortodontia = le_valor(registro[33])
       else
         p.ortodontia = false
@@ -48,20 +56,24 @@ class Converte
   def mala_direta
     #TODO considerar que pode haver outras pessoas que não sejam pacientes
      puts "Convertendo mala direta ..."
-      f = File.open("doc/maladireta.txt" , "r")
-      clinica = Clinica.find_by_sigla("Recreio")
+      f = File.open("doc/convertidos/maladireta.txt" , "r")
+      clinica = ''
       while line = f.gets
-        registro = line.split(";")
+        registro = busca_registro(line)
+        if clinica != registro.last
+          clinica  = registro.last
+          @clinica = Clinica.find_by_sigla(clinica)
+        end
      #   puts registro[0]
-        p = Paciente.find_by_nome(registro[0].nome_proprio)
+        p = Paciente.find_by_nome_and_clinica_id(registro[0].nome_proprio, @clinica.id)
         if !p.nil?
-          p.logradouro = registro[3]
-          p.bairro = registro[4]
-          p.cidade = registro[5]
-          p.nascimento = registro[6].to_date
-          p.uf = registro[7]
-          p.cep = registro[8][0..7]
-          p.telefone = registro[9]
+          p.logradouro   = registro[3]
+          p.bairro       = registro[4]
+          p.cidade       = registro[5]
+          p.nascimento   = registro[6].to_date
+          p.uf           = registro[7]
+          p.cep          = registro[8][0..7]
+          p.telefone    = registro[9]
           p.save
       end
       end
@@ -155,16 +167,16 @@ class Converte
     #FIXME  NA conversao real, não apagar tabela
     clinica = '' 
     while line = f.gets 
-      registro = line.split('"')[1].split(";")
-      if clinica != registro[6]
-        clinica = registro[6]
+      registro = busca_registro(line)
+      if clinica != registro.last
+        clinica = registro.last
         @clinica = Clinica.find_by_sigla(clinica)
       end
-      t = Tabela.new
-      t.sequencial = registro[0].to_i
-      t.nome = registro[1].nome_proprio
-      t.ativa = (registro[5].to_i == 'Verdadeiro')
-      t.clinica = clinica
+      t              = Tabela.new
+      t.sequencial   = registro[0].to_i
+      t.nome         = registro[1].nome_proprio
+      t.ativa        = (registro[5].to_i == 'Verdadeiro')
+      t.clinica_id   = @clinica.id
       t.save
     end
     f.close
@@ -178,17 +190,16 @@ class Converte
     #FIXME  NA conversao real, não apagar tabela
     clinica = ''
     while line = f.gets 
-      registro = line.split('"')[1].split(";")
-      if clinica != registro[7]
-        debugger
-        clinica = registro[7]
+      registro = busca_registro(line)
+      if clinica != registro.last
+        clinica = registro.last
         @clinica = Clinica.find_by_sigla(clinica)
       end
-      tabela = Tabela.find_by_sequencial_and_clinica(registro[1].to_i,clinica)
+      tabela = Tabela.find_by_sequencial_and_clinica_id(registro[1].to_i,@clinica.id)
       if !tabela.nil?
         t = ItemTabela.new
         t.sequencial = registro[0].to_i
-        t.clinica = clinica
+        t.clinica_id = @clinica.id
         t.tabela_id = tabela.id
         t.codigo = registro[2]
         t.descricao = registro[3]
@@ -206,7 +217,7 @@ class Converte
   def odontograma
     # depende de dentista
     #TODO colocar descricao do tratamento na tabela e na conversão
-    puts "Convertendo tratamentos ...."
+    puts "Convertendo odontograma ...."
     f = File.open("doc/convertidos/odontograma.txt" , "r")
     Tratamento.delete_all
     #FIXME  NA conversao real, não apagar tabela

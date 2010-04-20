@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100419024630) do
+ActiveRecord::Schema.define(:version => 20100420002934) do
 
   create_table "altas", :force => true do |t|
     t.integer  "paciente_id"
@@ -24,6 +24,7 @@ ActiveRecord::Schema.define(:version => 20100419024630) do
   end
 
   add_index "altas", ["paciente_id"], :name => "index_altas_on_paciente_id"
+  add_index "altas", ["user_id"], :name => "index_altas_on_user_id"
   add_index "altas", ["user_termino_id"], :name => "index_altas_on_user_termino_id"
 
   create_table "bancos", :force => true do |t|
@@ -74,6 +75,10 @@ ActiveRecord::Schema.define(:version => 20100419024630) do
     t.date     "data_caso_perdido"
   end
 
+  add_index "cheques", ["banco_id"], :name => "index_cheques_on_banco_id"
+  add_index "cheques", ["clinica_id"], :name => "index_cheques_on_clinica_id"
+  add_index "cheques", ["destinacao_id"], :name => "index_cheques_on_destinacao_id"
+  add_index "cheques", ["pagamento_id"], :name => "index_cheques_on_pagamento_id"
   add_index "cheques", ["recebimento_id"], :name => "index_cheques_on_recebimento_id"
   add_index "cheques", ["sequencial"], :name => "index_cheques_on_sequencial"
 
@@ -92,10 +97,16 @@ ActiveRecord::Schema.define(:version => 20100419024630) do
     t.integer "dentista_id"
   end
 
+  add_index "clinicas_dentistas", ["clinica_id", "dentista_id"], :name => "index_clinicas_dentistas_on_clinica_id_and_dentista_id"
+  add_index "clinicas_dentistas", ["dentista_id", "clinica_id"], :name => "index_clinicas_dentistas_on_dentista_id_and_clinica_id"
+
   create_table "clinicas_proteticos", :id => false, :force => true do |t|
     t.integer "clinica_id"
     t.integer "protetico_id"
   end
+
+  add_index "clinicas_proteticos", ["clinica_id", "protetico_id"], :name => "index_clinicas_proteticos_on_clinica_id_and_protetico_id"
+  add_index "clinicas_proteticos", ["protetico_id", "clinica_id"], :name => "index_clinicas_proteticos_on_protetico_id_and_clinica_id"
 
   create_table "conta_bancarias", :force => true do |t|
     t.string   "nome"
@@ -104,6 +115,7 @@ ActiveRecord::Schema.define(:version => 20100419024630) do
     t.integer  "clinica_id"
   end
 
+  add_index "conta_bancarias", ["clinica_id"], :name => "index_conta_bancarias_on_clinica_id"
   add_index "conta_bancarias", ["id"], :name => "index_conta_bancarias_on_id"
 
   create_table "debitos", :force => true do |t|
@@ -227,6 +239,7 @@ ActiveRecord::Schema.define(:version => 20100419024630) do
     t.integer  "clinica_id"
   end
 
+  add_index "item_tabelas", ["descricao_conduta_id"], :name => "index_item_tabelas_on_descricao_conduta_id"
   add_index "item_tabelas", ["id"], :name => "index_item_tabelas_on_id"
   add_index "item_tabelas", ["tabela_id"], :name => "index_item_tabelas_on_tabela_id"
 
@@ -248,6 +261,9 @@ ActiveRecord::Schema.define(:version => 20100419024630) do
     t.integer  "clinica_id"
     t.integer  "sequencial"
   end
+
+  add_index "orcamentos", ["dentista_id"], :name => "index_orcamentos_on_dentista_id"
+  add_index "orcamentos", ["paciente_id"], :name => "index_orcamentos_on_paciente_id"
 
   create_table "pacientes", :force => true do |t|
     t.string   "nome"
@@ -282,8 +298,11 @@ ActiveRecord::Schema.define(:version => 20100419024630) do
     t.string   "motivo_suspensao_cobranca_orto"
   end
 
+  add_index "pacientes", ["clinica_id"], :name => "index_pacientes_on_clinica_id"
   add_index "pacientes", ["id"], :name => "index_pacientes_on_id"
+  add_index "pacientes", ["indicacao_id"], :name => "index_pacientes_on_indicacao_id"
   add_index "pacientes", ["nome"], :name => "index_pacientes_on_nome"
+  add_index "pacientes", ["tabela_id"], :name => "index_pacientes_on_tabela_id"
 
   create_table "pagamentos", :force => true do |t|
     t.integer  "clinica_id"
@@ -310,8 +329,12 @@ ActiveRecord::Schema.define(:version => 20100419024630) do
   end
 
   add_index "pagamentos", ["clinica_id"], :name => "index_pagamentos_on_clinica_id"
+  add_index "pagamentos", ["dentista_id"], :name => "index_pagamentos_on_dentista_id"
   add_index "pagamentos", ["id"], :name => "index_pagamentos_on_id"
+  add_index "pagamentos", ["pagamento_id"], :name => "index_pagamentos_on_pagamento_id"
+  add_index "pagamentos", ["protetico_id"], :name => "index_pagamentos_on_protetico_id"
   add_index "pagamentos", ["sequencial"], :name => "index_pagamentos_on_sequencial"
+  add_index "pagamentos", ["tipo_pagamento_id"], :name => "index_pagamentos_on_tipo_pagamento_id"
 
   create_table "precos", :force => true do |t|
     t.integer  "clinica_id"
@@ -323,6 +346,7 @@ ActiveRecord::Schema.define(:version => 20100419024630) do
 
   add_index "precos", ["clinica_id"], :name => "index_precos_on_clinica_id"
   add_index "precos", ["id"], :name => "index_precos_on_id"
+  add_index "precos", ["item_tabela_id"], :name => "index_precos_on_item_tabela_id"
 
   create_table "proteticos", :force => true do |t|
     t.string   "nome"
@@ -362,7 +386,9 @@ ActiveRecord::Schema.define(:version => 20100419024630) do
     t.integer  "cheque_id"
   end
 
+  add_index "recebimentos", ["cheque_id"], :name => "index_recebimentos_on_cheque_id"
   add_index "recebimentos", ["clinica_id"], :name => "index_recebimentos_on_clinica_id"
+  add_index "recebimentos", ["formas_recebimento_id"], :name => "index_recebimentos_on_formas_recebimento_id"
   add_index "recebimentos", ["paciente_id"], :name => "index_recebimentos_on_paciente_id"
   add_index "recebimentos", ["sequencial"], :name => "index_recebimentos_on_sequencial"
 
@@ -432,8 +458,11 @@ ActiveRecord::Schema.define(:version => 20100419024630) do
     t.integer  "pagamento_id"
   end
 
+  add_index "trabalho_proteticos", ["clinica_id"], :name => "index_trabalho_proteticos_on_clinica_id"
+  add_index "trabalho_proteticos", ["dentista_id"], :name => "index_trabalho_proteticos_on_dentista_id"
   add_index "trabalho_proteticos", ["paciente_id"], :name => "index_trabalho_proteticos_on_paciente_id"
   add_index "trabalho_proteticos", ["protetico_id"], :name => "index_trabalho_proteticos_on_protetico_id"
+  add_index "trabalho_proteticos", ["tabela_protetico_id"], :name => "index_trabalho_proteticos_on_tabela_protetico_id"
 
   create_table "tratamentos", :force => true do |t|
     t.integer  "paciente_id"
@@ -459,7 +488,11 @@ ActiveRecord::Schema.define(:version => 20100419024630) do
     t.string   "estado"
   end
 
+  add_index "tratamentos", ["clinica_id"], :name => "index_tratamentos_on_clinica_id"
+  add_index "tratamentos", ["dentista_id"], :name => "index_tratamentos_on_dentista_id"
   add_index "tratamentos", ["id"], :name => "index_tratamentos_on_id"
+  add_index "tratamentos", ["item_tabela_id"], :name => "index_tratamentos_on_item_tabela_id"
+  add_index "tratamentos", ["orcamento_id"], :name => "index_tratamentos_on_orcamento_id"
   add_index "tratamentos", ["paciente_id"], :name => "index_tratamentos_on_paciente_id"
   add_index "tratamentos", ["sequencial"], :name => "index_tratamentos_on_sequencial"
 
@@ -484,6 +517,7 @@ ActiveRecord::Schema.define(:version => 20100419024630) do
     t.boolean  "ativo",              :default => true
   end
 
+  add_index "users", ["clinica_id"], :name => "index_users_on_clinica_id"
   add_index "users", ["id"], :name => "index_users_on_id"
   add_index "users", ["tipo_usuario_id"], :name => "index_users_on_tipo_usuario_id"
 
