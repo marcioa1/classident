@@ -4,7 +4,80 @@
 
 <div class= 'destaque'>Paciente : <%= @tratamento.paciente.nome %> ( Tabela: <%= @tratamento.paciente.tabela.nome %> )</div>
 <br/>
-<%= render :partial=>'form'%>
+<% form_for(@tratamento) do |f| %>
+
+  <%= f.hidden_field :paciente_id %>
+  
+  <p>
+    <%= f.label :dente %> : 
+    <%= text_field_tag :dente, :size=> 12 %>
+  </p>
+  <p>
+   <Fieldset class='fieldset_20'>
+    <legend>Faces</legend>
+    <table class='transparente'>
+      <tr>
+        <td><%= f.check_box :mesial, :onclick=>'selecionou_face();' %> Mesial</td>
+        <td><%= f.check_box :distal, :onclick=>'selecionou_face();' %> Distal</td>
+        <td><%= f.check_box :oclusal, :onclick=>'selecionou_face();' %> Oclusal</td>
+      </tr>
+      <tr>
+        <td><%= f.check_box :vestibular, :onclick=>'selecionou_face();' %> Vestibular</td>
+        <td><%= f.check_box :lingual, :onclick=>'selecionou_face();' %> Lingual</td>
+        <td><%= check_box_tag :todas,value='1', checked=false,options={:onclick=> 'todas_as_faces();'} %> Todas</td>
+      </tr>
+    </table>
+   </fieldset>
+  </p>
+  <p>
+  <div id='estado'>
+    <Fieldset  class='fieldset_30'>
+      <legend>Estado</legend>
+      <table class='transparente'>
+        <tr>
+          <td><%= f.radio_button :estado, :ausente, :onclick=>'selecionou_estado();' %> Ausente</td>
+          <td><%= f.radio_button :estado, :incluso, :onclick=>'selecionou_estado();' %> Incluso</td>
+          <td><%= f.radio_button :estado, :exodontia, :onclick=>'selecionou_estado();' %> Exodontia</td>
+          <td><%= f.radio_button :estado, :retentor, :onclick=>'selecionou_estado();' %> Retentor</td>
+        </tr>
+        <tr>
+          <td><%= f.radio_button :estado, :pontico, :onclick=>'selecionou_estado();' %> Pôntico</td>
+          <td><%= f.radio_button :estado, :implante, :onclick=>'selecionou_estado();' %> Implante</td>
+          <td><%= f.radio_button :estado, :endodontia, :onclick=>'selecionou_estado();' %> Endodontia</td>
+          <td><%= f.radio_button :estado, :nucleo, :onclick=>'selecionou_estado();' %> Núcleo</td>
+        </tr>
+      </table>
+<span style='display:none;'><%=f.radio_button :estado, :nenhum %></span>
+    </fieldset>
+  </div>
+  </p>
+  <br/>
+  <p>
+  <%= f.label :codigo %> : 
+  <%= f.select :item_tabela_id, options_for_select(@items), {}, html_options={  :onchange=>"selecionou_item_tabela(#{session[:clinica_id]});"} %>
+  </p>
+  <p>
+    <%= f.label :descrição %> : 
+    <%= f.text_field :descricao, :size=>50 %>
+  </p>
+  <p><%= f.label :valor %> :
+  <%= f.text_field :valor, :size=>10 %>
+  </p>
+  <p><%= f.label :custo %> :
+  <%= f.text_field :custo, :size=>10 %>
+  </p>
+  <p>
+    <%= f.label :dentista %>
+    <%= f.select :dentista_id, @dentistas, :include_blank=>true %>
+  </p>
+  <p>
+    <%= f.label :data_de_término %>
+    <%= text_field_tag :datepicker, @tratamento.data.to_s_br, :size=>10 %>
+  </p>
+  <p>
+  </p>
+  <%= f.submit "salvar"%>
+<% end %>
 </fieldset>
 <%= link_to "voltar", abre_pacientes_path(:id=>@tratamento.paciente_id) %>
 <% end %>

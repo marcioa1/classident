@@ -3,30 +3,19 @@
 
 
 <div id="tabs">
-    <ul>
-        <li><a href="#fragment-1"><span>Tratamento</span></a></li>
-        <li><a href="#orcamento"><span>Orcamento</span></a></li>
-        <li><a href="#fragment-2"><span>Cadastro</span></a></li>
-        <li><a href="#fragment-3"><span>Extrato</span></a></li>
-        <li><a href="#fragment-4"><span>Alta</span></a></li>
-        <li><a href="#fragment-5"><span>Protético</span></a></li>
-    </ul>
-	<div id="fragment-1"><%= render :partial=>"tratamento"  %>
-		
-	</div>
-	<div id="orcamento"><%= render :partial=>'orcamento' %></div>
-    <div id="fragment-2">
-      <%= render :partial=>"edit"  %>
-    </div>
-    <div id="fragment-3">
-      <%= render :partial=>"extrato" %>
-    </div>
-    <div id="fragment-4">
-      <%= render :partial=>"alta" %>	
-    </div>
-    <div id="fragment-5">
-      <%= render :partial=>"protetico" %>
-      	
-    </div>
+  <ul>
+      <li><a href="#tratamento"><span>Tratamento</span></a></li>
+      <li><a href="#orcamento"><span>Orcamento</span></a></li>
+      <li><a href="#cadastro"><span>Cadastro</span></a></li>
+      <li><a href="#extrato"><span>Extrato</span></a></li>
+      <li><a href="#alta"><span>Alta</span></a></li>
+      <li><a href="#protetico"><span>Protético</span></a></li>
+  </ul>
+  <div id="tratamento"><%= render :partial=>"tratamento"  %></div>
+  <div id="orcamento"> <%= render :partial=>'orcamento' %>   </div>
+  <div id="cadastro">  <%= render :partial=>"edit"  %>      </div>
+  <div id="extrato">   <%= render :partial=>"extrato" %>    </div>
+  <div id="alta">      <%= render :partial=>"alta" %>       </div>
+  <div id="protetico"> <%= render :partial=>"protetico" %>  </div>
 </div>
 <% end %>

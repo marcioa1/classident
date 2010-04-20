@@ -11,22 +11,31 @@ class TratamentosController < ApplicationController
   end
   
   def create
-    @tratamento = Tratamento.new(params[:tratamento])
-    @tratamento.clinica_id = session[:clinica_id]
-    @tratamento.excluido = false
+    dentes      = params[:dente].split(',')
     Tratamento.transaction do
       respond_to do |format|
-        if @tratamento.save
-          if !@tratamento.data.nil?
-            @tratamento.finalizar_procedimento(current_user)
+        dentes.each do |dente|
+          @tratamento            = Tratamento.new(params[:tratamento])
+          @tratamento.dente      = dente
+          @tratamento.clinica_id = session[:clinica_id]
+          @tratamento.excluido   = false
+          erro                   = false
+          if !erro && @tratamento.save 
+            if !@tratamento.data.nil?
+              @tratamento.finalizar_procedimento(current_user)
+            end
+          else
+            erro = true
           end
+        end
+        if !erro
           format.html { redirect_to(abre_pacientes_path(:id=>@tratamento.paciente_id)) }
           format.xml  { render :xml => @tratamento, :status => :created, :location => @dentista }
         else 
           format.html { render :action => "new" }
           format.xml  { render :xml => @tratamento.errors, :status => :unprocessable_entity }
         end
-      end
+      end  # respond_to
     end
   end
   

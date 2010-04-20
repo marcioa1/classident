@@ -4,8 +4,8 @@
 <br/><br/>
 <table>
   <tr>
-	  <th>Dente</th>
-	  <th>Face</th>
+    <th>Dente</th>
+    <th>Face</th>
     <th width="40px">Código</th>
     <th width="190px">Descrição</th>
     <th width="60px">Valor</th>
@@ -16,14 +16,14 @@
   </tr>
 <% Tratamento.do_paciente(@paciente.id).each()  do |tratamento|  %>
   <tr>
-	<td align="center">
-	<% if tratamento.nao_pode_alterar? %>
-	  <%= tratamento.dente %> 
-	<% else %>
-	  <%= link_to tratamento.dente, edit_tratamento_path(:id=>tratamento.id) %>
-	<% end %>
-	</td>
-	<td><%= tratamento.faces %></td>
+  <td align="center">
+  <% if tratamento.nao_pode_alterar? %>
+    <%= tratamento.dente %> 
+  <% else %>
+    <%= link_to tratamento.dente, edit_tratamento_path(:id=>tratamento.id) %>
+  <% end %>
+  </td>
+  <td><%= tratamento.faces %></td>
     <td><%= tratamento.item_tabela.codigo  unless tratamento.item_tabela.nil? %></td>
     <td><%= link_to tratamento.item_tabela.descricao, edit_tratamento_path(tratamento) unless tratamento.item_tabela.nil?%></td>
     <td align="right"><%= tratamento.valor.real%></td>

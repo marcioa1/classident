@@ -24,19 +24,13 @@
       <td>&nbsp;</td>
       <% saldo -= lancamento.valor %>
     <% else %>
-    <% #debugger%>
       <td><%= lancamento.observacao_do_recebimento %></td>
       <td>&nbsp;</td>
       <td align="right"><%= link_to lancamento.valor.real, edit_recebimento_path(lancamento) %></td>
       <% saldo += lancamento.valor %>
     <% end %>
-    <% if saldo >0 %>
-      <% cor = "black"%>
-    <% else %>
-      <% cor = "red" %>
-    <% end %>
+    <% cor =  saldo > 0 ? "black" : "red" %>
     <td align="right" style="color: <%= cor %>"><%= saldo.real %></td>
-    
       <% if lancamento.class == Recebimento %>
         <td><%= lancamento.cheque.bom_para.to_s_br unless lancamento.cheque.nil? %></td>    
        <td><%= lancamento.formas_recebimento.nome %></td> 
