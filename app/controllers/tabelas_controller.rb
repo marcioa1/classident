@@ -4,7 +4,7 @@ class TabelasController < ApplicationController
   # GET /tabelas
   # GET /tabelas.xml
   def index
-    @tabelas = Tabela.all(:order=>:nome)
+    @tabelas = Tabela.da_clinica(session[:clinica_id]).por_nome
 
     respond_to do |format|
       format.html # index.html.erb
@@ -51,12 +51,12 @@ class TabelasController < ApplicationController
   # POST /tabelas
   # POST /tabelas.xml
   def create
-    @tabela = Tabela.new(params[:tabela])
-
+    @tabela            = Tabela.new(params[:tabela])
+    @tabela.clinica_id = session[:clinica_id]
     respond_to do |format|
       if @tabela.save
-        flash[:notice] = 'Tabela was successfully created.'
-        format.html { redirect_to(@tabela) }
+        flash[:notice] = 'Tabela criada com sucesso.'
+        format.html { redirect_to(tabelas_path) }
         format.xml  { render :xml => @tabela, :status => :created, :location => @tabela }
       else
         format.html { render :action => "new" }

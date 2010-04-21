@@ -23,7 +23,8 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :indicacaos
   
   map.resources :item_tabelas, :collection=>{:busca_descricao=>:get}
-  map.resources :orcamentos, :collection=>{:relatorio=>:get, :aproveitamento=>:get}
+  map.resources :orcamentos, :collection=>{:relatorio=>:get, :aproveitamento=>:get},
+                  :member => {:monta_tabela_de_parecelas => :get}
   map.resources :pacientes, 
                   :collection=>{:pesquisa=>:get,:nomes_que_iniciam_com=>:get, 
                   :pesquisa_nomes=> :get, :retorna_paciente_por_nome=>:get, :abre=>:get}

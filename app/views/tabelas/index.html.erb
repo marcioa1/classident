@@ -6,19 +6,17 @@
     <th width="150px">Tabela</th>
     <th>Clínica</th>
     <th>Ativa</th>
-    <% if administracao? %>
-      <th>&nbsp;</th>
-      <th>&nbsp;</th>
-    <% end %>
+    <th>&nbsp;</th>
+    <th>&nbsp;</th>
   </tr>
 <% @tabelas.each do |tabela| %>
   <tr>
     <td><%= link_to tabela.nome, item_tabelas_path(:tabela_id=>tabela.id) %></td>
-    <td><%= tabela.clinica %></td>
+    <td><%= tabela.clinica.nome %></td>
     <td><%= tabela.ativa ? "sim" : "não" %></td>
     <% if administracao? %>
-    <td><%= link_to 'Editar', edit_tabela_path(tabela) if current_user.pode_incluir_tabela %></td>
-    <td><%= link_to 'Excluir', tabela, :confirm => 'Tem certeza ?', :method => :delete if current_user.pode_incluir_tabela%></td>
+    <td><%= link_to 'Editar', edit_tabela_path(tabela)  %></td>
+    <td><%= link_to 'Excluir', tabela, :confirm => 'Tem certeza ?', :method => :delete %></td>
     <% end %>
   </tr>
 <% end %>
@@ -26,5 +24,5 @@
 
 <br />
 
-<%= link_to 'Nova tabela', new_tabela_path if current_user.pode_incluir_tabela and administracao? %>
+<%= link_to 'Nova tabela', new_tabela_path  %>
 <% end %>

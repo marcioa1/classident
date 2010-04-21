@@ -3,8 +3,8 @@ class ItemTabelasController < ApplicationController
   # GET /item_tabelas
   # GET /item_tabelas.xml
   def index
-    @tabela = Tabela.find(params[:tabela_id])
-    @item_tabelas = ItemTabela.all(:conditions=>["tabela_id=?",@tabela.id], :order=>'codigo')
+    @tabela       = Tabela.find(params[:tabela_id])
+    @item_tabelas = @tabela.item_tabelas #ItemTabela.all(:conditions=>["tabela_id=?",@tabela.id], :order=>'codigo')
 
     respond_to do |format|
       format.html # index.html.erb
@@ -127,15 +127,8 @@ class ItemTabelasController < ApplicationController
   end
   
   def busca_descricao
-    valor_item = Preco.valor(params[:id].to_i,params[:clinica_id].to_i)
-    if valor_item.empty?
-      preco_do_item = 0
-    else
-      preco_do_item = valor_item.first.preco
-    end
-    item_tabela = ItemTabela.find(params[:id])
-    result = item_tabela.descricao + ";" + preco_do_item.real.to_s
-    debugger
+    item_tabela  = ItemTabela.find(params[:id])
+    result = item_tabela.descricao + ";" + item_tabela.preco.real.to_s
     render :json => result.to_json
   end
 end

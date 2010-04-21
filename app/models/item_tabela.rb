@@ -1,8 +1,9 @@
 class ItemTabela < ActiveRecord::Base
-  belongs_to :tabela
-  has_many :precos
-  has_many :tratamentos
-  belongs_to :descricao_conduta
+  belongs_to    :tabela
+  has_many      :precos
+  has_many      :tratamentos
+  belongs_to    :descricao_conduta
+  belongs_to    :tabela
   
   validates_presence_of :tabela_id, :codigo, :descricao
   

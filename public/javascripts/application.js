@@ -10,7 +10,7 @@ jQuery(function() {
     $("#datepicker4").datepicker();
     $("#datepicker5").datepicker();
     $("#datepicker6").datepicker();
-   
+    $(".datepicker").datepicker();
         
 })
 
@@ -27,13 +27,15 @@ function conta_caracteres(){
 }
 
 function selecionou_item_tabela(clinica_id){
-    $.getJSON('/item_tabelas/busca_descricao',{'id': $("#tratamento_item_tabela_id").selectedValues(),
-          'clinica_id': clinica_id},
+    $.getJSON('/item_tabelas/busca_descricao',{
+          'id': $("#tratamento_item_tabela_id").selectedValues()[0]
+      },
       function(data){
        resultado = data.split(";");
        $("#tratamento_descricao").val(resultado[0]);         
        $("#tratamento_valor").val(resultado[1]);         
-  });
+      }
+    );
 }
 //TODO acho que nao  é mais necessario
 function coloca_data_de_hoje(dia,mes,ano){

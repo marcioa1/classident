@@ -140,4 +140,9 @@ class OrcamentosController < ApplicationController
     end
   end
 
+  def monta_tabela_de_parecelas
+    result = "<div id='parcelas'>tabela montada em " + time.current.to_s + "</div>"
+    render :json => result.to_json  
+  end
+  
 end

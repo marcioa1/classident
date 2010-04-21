@@ -48,7 +48,7 @@
    </p>
   <p>
   	<%= f.label :indicacao %>
-    <%= f.select :indicacao_id, @indicacoes %>
+    <%= f.select :indicacao_id, @indicacoes, :include_blank=>true %>
   </p>
   <fieldset class="fieldset_40">
   <legend><%= f.check_box :ortodontia %> <%= f.label :Paciente_de_ortodontia %></legend>

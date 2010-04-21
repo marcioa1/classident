@@ -9,15 +9,15 @@ def index
 # converte.cadastro  #
 # converte.mala_direta  #
 # converte.orcamento
- converte.odontograma
- converte.debito #
- converte.tipo_pagamento #
- converte.destinacao #
- converte.pagamento #
- converte.fluxo_de_caixa #
+ # converte.odontograma
+ # converte.debito #
+ # converte.tipo_pagamento #
  converte.formas_recebimento # 
  converte.recebimento #
  converte.cheque #
+ converte.destinacao #
+ converte.pagamento #
+ converte.fluxo_de_caixa #
  converte.protetico
  converte.tabela_protetico
  converte.trabalho_protetico

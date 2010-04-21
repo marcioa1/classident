@@ -34,22 +34,23 @@
   <%= f.radio_button :forma_de_pagamento, :cartao %> Cartão
 </p>
 <p>
+  <%= f.label :data_de_inicio %>: 
+  <%= text_field_tag :datepicker3, {}, :size=>10 , :on_change => "alert('trocou');"%>
+</p>
+<p>
   <table class='transparente' >
     <tr>
       <td><%= f.label :número_de_parcelas %> :</td>
       <td><%= f.select :numero_de_parcelas, [['1',1],['2',2],['3',3],['4',4],['5',5],[ '6',6],['7',7],['8',8]],{}, html_options={ :onchange=>'calcula_valor_da_parcela();'} %></td>
       <td><%= f.label :vencimento_primeira_parcela %> :</td>
-      <td><%= text_field_tag :datepicker2, Date.today.to_s_br ,:size=>10 %></td>
+      <td><%= f.text_field :vencimento_primeira_parcela, Date.today.to_s_br , options = {:size=>10, :class=>'datepicker'} %></td>
       <td><%= f.label :valor_da_parcela %> :</td>
       <td><%= f.text_field :valor_da_parcela, :size=>8 %></td>
     </tr>
   </table>
 </p>
+<div id='parcelas'></div>
 
-<p>
-  <%= f.label :data_de_inicio %>: 
-  <%= text_field_tag :datepicker3, {}, :size=>10 %>
-</p>
 <p>
   <%= f.submit 'salvar' %>
 </p>

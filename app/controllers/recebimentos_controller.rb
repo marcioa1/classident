@@ -3,7 +3,7 @@ class RecebimentosController < ApplicationController
   layout "adm"
   
   before_filter :require_user
-  befor_filter  :busca_bancos_e_forma_de_recebimento, :only=>[:new, :edit]
+  before_filter :busca_bancos_e_forma_de_recebimento, :only=>[:new, :edit]
   
   # GET /recebimentos
   # GET /recebimentos.xml

@@ -8,26 +8,19 @@
   <tr>
     <th width="100px">Código</th>
     <th width="220px">Descrição</th>
+    <th width='60px'>Preço</th>
     <th>Ativo</th>
-    <th width="60px">Preço</th>
-    <% if administracao? %>
-      <th>&nbsp;</th>
-      <th>&nbsp;</th>
-    <% end %>
+    <th>&nbsp;</th>
+    <th>&nbsp;</th>
   </tr>
 
 <% @item_tabelas.each do |item_tabela| %>
   <tr>
     <td><%=h item_tabela.codigo %></td>
-    <td><%=h item_tabela.descricao %></td>
+    <td><%= link_to item_tabela.descricao, edit_item_tabela_path(item_tabela) %></td>
+    <td align='right'><%=h item_tabela.preco.real %></td>
     <td><%=h item_tabela.ativo ? "sim" : "não" %></td>
-    <% if administracao? %>
-       <td><%= link_to "preços", item_tabela %></td>
-       <td><%= link_to 'Editar', edit_item_tabela_path(item_tabela) if current_user.pode_incluir_tabela %></td>
-       <td><%= link_to 'Excluir', item_tabela, :confirm => 'Are you sure?', :method => :delete  if current_user.pode_incluir_tabela%></td>
-    <% else %>
-       <td align="right"><%= item_tabela.preco_na_clinica(session[:clinica_id].to_i).real %></td>
-    <% end %>
+    <td><%= link_to 'Excluir', item_tabela, :confirm => 'Tem certeza?', :method => :delete  %></td>
     
   </tr>
 <% end %>
@@ -35,6 +28,6 @@
 
 <br />
 <%= link_to "Voltar à lista de tabelas", tabelas_path()%> | 
-<%= link_to 'Novo item da tabela', new_item_tabela_path(:tabela_id=>@tabela.id) if current_user.pode_incluir_tabela and administracao?%>
+<%= link_to 'Novo item da tabela', new_item_tabela_path(:tabela_id=>@tabela.id) %>
 
 <% end %>

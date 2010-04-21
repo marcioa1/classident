@@ -2,18 +2,19 @@ class TratamentosController < ApplicationController
   layout "adm"
   before_filter :require_user
   def new
-    @paciente = Paciente.find(params[:paciente_id])
-    @tratamento = Tratamento.new
+    @paciente               = Paciente.find(params[:paciente_id])
+    @tratamento             = Tratamento.new
     @tratamento.paciente_id = @paciente.id
-    @items = @paciente.tabela.item_tabelas.
+    @items                  = @paciente.tabela.item_tabelas.
         collect{|obj| [obj.codigo + " - " + obj.descricao,obj.id]}.insert(0,"")
-    @dentistas = @clinica_atual.dentistas.collect{|obj| [obj.nome,obj.id]}.sort
+    @dentistas              = @clinica_atual.dentistas.collect{|obj| [obj.nome,obj.id]}.sort
   end
   
   def create
-    dentes      = params[:dente].split(',')
+    dentes = params[:dentes].split(',')
     Tratamento.transaction do
       respond_to do |format|
+        erro = false
         dentes.each do |dente|
           @tratamento            = Tratamento.new(params[:tratamento])
           @tratamento.dente      = dente
@@ -74,12 +75,15 @@ class TratamentosController < ApplicationController
   end
   
   def finalizar_procedimento
-    @tratamento = Tratamento.find(params[:id])
-    @tratamento.data = Date.today
-    @tratamento.finalizar_procedimento(current_user)
-    @tratamento.save
-    @tratamento.paciente.verifica_alta_automatica(current_user, session[:clinica_id])
-    render :nothing=>true
-    #TODO atualizar o grid de alta
+    begin
+      @tratamento = Tratamento.find(params[:id])
+      @tratamento.data = Date.today
+      @tratamento.finalizar_procedimento(current_user)
+      @tratamento.save
+      @tratamento.paciente.verifica_alta_automatica(current_user, session[:clinica_id])
+      head :ok
+    rescue
+      head :bad_request
+    end
   end
 end
