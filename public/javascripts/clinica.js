@@ -141,19 +141,20 @@ function calcula_valor_orcamento(){
 function calcula_valor_da_parcela(){
     valor = parseFloat($('#orcamento_valor_com_desconto').val());
     numero = $('#orcamento_numero_de_parcelas').val();
-    $('#orcamento_valor_da_parcela').val(parseInt(valor / numero)*100);
+    $('#orcamento_valor_da_parcela').val(parseInt((valor / numero)*100));
+    
     formata_valor($('#orcamento_valor_da_parcela'));
     $.ajax({
-      type: 'GET',
-      url: "orcamentos/monta_tabela_de_parcelas",
-      data:({numero_de_parcelas: numero, 
-             valor_da_parcela: valor, 
-             data_primeira_parcela: $('#orcamento_vencimento_primeira_parcela')
-             }),
-      success: function(result){
-        $('#parcelas').replaceWith(result);
-      }
-    });
+       type: 'GET',
+       url: "monta_tabela_de_parcelas",
+       data:({numero_de_parcelas: numero, 
+              valor_da_parcela: valor, 
+              data_primeira_parcela: $('#orcamento_vencimento_primeira_parcela').val()
+              }),
+       success: function(result){
+         $('#parcelas').replaceWith(result);
+       }
+     });
 }
 
 function definir_valor(){
