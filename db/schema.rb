@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100421183217) do
+ActiveRecord::Schema.define(:version => 20100425221402) do
 
   create_table "altas", :force => true do |t|
     t.integer  "paciente_id"
@@ -367,8 +367,11 @@ ActiveRecord::Schema.define(:version => 20100421183217) do
     t.string   "cep"
     t.string   "cpf"
     t.date     "nascimento"
+    t.integer  "seq"
+    t.integer  "clinica_id"
   end
 
+  add_index "proteticos", ["clinica_id"], :name => "index_proteticos_on_clinica_id"
   add_index "proteticos", ["id"], :name => "index_proteticos_on_id"
   add_index "proteticos", ["nome"], :name => "index_proteticos_on_nome"
 

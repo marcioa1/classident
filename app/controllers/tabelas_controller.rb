@@ -72,7 +72,7 @@ class TabelasController < ApplicationController
 
     respond_to do |format|
       if @tabela.update_attributes(params[:tabela])
-        flash[:notice] = 'Tabela was successfully updated.'
+        flash[:notice] = 'Tabela alterado com sucesso.'
         format.html { redirect_to(@tabela) }
         format.xml  { head :ok }
       else

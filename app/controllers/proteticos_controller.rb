@@ -1,8 +1,8 @@
 class ProteticosController < ApplicationController
   layout "adm"
   before_filter :require_user
-  # GET /proteticos
-  # GET /proteticos.xml
+  before_filter :busca_protetico, :only => [:edit, :abre, :show, :update, :destroy]
+  
   def index
     if administracao?
       @proteticos = Protetico.por_nome
@@ -15,8 +15,6 @@ class ProteticosController < ApplicationController
     end
   end
 
-  # GET /proteticos/1
-  # GET /proteticos/1.xml
   def show
     @protetico = Protetico.find(params[:id])
 
@@ -26,37 +24,24 @@ class ProteticosController < ApplicationController
     end
   end
 
-  # GET /proteticos/new
-  # GET /proteticos/new.xml
   def new
     @protetico = Protetico.new
-    @clinica_atual = Clinica.por_nome
     respond_to do |format|
       format.html # new.html.erb
       format.xml  { render :xml => @protetico }
     end
   end
 
-  # GET /proteticos/1/edit
   def edit
-    @protetico = Protetico.find(params[:id])
-    @clinicas = Clinica.por_nome
   end
 
-  # POST /proteticos
-  # POST /proteticos.xml
   def create
-    @protetico = Protetico.new(params[:protetico])
-    @protetico.clinicas = []
-    @clinica_atual = Clinica.all
-    @clinica_atual.each() do |clinica|
-      if params["clinica_#{clinica.id.to_s}"]
-        @protetico.clinicas << clinica
-      end      
-    end
+    @protetico            = Protetico.new(params[:protetico])
+    @protetico.clinica_id = session[:clinica_id]
+    
     respond_to do |format|
       if @protetico.save
-        flash[:notice] = 'Protetico was successfully created.'
+        flash[:notice] = 'Protético salvo com sucesso.'
         format.html { redirect_to(proteticos_path) }
         format.xml  { render :xml => @protetico, :status => :created, :location => @protetico }
       else
@@ -67,20 +52,10 @@ class ProteticosController < ApplicationController
     end
   end
 
-  # PUT /proteticos/1
-  # PUT /proteticos/1.xml
   def update
-    @protetico = Protetico.find(params[:id])
-    @protetico.clinicas = []
-    clinicas = Clinica.all
-    clinicas.each() do |clinica|
-      if params["clinica_#{clinica.id.to_s}"]
-        @protetico.clinicas << clinica
-      end      
-    end
     respond_to do |format|
       if @protetico.update_attributes(params[:protetico])
-        flash[:notice] = 'Protetico was successfully updated.'
+        flash[:notice] = 'Protético alterado com sucesso.'
         format.html { redirect_to(proteticos_path) }
         format.xml  { head :ok }
       else
@@ -90,10 +65,7 @@ class ProteticosController < ApplicationController
     end
   end
 
-  # DELETE /proteticos/1
-  # DELETE /proteticos/1.xml
   def destroy
-    @protetico = Protetico.find(params[:id])
     @protetico.destroy
 
     respond_to do |format|
@@ -103,7 +75,6 @@ class ProteticosController < ApplicationController
   end
   
   def abre
-    @protetico = Protetico.find(params[:id])  
     @clinicas = Clinica.por_nome - Clinica.administracao
     if administracao?
       @trabalhos_pendentes = TrabalhoProtetico.do_protetico(@protetico.id).pendentes
@@ -118,11 +89,10 @@ class ProteticosController < ApplicationController
   
   def busca_tabela
     @protetico = Protetico.find(params[:protetico_id])
-    render :json=>@protetico.tabela_proteticos.collect{|obj| [obj.descricao,obj.id]}.to_json
+    render :json=>@protetico.tabela_proteticos.por_descricao.collect{|obj| [obj.descricao,obj.id]}.to_json
   end
   
   def relatorio
-    debugger
     if params[:datepicker]
       @inicio = params[:datepicker].to_date
       @fim = params[:datepicker2].to_date
@@ -138,5 +108,9 @@ class ProteticosController < ApplicationController
     end
     @proteticos = Clinica.find(session[:clinica_id]).proteticos.por_nome.collect{|obj| [obj.nome, obj.id.to_s]}.insert(0, '')
   end
+
+  def busca_protetico
+     @protetico = Protetico.find(params[:id])
+  end  
   
 end

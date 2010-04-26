@@ -1,8 +1,8 @@
 class PacientesController < ApplicationController
   layout "adm"
   before_filter :require_user
-  # GET /pacientes
-  # GET /pacientes.xml
+  before_filter :busca_paciente, :only =>[:edit, :show, :update]
+  
   def index
     @pacientes = Paciente.all
 
@@ -12,26 +12,20 @@ class PacientesController < ApplicationController
     end
   end
 
-  # GET /pacientes/1
-  # GET /pacientes/1.xml
   def show
-    @paciente = Paciente.find(params[:id])
-   
     respond_to do |format|
       format.html # show.html.erb
       format.xml  { render :xml => @paciente }
     end
   end
 
-  # GET /pacientes/new
-  # GET /pacientes/new.xml
   def new
     if administracao?
       redirect_to administracao_path
     else
-      @tabelas = Tabela.ativas.collect{|obj| [obj.nome,obj.id]}
-      @paciente = Paciente.new
-      @indicacoes = Indicacao.por_descricao.collect{|obj| [obj.descricao, obj.id]}
+      @tabelas       = Tabela.ativas.collect{|obj| [obj.nome,obj.id]}
+      @paciente      = Paciente.new
+      @indicacoes    = Indicacao.por_descricao.collect{|obj| [obj.descricao, obj.id]}
       @ortodontistas = Dentista.ortodontistas.collect{|obj| [obj.nome,obj.id]}
       respond_to do |format|
         format.html # new.html.erb
@@ -40,14 +34,10 @@ class PacientesController < ApplicationController
     end
   end
 
-  # GET /pacientes/1/edit
   def edit
-    @paciente = Paciente.find(params[:id])
     @indicacoes = Indicacao.por_descricao.collect{|obj| [obj.descricao, obj.id]}
   end
 
-  # POST /pacientes
-  # POST /pacientes.xml
   def create
     @paciente = Paciente.new(params[:paciente])
     @paciente.clinica_id = session[:clinica_id]
@@ -66,16 +56,13 @@ class PacientesController < ApplicationController
     end
   end
 
-  # PUT /pacientes/1
-  # PUT /pacientes/1.xml
   def update
-    @paciente = Paciente.find(params[:id])
     @paciente.inicio_tratamento = params[:datepicker2].to_date
     @paciente.data_da_suspensao_da_cobranca_de_orto = parasm[:datepicker3].to_date unless params[:datepicker3].blank?
     @paciente.data_da_saida_da_lista_de_debitos = params[:datepicker4].to_date unless params[:datepicker4].blank?
     respond_to do |format|
       if @paciente.update_attributes(params[:paciente])
-        format.html { redirect_to(abre_pacientes_path(:id=>@paciente.id)) }
+        format.html { redirect_to(abre_paciente_path(:id=>@paciente.id)) }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }
@@ -84,10 +71,7 @@ class PacientesController < ApplicationController
     end
   end
 
-  # DELETE /pacientes/1
-  # DELETE /pacientes/1.xml
   def destroy
-    @paciente = Paciente.find(params[:id])
     @paciente.destroy
 
     respond_to do |format|
@@ -97,14 +81,14 @@ class PacientesController < ApplicationController
   end
   
   def pesquisa
-    params[:nome] = params[:nome].nome_proprio if params[:nome]
+    params[:nome]         = params[:nome].nome_proprio if params[:nome]
     session[:paciente_id] = nil
-    if !session[:paciente_id].nil?
-      @paciente = Paciente.find(session[:paciente_id])
-      params[:codigo] = @paciente.id
-      params[:nome] = @paciente.nome
-    end  
-    @pacientes =[]
+    # if !session[:paciente_id].nil?
+    #   @paciente       = Paciente.find(session[:paciente_id])
+    #   params[:codigo] = @paciente.id
+    #   params[:nome]   = @paciente.nome
+    # end  
+    @pacientes = []
     if !params[:codigo].blank?
       if administracao?
         @pacientes = Paciente.all(:conditions=>["codigo=?", params[:codigo]], :order=>:nome)
@@ -113,7 +97,7 @@ class PacientesController < ApplicationController
       end
       if !@pacientes.empty?
         if @pacientes.size==1
-          redirect_to abre_pacientes_path(:id=>@pacientes.first.id)
+          redirect_to abre_paciente_path(:id=>@pacientes.first.id)
         else
         end 
       else
@@ -177,5 +161,9 @@ class PacientesController < ApplicationController
     result += ''
     render :json => result.to_json
   end
-  
+
+  def busca_paciente
+    @paciente = Paciente.find(params[:id])
+  end  
+
 end

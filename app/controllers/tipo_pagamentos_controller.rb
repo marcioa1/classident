@@ -64,7 +64,7 @@ class TipoPagamentosController < ApplicationController
 
     respond_to do |format|
       if @tipo_pagamento.update_attributes(params[:tipo_pagamento])
-        flash[:notice] = 'TipoPagamento was successfully updated.'
+        flash[:notice] = 'TipoPagamento alterado com sucesso.'
         format.html { redirect_to(@tipo_pagamento) }
         format.xml  { head :ok }
       else

@@ -44,7 +44,7 @@
    	<%= f.label :observações %><br />
     <%= f.text_area :observacoes, :rows=>3, :columns=>50 %>
   </p>
-<fieldset><legend> Repetição </legend>
+<fieldset class='fieldset_20'><legend> Repetição </legend>
   <p>
     <%= f.label :data_de_repeticao %><br />
     <%= text_field_tag :datepicker4, @trabalho_protetico.data_de_repeticao.to_s_br, :size=>10 %>
@@ -63,6 +63,6 @@
   </p>
 <% end %>
 
-<%= link_to 'voltar', abre_pacientes_path(@trabalho_protetico.paciente) %>
+<%= link_to 'voltar', abre_paciente_path(@trabalho_protetico.paciente) %>
 </fieldset>
 <% end %>

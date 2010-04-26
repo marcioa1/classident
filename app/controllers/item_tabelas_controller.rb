@@ -85,7 +85,7 @@ class ItemTabelasController < ApplicationController
 
     respond_to do |format|
       if @item_tabela.update_attributes(params[:item_tabela])
-        flash[:notice] = 'ItemTabela was successfully updated.'
+        flash[:notice] = 'ItemTabela alterado com sucesso.'
         format.html { redirect_to(item_tabelas_path(:tabela_id=>@item_tabela.tabela_id)) }
         format.xml  { head :ok }
       else

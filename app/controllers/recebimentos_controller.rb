@@ -4,31 +4,23 @@ class RecebimentosController < ApplicationController
   
   before_filter :require_user
   before_filter :busca_bancos_e_forma_de_recebimento, :only=>[:new, :edit]
+  before_filter :busca_recebimento, :only => [:show, :edit]
   
-  # GET /recebimentos
-  # GET /recebimentos.xml
   def index
     @recebimentos = Recebimento.all
-
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @recebimentos }
     end
   end
 
-  # GET /recebimentos/1
-  # GET /recebimentos/1.xml
   def show
-    @recebimento = Recebimento.find(params[:id])
-
     respond_to do |format|
       format.html # show.html.erb
       format.xml  { render :xml => @recebimento }
     end
   end
 
-  # GET /recebimentos/new
-  # GET /recebimentos/new.xml
   def new
     @recebimento             = Recebimento.new
     @recebimento.cheque      = Cheque.new
@@ -42,22 +34,18 @@ class RecebimentosController < ApplicationController
     end
   end
 
-  # GET /recebimentos/1/edit
   def edit
-    @recebimento     = Recebimento.find(params[:id])
-    @cheque          = @recebimento.cheque
-    @paciente        = @recebimento.paciente
+    @cheque    = @recebimento.cheque
+    @paciente  = @recebimento.paciente
     if @recebimento.cheque.nil?
       @recebimento.cheque = Cheque.new
     end
   end
 
-  # POST /recebimentos
-  # POST /recebimentos.xml
   def create
     @recebimento = Recebimento.new(params[:recebimento])
     @recebimento.data = params[:datepicker].to_date
-    
+    debugger    
     if @recebimento.em_cheque?
      # @cheque.error.add_on_blank(:cheque, :valor) if params[:banco_id].to_i == 0
       @cheque = Cheque.new
@@ -98,12 +86,12 @@ class RecebimentosController < ApplicationController
     end
     Recebimento.transaction do
       respond_to do |format|
-        if (@recebimento.em_cheque? && @cheque.valid?) && @recebimento.save 
-          format.html { redirect_to(abre_pacientes_path(:id=>@recebimento.paciente_id)) }
+        if ((@recebimento.em_cheque? && @cheque.valid?) || (!@recebimento.em_cheque?)) && @recebimento.save 
+          format.html { redirect_to(abre_paciente_path(:id=>@recebimento.paciente_id)) }
           format.xml  { render :xml => @recebimento, :status => :created, :location => @recebimento }
         else
           @paciente = Paciente.find(session[:paciente_id])
-          @bancos = Banco.all(:order=>:nome).collect{|obj| [obj.numero + " - " + obj.nome,obj.id]}
+          @bancos   = Banco.all(:order=>:nome).collect{|obj| [obj.numero + " - " + obj.nome,obj.id]}
           @formas_recebimentos = FormasRecebimento.por_nome.collect{|obj| [obj.nome,obj.id]}
           
           format.html { render :action => "new" }
@@ -128,7 +116,7 @@ class RecebimentosController < ApplicationController
 
     respond_to do |format|
       if @recebimento.update_attributes(params[:recebimento])
-        format.html { redirect_to(abre_pacientes_path(:id=>@recebimento.paciente_id)) }
+        format.html { redirect_to(abre_paciente_path(:id=>@recebimento.paciente_id)) }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }
@@ -246,5 +234,8 @@ class RecebimentosController < ApplicationController
     @bancos              = Banco.por_nome.collect{|obj| [obj.nome,obj.id]}
     @formas_recebimentos = FormasRecebimento.por_nome.collect{|obj| [obj.nome,obj.id]}
   end  
-  
+
+  def busca_recebimento
+    @recebimento = Recebimento.find(params[:id])
+  end  
 end

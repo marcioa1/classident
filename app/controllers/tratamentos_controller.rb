@@ -30,7 +30,7 @@ class TratamentosController < ApplicationController
           end
         end
         if !erro
-          format.html { redirect_to(abre_pacientes_path(:id=>@tratamento.paciente_id)) }
+          format.html { redirect_to(abre_paciente_path(:id=>@tratamento.paciente_id)) }
           format.xml  { render :xml => @tratamento, :status => :created, :location => @dentista }
         else 
           format.html { render :action => "new" }
@@ -65,7 +65,7 @@ class TratamentosController < ApplicationController
           @debito.data = @tratamento.data
           @debito.save
         end
-        format.html { redirect_to(abre_pacientes_path(:id=>@tratamento.paciente_id)) }
+        format.html { redirect_to(abre_paciente_path(:id=>@tratamento.paciente_id)) }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }

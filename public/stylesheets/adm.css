@@ -14,15 +14,18 @@ fieldset{
     width: 40em;
 }
 .fieldset_30{
-	width: 30em;
+  width: 30em;
 }
 .fieldset_20{
-	width: 20em;
+  width: 20em;
+}
+.fieldset_35{
+  width: 35em;
 }
 #estado{
-	padding-left: 23em;
-	margin-top: -7.2em;
-	//float :right;
+  padding-left: 23em;
+  margin-top: -7.2em;
+  //float :right;
 }
 #logo{
     margin-left: 2em;
@@ -53,9 +56,9 @@ fieldset{
 //  width: 45.2em;
 }
 #titulo{
-	padding-left: 10em;
-	padding-bottom: 0.5em;
-	font-size: 19px;
+  padding-left: 10em;
+  padding-bottom: 0.5em;
+  font-size: 19px;
 }
 #rodape{
     background: #1C4EA3;
@@ -69,15 +72,15 @@ fieldset{
     color :#DF7427;
 }
 .destaque{
-	height: 1.5em;
-	background-color: #FFF4BC;
-	padding-top: .3em;
-	padding-left: 3em;
-	font-size: 18px;
+  height: 1.5em;
+  background-color: #FFF4BC;
+  padding-top: .3em;
+  padding-left: 3em;
+  font-size: 18px;
 }
 .borda_dupla{
   border:solid 1px #455A79;
-  clear:both;	
+  clear:both; 
   padding-top: 0.4em;
   padding-bottom: 0.4em;
   padding-left: 0.4em;
@@ -136,12 +139,12 @@ fieldset{
 }
 
 #valor_restante{
-	float: right;
+  float: right;
 }
 
 .lista{
    border:solid 1px #455A79;
-   clear:both;	
+   clear:both;  
    padding-top: 0.4em;
    padding-bottom: 0.4em;
    padding-left: 0.4em;

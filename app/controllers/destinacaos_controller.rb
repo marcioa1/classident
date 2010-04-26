@@ -61,7 +61,7 @@ class DestinacaosController < ApplicationController
 
     respond_to do |format|
       if @destinacao.update_attributes(params[:destinacao])
-        flash[:notice] = 'Destinacao was successfully updated.'
+        flash[:notice] = 'Destinacao alterado com sucesso.'
         format.html { redirect_to(@destinacao) }
         format.xml  { head :ok }
       else

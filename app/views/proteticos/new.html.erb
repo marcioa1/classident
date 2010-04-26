@@ -41,13 +41,7 @@
     <%= f.label :observação %><br />
     <%= f.text_field :observacao, :size=>35 %>
   </p>
-<fieldset>
-    <legend>Clínicas onde atua :</legend>
-    <% @clinicas.each() do |clinica| %>
-      <%= check_box_tag "clinica_#{clinica.id}", clinica.id, checked=@protetico.clinicas.include?(clinica) %>  
-    <%= clinica.nome %><br/>
-    <% end %>
-  </fieldset>
+
   <p>
     <%= f.submit 'salvar' %>
   </p>
