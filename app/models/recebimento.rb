@@ -48,7 +48,6 @@ class Recebimento < ActiveRecord::Base
         if self.cheque.nil?
           return self.observacao
         else
-          debugger
           return self.observacao + " - " + self.cheque.observacao 
         end
       else

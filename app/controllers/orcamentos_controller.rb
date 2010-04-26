@@ -61,7 +61,7 @@ class OrcamentosController < ApplicationController
       if @orcamento.save
         Tratamento.associa_ao_orcamento(params[:tratamento_ids], @orcamento.id)
          Debito.cria_debitos_do_orcamento(@orcamento.id) unless @orcamento.data_de_inicio.nil?
-        format.html { redirect_to(abre_pacientes_path(@orcamento.paciente_id)) }
+        format.html { redirect_to(abre_paciente_path(@orcamento.paciente_id)) }
         format.xml  { render :xml => @orcamento, :status => :created, :location => @orcamento }
       else
         format.html { render :action => "new" }
@@ -80,7 +80,7 @@ class OrcamentosController < ApplicationController
     
     respond_to do |format|
       if @orcamento.update_attributes(params[:orcamento])
-        format.html { redirect_to(abre_pacientes_path(@orcamento.paciente_id)) }
+        format.html { redirect_to(abre_paciente_path(@orcamento.paciente_id)) }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }

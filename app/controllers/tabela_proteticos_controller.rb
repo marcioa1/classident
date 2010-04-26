@@ -84,18 +84,19 @@ class TabelaProteticosController < ApplicationController
   # DELETE /tabela_proteticos/1.xml
   def destroy
     @tabela_protetico = TabelaProtetico.find(params[:id])
+    protetico         = @tabela_protetico.protetico
+    debugger
     @tabela_protetico.destroy
 
     respond_to do |format|
-      format.html { redirect_to(tabela_proteticos_url) }
+      format.html { administracao? ? redirect_to(tabela_proteticos_url) : redirect_to(abre_protetico_path(protetico)) }
       format.xml  { head :ok }
     end
   end
   
   def importa_tabela_base
-    debugger
     @protetico = Protetico.find(params[:protetico_id])
-    @itens = TabelaProtetico.tabela_base
+    @itens     = TabelaProtetico.tabela_base
     @itens.each do |item|
       item = TabelaProtetico.create(:protetico_id=> @protetico.id,
              :codigo=>item.codigo, :descricao=> item.descricao,

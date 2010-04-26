@@ -45,7 +45,7 @@ class DebitosController < ApplicationController
     @debito.data = params[:datepicker].to_date
     respond_to do |format|
       if @debito.save
-        format.html { redirect_to(abre_pacientes_path(:id=>@debito.paciente_id)) }
+        format.html { redirect_to(abre_paciente_path(:id=>@debito.paciente_id)) }
         format.xml  { render :xml => @debito, :status => :created, :location => @debito }
       else
         format.html { render :action => "new" }
@@ -61,7 +61,7 @@ class DebitosController < ApplicationController
 
     respond_to do |format|
       if @debito.update_attributes(params[:debito])
-        format.html { redirect_to(abre_pacientes_path(:id=>@debito.paciente_id)) }
+        format.html { redirect_to(abre_paciente_path(:id=>@debito.paciente_id)) }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }
@@ -77,7 +77,7 @@ class DebitosController < ApplicationController
     @debito.destroy
 
     respond_to do |format|
-      format.html { redirect_to(abre_pacientes_path(:id=>@debito.paciente_id)) }
+      format.html { redirect_to(abre_paciente_path(:id=>@debito.paciente_id)) }
       format.xml  { head :ok }
     end
   end

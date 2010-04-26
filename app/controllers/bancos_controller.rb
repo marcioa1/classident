@@ -65,7 +65,7 @@ class BancosController < ApplicationController
 
     respond_to do |format|
       if @banco.update_attributes(params[:banco])
-        flash[:notice] = 'Banco was successfully updated.'
+        flash[:notice] = 'Banco alterado com sucesso.'
         format.html { redirect_to(bancos_path) }
         format.xml  { head :ok }
       else

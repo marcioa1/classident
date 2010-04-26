@@ -65,7 +65,7 @@ class ContaBancariasController < ApplicationController
 
     respond_to do |format|
       if @conta_bancaria.update_attributes(params[:conta_bancaria])
-        flash[:notice] = 'ContaBancaria was successfully updated.'
+        flash[:notice] = 'ContaBancaria alterado com sucesso.'
         format.html { redirect_to(@conta_bancaria) }
         format.xml  { head :ok }
       else
