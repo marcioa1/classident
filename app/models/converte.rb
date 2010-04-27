@@ -21,11 +21,7 @@ class Converte
         if clinica != registro.last
           clinica  = registro.last
           @clinica = Clinica.find_by_sigla(clinica)
-          if @clinica.nil?
-            debugger
-          end
         end
-        # puts registro[0]
         p                       = Paciente.new
         p.nome                  = registro[0].nome_proprio
         p.sequencial            = registro[1].to_i
@@ -193,56 +189,71 @@ class Converte
   end
   
   def tabela
-    puts "Convertendo tabelas ...."
-    f = File.open("doc/convertidos/tabela_nova.txt" , "r")
-    Tabela.delete_all
-    Tabela.create!(:nome => 'Inexistente', :ativa => false)
-    clinica = '' 
-    while line = f.gets 
-      registro = busca_registro(line)
-      if clinica != registro.last
-        clinica = registro.last
-        @clinica = Clinica.find_by_sigla(clinica)
+    abre_arquivo_de_erros('Tabelas ....')
+    begin
+      puts "Convertendo tabelas ...."
+      f = File.open("doc/convertidos/tabela_nova.txt" , "r")
+      Tabela.delete_all
+      Tabela.create!(:nome => 'Inexistente', :ativa => false)
+      clinica = '' 
+      while line = f.gets 
+        registro = busca_registro(line)
+        if clinica != registro.last
+          clinica = registro.last
+          @clinica = Clinica.find_by_sigla(clinica)
+        end
+        t              = Tabela.new
+        t.sequencial   = registro[0].to_i
+        t.nome         = registro[1].nome_proprio
+        t.ativa        = (registro[5].to_i == 'Verdadeiro')
+        t.clinica_id   = @clinica.id
+        t.save
       end
-      t              = Tabela.new
-      t.sequencial   = registro[0].to_i
-      t.nome         = registro[1].nome_proprio
-      t.ativa        = (registro[5].to_i == 'Verdadeiro')
-      t.clinica_id   = @clinica.id
-      t.save
+    rescue
+      @arquivo.puts line
+    ensure 
+      f.close
+      fecha_arquivo_de_erros('Tabelas')
     end
-    f.close
+    
   end
   
   def item_tabela
-    puts "Convertendo item das tabelas ...."
-    f = File.open("doc/convertidos/item_tabela.txt" , "r")
-    ItemTabela.delete_all
-    Preco.delete_all
-    clinica = ''
-    while line = f.gets 
-      registro = busca_registro(line)
-      if clinica != registro.last
-        clinica = registro.last
-        @clinica = Clinica.find_by_sigla(clinica)
-      end
-      tabela = Tabela.find_by_sequencial_and_clinica_id(registro[1].to_i,@clinica.id)
-      if !tabela.nil?
-        t = ItemTabela.new
-        t.sequencial = registro[0].to_i
-        t.clinica_id = @clinica.id
-        t.tabela_id = tabela.id
-        t.codigo = registro[2]
-        t.descricao = registro[3]
-        if t.save
-          valor = le_valor(registro[4])
-          Preco.create(:item_tabela_id=> t.id, :clinica_id=>@clinica.id, :preco=> valor)
-        else
-           #TODO registro de log de erro
+    abre_arquivo_de_erros('Item tabelas ...')
+    begin
+      puts "Convertendo item das tabelas ...."
+      f = File.open("doc/convertidos/item_tabela.txt" , "r")
+      ItemTabela.delete_all
+      Preco.delete_all
+      clinica = ''
+      while line = f.gets 
+        registro = busca_registro(line)
+        if clinica != registro.last
+          clinica = registro.last
+          @clinica = Clinica.find_by_sigla(clinica)
+        end
+        tabela = Tabela.find_by_sequencial_and_clinica_id(registro[1].to_i,@clinica.id)
+        if !tabela.nil?
+          t = ItemTabela.new
+          t.sequencial = registro[0].to_i
+          t.clinica_id = @clinica.id
+          t.tabela_id = tabela.id
+          t.codigo = registro[2]
+          t.descricao = registro[3]
+          if t.save
+            valor = le_valor(registro[4])
+            Preco.create(:item_tabela_id=> t.id, :clinica_id=>@clinica.id, :preco=> valor)
+          else
+             #TODO registro de log de erro
+          end
         end
       end
+    rescue
+      @arquivo.puts line
+    ensure
+      f.close
+      fecha_arquivo_de_erros('Item Tabela')
     end
-    f.close
   end
   
   def odontograma
@@ -419,8 +430,6 @@ class Converte
     ensure
       f.close
      fecha_arquivo_de_erros('Fluxo de caixa')
-     # @arquivo.puts "Terminando conversão de Fluxo em #{Time.current}"
-     # @arquivo.close
     end
   end
   
@@ -679,6 +688,7 @@ class Converte
     ensure
       f.close
       fecha_arquivo_de_erros('Tabela de protético')
+    end
   end
   
   def trabalho_protetico

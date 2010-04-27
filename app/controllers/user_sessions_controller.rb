@@ -15,7 +15,7 @@ class UserSessionsController < ApplicationController
         else
          
           if current_user.clinica.nil?
-            session[:clinica_id] = Clinica.find_by_sigla("AD").id
+            session[:clinica_id] = Clinica.find_by_sigla("ad").id
           else
             session[:clinica_id] = current_user.clinica.id
           end
