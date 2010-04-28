@@ -367,7 +367,6 @@ ActiveRecord::Schema.define(:version => 20100425221402) do
     t.string   "cep"
     t.string   "cpf"
     t.date     "nascimento"
-    t.integer  "seq"
     t.integer  "clinica_id"
   end
 

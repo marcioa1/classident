@@ -117,7 +117,7 @@ class PacientesController < ApplicationController
   
   
   def pesquisa_nomes
-    nomes = Paciente.all(:select=>:nome, :conditions=>["nome like ?", "#{params[:term].nome_proprio}%" ])  
+    nomes = Paciente.all(:select=>'nome', :conditions=>["nome like ?", "#{params[:term].nome_proprio}%" ])  
     render :json => nomes.map(&:nome).to_json
   end
   

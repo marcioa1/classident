@@ -596,7 +596,9 @@ class Converte
   
   def protetico
     abre_arquivo_de_erros('Protético')
+    
     begin
+    debugger
       puts "Convertendo protéticos ...."
       f = File.open("doc/convertidos/protetico.txt" , "r")
       Protetico.delete_all
@@ -608,9 +610,9 @@ class Converte
           @clinica  = Clinica.find_by_sigla(clinica)
         end
         p              = Protetico.new
-        #FIXME  criar campo sequencial
         p.sequencial   = registro[0].to_i
-        p.clinicas     << clinica
+        p.clinica_id   = @clinica.id
+     #   p.clinicas     << clinica
         p.nome         = registro[1].nome_proprio
         p.logradouro   = registro[2]
         p.bairro       = registro[3]
@@ -636,23 +638,17 @@ class Converte
     abre_arquivo_de_erros('Tabela base de protético')
     begin
       puts "Convertendo tabela base de protéticos ...."
-      f = File.open("doc/convertidos/tabelaprotetico.txt" , "r")
+      f = File.open("doc/convertidos/tabela_protetico.txt" , "r")
       TabelaProtetico.delete_all
-      clinica = ''
       while line = f.gets 
         registro = busca_registro(line)
-        if clinica != registro.last
-          clinica  = registro.last
-          @clinica = Clinica.find_by_sigla(clinica)
+        item     = TabelaProtetico.find_by_descricao(registro[1]) 
+        if item.nil?
+          t              = TabelaProtetico.new
+          t.descricao    = registro[1]
+          t.valor        = le_valor(registro[2])
+          t.save
         end
-        t              = TabelaProtetico.new
-        #FIXME  tratar o sequencial
-        t.sequencial   = registro[0].to_i
-        t.protetico_id = nil
-        t.codigo       = ''
-        t.descricao    = registro[1]
-        t.valor        = le_valor(registro[2])
-        t.save
       end
     rescue
       @arquivo.puts line
@@ -660,11 +656,12 @@ class Converte
       f.close
       fecha_arquivo_de_erros('Tabela base de protético')
     end
-    abre_arquivo_de_erros('Tabela de protéticos')
+    #
+    abre_arquivo_de_erros('Tabela dos protéticos')
     begin
     # tabelas dos proteticos
-      puts "Convertendo tabela de protéticos ...."
-      f = File.open("doc/convertidos/itemProtetico.txt" , "r")
+      puts "Convertendo tabela dos protéticos ...."
+      f = File.open("doc/convertidos/item_protetico.txt" , "r")
       while line = f.gets 
         registro = busca_registro(line)
         if clinica != registro.last
@@ -673,12 +670,10 @@ class Converte
         end
         t                = TabelaProtetico.new
         t.sequencial     = registro[0].to_i
-        #FIXME  TRatar o protetico como sendo unico em várias clínicas
-        protetico        = Protetico.find_by_sequencial(registro[1].to_i)
+        protetico        = Protetico.find_by_sequencial_and_clinica(registro[1].to_i, @clinica.id)
         if protetico.present?
           t.protetico_id = protetico.id
         end
-        t.codigo         = ''
         t.descricao      = registro[2]
         t.valor          = le_valor(registro[3])
         t.save
@@ -694,45 +689,40 @@ class Converte
   def trabalho_protetico
     # depende de orçamento
     puts "Convertendo trabalho protético ...."
-    f = File.open("doc/noprotetico.txt" , "r")
+    f = File.open("doc/convertidos/noprotetico.txt" , "r")
     TrabalhoProtetico.delete_all
     clinica = ''
-    linha   = 0
     while line = f.gets 
       registro = busca_registro(line)
       if clinica != registro.last
         clinica  = registro.last
         @clinica = Clinica.find_by_sigla(clinica)
       end
-      #puts linha #registro[1] + ";"  +registro[1] + ";" + registro[2]
-      linha += 1
       t                       = TrabalhoProtetico.new
       t.clinica_id            = @clinica.id
-      #FIXME Preciso da clinica também para achar o dentista
-      dentista                = Dentista.find_by_sequencial(registro[10].to_i)
+      dentista                = Dentista.find_by_sequencial_and_clinica_id(registro[10].to_i, @clinica.id)
       t.dentista_id           = dentista.id unless dentista.nil?
-      #FIXME  Localizar o protético corretamente
-      p                       = Protetico.find_by_sequencial(registro[0].to_i)
-      t.protetico             = p unless p.nil?
+      protetico               = Protetico.find_by_sequencial_and_clinica_id(registro[0].to_i, @clinica.id)
+      t.protetico_id          = protetico.id unless protetico.nil?
       paciente                = Paciente.find_by_sequencial_and_clinica_id(registro[1].to_i, @clinica.id)
-      t.paciente              = paciente unless paciente.nil?
+      t.paciente_id           = paciente.id unless paciente.nil?
       t.dente                 = registro[6]
       begin
-        t.data_de_envio                           = registro[3].to_date unless registro[3].blank?
-        t.data_prevista_de_devolucao              = registro[5].to_date unless registro[5].blank? or registro[5].nil?
-        t.data_de_devolucao                       = registro[4].to_date unless registro[4].blank?
-        t.data_de_repeticao                       = registro[12].to_date unless registro[12].blank?
-        t.data_prevista_da_devolucao_da_repeticao = registro[15].to_date unless registro[15].blank?
+        t.data_de_envio                           = registro[3].to_date if Date.valid?(registro[3])
+        t.data_prevista_de_devolucao              = registro[5].to_date if Date.valid?(registro[5])
+        t.data_de_devolucao                       = registro[4].to_date if Date.valid?(registro[4])
+        t.data_de_repeticao                       = registro[12].to_date if Date.valid?(registro[12])
+        t.data_prevista_da_devolucao_da_repeticao = registro[15].to_date if Date.valid?(registro[15])
       rescue
       end
-      tabela                = TabelaProtetico.find_by_sequencial(registro[8].to_i)
+      tabela                = TabelaProtetico.find_by_protetico_id_and_sequencial(protetico.id,registro[8].to_i)
       t.tabela_protetico    = tabela unless tabela.nil?
       t.valor               = le_valor(registro[7]) unless registro[7].nil?
       t.cor                 = registro[11]
       t.observacoes         = registro[9]
       t.motivo_da_repeticao = registro[13]
       t.pagamento_id        = 0
-      #TODO definir como registrar que foi pago
+      #FIXME definir como registrar que foi pago
       t.save
     end
     f.close

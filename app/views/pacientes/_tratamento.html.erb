@@ -28,7 +28,7 @@
     <td><%= link_to tratamento.item_tabela.descricao, edit_tratamento_path(tratamento) unless tratamento.item_tabela.nil?%></td>
     <td align="right"><%= tratamento.valor.real%></td>
     <td align="right"><%= tratamento.custo.real%></td>
-    <td><%= tratamento.dentista.nome %></td>
+    <td><%= tratamento.dentista.nome unless tratamento.dentista.nil? %></td>
     <td align="center">
     <% if tratamento.data.to_s_br.blank? %>
       <span id="finalizar_<%=tratamento.id.to_s%>"  >
