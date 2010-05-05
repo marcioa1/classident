@@ -20,7 +20,6 @@ class UsersController < ApplicationController
   end
 
   def create
-    debugger
     @user = User.new(params[:user])
     if @user.save
       flash[:notice] = "Account registered!"

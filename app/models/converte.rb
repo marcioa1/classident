@@ -48,8 +48,8 @@ class Converte
         end
         p.save!
       end
-    rescue
-      @arquivo.puts line
+    rescue Exception => ex
+      @arquivo.puts line + "\n"+ "      ->" + ex 
     ensure
       f.close
       fecha_arquivo_de_erros('Cadastro')
@@ -81,8 +81,8 @@ class Converte
           p.save
         end
       end
-    rescue
-      @arquivo.puts line
+    rescue Exception => ex
+      @arquivo.puts line + "\n"+ "      ->" + ex
     ensure
       f.close
       fecha_arquivo_de_erros('Mala-direta')
@@ -112,8 +112,8 @@ class Converte
         d.tratamento_id = registro[10].to_i
         d.save
       end
-    rescue
-      @arquivo.puts line
+    rescue Exception => ex
+      @arquivo.puts line + "\n"+ "      ->" + ex
     ensure
       f.close
       fecha_arquivo_de_erros('Débitos')
@@ -145,8 +145,8 @@ class Converte
         forma_cli.clinica_id = @clinica_id
         forma_cli.save
       end
-    rescue
-      @arquivo.puts line
+    rescue Exception => ex
+      @arquivo.puts line + "\n"+ "      ->" + ex
     ensure
       f.close
       fecha_arquivo_de_erros('Formas de recebimento')
@@ -180,8 +180,8 @@ class Converte
         r.observacao_exclusao   = registro[14]
         r.save
       end
-    rescue
-      @arquivo.puts line
+    rescue Exception => ex
+      @arquivo.puts line + "\n"+ "      ->" + ex
     ensure
       f.close
       fecha_arquivo_de_erros('Recebimento')
@@ -209,8 +209,8 @@ class Converte
         t.clinica_id   = @clinica.id
         t.save
       end
-    rescue
-      @arquivo.puts line
+    rescue Exception => ex
+      @arquivo.puts line + "\n"+ "      ->" + ex
     ensure 
       f.close
       fecha_arquivo_de_erros('Tabelas')
@@ -248,8 +248,8 @@ class Converte
           end
         end
       end
-    rescue
-      @arquivo.puts line
+    rescue Exception => ex
+      @arquivo.puts line + "\n"+ "      ->" + ex
     ensure
       f.close
       fecha_arquivo_de_erros('Item Tabela')
@@ -265,11 +265,17 @@ class Converte
       f = File.open("doc/convertidos/odontograma.txt" , "r")
       Tratamento.delete_all
       clinica = ''
+      line = 1
       while line = f.gets 
+        line += 1
+        debugger
         registro = busca_registro(line)
         if clinica != registro.last
           clinica  = registro.last
           @clinica = Clinica.find_by_sigla(clinica)
+        end
+        if line == 300
+          debugger
         end
         t                 = Tratamento.new
         t.sequencial      = registro[0].to_i
@@ -293,8 +299,9 @@ class Converte
         t.created_at     = registro[14].to_date if Date.valid?(registro[14])
         t.save
       end
-    rescue
-      @arquivo.puts line
+    rescue Exception => ex
+      debugger
+      @arquivo.puts line + "\n"+ "      ->" + ex
     ensure
       f.close
       fecha_arquivo_de_erros('odontograma')
@@ -328,8 +335,8 @@ class Converte
         @clinica.dentistas << dentista
       end
       @clinica.save
-    rescue
-      @arquivo.puts line
+    rescue Exception => ex
+      @arquivo.puts line + "\n"+ "      ->" + ex
     ensure
       f.close
       fecha_arquivo_de_erros('Dentistas')
@@ -356,8 +363,8 @@ class Converte
         t.clinica_id = @clinica.id
         t.save
       end
-    rescue
-      @arquivo.puts line
+    rescue Exception => ex
+      @arquivo.puts line + "\n"+ "      ->" + ex
     ensure
       f.close
       fecha_arquivo_de_erros('Tipo de Pagamento')
@@ -394,10 +401,11 @@ class Converte
         t.data_de_exclusao          = registro[17].to_date unless registro[17].blank?
         t.save
       end
-    rescue
+    rescue Exception => ex
       STDOUT.puts "Erro ao processar a linha #{line}"
     ensure
       f.close
+      fecha_arquivo_de_erros('Pagamentos')
     end
       
   end
@@ -425,7 +433,7 @@ class Converte
         t.saldo_em_cheque   = le_valor(registro[2])
         t.save
       end
-    rescue
+    rescue Exception => ex
       @arquivo.puts "Erro ao processar a linha #{line}"
     ensure
       f.close
@@ -516,8 +524,8 @@ class Converte
           recebimento.save
         end
       end
-    rescue
-      @arquivo.puts line
+    rescue Exception => ex
+      @arquivo.puts line + "\n"+ "      ->" + ex
     ensure
       f.close
       fecha_arquivo_de_erros("Cheques")
@@ -543,8 +551,8 @@ class Converte
         t.nome       = registro[1].nome_proprio
         t.save
       end
-    rescue
-      @arquivo.puts line
+    rescue Exception => ex
+      @arquivo.puts line + "\n"+ "      ->" + ex
     ensure
       f.close
       fecha_arquivo_de_erros("Destinação")
@@ -586,8 +594,8 @@ class Converte
         o.valor                       = o.valor_com_desconto / (100 - (o.desconto / 100)) * 100
         o.save
       end
-    rescue
-      @arquivo.puts line
+    rescue Exception => ex
+      @arquivo.puts line + "\n"+ "      ->" + ex
     ensure
       f.close
       fecha_arquivo_de_erros("Orçamento")
@@ -625,8 +633,8 @@ class Converte
         p.nascimento   = registro[10].to_date if Date.valid?(registro[10])
         p.save
       end
-    rescue
-      @arquivo.puts line
+    rescue Exception => ex
+      @arquivo.puts line + "\n"+ "      ->" + ex
     ensure
       f.close 
       fecha_arquivo_de_erros("Orçamento")
@@ -650,8 +658,8 @@ class Converte
           t.save
         end
       end
-    rescue
-      @arquivo.puts line
+    rescue Exception => ex
+      @arquivo.puts line + "\n"+ "      ->" + ex
     ensure
       f.close
       fecha_arquivo_de_erros('Tabela base de protético')
@@ -662,6 +670,7 @@ class Converte
     # tabelas dos proteticos
       puts "Convertendo tabela dos protéticos ...."
       f = File.open("doc/convertidos/item_protetico.txt" , "r")
+      clinica = ''
       while line = f.gets 
         registro = busca_registro(line)
         if clinica != registro.last
@@ -670,7 +679,7 @@ class Converte
         end
         t                = TabelaProtetico.new
         t.sequencial     = registro[0].to_i
-        protetico        = Protetico.find_by_sequencial_and_clinica(registro[1].to_i, @clinica.id)
+        protetico        = Protetico.find_by_sequencial_and_clinica_id(registro[1].to_i, @clinica.id)
         if protetico.present?
           t.protetico_id = protetico.id
         end
@@ -678,8 +687,8 @@ class Converte
         t.valor          = le_valor(registro[3])
         t.save
       end
-    rescue 
-      @arquivo.puts line
+    rescue Exception => ex 
+      @arquivo.puts line + "\n"+ "      ->" + ex
     ensure
       f.close
       fecha_arquivo_de_erros('Tabela de protético')
@@ -713,7 +722,7 @@ class Converte
         t.data_de_devolucao                       = registro[4].to_date if Date.valid?(registro[4])
         t.data_de_repeticao                       = registro[12].to_date if Date.valid?(registro[12])
         t.data_prevista_da_devolucao_da_repeticao = registro[15].to_date if Date.valid?(registro[15])
-      rescue
+      rescue Exception => ex
       end
       tabela                = TabelaProtetico.find_by_protetico_id_and_sequencial(protetico.id,registro[8].to_i)
       t.tabela_protetico    = tabela unless tabela.nil?

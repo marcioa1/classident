@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100425221402) do
+ActiveRecord::Schema.define(:version => 20100504022820) do
 
   create_table "altas", :force => true do |t|
     t.integer  "paciente_id"
@@ -166,7 +166,7 @@ ActiveRecord::Schema.define(:version => 20100425221402) do
 
   create_table "entradas", :force => true do |t|
     t.date     "data"
-    t.decimal  "valor"
+    t.decimal  "valor",                       :precision => 8, :scale => 2
     t.string   "observacao"
     t.integer  "clinica_id"
     t.datetime "created_at"
@@ -222,11 +222,6 @@ ActiveRecord::Schema.define(:version => 20100425221402) do
     t.datetime "updated_at"
   end
 
-  create_table "indicacoes", :force => true do |t|
-    t.string  "descricao"
-    t.boolean "ativo",     :default => true
-  end
-
   create_table "item_tabelas", :force => true do |t|
     t.integer  "tabela_id"
     t.string   "codigo"
@@ -236,7 +231,7 @@ ActiveRecord::Schema.define(:version => 20100425221402) do
     t.datetime "updated_at"
     t.integer  "descricao_conduta_id"
     t.integer  "sequencial"
-    t.integer  "clinica_id"
+    t.string   "clinica"
     t.decimal  "preco",                :precision => 9, :scale => 2
   end
 
@@ -310,17 +305,17 @@ ActiveRecord::Schema.define(:version => 20100425221402) do
     t.integer  "tipo_pagamento_id"
     t.date     "data_de_vencimento"
     t.date     "data_de_pagamento"
-    t.decimal  "valor"
-    t.decimal  "valor_pago"
+    t.decimal  "valor",                     :precision => 9, :scale => 2
+    t.decimal  "valor_pago",                :precision => 9, :scale => 2
     t.string   "observacao"
     t.boolean  "nao_lancar_no_livro_caixa"
     t.datetime "data_de_exclusao"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "sequencial"
-    t.decimal  "valor_terceiros"
-    t.decimal  "valor_cheque"
-    t.decimal  "valor_restante"
+    t.decimal  "valor_terceiros",           :precision => 9, :scale => 2
+    t.decimal  "valor_cheque",              :precision => 9, :scale => 2
+    t.decimal  "valor_restante",            :precision => 9, :scale => 2
     t.integer  "opcao_restante"
     t.integer  "conta_bancaria_id"
     t.string   "numero_do_cheque"
@@ -379,7 +374,7 @@ ActiveRecord::Schema.define(:version => 20100425221402) do
     t.integer  "clinica_id"
     t.date     "data"
     t.integer  "formas_recebimento_id"
-    t.decimal  "valor"
+    t.decimal  "valor",                 :precision => 9, :scale => 2
     t.string   "observacao"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -399,7 +394,7 @@ ActiveRecord::Schema.define(:version => 20100425221402) do
     t.integer  "protetico_id"
     t.string   "codigo"
     t.string   "descricao"
-    t.decimal  "valor"
+    t.decimal  "valor",        :precision => 8, :scale => 2
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "sequencial"
@@ -412,7 +407,7 @@ ActiveRecord::Schema.define(:version => 20100425221402) do
     t.boolean  "ativa"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "clinica_id"
+    t.string   "clinica"
     t.integer  "sequencial"
   end
 
@@ -449,7 +444,7 @@ ActiveRecord::Schema.define(:version => 20100425221402) do
     t.date     "data_prevista_de_devolucao"
     t.date     "data_de_devolucao"
     t.integer  "tabela_protetico_id"
-    t.decimal  "valor"
+    t.decimal  "valor",                                   :precision => 7, :scale => 2
     t.string   "cor"
     t.text     "observacoes"
     t.date     "data_de_repeticao"
@@ -471,15 +466,15 @@ ActiveRecord::Schema.define(:version => 20100425221402) do
     t.integer  "paciente_id"
     t.integer  "item_tabela_id"
     t.integer  "dentista_id"
-    t.decimal  "valor"
+    t.decimal  "valor",                        :precision => 9, :scale => 2
     t.date     "data"
     t.string   "dente"
     t.integer  "orcamento_id"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "clinica_id"
-    t.boolean  "excluido"
-    t.decimal  "custo"
+    t.boolean  "excluido",                                                   :default => false
+    t.decimal  "custo",                        :precision => 9, :scale => 2
     t.string   "face"
     t.string   "descricao",      :limit => 60
     t.integer  "sequencial"

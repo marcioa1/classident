@@ -5,7 +5,7 @@ class User < ActiveRecord::Base
   belongs_to :clinica
   belongs_to :alta
   
-  validates_presence_of :nome, :on => :create, :message => "cmpo obrigatório."
+  validates_presence_of :nome, :on => :create, :message => "campo obrigatório."
   
   named_scope :ativos, :conditions=>["ativo = 't'"]
   named_scope :por_nome, :order=>:nome
