@@ -189,7 +189,6 @@ class DentistasController < ApplicationController
           "<td align='right'>" + pag.valor_pago.real.to_s + "</td>" + 
           "<td>" + pag.observacao + "</td>" +
          "</tr>"
-         debugger
       total += pag.valor_pago
     end
     saida += "<tr><td align='center'>Total</td><td align='right'>" + total.real.to_s + "</td><td>&nbsp;</td></tr>"
@@ -198,7 +197,6 @@ class DentistasController < ApplicationController
   end
   
   def pesquisar
-    debugger
     params[:ativo] = "true" if params[:ativo].nil?
      if administracao? 
        @dentistas = Dentista.por_nome

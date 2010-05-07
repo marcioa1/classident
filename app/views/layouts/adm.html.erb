@@ -22,7 +22,7 @@
   <%= javascript_include_tag 'adm.js'%>
   <%= javascript_include_tag 'clinica.js' %>
 </head>
-<% if administracao? %>
+<% if session[:clinica_id].to_i == 10 %>
   <body style='background-color: #F6FDB8;'>
 <% else %>
   <body style='background-color: #E6EDF8;'>
@@ -44,7 +44,7 @@
     
     <div id="principal">
         <div class="pd_menu_01">
-            <% if administracao? %>
+            <% if session[:clinica_id].to_i == 10 %>
               <%= render :partial=>"layouts/menu_adm" %>
             <% else %>
               <%= render :partial=>"layouts/menu_clinica" %>

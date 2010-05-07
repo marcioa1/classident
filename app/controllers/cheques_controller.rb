@@ -35,7 +35,6 @@ class ChequesController < ApplicationController
   # PUT /cheques/1.xml
   def update
     @cheque = Cheque.find(params[:id])
-    debugger
     if params[:datepicker2].empty?
       @cheque.data_primeira_devolucao = nil
     else
@@ -88,7 +87,6 @@ class ChequesController < ApplicationController
         ["usados para pagamento","usados para pagamento"],
         ["destinação", "destinação"], ["devolvido","devolvido"],
         ["reapresentado","reapresentado"], ["spc", "spc"]].sort!
-    debugger
     @cheques = []
     if params[:status] == "todos"
       @cheques = Cheque.por_bom_para.da_clinica(session[:clinica_id]).entre_datas(@data_inicial,@data_final).
@@ -142,7 +140,6 @@ class ChequesController < ApplicationController
   end
   
   def registra_recebimento_de_cheques
-    debugger
     lista = params[:cheques].split(",")
     lista.each() do |numero|
       cheque = Cheque.find(numero.to_i)

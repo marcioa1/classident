@@ -85,7 +85,6 @@ class TabelaProteticosController < ApplicationController
   def destroy
     @tabela_protetico = TabelaProtetico.find(params[:id])
     protetico         = @tabela_protetico.protetico
-    debugger
     @tabela_protetico.destroy
 
     respond_to do |format|

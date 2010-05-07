@@ -79,7 +79,6 @@
     <% else %>
       <td>&nbsp;</td>
       <td align="right" style='color: red;'><%= lancamento.valor.abs.real %></td>
-      <% debugger %>
       <% saldo_dinheiro += lancamento.valor %>
     <% end %>
     <td align="right"><%= saldo_dinheiro.real %></td>

@@ -24,7 +24,6 @@ class FluxoDeCaixaController < ApplicationController
     @remessas = Entrada.remessa.da_clinica(session[:clinica_id]).do_dia(@fluxo.data)
     @lancamentos = @recebimentos + @pagamentos + @entradas + @remessas 
     @entradas_adm =[]
-    debugger
     if administracao?
       @entradas_adm = Entrada.confirmado.do_dia(@fluxo.data)
       @entradas_adm.each do |entrada| 

@@ -90,7 +90,6 @@ class DebitosController < ApplicationController
     end
     @em_debito = []
     @tabelas = Tabela.ativas.por_nome
-    debugger
     @pacientes.each do |pac|
       if params['tabela_' + pac.tabela_id.to_s]
         puts pac.nome + " > " + pac.saldo.real.to_s

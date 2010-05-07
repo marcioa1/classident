@@ -18,6 +18,11 @@ class ApplicationController < ActionController::Base
      end
   end
   
+  def administracao?
+    session[:clinica_id].to_i == 10
+  end
+  
+  
   private
   
     def require_user
@@ -66,9 +71,6 @@ class ApplicationController < ActionController::Base
       @administracao = administracao?
     end
     
-    def administracao?
-      session[:clinica_id].to_i == 10
-    end
     
 end
 #TODO usar this no jquery

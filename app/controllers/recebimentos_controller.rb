@@ -45,7 +45,6 @@ class RecebimentosController < ApplicationController
   def create
     @recebimento = Recebimento.new(params[:recebimento])
     @recebimento.data = params[:datepicker].to_date
-    debugger    
     if @recebimento.em_cheque?
      # @cheque.error.add_on_blank(:cheque, :valor) if params[:banco_id].to_i == 0
       @cheque = Cheque.new

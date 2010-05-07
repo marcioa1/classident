@@ -10,13 +10,13 @@ class Converte
 
   def cadastro 
     abre_arquivo_de_erros('Cadastro')
-    begin
-      puts "Convertendo cadastro ..."
-      f = File.open("doc/convertidos/cadastro.txt" , "r")
-      tabela_inexistente = Tabela.find_by_nome('Inexistente')
-      Paciente.delete_all
-      clinica = ''
-      while line = f.gets
+    puts "Convertendo cadastro ..."
+    f = File.open("doc/convertidos/cadastro.txt" , "r")
+    tabela_inexistente = Tabela.find_by_nome('Inexistente')
+    Paciente.delete_all
+    clinica = ''
+    while line = f.gets
+      begin
         registro = busca_registro(line)
         if clinica != registro.last
           clinica  = registro.last
@@ -47,23 +47,22 @@ class Converte
           p.ortodontia = false
         end
         p.save!
+      rescue Exception => ex
+        @arquivo.puts line + "\n"+ "      ->" + ex 
       end
-    rescue Exception => ex
-      @arquivo.puts line + "\n"+ "      ->" + ex 
-    ensure
-      f.close
-      fecha_arquivo_de_erros('Cadastro')
     end
+    f.close
+    fecha_arquivo_de_erros('Cadastro')
   end
   
   def mala_direta
     #FIXME considerar que pode haver outras pessoas que não sejam pacientes
     abre_arquivo_de_erros('Mala-direta')
-    begin
-      puts "Convertendo mala direta ..."
-      f = File.open("doc/convertidos/maladireta.txt" , "r")
-      clinica = ''
-      while line = f.gets
+    puts "Convertendo mala direta ..."
+    f = File.open("doc/convertidos/maladireta.txt" , "r")
+    clinica = ''
+    while line = f.gets
+      begin
         registro = busca_registro(line)
         if clinica != registro.last
           clinica  = registro.last
@@ -80,30 +79,29 @@ class Converte
           p.telefone     = registro[9]
           p.save
         end
+      rescue Exception => ex
+        @arquivo.puts line + "\n"+ "      ->" + ex
       end
-    rescue Exception => ex
-      @arquivo.puts line + "\n"+ "      ->" + ex
-    ensure
-      f.close
-      fecha_arquivo_de_erros('Mala-direta')
     end
+    f.close
+    fecha_arquivo_de_erros('Mala-direta')
   end
   
   def debito
     # Depende de tratamento
     abre_arquivo_de_erros('Débitos')
-    begin
-      puts "Convertendo débitos ...."
-      f = File.open("doc/convertidos/debito.txt" , "r")
-      Debito.delete_all
-      clinica = ''
-      while line = f.gets 
+    puts "Convertendo débitos ...."
+    f = File.open("doc/convertidos/debito.txt" , "r")
+    Debito.delete_all
+    clinica = ''
+    while line = f.gets 
+      begin
         registro = busca_registro(line)
         if clinica != registro.last
           clinica = registro.last
           @clinica = Clinica.find_by_sigla(clinica)
         end
-        d = Debito.new
+        d               = Debito.new
         paciente        = Paciente.find_by_sequencial_and_clinica_id(registro[0].to_i, @clinica.id)
         d.paciente_id   = paciente.id unless paciente.nil?
         d.data          = registro[1].to_date
@@ -111,23 +109,22 @@ class Converte
         d.descricao     = registro[3]
         d.tratamento_id = registro[10].to_i
         d.save
+      rescue Exception => ex
+        @arquivo.puts line + "\n"+ "      ->" + ex
       end
-    rescue Exception => ex
-      @arquivo.puts line + "\n"+ "      ->" + ex
-    ensure
-      f.close
-      fecha_arquivo_de_erros('Débitos')
     end
+    f.close
+    fecha_arquivo_de_erros('Débitos')
   end
   
   def formas_recebimento
     abre_arquivo_de_erros('Formas de recebimento')
     puts "Convertendo formas de recebimentos ...."
-    begin
-      f = File.open("doc/convertidos/forma_rec.txt" , "r")
-      FormasRecebimento.delete_all
-      clinica = ''
-      while line = f.gets 
+    f = File.open("doc/convertidos/forma_rec.txt" , "r")
+    FormasRecebimento.delete_all
+    clinica = ''
+    while line = f.gets 
+      begin
         registro = busca_registro(line)
         if clinica != registro.last
           clinica = registro.last
@@ -144,23 +141,22 @@ class Converte
         forma_cli.id_adm     = forma_adm.id
         forma_cli.clinica_id = @clinica_id
         forma_cli.save
+      rescue Exception => ex
+        @arquivo.puts line + "\n"+ "      ->" + ex
       end
-    rescue Exception => ex
-      @arquivo.puts line + "\n"+ "      ->" + ex
-    ensure
-      f.close
-      fecha_arquivo_de_erros('Formas de recebimento')
     end
+    f.close
+    fecha_arquivo_de_erros('Formas de recebimento')
   end
   
   def recebimento
     abre_arquivo_de_erros("Recebimentos")
     puts "Convertendo recebimentos ...."
-    begin
-      f = File.open("doc/convertidos/recebimento.txt" , "r")
-      Recebimento.delete_all
-      clinica = ''
-      while line = f.gets 
+    f = File.open("doc/convertidos/recebimento.txt" , "r")
+    Recebimento.delete_all
+    clinica = ''
+    while line = f.gets 
+      begin
         r          = Recebimento.new
         registro   = busca_registro(line)
         if clinica != registro.last
@@ -179,24 +175,23 @@ class Converte
         r.data_de_exclusao      = registro[12].to_date if Date.valid?(registro[12])
         r.observacao_exclusao   = registro[14]
         r.save
+      rescue Exception => ex
+        @arquivo.puts line + "\n"+ "      ->" + ex
       end
-    rescue Exception => ex
-      @arquivo.puts line + "\n"+ "      ->" + ex
-    ensure
-      f.close
-      fecha_arquivo_de_erros('Recebimento')
     end
+    f.close
+    fecha_arquivo_de_erros('Recebimento')
   end
   
   def tabela
     abre_arquivo_de_erros('Tabelas ....')
-    begin
-      puts "Convertendo tabelas ...."
-      f = File.open("doc/convertidos/tabela_nova.txt" , "r")
-      Tabela.delete_all
-      Tabela.create!(:nome => 'Inexistente', :ativa => false)
-      clinica = '' 
-      while line = f.gets 
+    puts "Convertendo tabelas ...."
+    f = File.open("doc/convertidos/tabela_nova.txt" , "r")
+    Tabela.delete_all
+    Tabela.create!(:nome => 'Inexistente', :ativa => false)
+    clinica = '' 
+    while line = f.gets 
+      begin
         registro = busca_registro(line)
         if clinica != registro.last
           clinica = registro.last
@@ -208,25 +203,23 @@ class Converte
         t.ativa        = (registro[5].to_i == 'Verdadeiro')
         t.clinica_id   = @clinica.id
         t.save
+      rescue Exception => ex
+        @arquivo.puts line + "\n"+ "      ->" + ex
       end
-    rescue Exception => ex
-      @arquivo.puts line + "\n"+ "      ->" + ex
-    ensure 
-      f.close
-      fecha_arquivo_de_erros('Tabelas')
     end
-    
+    f.close
+    fecha_arquivo_de_erros('Tabelas')
   end
   
   def item_tabela
     abre_arquivo_de_erros('Item tabelas ...')
-    begin
-      puts "Convertendo item das tabelas ...."
-      f = File.open("doc/convertidos/item_tabela.txt" , "r")
-      ItemTabela.delete_all
-      Preco.delete_all
-      clinica = ''
-      while line = f.gets 
+    puts "Convertendo item das tabelas ...."
+    f = File.open("doc/convertidos/item_tabela.txt" , "r")
+    ItemTabela.delete_all
+    Preco.delete_all
+    clinica = ''
+    while line = f.gets 
+      begin
         registro = busca_registro(line)
         if clinica != registro.last
           clinica = registro.last
@@ -240,42 +233,34 @@ class Converte
           t.tabela_id = tabela.id
           t.codigo = registro[2]
           t.descricao = registro[3]
-          if t.save
-            valor = le_valor(registro[4])
-            Preco.create(:item_tabela_id=> t.id, :clinica_id=>@clinica.id, :preco=> valor)
-          else
-             #TODO registro de log de erro
-          end
+          t.save
+          valor = le_valor(registro[4])
+          Preco.create(:item_tabela_id=> t.id, :clinica_id=>@clinica.id, :preco=> valor)
         end
+      rescue Exception => ex
+        @arquivo.puts line + "\n"+ "      ->" + ex
       end
-    rescue Exception => ex
-      @arquivo.puts line + "\n"+ "      ->" + ex
-    ensure
-      f.close
-      fecha_arquivo_de_erros('Item Tabela')
     end
+    f.close
+    fecha_arquivo_de_erros('Item Tabela')
   end
   
   def odontograma
     # depende de dentista
     #TODO colocar descricao do tratamento na tabela e na conversão
     abre_arquivo_de_erros('Odontograma')
-    begin
-      puts "Convertendo odontograma ...."
-      f = File.open("doc/convertidos/odontograma.txt" , "r")
-      Tratamento.delete_all
-      clinica = ''
-      line = 1
-      while line = f.gets 
+    puts "Convertendo odontograma ...."
+    f = File.open("doc/convertidos/odontograma.txt" , "r")
+    Tratamento.delete_all
+    clinica = ''
+    line = 1
+    while line = f.gets 
+      begin
         line += 1
-        debugger
         registro = busca_registro(line)
         if clinica != registro.last
           clinica  = registro.last
           @clinica = Clinica.find_by_sigla(clinica)
-        end
-        if line == 300
-          debugger
         end
         t                 = Tratamento.new
         t.sequencial      = registro[0].to_i
@@ -298,24 +283,22 @@ class Converte
         t.clinica_id     = @clinica.id
         t.created_at     = registro[14].to_date if Date.valid?(registro[14])
         t.save
+      rescue Exception => ex
+        @arquivo.puts line + "\n"+ "      ->" + ex
       end
-    rescue Exception => ex
-      debugger
-      @arquivo.puts line + "\n"+ "      ->" + ex
-    ensure
-      f.close
-      fecha_arquivo_de_erros('odontograma')
     end
+    f.close
+    fecha_arquivo_de_erros('odontograma')
   end
   
   def dentista
     abre_arquivo_de_erros('Dentistas')
-    begin
-      puts "Convertendo dentistas ...."
-      f = File.open("doc/convertidos/dentista.txt" , "r")
-      Dentista.delete_all
-      clinica = ''
-      while line = f.gets 
+    puts "Convertendo dentistas ...."
+    f = File.open("doc/convertidos/dentista.txt" , "r")
+    Dentista.delete_all
+    clinica = ''
+    while line = f.gets 
+      begin
         registro = busca_registro(line)
         if clinica != registro.last
           @clinica.save if !clinica.blank?
@@ -333,24 +316,23 @@ class Converte
         dentista.especialidade   = registro[3]
         dentista.save
         @clinica.dentistas << dentista
+      rescue Exception => ex
+        @arquivo.puts line + "\n"+ "      ->" + ex
       end
-      @clinica.save
-    rescue Exception => ex
-      @arquivo.puts line + "\n"+ "      ->" + ex
-    ensure
-      f.close
-      fecha_arquivo_de_erros('Dentistas')
     end
+    @clinica.save
+    f.close
+    fecha_arquivo_de_erros('Dentistas')
   end
   
   def tipo_pagamento
     abre_arquivo_de_erros('Tipo de Pagamento')
-    begin
-      puts "Convertendo tipos de pagamentos ...."
-      f = File.open("doc/convertidos/tipo_pagamento.txt" , "r")
-      TipoPagamento.delete_all
-      clinica = ''
-      while line = f.gets 
+    puts "Convertendo tipos de pagamentos ...."
+    f = File.open("doc/convertidos/tipo_pagamento.txt" , "r")
+    TipoPagamento.delete_all
+    clinica = ''
+    while line = f.gets 
+      begin
         registro = busca_registro(line)
         if clinica != registro.last
           clinica  = registro.last
@@ -362,23 +344,22 @@ class Converte
         t.ativo      = (registro[2]=='Verdadeiro')
         t.clinica_id = @clinica.id
         t.save
+      rescue Exception => ex
+        @arquivo.puts line + "\n"+ "      ->" + ex
       end
-    rescue Exception => ex
-      @arquivo.puts line + "\n"+ "      ->" + ex
-    ensure
-      f.close
-      fecha_arquivo_de_erros('Tipo de Pagamento')
     end
+    f.close
+    fecha_arquivo_de_erros('Tipo de Pagamento')
   end
   
   def pagamento
     abre_arquivo_de_erros('Pagamentos')
     puts 'Convertendo pagamentos ... '
-    begin
-      f = File.open("doc/convertidos/pagamento.txt" , "r")
-      Pagamento.delete_all
-      clinica = ''
-      while line = f.gets 
+    f = File.open("doc/convertidos/pagamento.txt" , "r")
+    Pagamento.delete_all
+    clinica = ''
+    while line = f.gets 
+      begin
         registro = busca_registro(line)
         if clinica != registro.last
           clinica  = registro.last
@@ -400,14 +381,12 @@ class Converte
         t.nao_lancar_no_livro_caixa = (registro[16].to_i!= 0)
         t.data_de_exclusao          = registro[17].to_date unless registro[17].blank?
         t.save
+      rescue Exception => ex
+        @arquivo.puts "Erro ao processar a linha #{line}"
       end
-    rescue Exception => ex
-      STDOUT.puts "Erro ao processar a linha #{line}"
-    ensure
-      f.close
-      fecha_arquivo_de_erros('Pagamentos')
     end
-      
+    f.close
+    fecha_arquivo_de_erros('Pagamentos')
   end
   
   def fluxo_de_caixa
@@ -416,11 +395,11 @@ class Converte
     #  @arquivo.puts "Iniciando conversão de Fluxo em #{Time.current}"
  
     puts "Convertendo fluxo de caixa ...."
-    begin
-      f = File.open("doc/convertidos/saldos.txt" , "r")
-      FluxoDeCaixa.delete_all
-      clinica = ''  
-      while line = f.gets 
+    f = File.open("doc/convertidos/saldos.txt" , "r")
+    FluxoDeCaixa.delete_all
+    clinica = ''  
+    while line = f.gets 
+      begin
         registro = busca_registro(line)
         if clinica != registro[3]
           clinica = registro[3]
@@ -432,27 +411,26 @@ class Converte
         t.saldo_em_dinheiro = le_valor(registro[1])
         t.saldo_em_cheque   = le_valor(registro[2])
         t.save
+      rescue Exception => ex
+        @arquivo.puts "Erro ao processar a linha #{line}"
       end
-    rescue Exception => ex
-      @arquivo.puts "Erro ao processar a linha #{line}"
-    ensure
-      f.close
-     fecha_arquivo_de_erros('Fluxo de caixa')
     end
+    f.close
+    fecha_arquivo_de_erros('Fluxo de caixa')
   end
   
   def cheque
     # depende de destinacao, recebimento, pagamento
     #TODO Os cheques das clíncas existem na administração. Preciso tratar isto
     abre_arquivo_de_erros("Cheques")
-    begin
-      puts "Convertendo cheques ...."
-      f = File.open("doc/convertidos/cheque.txt" , "r")
-     # Banco.delete_all
-      Cheque.delete_all
-      #TODO verificar se o cheque está disponível
-      clinica = ''
-      while line = f.gets 
+    puts "Convertendo cheques ...."
+    f = File.open("doc/convertidos/cheque.txt" , "r")
+   # Banco.delete_all
+    Cheque.delete_all
+    #TODO verificar se o cheque está disponível
+    clinica = ''
+    while line = f.gets 
+      begin
         registro = busca_registro(line)
         if clinica != registro.last
           clinica = registro.last
@@ -523,23 +501,22 @@ class Converte
           recebimento.observacao = t.banco.nome + " - " + t.numero if !recebimento.observacao.present?
           recebimento.save
         end
+      rescue Exception => ex
+        @arquivo.puts line + "\n"+ "      ->" + ex
       end
-    rescue Exception => ex
-      @arquivo.puts line + "\n"+ "      ->" + ex
-    ensure
-      f.close
-      fecha_arquivo_de_erros("Cheques")
     end
+    f.close
+    fecha_arquivo_de_erros("Cheques")
   end
   
   def destinacao
     abre_arquivo_de_erros("Destinação")
-    begin
-      puts "Convertendo destinacao ...."
-      f = File.open("doc/convertidos/destinacao.txt" , "r")
-      Destinacao.delete_all
-      clinica = ''
-      while line = f.gets 
+    puts "Convertendo destinacao ...."
+    f = File.open("doc/convertidos/destinacao.txt" , "r")
+    Destinacao.delete_all
+    clinica = ''
+    while line = f.gets 
+      begin
         registro = busca_registro(line)
         if clinica != registro.last
           clinica  = registro.last
@@ -550,23 +527,22 @@ class Converte
         t.sequencial = registro[0].to_i
         t.nome       = registro[1].nome_proprio
         t.save
+      rescue Exception => ex
+        @arquivo.puts line + "\n"+ "      ->" + ex
       end
-    rescue Exception => ex
-      @arquivo.puts line + "\n"+ "      ->" + ex
-    ensure
-      f.close
-      fecha_arquivo_de_erros("Destinação")
     end
+    f.close
+    fecha_arquivo_de_erros("Destinação")
   end
   
   def orcamento
     abre_arquivo_de_erros("Orçamento")
-    begin
-      puts "Convertendo orçamento ...."
-      f = File.open("doc/convertidos/orcamento.txt" , "r")
-      Orcamento.delete_all
-      clinica    = ''
-      while line = f.gets 
+    puts "Convertendo orçamento ...."
+    f = File.open("doc/convertidos/orcamento.txt" , "r")
+    Orcamento.delete_all
+    clinica    = ''
+    while line = f.gets 
+      begin
         registro = busca_registro(line)
         if clinica != registro.last
           clinica  = registro.last
@@ -593,25 +569,22 @@ class Converte
         o.desconto                    = registro[13].to_i
         o.valor                       = o.valor_com_desconto / (100 - (o.desconto / 100)) * 100
         o.save
-      end
-    rescue Exception => ex
-      @arquivo.puts line + "\n"+ "      ->" + ex
-    ensure
-      f.close
-      fecha_arquivo_de_erros("Orçamento")
+      rescue Exception => ex
+        @arquivo.puts line + "\n"+ "      ->" + ex
+    end
+    f.close
+    fecha_arquivo_de_erros("Orçamento")
     end
   end
   
   def protetico
     abre_arquivo_de_erros('Protético')
-    
-    begin
-    debugger
-      puts "Convertendo protéticos ...."
-      f = File.open("doc/convertidos/protetico.txt" , "r")
-      Protetico.delete_all
-      clinica = ''
-      while line = f.gets 
+    puts "Convertendo protéticos ...."
+    f = File.open("doc/convertidos/protetico.txt" , "r")
+    Protetico.delete_all
+    clinica = ''
+    while line = f.gets 
+      begin
         registro = busca_registro(line)
         if clinica  != registro.last
           clinica   = registro.last
@@ -632,23 +605,22 @@ class Converte
         p.cpf          = registro[9]
         p.nascimento   = registro[10].to_date if Date.valid?(registro[10])
         p.save
+      rescue Exception => ex
+        @arquivo.puts line + "\n"+ "      ->" + ex
       end
-    rescue Exception => ex
-      @arquivo.puts line + "\n"+ "      ->" + ex
-    ensure
-      f.close 
-      fecha_arquivo_de_erros("Orçamento")
     end
+    f.close 
+    fecha_arquivo_de_erros("Orçamento")
   end
   
   def tabela_protetico
     #Tabela base
     abre_arquivo_de_erros('Tabela base de protético')
-    begin
-      puts "Convertendo tabela base de protéticos ...."
-      f = File.open("doc/convertidos/tabela_protetico.txt" , "r")
-      TabelaProtetico.delete_all
-      while line = f.gets 
+    puts "Convertendo tabela base de protéticos ...."
+    f = File.open("doc/convertidos/tabela_protetico.txt" , "r")
+    TabelaProtetico.delete_all
+    while line = f.gets 
+      begin
         registro = busca_registro(line)
         item     = TabelaProtetico.find_by_descricao(registro[1]) 
         if item.nil?
@@ -657,22 +629,21 @@ class Converte
           t.valor        = le_valor(registro[2])
           t.save
         end
+      rescue Exception => ex
+        @arquivo.puts line + "\n"+ "      ->" + ex
       end
-    rescue Exception => ex
-      @arquivo.puts line + "\n"+ "      ->" + ex
-    ensure
-      f.close
-      fecha_arquivo_de_erros('Tabela base de protético')
     end
+    f.close
+    fecha_arquivo_de_erros('Tabela base de protético')
     #
     abre_arquivo_de_erros('Tabela dos protéticos')
-    begin
     # tabelas dos proteticos
-      puts "Convertendo tabela dos protéticos ...."
-      f = File.open("doc/convertidos/item_protetico.txt" , "r")
-      clinica = ''
-      while line = f.gets 
-        registro = busca_registro(line)
+    puts "Convertendo tabela dos protéticos ...."
+    f = File.open("doc/convertidos/item_protetico.txt" , "r")
+    clinica = ''
+    while line = f.gets 
+      begin
+      registro = busca_registro(line)
         if clinica != registro.last
           clinica  = registro.last
           @clinica = Clinica.find_by_sigla(clinica)
@@ -686,77 +657,85 @@ class Converte
         t.descricao      = registro[2]
         t.valor          = le_valor(registro[3])
         t.save
+      rescue Exception => ex 
+        @arquivo.puts line + "\n"+ "      ->" + ex
       end
-    rescue Exception => ex 
-      @arquivo.puts line + "\n"+ "      ->" + ex
-    ensure
-      f.close
-      fecha_arquivo_de_erros('Tabela de protético')
     end
+    f.close
+    fecha_arquivo_de_erros('Tabela de protético')
   end
   
   def trabalho_protetico
     # depende de orçamento
+    abre_arquivo_de_erros('Trabalho protético')
     puts "Convertendo trabalho protético ...."
     f = File.open("doc/convertidos/noprotetico.txt" , "r")
     TrabalhoProtetico.delete_all
     clinica = ''
     while line = f.gets 
-      registro = busca_registro(line)
-      if clinica != registro.last
-        clinica  = registro.last
-        @clinica = Clinica.find_by_sigla(clinica)
-      end
-      t                       = TrabalhoProtetico.new
-      t.clinica_id            = @clinica.id
-      dentista                = Dentista.find_by_sequencial_and_clinica_id(registro[10].to_i, @clinica.id)
-      t.dentista_id           = dentista.id unless dentista.nil?
-      protetico               = Protetico.find_by_sequencial_and_clinica_id(registro[0].to_i, @clinica.id)
-      t.protetico_id          = protetico.id unless protetico.nil?
-      paciente                = Paciente.find_by_sequencial_and_clinica_id(registro[1].to_i, @clinica.id)
-      t.paciente_id           = paciente.id unless paciente.nil?
-      t.dente                 = registro[6]
       begin
-        t.data_de_envio                           = registro[3].to_date if Date.valid?(registro[3])
-        t.data_prevista_de_devolucao              = registro[5].to_date if Date.valid?(registro[5])
-        t.data_de_devolucao                       = registro[4].to_date if Date.valid?(registro[4])
-        t.data_de_repeticao                       = registro[12].to_date if Date.valid?(registro[12])
-        t.data_prevista_da_devolucao_da_repeticao = registro[15].to_date if Date.valid?(registro[15])
-      rescue Exception => ex
+        registro = busca_registro(line)
+        if clinica != registro.last
+          clinica  = registro.last
+          @clinica = Clinica.find_by_sigla(clinica)
+        end
+        t                       = TrabalhoProtetico.new
+        t.clinica_id            = @clinica.id
+        dentista                = Dentista.find_by_sequencial_and_clinica_id(registro[10].to_i, @clinica.id)
+        t.dentista_id           = dentista.id unless dentista.nil?
+        protetico               = Protetico.find_by_sequencial_and_clinica_id(registro[0].to_i, @clinica.id)
+        t.protetico_id          = protetico.id unless protetico.nil?
+        paciente                = Paciente.find_by_sequencial_and_clinica_id(registro[1].to_i, @clinica.id)
+        t.paciente_id           = paciente.id unless paciente.nil?
+        t.dente                 = registro[6]
+          t.data_de_envio                           = registro[3].to_date if Date.valid?(registro[3])
+          t.data_prevista_de_devolucao              = registro[5].to_date if Date.valid?(registro[5])
+          t.data_de_devolucao                       = registro[4].to_date if Date.valid?(registro[4])
+          t.data_de_repeticao                       = registro[12].to_date if Date.valid?(registro[12])
+          t.data_prevista_da_devolucao_da_repeticao = registro[15].to_date if Date.valid?(registro[15])
+        tabela                = TabelaProtetico.find_by_protetico_id_and_sequencial(protetico.id,registro[8].to_i)
+        t.tabela_protetico    = tabela unless tabela.nil?
+        t.valor               = le_valor(registro[7]) unless registro[7].nil?
+        t.cor                 = registro[11]
+        t.observacoes         = registro[9]
+        t.motivo_da_repeticao = registro[13]
+        t.pagamento_id        = 0
+        #FIXME definir como registrar que foi pago
+        t.save
+      rescue Exception => ex 
+        @arquivo.puts line + "\n"+ "      ->" + ex
       end
-      tabela                = TabelaProtetico.find_by_protetico_id_and_sequencial(protetico.id,registro[8].to_i)
-      t.tabela_protetico    = tabela unless tabela.nil?
-      t.valor               = le_valor(registro[7]) unless registro[7].nil?
-      t.cor                 = registro[11]
-      t.observacoes         = registro[9]
-      t.motivo_da_repeticao = registro[13]
-      t.pagamento_id        = 0
-      #FIXME definir como registrar que foi pago
-      t.save
     end
     f.close
+    fecha_arquivo_de_erros('Tabela de protético')
   end
   
   def alta
     puts "Convertendo altas ...."
     Paciente.all.each do |p|  
-      t = Tratamento.all(:conditions=>['paciente_id = ? and data IS NULL', p])
-      if t.empty?
-        ultimo          = Tratamento.last(:conditions=>['paciente_id = ? and data IS NOT NULL', p], :order=>'data desc')
-        alta            = Alta.new
-        alta.clinica_id = p.clinica_id
-        #FIXME fazer para todas as clínicas
-        alta.paciente   = p
-        if ultimo.nil?
-          alta.data_inicio = Date.today
-        else
-          alta.data_inicio = ultimo.data
+      begin
+        t = Tratamento.all(:conditions=>['paciente_id = ? and data IS NULL', p])
+        if t.empty?
+          ultimo          = Tratamento.last(:conditions=>['paciente_id = ? and data IS NOT NULL', p], :order=>'data desc')
+          alta            = Alta.new
+          alta.clinica_id = p.clinica_id
+          #FIXME fazer para todas as clínicas
+          alta.paciente   = p
+          if ultimo.nil?
+            alta.data_inicio = Date.today
+          else
+            alta.data_inicio = ultimo.data
+          end
+          alta.observacao  = 'gerada pela conversão'
+          alta.user_id     = 1
+          alta.save
         end
-        alta.observacao  = 'gerada pela conversão'
-        alta.user_id     = 1
-        alta.save
+      rescue
+        @arquivo.puts p.nome + "\n"+ "      ->" + ex
       end
     end
+    f.close
+    fecha_arquivo_de_erros('Tabela de protético')
   end
   
   

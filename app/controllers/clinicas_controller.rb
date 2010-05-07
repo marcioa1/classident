@@ -59,7 +59,6 @@ class ClinicasController < ApplicationController
       @data_inicial = params[:datepicker].to_date
       @data_final = params[:datepicker2].to_date
     end
-    debugger
     if params[:somente_em_alta]
       @altas = Alta.da_clinica(session[:clinica_id]).entre_datas(@data_inicial, @data_final).em_alta
     else

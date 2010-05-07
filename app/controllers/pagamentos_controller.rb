@@ -88,7 +88,6 @@ class PagamentosController < ApplicationController
               trab.save
             end
           end
-          debugger
           if params[:dentista_id]
             dentista = Dentista.find(params[:dentista_id])
             dentista.clinicas.each do |cli|
@@ -159,7 +158,6 @@ class PagamentosController < ApplicationController
        @data_final = Date.today
      end
      @pagamentos = Pagamento.da_clinica(session[:clinica_id]).nao_excluidos.por_data.entre_datas(@data_inicial, @data_final).tipos(params[:tipo_pagamento_id])
-    # debugger
      if params[:pela_adm]
        @pela_administracao = Pagamento.pela_administracao.entre_datas(@data_inicial, @data_final).da_clinica(session[:clinica_id])
        @pagamentos += @pela_administracao

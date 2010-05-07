@@ -122,7 +122,6 @@ class PacientesController < ApplicationController
   end
   
   def abre
-    debugger
     if params[:nome]
       @paciente = Paciente.find_by_nome(params[:nome])
     else
