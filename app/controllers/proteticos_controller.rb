@@ -9,27 +9,14 @@ class ProteticosController < ApplicationController
     else
       @proteticos = @clinica_atual.proteticos.por_nome
     end
-    respond_to do |format|
-      format.html # index.html.erb
-      format.xml  { render :xml => @proteticos }
-    end
   end
 
   def show
     @protetico = Protetico.find(params[:id])
-
-    respond_to do |format|
-      format.html # show.html.erb
-      format.xml  { render :xml => @protetico }
-    end
   end
 
   def new
     @protetico = Protetico.new
-    respond_to do |format|
-      format.html # new.html.erb
-      format.xml  { render :xml => @protetico }
-    end
   end
 
   def edit
@@ -39,39 +26,27 @@ class ProteticosController < ApplicationController
     @protetico            = Protetico.new(params[:protetico])
     @protetico.clinica_id = session[:clinica_id]
     
-    respond_to do |format|
-      if @protetico.save
-        flash[:notice] = 'Protético salvo com sucesso.'
-        format.html { redirect_to(proteticos_path) }
-        format.xml  { render :xml => @protetico, :status => :created, :location => @protetico }
-      else
-         @clinicas = Clinica.por_nome
-        format.html { render :action => "new" }
-        format.xml  { render :xml => @protetico.errors, :status => :unprocessable_entity }
-      end
+    if @protetico.save
+      flash[:notice] = 'Protético salvo com sucesso.'
+      redirect_to(proteticos_path) 
+    else
+       @clinicas = Clinica.por_nome
+      render :action => "new" 
     end
   end
 
   def update
-    respond_to do |format|
-      if @protetico.update_attributes(params[:protetico])
-        flash[:notice] = 'Protético alterado com sucesso.'
-        format.html { redirect_to(proteticos_path) }
-        format.xml  { head :ok }
-      else
-        format.html { render :action => "edit" }
-        format.xml  { render :xml => @protetico.errors, :status => :unprocessable_entity }
-      end
+    if @protetico.update_attributes(params[:protetico])
+      flash[:notice] = 'Protético alterado com sucesso.'
+      redirect_to(proteticos_path) 
+    else
+      render :action => "edit" 
     end
   end
 
   def destroy
     @protetico.destroy
-
-    respond_to do |format|
-      format.html { redirect_to(proteticos_url) }
-      format.xml  { head :ok }
-    end
+    redirect_to(proteticos_url) 
   end
   
   def abre

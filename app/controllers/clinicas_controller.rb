@@ -79,27 +79,27 @@ class ClinicasController < ApplicationController
   end
   
   def fechamento_mes
-    @abertura = Array.new(13,0)
-    @pagamento = Array.new(13,0)
-    @recebimento = Array.new(13,0)
-    @remessa = Array.new(13,0)
+    @abertura      = Array.new(13,0)
+    @pagamento     = Array.new(13,0)
+    @recebimento   = Array.new(13,0)
+    @remessa       = Array.new(13,0)
     forma_dinheiro = FormasRecebimento.find_by_nome("Dinheiro")
     if params[:date].present?
       @data = Date.new(params[:date][:year].to_i,1,1)
       (1..12).each do |mes|
-        data_inicial = Date.new(params[:date][:year].to_i, mes,1)
-        data_final = data_inicial + 1.month - 1.day
+        data_inicial   = Date.new(params[:date][:year].to_i, mes,1)
+        data_final     = data_inicial + 1.month - 1.day
         puts data_inicial.to_s_br + " / " + data_final.to_s_br
-        fluxo = FluxoDeCaixa.saldo_na_data(data_inicial).da_clinica(session[:clinica_id])
+        fluxo          = FluxoDeCaixa.saldo_na_data(data_inicial).da_clinica(session[:clinica_id])
         @abertura[mes] = fluxo.first.saldo_em_dinheiro if !fluxo.empty?
-        total = Pagamento.da_clinica(session[:clinica_id]).entre_datas(data_inicial,data_final).
+        total          = Pagamento.da_clinica(session[:clinica_id]).entre_datas(data_inicial,data_final).
         no_livro_caixa.nao_excluidos.sum('valor_pago')
-        terceiros = Pagamento.da_clinica(session[:clinica_id]).entre_datas(data_inicial,data_final).
+        terceiros      = Pagamento.da_clinica(session[:clinica_id]).entre_datas(data_inicial,data_final).
         no_livro_caixa.nao_excluidos.sum('valor_terceiros')
-        @pagamento[mes] = total - terceiros
+        @pagamento[mes]   = total - terceiros
         @recebimento[mes] = Recebimento.da_clinica(session[:clinica_id]).entre_datas(data_inicial,data_final).
         nao_excluidos.nas_formas(forma_dinheiro.to_a).sum('valor')
-        @remessa[mes] = Entrada.da_clinica(session[:clinica_id]).do_mes(data_inicial).sum('valor')
+        @remessa[mes]     = Entrada.da_clinica(session[:clinica_id]).do_mes(data_inicial).sum('valor')
       end
     else
       @data = Date.today

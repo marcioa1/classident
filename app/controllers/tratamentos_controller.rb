@@ -13,29 +13,25 @@ class TratamentosController < ApplicationController
   def create
     dentes = params[:dentes].split(',')
     Tratamento.transaction do
-      respond_to do |format|
-        erro = false
-        dentes.each do |dente|
-          @tratamento            = Tratamento.new(params[:tratamento])
-          @tratamento.dente      = dente
-          @tratamento.clinica_id = session[:clinica_id]
-          @tratamento.excluido   = false
-          erro                   = false
-          if !erro && @tratamento.save 
-            if !@tratamento.data.nil?
-              @tratamento.finalizar_procedimento(current_user)
-            end
-          else
-            erro = true
+      erro = false
+      dentes.each do |dente|
+        @tratamento            = Tratamento.new(params[:tratamento])
+        @tratamento.dente      = dente
+        @tratamento.clinica_id = session[:clinica_id]
+        @tratamento.excluido   = false
+        erro                   = false
+        if !erro && @tratamento.save 
+          if !@tratamento.data.nil?
+            @tratamento.finalizar_procedimento(current_user)
           end
+        else
+          erro = true
         end
-        if !erro
-          format.html { redirect_to(abre_paciente_path(:id=>@tratamento.paciente_id)) }
-          format.xml  { render :xml => @tratamento, :status => :created, :location => @dentista }
-        else 
-          format.html { render :action => "new" }
-          format.xml  { render :xml => @tratamento.errors, :status => :unprocessable_entity }
-        end
+      end
+      if !erro
+        redirect_to(abre_paciente_path(:id=>@tratamento.paciente_id)) 
+      else 
+        render :action => "new" 
       end  # respond_to
     end
   end
@@ -50,27 +46,23 @@ class TratamentosController < ApplicationController
   def update
     @tratamento = Tratamento.find(params[:id])
     @tratamento.data = params[:datepicker].to_date if params[:datepicker]
-    respond_to do |format|
-      if @tratamento.update_attributes(params[:tratamento])
-        if !@tratamento.data.nil?
-          @tratamento.paciente.verifica_alta_automatica
-          @debito = Debito.find_by_tratamento_id(@tratamento.id)
-          if @debito.nil?
-            @debito = Debito.new
-            @debito.paciente_id = @tratamento.paciente_id
-            @debito.tratamento_id = @tratamento.id
-          end
-          @debito.descricao = @tratamento.item_tabela.descricao
-          @debito.valor = @tratamento.valor
-          @debito.data = @tratamento.data
-          @debito.save
+    if @tratamento.update_attributes(params[:tratamento])
+      if !@tratamento.data.nil?
+        @tratamento.paciente.verifica_alta_automatica
+        @debito = Debito.find_by_tratamento_id(@tratamento.id)
+        if @debito.nil?
+          @debito = Debito.new
+          @debito.paciente_id = @tratamento.paciente_id
+          @debito.tratamento_id = @tratamento.id
         end
-        format.html { redirect_to(abre_paciente_path(:id=>@tratamento.paciente_id)) }
-        format.xml  { head :ok }
-      else
-        format.html { render :action => "edit" }
-        format.xml  { render :xml => @tratamento.errors, :status => :unprocessable_entity }
+        @debito.descricao = @tratamento.item_tabela.descricao
+        @debito.valor = @tratamento.valor
+        @debito.data = @tratamento.data
+        @debito.save
       end
+      redirect_to(abre_paciente_path(:id=>@tratamento.paciente_id)) 
+    else
+      render :action => "edit" 
     end
   end
   

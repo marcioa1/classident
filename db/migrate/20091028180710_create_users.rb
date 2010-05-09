@@ -14,6 +14,7 @@ class CreateUsers < ActiveRecord::Migration
      t.string    :current_login_ip                                   # optional, see Authlogic::Session::MagicColumns
      t.string    :last_login_ip                                      # optional, see Authlogic::Session::MagicColumns
      t.integer   :tipo_usuario_id
+     t.string    :nome
      t.timestamps
    end
    add_index :users, :tipo_usuario_id

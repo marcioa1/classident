@@ -253,10 +253,8 @@ class Converte
     f = File.open("doc/convertidos/odontograma.txt" , "r")
     Tratamento.delete_all
     clinica = ''
-    line = 1
     while line = f.gets 
       begin
-        line += 1
         registro = busca_registro(line)
         if clinica != registro.last
           clinica  = registro.last
@@ -571,10 +569,10 @@ class Converte
         o.save
       rescue Exception => ex
         @arquivo.puts line + "\n"+ "      ->" + ex
+      end
     end
     f.close
     fecha_arquivo_de_erros("Orçamento")
-    end
   end
   
   def protetico

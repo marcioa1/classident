@@ -2,8 +2,7 @@ class DentistasController < ApplicationController
   layout "adm"
   before_filter :require_user
   before_filter :quinze_dias, :on=>:producao_geral
-  # GET /dentistas
-  # GET /dentistas.xml
+
   def index
     params[:ativo] = "true" if params[:ativo].nil?
     if administracao? 
@@ -22,42 +21,22 @@ class DentistasController < ApplicationController
     if !params[:iniciais].nil? and !params[:iniciais].blank?
       @dentistas = @dentistas.que_iniciam_com(params[:iniciais])
     end
-    respond_to do |format|
-      format.html # index.html.erb
-      format.xml  { render :xml => @dentistas }
-    end
   end
 
-  # GET /dentistas/1
-  # GET /dentistas/1.xml
   def show
     @dentista = Dentista.find(params[:id])
-
-    respond_to do |format|
-      format.html # show.html.erb
-      format.xml  { render :xml => @dentista }
-    end
   end
 
-  # GET /dentistas/new
-  # GET /dentistas/new.xml
   def new
     @dentista = Dentista.new
     @clinicas = Clinica.todas.por_nome
-    respond_to do |format|
-      format.html # new.html.erb
-      format.xml  { render :xml => @dentista }
-    end
   end
 
-  # GET /dentistas/1/edit
   def edit
     @dentista = Dentista.find(params[:id])
     @clinicas = Clinica.all(:order=>:nome)
   end
 
-  # POST /dentistas
-  # POST /dentistas.xml
   def create
     @dentista = Dentista.new(params[:dentista])
     @dentista.clinicas = []
@@ -67,19 +46,14 @@ class DentistasController < ApplicationController
         @dentista.clinicas << clinica
       end      
     end
-    respond_to do |format|
-      if @dentista.save
-        format.html { redirect_to(@dentista) }
-        format.xml  { render :xml => @dentista, :status => :created, :location => @dentista }
-      else
-        format.html { render :action => "new" }
-        format.xml  { render :xml => @dentista.errors, :status => :unprocessable_entity }
-      end
+
+    if @dentista.save
+      redirect_to(@dentista) 
+    else
+      render :action => "new" 
     end
   end
 
-  # PUT /dentistas/1
-  # PUT /dentistas/1.xml
   def update
     @dentista = Dentista.find(params[:id])
     @dentista.clinicas = []
@@ -89,28 +63,19 @@ class DentistasController < ApplicationController
         @dentista.clinicas << clinica
       end      
     end
-    respond_to do |format|
       if @dentista.update_attributes(params[:dentista])
-        format.html { redirect_to(dentistas_path) }
-        format.xml  { head :ok }
+        redirect_to(dentistas_path) 
       else
-        format.html { render :action => "edit" }
-        format.xml  { render :xml => @dentista.errors, :status => :unprocessable_entity }
+        render :action => "edit" 
       end
-    end
   end
 
-  # DELETE /dentistas/1
-  # DELETE /dentistas/1.xml
   def destroy
     @dentista = Dentista.find(params[:id])
     @dentista.ativo = false
     @dentista.save
 
-    respond_to do |format|
-      format.html { redirect_to(dentistas_url) }
-      format.xml  { head :ok }
-    end
+    redirect_to(dentistas_url) 
   end
 
   def abre
@@ -179,9 +144,9 @@ class DentistasController < ApplicationController
         <th width='200px'>Observação</th>
         </tr>"
         
-    inicio = params[:inicio].to_date
-    fim = params[:fim].to_date
-    @dentista = Dentista.find(params[:dentista_id])
+    inicio      = params[:inicio].to_date
+    fim         = params[:fim].to_date
+    @dentista   = Dentista.find(params[:dentista_id])
     @pagamentos = @dentista.pagamentos.entre_datas(inicio,fim).nao_excluidos
     total = 0.0
     @pagamentos.each do |pag|
@@ -208,16 +173,12 @@ class DentistasController < ApplicationController
       end
     end
 
-    respond_to do |format|
-      format.html # index.html.erb
-      format.xml  { render :xml => @dentistas }
-    end
   end
   
   def orcamentos
     dentista = Dentista.find(params[:id])
-    inicio = params[:inicio].to_date
-    fim = params[:fim].to_date
+    inicio   = params[:inicio].to_date
+    fim      = params[:fim].to_date
     if params[:clinicas]
       clinicas = params[:clinicas].split(",").to_a
     else
@@ -248,10 +209,7 @@ class DentistasController < ApplicationController
   end
   
   def producao_geral
-    
     @todos = Dentista.ativos.por_nome
   end
-  
- 
   
 end

@@ -9,6 +9,7 @@ class AdiocionaIndicesAsTabelas < ActiveRecord::Migration
       add_index :item_tabelas, :descricao_conduta_id
       add_index :pacientes, :tabela_id
       add_index :pacientes, :clinica_id
+    add_index :pacientes, :sequencial
      # add_index :pacientes, :ortodontista_id
     #  add_index :pacientes, :dentista_id
       add_index :pacientes, :indicacao_id
@@ -38,6 +39,7 @@ class AdiocionaIndicesAsTabelas < ActiveRecord::Migration
     end
 
     def self.down
+    remove_index :pacientes, :sequencial
       remove_index :tratamentos, :clinica_id
       remove_index :tratamentos, :orcamento_id
       remove_index :tratamentos, :dentista_id

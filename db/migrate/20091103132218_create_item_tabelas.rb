@@ -5,6 +5,7 @@ class CreateItemTabelas < ActiveRecord::Migration
       t.string  :codigo
       t.string  :descricao
       t.boolean :ativo, :default=>true
+      t.integer :clinica_id
 
       t.timestamps
     end

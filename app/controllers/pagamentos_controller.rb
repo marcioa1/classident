@@ -2,28 +2,15 @@ class PagamentosController < ApplicationController
   
   layout "adm" , :except=> :show
   before_filter :require_user
-  # GET /pagamentos
-  # GET /pagamentos.xml
+
   def index
     @pagamentos = Pagamento.all
-    respond_to do |format|
-      format.html # index.html.erb
-      format.xml  { render :xml => @pagamentos }
-    end
   end
 
-  # GET /pagamentos/1
-  # GET /pagamentos/1.xml
   def show
     @pagamento = Pagamento.find(params[:id])
-    respond_to do |format|
-      format.html # show.html.erb
-      format.xml  { render :xml => @pagamento }
-    end
   end
 
-  # GET /pagamentos/new
-  # GET /pagamentos/new.xml
   def new
     if params[:trabalho_protetico_id].blank?
       session[:trabalho_protetico_id] = nil
@@ -48,21 +35,14 @@ class PagamentosController < ApplicationController
       @pagamento.valor = params[:valor]
     end
     @contas_bancarias = ContaBancaria.all.collect{|obj| [obj.nome, obj.id]}
-    respond_to do |format|
-      format.html # new.html.erb
-      format.xml  { render :xml => @pagamento }
-    end
   end
 
-  # GET /pagamentos/1/edit
   def edit
-    @tipos_pagamento = TipoPagamento.por_nome.collect{|obj| [obj.nome, obj.id]}
-    @pagamento = Pagamento.find(params[:id])
+    @tipos_pagamento  = TipoPagamento.por_nome.collect{|obj| [obj.nome, obj.id]}
+    @pagamento        = Pagamento.find(params[:id])
     @contas_bancarias = ContaBancaria.all.collect{|obj| [obj.nome, obj.id]}
   end
 
-  # POST /pagamentos
-  # POST /pagamentos.xml
   def create
     @pagamento = Pagamento.new(params[:pagamento])
     @pagamento.data_de_pagamento = params[:datepicker].to_date
@@ -72,60 +52,48 @@ class PagamentosController < ApplicationController
     end
     @pagamento.protetico_id = session[:protetico_id] unless session[:protetico_id].nil?
     @pagamento.dentista_id = session[:dentista_id] unless session[:dentista_id].nil?
-    respond_to do |format|
-      Pagamento.transaction do
-        ids = params[:cheques_ids].split(",")
-        ids.each do |id|
-          cheque = Cheque.find(id)
-          @pagamento.cheques << cheque unless cheque.nil?
-        end
-        if @pagamento.save
-          if !session[:trabalho_protetico_id].nil?
-            ids = session[:trabalho_protetico_id].split(",")
-            ids.each do |id|
-              trab = TrabalhoProtetico.find(id)
-              trab.pagamento_id = @pagamento.id
-              trab.save
-            end
+    Pagamento.transaction do
+      ids = params[:cheques_ids].split(",")
+      ids.each do |id|
+        cheque = Cheque.find(id)
+        @pagamento.cheques << cheque unless cheque.nil?
+      end
+      if @pagamento.save
+        if !session[:trabalho_protetico_id].nil?
+          ids = session[:trabalho_protetico_id].split(",")
+          ids.each do |id|
+            trab = TrabalhoProtetico.find(id)
+            trab.pagamento_id = @pagamento.id
+            trab.save
           end
-          if params[:dentista_id]
-            dentista = Dentista.find(params[:dentista_id])
-            dentista.clinicas.each do |cli|
-              Pagamento.create(:clinica_id=>cli.id, :data_de_pagamento=>@pagamento.data_de_pagamento,
-                 :pagamento_id=>@pagamento.id, :valor_pago=>params['valor_'+ cli.id.to_s ], :tipo_pagamento_id=>@pagamento.tipo_pagamento_id,
-                 :observacao=>'pago pela adm', :nao_lancar_no_livro_caixa=>true)
-            end
-          end
-          flash[:notice] = 'Pagamento criado com sucesso.'
-          format.html { redirect_to(relatorio_pagamentos_path) }#TODO retornar para tela anterior
-          format.xml  { render :xml => @pagamento, :status => :created, :location => @pagamento }
-        else
-          format.html { render :action => "new" }
-          format.xml  { render :xml => @pagamento.errors, :status => :unprocessable_entity }
         end
+        if params[:dentista_id]
+          dentista = Dentista.find(params[:dentista_id])
+          dentista.clinicas.each do |cli|
+            Pagamento.create(:clinica_id=>cli.id, :data_de_pagamento=>@pagamento.data_de_pagamento,
+               :pagamento_id=>@pagamento.id, :valor_pago=>params['valor_'+ cli.id.to_s ], :tipo_pagamento_id=>@pagamento.tipo_pagamento_id,
+               :observacao=>'pago pela adm', :nao_lancar_no_livro_caixa=>true)
+          end
+        end
+        flash[:notice] = 'Pagamento criado com sucesso.'
+        redirect_to(relatorio_pagamentos_path) #TODO retornar para tela anterio
+      else
+        render :action => "new" 
       end
     end
   end
 
-  # PUT /pagamentos/1
-  # PUT /pagamentos/1.xml
   def update
     @pagamento = Pagamento.find(params[:id])
 
-    respond_to do |format|
-      if @pagamento.update_attributes(params[:pagamento])
-        flash[:notice] = 'Pagamento alterado com sucesso.'
-        format.html { redirect_to(relatorio_pagamentos_path) }
-        format.xml  { head :ok }
-      else
-        format.html { render :action => "edit" }
-        format.xml  { render :xml => @pagamento.errors, :status => :unprocessable_entity }
-      end
+    if @pagamento.update_attributes(params[:pagamento])
+      flash[:notice] = 'Pagamento alterado com sucesso.'
+      redirect_to(relatorio_pagamentos_path) 
+    else
+      render :action => "edit" 
     end
   end
 
-  # DELETE /pagamentos/1
-  # DELETE /pagamentos/1.xml
   def destroy
     @pagamento = Pagamento.find(params[:id])
     @pagamento.data_de_exclusao = Time.now
@@ -142,10 +110,7 @@ class PagamentosController < ApplicationController
       @pagamento.save
     end
 
-    respond_to do |format|
-      format.html { redirect_to(relatorio_pagamentos_path) }
-      format.xml  { head :ok }
-    end
+    redirect_to(relatorio_pagamentos_path) 
   end
   
    def relatorio

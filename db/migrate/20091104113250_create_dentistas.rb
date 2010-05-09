@@ -5,6 +5,7 @@ class CreateDentistas < ActiveRecord::Migration
       t.string :telefone
       t.string :celular
       t.boolean :ativo
+      t.integer :clinica_id
 
       t.timestamps
     end

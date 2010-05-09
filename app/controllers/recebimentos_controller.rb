@@ -8,17 +8,9 @@ class RecebimentosController < ApplicationController
   
   def index
     @recebimentos = Recebimento.all
-    respond_to do |format|
-      format.html # index.html.erb
-      format.xml  { render :xml => @recebimentos }
-    end
   end
 
   def show
-    respond_to do |format|
-      format.html # show.html.erb
-      format.xml  { render :xml => @recebimento }
-    end
   end
 
   def new
@@ -28,10 +20,6 @@ class RecebimentosController < ApplicationController
     @recebimento.paciente    = @paciente
     @recebimento.clinica_id  = @paciente.clinica_id
     
-    respond_to do |format|
-      format.html # new.html.erb
-      format.xml  { render :xml => @recebimento }
-    end
   end
 
   def edit
@@ -86,22 +74,20 @@ class RecebimentosController < ApplicationController
     Recebimento.transaction do
       respond_to do |format|
         if ((@recebimento.em_cheque? && @cheque.valid?) || (!@recebimento.em_cheque?)) && @recebimento.save 
-          format.html { redirect_to(abre_paciente_path(:id=>@recebimento.paciente_id)) }
+          redirect_to(abre_paciente_path(:id=>@recebimento.paciente_id)) }
           format.xml  { render :xml => @recebimento, :status => :created, :location => @recebimento }
         else
           @paciente = Paciente.find(session[:paciente_id])
           @bancos   = Banco.all(:order=>:nome).collect{|obj| [obj.numero + " - " + obj.nome,obj.id]}
           @formas_recebimentos = FormasRecebimento.por_nome.collect{|obj| [obj.nome,obj.id]}
           
-          format.html { render :action => "new" }
+          render :action => "new" }
           format.xml  { render :xml => @recebimento.errors, :status => :unprocessable_entity }
         end
       end #transaction
     end
   end
 
-  # PUT /recebimentos/1
-  # PUT /recebimentos/1.xml
   def update
     @recebimento = Recebimento.find(params[:id])
     @recebimento.data = params[:datepicker].to_date
@@ -113,29 +99,20 @@ class RecebimentosController < ApplicationController
       @recebimento.cheque = nil
     end
 
-    respond_to do |format|
-      if @recebimento.update_attributes(params[:recebimento])
-        format.html { redirect_to(abre_paciente_path(:id=>@recebimento.paciente_id)) }
-        format.xml  { head :ok }
-      else
-        format.html { render :action => "edit" }
-        format.xml  { render :xml => @recebimento.errors, :status => :unprocessable_entity }
-      end
+    if @recebimento.update_attributes(params[:recebimento])
+      redirect_to(abre_paciente_path(:id=>@recebimento.paciente_id)) 
+    else
+      render :action => "edit" 
     end
   end
 
-  # DELETE /recebimentos/1
-  # DELETE /recebimentos/1.xml
   def destroy
     @recebimento = Recebimento.find(params[:id])
     @recebimento.data_de_exclusao = Date.today
     @recebimento.observacao_exclusao = "."
     #TODO fazer exclusao de recebimento lembrando que é preciso excluir o respectivo cheque
 
-    respond_to do |format|
-      format.html { redirect_to(recebimentos_url) }
-      format.xml  { head :ok }
-    end
+    redirect_to(recebimentos_url) }
   end
   
   def relatorio

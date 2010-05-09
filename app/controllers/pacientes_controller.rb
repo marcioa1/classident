@@ -5,18 +5,9 @@ class PacientesController < ApplicationController
   
   def index
     @pacientes = Paciente.all
-
-    respond_to do |format|
-      format.html # index.html.erb
-      format.xml  { render :xml => @pacientes }
-    end
   end
 
   def show
-    respond_to do |format|
-      format.html # show.html.erb
-      format.xml  { render :xml => @paciente }
-    end
   end
 
   def new
@@ -27,10 +18,6 @@ class PacientesController < ApplicationController
       @paciente      = Paciente.new
       @indicacoes    = Indicacao.por_descricao.collect{|obj| [obj.descricao, obj.id]}
       @ortodontistas = Dentista.ortodontistas.collect{|obj| [obj.nome,obj.id]}
-      respond_to do |format|
-        format.html # new.html.erb
-        format.xml  { render :xml => @paciente }
-      end
     end
   end
 
@@ -45,14 +32,10 @@ class PacientesController < ApplicationController
     @paciente.inicio_tratamento = params[:datepicker2].to_date
     @paciente.data_da_suspensao_da_cobranca_de_orto = parasm[:datepicker3].to_date unless params[:datepicker3].blank?
     @paciente.data_da_saida_da_lista_de_debitos = params[:datepicker4].to_date unless params[:datepicker4].blank?
-    respond_to do |format|
-      if @paciente.save
-        format.html { redirect_to(pesquisa_pacientes_path) }
-        format.xml  { render :xml => @paciente, :status => :created, :location => @paciente }
-      else
-        format.html { render :action => "new" }
-        format.xml  { render :xml => @paciente.errors, :status => :unprocessable_entity }
-      end
+    if @paciente.save
+      redirect_to(pesquisa_pacientes_path) 
+    else
+      render :action => "new" 
     end
   end
 
@@ -60,24 +43,17 @@ class PacientesController < ApplicationController
     @paciente.inicio_tratamento = params[:datepicker2].to_date
     @paciente.data_da_suspensao_da_cobranca_de_orto = parasm[:datepicker3].to_date unless params[:datepicker3].blank?
     @paciente.data_da_saida_da_lista_de_debitos = params[:datepicker4].to_date unless params[:datepicker4].blank?
-    respond_to do |format|
-      if @paciente.update_attributes(params[:paciente])
-        format.html { redirect_to(abre_paciente_path(:id=>@paciente.id)) }
-        format.xml  { head :ok }
-      else
-        format.html { render :action => "edit" }
-        format.xml  { render :xml => @paciente.errors, :status => :unprocessable_entity }
-      end
+    if @paciente.update_attributes(params[:paciente])
+      redirect_to(abre_paciente_path(:id=>@paciente.id)) 
+    else
+      render :action => "edit" 
     end
   end
 
   def destroy
     @paciente.destroy
 
-    respond_to do |format|
-      format.html { redirect_to(pacientes_url) }
-      format.xml  { head :ok }
-    end
+    redirect_to(pacientes_url) 
   end
   
   def pesquisa

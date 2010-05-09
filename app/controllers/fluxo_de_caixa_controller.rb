@@ -19,11 +19,11 @@ class FluxoDeCaixaController < ApplicationController
       end
     end
     @recebimentos = Recebimento.da_clinica(session[:clinica_id]).no_dia(@fluxo.data).nao_excluidos
-    @pagamentos = Pagamento.da_clinica(session[:clinica_id]).no_dia(@fluxo.data).no_livro_caixa
-    @entradas = Entrada.entrada.da_clinica(session[:clinica_id]).do_dia(@fluxo.data)
-    @remessas = Entrada.remessa.da_clinica(session[:clinica_id]).do_dia(@fluxo.data)
-    @lancamentos = @recebimentos + @pagamentos + @entradas + @remessas 
-    @entradas_adm =[]
+    @pagamentos   = Pagamento.da_clinica(session[:clinica_id]).no_dia(@fluxo.data).no_livro_caixa
+    @entradas     = Entrada.entrada.da_clinica(session[:clinica_id]).do_dia(@fluxo.data)
+    @remessas     = Entrada.remessa.da_clinica(session[:clinica_id]).do_dia(@fluxo.data)
+    @lancamentos  = @recebimentos + @pagamentos + @entradas + @remessas 
+    @entradas_adm = []
     if administracao?
       @entradas_adm = Entrada.confirmado.do_dia(@fluxo.data)
       @entradas_adm.each do |entrada| 

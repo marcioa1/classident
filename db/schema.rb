@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100504022820) do
+ActiveRecord::Schema.define(:version => 20100425221402) do
 
   create_table "altas", :force => true do |t|
     t.integer  "paciente_id"
@@ -121,7 +121,7 @@ ActiveRecord::Schema.define(:version => 20100504022820) do
   create_table "debitos", :force => true do |t|
     t.integer  "paciente_id"
     t.integer  "tratamento_id"
-    t.decimal  "valor"
+    t.integer  "valor",         :limit => 10, :precision => 10, :scale => 0
     t.string   "descricao"
     t.date     "data"
     t.datetime "created_at"
@@ -135,6 +135,7 @@ ActiveRecord::Schema.define(:version => 20100504022820) do
     t.string   "telefone"
     t.string   "celular"
     t.boolean  "ativo"
+    t.integer  "clinica_id"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "cro"
@@ -142,7 +143,6 @@ ActiveRecord::Schema.define(:version => 20100504022820) do
     t.decimal  "percentual",    :precision => 9, :scale => 2
     t.integer  "sequencial"
     t.boolean  "ortodontista",                                :default => false
-    t.integer  "clinica_id"
   end
 
   add_index "dentistas", ["sequencial"], :name => "index_dentistas_on_sequencial"
@@ -227,6 +227,7 @@ ActiveRecord::Schema.define(:version => 20100504022820) do
     t.string   "codigo"
     t.string   "descricao"
     t.boolean  "ativo",                                              :default => true
+    t.integer  "clinica_id"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "descricao_conduta_id"
@@ -244,13 +245,13 @@ ActiveRecord::Schema.define(:version => 20100504022820) do
     t.integer  "numero"
     t.date     "data"
     t.integer  "dentista_id"
-    t.decimal  "desconto"
-    t.decimal  "valor"
-    t.decimal  "valor_com_desconto"
+    t.integer  "desconto",                    :limit => 10, :precision => 10, :scale => 0
+    t.integer  "valor",                       :limit => 10, :precision => 10, :scale => 0
+    t.integer  "valor_com_desconto",          :limit => 10, :precision => 10, :scale => 0
     t.string   "forma_de_pagamento"
     t.integer  "numero_de_parcelas"
     t.date     "vencimento_primeira_parcela"
-    t.decimal  "valor_da_parcela"
+    t.integer  "valor_da_parcela",            :limit => 10, :precision => 10, :scale => 0
     t.date     "data_de_inicio"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -408,6 +409,7 @@ ActiveRecord::Schema.define(:version => 20100504022820) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "clinica"
+    t.integer  "clinica_id"
     t.integer  "sequencial"
   end
 
@@ -495,24 +497,23 @@ ActiveRecord::Schema.define(:version => 20100504022820) do
   add_index "tratamentos", ["sequencial"], :name => "index_tratamentos_on_sequencial"
 
   create_table "users", :force => true do |t|
-    t.string   "login",                                :null => false
-    t.string   "email",                                :null => false
-    t.string   "crypted_password",                     :null => false
-    t.string   "password_salt",                        :null => false
-    t.string   "persistence_token",                    :null => false
-    t.integer  "login_count",        :default => 0,    :null => false
-    t.integer  "failed_login_count", :default => 0,    :null => false
+    t.string   "login",                             :null => false
+    t.string   "email",                             :null => false
+    t.string   "crypted_password",                  :null => false
+    t.string   "password_salt",                     :null => false
+    t.string   "persistence_token",                 :null => false
+    t.integer  "login_count",        :default => 0, :null => false
+    t.integer  "failed_login_count", :default => 0, :null => false
     t.datetime "last_request_at"
     t.datetime "current_login_at"
     t.datetime "last_login_at"
     t.string   "current_login_ip"
     t.string   "last_login_ip"
     t.integer  "tipo_usuario_id"
+    t.string   "nome"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "clinica_id"
-    t.string   "nome"
-    t.boolean  "ativo",              :default => true
   end
 
   add_index "users", ["clinica_id"], :name => "index_users_on_clinica_id"

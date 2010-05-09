@@ -1,96 +1,57 @@
 class TabelaProteticosController < ApplicationController
   layout "adm"
-  # GET /tabela_proteticos
-  # GET /tabela_proteticos.xml
+
   def index
     @tabela_proteticos = TabelaProtetico.tabela_base.por_descricao
-
-    respond_to do |format|
-      format.html # index.html.erb
-      format.xml  { render :xml => @tabela_proteticos }
-    end
   end
 
-  # GET /tabela_proteticos/1
-  # GET /tabela_proteticos/1.xml
   def show
     @tabela_protetico = TabelaProtetico.find(params[:id])
-
-    respond_to do |format|
-      format.html # show.html.erb
-      format.xml  { render :xml => @tabela_protetico }
-    end
   end
 
-  # GET /tabela_proteticos/new
-  # GET /tabela_proteticos/new.xml
   def new
     @tabela_protetico = TabelaProtetico.new
     if params[:protetico_id]
       @protetico = Protetico.find(params[:protetico_id])
       @tabela_protetico.protetico = @protetico
     end
-    respond_to do |format|
-      format.html # new.html.erb
-      format.xml  { render :xml => @tabela_protetico }
-    end
   end
 
-  # GET /tabela_proteticos/1/edit
   def edit
     @tabela_protetico = TabelaProtetico.find(params[:id])
   end
 
-  # POST /tabela_proteticos
-  # POST /tabela_proteticos.xml
   def create
     @tabela_protetico = TabelaProtetico.new(params[:tabela_protetico])
 
-    respond_to do |format|
-      if @tabela_protetico.save
-        flash[:notice] = 'TabelaProtetico was successfully created.'
-        format.html { 
-          if administracao?
-            redirect_to(tabela_proteticos_path) 
-          else
-            redirect_to abre_protetico_path(@tabela_protetico.protetico)
-          end
-          }
-        format.xml  { render :xml => @tabela_protetico, :status => :created, :location => @tabela_protetico }
-      else
-        format.html { render :action => "new" }
-        format.xml  { render :xml => @tabela_protetico.errors, :status => :unprocessable_entity }
-      end
+    if @tabela_protetico.save
+      flash[:notice] = 'TabelaProtetico criada com sucesso.'
+        if administracao?
+          redirect_to(tabela_proteticos_path) 
+        else
+          redirect_to abre_protetico_path(@tabela_protetico.protetico)
+        end
+    else
+      render :action => "new" 
     end
   end
 
-  # PUT /tabela_proteticos/1
-  # PUT /tabela_proteticos/1.xml
   def update
     @tabela_protetico = TabelaProtetico.find(params[:id])
 
-    respond_to do |format|
-      if @tabela_protetico.update_attributes(params[:tabela_protetico])
-        format.html { redirect_to abre_protetico_path(@tabela_protetico.protetico) }
-        format.xml  { head :ok }
-      else
-        format.html { render :action => "edit" }
-        format.xml  { render :xml => @tabela_protetico.errors, :status => :unprocessable_entity }
-      end
+    if @tabela_protetico.update_attributes(params[:tabela_protetico])
+      redirect_to abre_protetico_path(@tabela_protetico.protetico) 
+    else
+      render :action => "edit" 
     end
   end
 
-  # DELETE /tabela_proteticos/1
-  # DELETE /tabela_proteticos/1.xml
   def destroy
     @tabela_protetico = TabelaProtetico.find(params[:id])
     protetico         = @tabela_protetico.protetico
     @tabela_protetico.destroy
 
-    respond_to do |format|
-      format.html { administracao? ? redirect_to(tabela_proteticos_url) : redirect_to(abre_protetico_path(protetico)) }
-      format.xml  { head :ok }
-    end
+    administracao? ? redirect_to(tabela_proteticos_url) : redirect_to(abre_protetico_path(protetico)) 
   end
   
   def importa_tabela_base

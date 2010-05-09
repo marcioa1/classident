@@ -5,15 +5,8 @@ class ItemTabelasController < ApplicationController
   def index
     @tabela       = Tabela.find(params[:tabela_id])
     @item_tabelas = @tabela.item_tabelas #ItemTabela.all(:conditions=>["tabela_id=?",@tabela.id], :order=>'codigo')
-
-    respond_to do |format|
-      format.html # index.html.erb
-      format.xml  { render :xml => @item_tabelas }
-    end
   end
 
-  # GET /item_tabelas/1
-  # GET /item_tabelas/1.xml
   def show
     @item_tabela = ItemTabela.find(params[:id])
     @clinicas = Clinica.all(:order=>:nome)
@@ -27,14 +20,8 @@ class ItemTabelasController < ApplicationController
         @preco[clinica.id] = preco.preco
       end
     end
-    respond_to do |format|
-      format.html # show.html.erb
-      format.xml  { render :xml => @item_tabela }
-    end
   end
 
-  # GET /item_tabelas/new
-  # GET /item_tabelas/new.xml
   def new
     if !current_user.pode_incluir_tabela
       redirect_to item_tabelas_path(:tabela_id=>params[:tabela_id])
@@ -43,14 +30,9 @@ class ItemTabelasController < ApplicationController
       @item_tabela = ItemTabela.new
       @item_tabela.tabela_id = @tabela.id
       @descricao_condutas = DescricaoConduta.all.collect{|obj| [obj.descricao, obj.id]}
-      respond_to do |format|
-        format.html # new.html.erb
-        format.xml  { render :xml => @item_tabela }
-      end
     end
   end
 
-  # GET /item_tabelas/1/edit
   def edit
     if !current_user.pode_incluir_tabela
       redirect_to item_tabelas_path(:tabela_id=>params[:tabela_id])
@@ -61,51 +43,34 @@ class ItemTabelasController < ApplicationController
     end  
   end
 
-  # POST /item_tabelas
-  # POST /item_tabelas.xml
   def create
     @item_tabela = ItemTabela.new(params[:item_tabela])
 
-    respond_to do |format|
-      if @item_tabela.save
-        flash[:notice] = 'ItemTabela was successfully created.'
-        format.html { redirect_to(item_tabelas_path(:tabela_id=>@item_tabela.tabela_id)) }
-        format.xml  { render :xml => @item_tabela, :status => :created, :location => @item_tabela }
-      else
-        format.html { render :action => "new" }
-        format.xml  { render :xml => @item_tabela.errors, :status => :unprocessable_entity }
-      end
+    if @item_tabela.save
+      flash[:notice] = 'ItemTabela was successfully created.'
+      redirect_to(item_tabelas_path(:tabela_id=>@item_tabela.tabela_id)) 
+    else
+      render :action => "new" 
     end
   end
 
-  # PUT /item_tabelas/1
-  # PUT /item_tabelas/1.xml
   def update
     @item_tabela = ItemTabela.find(params[:id])
 
-    respond_to do |format|
-      if @item_tabela.update_attributes(params[:item_tabela])
-        flash[:notice] = 'ItemTabela alterado com sucesso.'
-        format.html { redirect_to(item_tabelas_path(:tabela_id=>@item_tabela.tabela_id)) }
-        format.xml  { head :ok }
-      else
-        format.html { render :action => "edit" }
-        format.xml  { render :xml => @item_tabela.errors, :status => :unprocessable_entity }
-      end
+    if @item_tabela.update_attributes(params[:item_tabela])
+      flash[:notice] = 'ItemTabela alterado com sucesso.'
+      redirect_to(item_tabelas_path(:tabela_id=>@item_tabela.tabela_id)) 
+    else
+      render :action => "edit" 
     end
   end
 
-  # DELETE /item_tabelas/1
-  # DELETE /item_tabelas/1.xml
   def destroy
-    @item_tabela = ItemTabela.find(params[:id])
+    @item_tabela       = ItemTabela.find(params[:id])
     @item_tabela.ativo = false
 
     @item_tabela.save
-    respond_to do |format|
-      format.html { redirect_to(item_tabelas_url) }
-      format.xml  { head :ok }
-    end
+    redirect_to(item_tabelas_url) 
   end
   
   def grava_precos
