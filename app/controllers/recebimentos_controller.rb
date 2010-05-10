@@ -189,7 +189,7 @@ class RecebimentosController < ApplicationController
       end
       @cheques_devolvidos = Cheque.devolvidos(@inicio,@fim).nao_reapresentados.nao_excluidos
       @cheques_devolvidos.each do |chq|
-        @devolvidos[chq.data_devolucao.day] += chq.valor
+        @devolvidos[chq.data_primeira_devolucao.day] += chq.valor
       end
       @cheques_reapresentados = Cheque.reapresentados(@inicio,@fim).nao_excluidos.sem_segunda_devolucao
       @cheques_reapresentados.each do |chq|
