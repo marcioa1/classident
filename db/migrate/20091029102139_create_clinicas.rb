@@ -3,6 +3,7 @@ class CreateClinicas < ActiveRecord::Migration
     create_table :clinicas do |t|
       t.string :nome
       t.string :sigla
+      t.boolean :e_administracao
 
       t.timestamps
     end

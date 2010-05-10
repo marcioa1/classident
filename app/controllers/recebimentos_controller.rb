@@ -74,15 +74,13 @@ class RecebimentosController < ApplicationController
     Recebimento.transaction do
       respond_to do |format|
         if ((@recebimento.em_cheque? && @cheque.valid?) || (!@recebimento.em_cheque?)) && @recebimento.save 
-          redirect_to(abre_paciente_path(:id=>@recebimento.paciente_id)) }
-          format.xml  { render :xml => @recebimento, :status => :created, :location => @recebimento }
+          redirect_to(abre_paciente_path(:id=>@recebimento.paciente_id)) 
         else
           @paciente = Paciente.find(session[:paciente_id])
           @bancos   = Banco.all(:order=>:nome).collect{|obj| [obj.numero + " - " + obj.nome,obj.id]}
           @formas_recebimentos = FormasRecebimento.por_nome.collect{|obj| [obj.nome,obj.id]}
           
-          render :action => "new" }
-          format.xml  { render :xml => @recebimento.errors, :status => :unprocessable_entity }
+          render :action => "new" 
         end
       end #transaction
     end
@@ -112,7 +110,7 @@ class RecebimentosController < ApplicationController
     @recebimento.observacao_exclusao = "."
     #TODO fazer exclusao de recebimento lembrando que é preciso excluir o respectivo cheque
 
-    redirect_to(recebimentos_url) }
+    redirect_to(recebimentos_url) 
   end
   
   def relatorio

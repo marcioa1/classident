@@ -85,9 +85,9 @@ ActiveRecord::Schema.define(:version => 20100425221402) do
   create_table "clinicas", :force => true do |t|
     t.string   "nome"
     t.string   "sigla"
+    t.boolean  "e_administracao"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "e_administracao"
   end
 
   add_index "clinicas", ["id"], :name => "index_clinicas_on_id"
@@ -299,6 +299,7 @@ ActiveRecord::Schema.define(:version => 20100425221402) do
   add_index "pacientes", ["id"], :name => "index_pacientes_on_id"
   add_index "pacientes", ["indicacao_id"], :name => "index_pacientes_on_indicacao_id"
   add_index "pacientes", ["nome"], :name => "index_pacientes_on_nome"
+  add_index "pacientes", ["sequencial"], :name => "index_pacientes_on_sequencial"
   add_index "pacientes", ["tabela_id"], :name => "index_pacientes_on_tabela_id"
 
   create_table "pagamentos", :force => true do |t|

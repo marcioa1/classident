@@ -11,7 +11,6 @@ class FormasRecebimentosController < ApplicationController
 
   def new
     @formas_recebimento = FormasRecebimento.new
-    end
   end
 
   def edit

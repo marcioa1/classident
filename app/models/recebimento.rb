@@ -33,6 +33,7 @@ class Recebimento < ActiveRecord::Base
   end
   
   def observacao_do_recebimento
+    debugger
     if self.observacao.nil? 
       if self.em_cheque?
         if self.cheque.present? 

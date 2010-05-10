@@ -139,7 +139,7 @@ class Converte
         forma_cli            = FormaRecebimentoTemp.new
         forma_cli.seq        = registro[1].to_i
         forma_cli.id_adm     = forma_adm.id
-        forma_cli.clinica_id = @clinica_id
+        forma_cli.clinica_id = @clinica.id
         forma_cli.save
       rescue Exception => ex
         @arquivo.puts line + "\n"+ "      ->" + ex
@@ -164,7 +164,7 @@ class Converte
           @clinica = Clinica.find_by_sigla(clinica)
         end
         r.data                  = registro[1].to_date
-        paciente                = Paciente.find_by_sequencial_and_clinica_id(registro[2].to_i, @clinica_id)
+        paciente                = Paciente.find_by_sequencial_and_clinica_id(registro[2].to_i, @clinica.id)
         r.paciente_id           = paciente.id unless paciente.nil?
         forma_recebimento       = FormaRecebimentoTemp.find_by_seq_and_clinica_id(registro[3].to_i, @clinica.id)
         r.formas_recebimento_id = forma_recebimento.id_adm if forma_recebimento.present?
