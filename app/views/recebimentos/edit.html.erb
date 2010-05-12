@@ -12,7 +12,7 @@
     </tr>
     <tr>
       <td align='right'><%= f.label :data %></td>
-      <td><%= text_field_tag :datepicker, Date.today.to_s_br, :size=>10 %></td>
+      <td><%= text_field_tag :datepicker, @recebimento.data.to_s_br, :size=>10 %></td>
     </tr>
     <tr>
       <td align='right'><%= f.label :forma_recebimento_id %> :</td>

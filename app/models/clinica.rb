@@ -13,7 +13,7 @@ class Clinica < ActiveRecord::Base
   has_many :tabelas
   
   named_scope :por_nome, :order=>:nome
-  named_scope :administracao, :conditions=>["sigla = 'AD'"]
-  named_scope :todas, :conditions=>["sigla <> 'AD'"]
+  named_scope :administracao, :conditions=>["sigla = 'ad'"]
+  named_scope :todas, :conditions=>["sigla <> 'ad'"]
   
 end

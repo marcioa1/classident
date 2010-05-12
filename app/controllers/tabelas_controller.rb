@@ -11,21 +11,19 @@ class TabelasController < ApplicationController
   end
 
   def new
-    if !current_user.pode_incluir_tabela
-      redirect_to tabelas_path
-    else
-    @tabela = Tabela.new
-
-  end
-
+    # if !current_user.pode_incluir_tabela
+    #   redirect_to tabelas_path
+    # else
+      @tabela = Tabela.new
+    # end
   end
 
   def edit
-    if !current_user.pode_incluir_tabela
-      redirect_to tabelas_path
-    else
+    # if !current_user.pode_incluir_tabela
+    #   redirect_to tabelas_path
+    # else
       @tabela = Tabela.find(params[:id])
-    end
+    # end
   end
 
   def create

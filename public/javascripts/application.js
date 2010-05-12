@@ -129,7 +129,7 @@ function selecionar(){
 }
 
 function abre_cheque(id){
-    window.open("/cheques/"+ id,"abriu o cheque" ,"height=240,width=310,status=no");
+    window.open("/cheques/"+ id,"abriu o cheque" ,"height=260,width=480,status=no");
 }
 
 function abre_pagamento(id){

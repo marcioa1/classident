@@ -1,5 +1,5 @@
 class Cheque < ActiveRecord::Base
-  has_many :recebimentos
+  has_many   :recebimentos
   belongs_to :banco
   belongs_to :destinacao
   belongs_to :clinica 
@@ -123,9 +123,10 @@ class Cheque < ActiveRecord::Base
   end
   
   def nome_dos_pacientes
-    result = ""
+    result = ''
+    
     self.recebimentos.each do |rec|
-      result += rec.paciente.nome + ","
+      result += rec.paciente.nome + "," if rec.paciente
     end
     if result.size>1
       result = result[0..(result.size-2)]

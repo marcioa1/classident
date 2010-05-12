@@ -28,7 +28,7 @@
     <td align="right"><%=h recebimento.valor.real %></td>
     <td><%=h recebimento.observacao %></td>
     <td><%  if recebimento.em_cheque? %>
-           <%= link_to_function "cheque", "abre_cheque(#{recebimento.cheque.id})" %>
+           <%= link_to_function "cheque", "abre_cheque(#{recebimento.cheque.id})" if recebimento.cheque %>
          <% else %> 
 <%= recebimento.formas_recebimento.nome %>
     <% end %></td>

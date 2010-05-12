@@ -14,10 +14,8 @@
     <td><%= link_to tabela.nome, item_tabelas_path(:tabela_id=>tabela.id) %></td>
     <td><%= tabela.clinica.nome %></td>
     <td><%= tabela.ativa ? "sim" : "não" %></td>
-    <% if administracao? %>
     <td><%= link_to 'Editar', edit_tabela_path(tabela)  %></td>
     <td><%= link_to 'Excluir', tabela, :confirm => 'Tem certeza ?', :method => :delete %></td>
-    <% end %>
   </tr>
 <% end %>
 </table>

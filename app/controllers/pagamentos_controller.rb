@@ -117,19 +117,15 @@ class PagamentosController < ApplicationController
      @tipos_pagamento = TipoPagamento.da_clinica(session[:clinica_id]).por_nome.collect{|obj| [obj.nome, obj.id.to_s]}
      if params[:datepicker]
        @data_inicial = params[:datepicker].to_date
-       @data_final = params[:datepicker2].to_date
+       @data_final   = params[:datepicker2].to_date
      else
        @data_inicial = Date.today  - Date.today.day + 1.day
-       @data_final = Date.today
+       @data_final   = Date.today
      end
      @pagamentos = Pagamento.da_clinica(session[:clinica_id]).nao_excluidos.por_data.entre_datas(@data_inicial, @data_final).tipos(params[:tipo_pagamento_id])
      if params[:pela_adm]
        @pela_administracao = Pagamento.pela_administracao.entre_datas(@data_inicial, @data_final).da_clinica(session[:clinica_id])
        @pagamentos += @pela_administracao
-     end
-     respond_to do |format|
-       format.html # index.html.erb
-       format.xml  { render :xml => @pagamentos }
      end
    end
    

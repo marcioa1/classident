@@ -98,7 +98,9 @@ class RecebimentosController < ApplicationController
     end
 
     if @recebimento.update_attributes(params[:recebimento])
-      redirect_to(abre_paciente_path(:id=>@recebimento.paciente_id)) 
+      #TODO fazer redirect_to back votlar para a presquisa feita com dados
+      redirect_to :back
+      # redirect_to(abre_paciente_path(:id=>@recebimento.paciente_id)) 
     else
       render :action => "edit" 
     end
@@ -116,7 +118,7 @@ class RecebimentosController < ApplicationController
   def relatorio
     #TODO fazer exclusao de recebimento, com formulario
     @formas_recebimento = FormasRecebimento.por_nome
-    @tipos_recebimento = FormasRecebimento.por_nome.collect{|obj| [obj.nome, obj.id]}
+    #@tipos_recebimento  = FormasRecebimento.por_nome.collect{|obj| [obj.nome, obj.id]}
      if params[:datepicker]
        @data_inicial = params[:datepicker].to_date
        @data_final = params[:datepicker2].to_date

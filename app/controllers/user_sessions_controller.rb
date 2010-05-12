@@ -8,6 +8,7 @@ class UserSessionsController < ApplicationController
     end
     
     def create
+      reset_session
       @user_session = UserSession.new(params[:user_session])
       if @user_session.save
         if current_user.password == "1234"

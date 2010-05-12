@@ -2,6 +2,10 @@
 <fieldset>
 <legend>Detalhe do cheque (<%= @cheque.id %>)</legend>
 <table class="transparente">
+	<tr>
+		<td>Paciente : </td>
+		<td><%= @cheque.recebimento.paciente.nome %></td>
+	</tr>
   <tr>
   	<td>Banco : </td>
     <td><%= @cheque.banco.nome %></td>

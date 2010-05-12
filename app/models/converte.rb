@@ -200,7 +200,7 @@ class Converte
         t              = Tabela.new
         t.sequencial   = registro[0].to_i
         t.nome         = registro[1].nome_proprio
-        t.ativa        = (registro[5].to_i == 'Verdadeiro')
+        t.ativa        = (registro[5] == 'Verdadeiro')
         t.clinica_id   = @clinica.id
         t.save
       rescue Exception => ex
@@ -336,7 +336,7 @@ class Converte
           clinica  = registro.last
           @clinica = Clinica.find_by_sigla(clinica)
         end
-        t = TipoPagamento.new
+        t            = TipoPagamento.new
         t.seq        = registro[0].to_i
         t.nome       = registro[1].nome_proprio
         t.ativo      = (registro[2]=='Verdadeiro')
@@ -365,8 +365,8 @@ class Converte
         end
         t                   = Pagamento.new
         t.clinica_id        = @clinica.id
-        @tipo_pagamento     = TipoPagamento.find_by_seq_and_clinica_id(registro[6].to_i,@clinica.id)
-        t.tipo_pagamento_id = @tipo_pagamento.id if !@tipo_pagamento.nil?
+        tipo_pagamento      = TipoPagamento.find_by_seq_and_clinica_id(registro[1].to_i,@clinica.id)
+        t.tipo_pagamento_id = tipo_pagamento.id if tipo_pagamento
         t.data_de_pagamento = registro[3].to_date if Date.valid?(registro[3])
         t.sequencial        = registro[6].to_i
         t.valor_pago        = le_valor(registro[2])
