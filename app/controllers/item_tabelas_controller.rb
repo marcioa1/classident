@@ -1,7 +1,6 @@
 class ItemTabelasController < ApplicationController
   layout "adm"
-  # GET /item_tabelas
-  # GET /item_tabelas.xml
+
   def index
     @tabela       = Tabela.find(params[:tabela_id])
     @item_tabelas = @tabela.item_tabelas #ItemTabela.all(:conditions=>["tabela_id=?",@tabela.id], :order=>'codigo')
@@ -93,7 +92,7 @@ class ItemTabelasController < ApplicationController
   
   def busca_descricao
     item_tabela  = ItemTabela.find(params[:id])
-    result = item_tabela.descricao + ";" + item_tabela.preco.real.to_s
+    result = item_tabela.descricao + ";" + item_tabela.preco_na_clinica().real.to_s
     render :json => result.to_json
   end
 end

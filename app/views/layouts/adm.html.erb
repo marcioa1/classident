@@ -6,21 +6,21 @@
 <head>
   <meta http-equiv="content-type" content="text/html;charset=utf-8" />
   <title>Classident</title>
+	<%= javascript_include_tag 'jquery-1.4.js' %>
+	<%= javascript_include_tag 'jquery-ui-1.8.custom.min.js'%>
+	<%= javascript_include_tag 'jquery.price_format.1.0.js'%>
+	<%= javascript_include_tag 'jrails.js'%>
+	<%= javascript_include_tag 'select_boxes.js'%>
+	<%= javascript_include_tag 'application.js'%>
+	<%= javascript_include_tag 'ui.datepicker-pt-BR.js'%>
+	<%= javascript_include_tag 'adm.js'%>
+	<%= javascript_include_tag 'clinica.js' %>
   
-  <%= javascript_include_tag 'jquery-1.4.js' %>
-  <%= javascript_include_tag 'jquery-ui-1.8.custom.min.js'%>
   <%= stylesheet_link_tag 'naojquery-ui-1.8.custom.css' %>
   <%= stylesheet_link_tag 'jquery.ui.autocomplete.css'%>
-  <%= javascript_include_tag 'jquery.price_format.1.0.js'%>
-  <%= javascript_include_tag 'jrails.js'%>
-  <%= javascript_include_tag 'select_boxes.js'%>
-  <%= javascript_include_tag 'application.js'%>
-  <%= javascript_include_tag 'ui.datepicker-pt-BR.js'%>
   <%= stylesheet_link_tag 'adm.css' %>
   <%= stylesheet_link_tag 'jquery.css' %>
   <%= stylesheet_link_tag 'plain_old_table.css'%>
-  <%= javascript_include_tag 'adm.js'%>
-  <%= javascript_include_tag 'clinica.js' %>
 </head>
 <% if session[:clinica_id].to_i == 10 %>
   <body style='background-color: #F6FDB8;'>

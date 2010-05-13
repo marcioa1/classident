@@ -18,16 +18,18 @@
     </tr>
     <% total = Array.new(5, 0)%>
     <% @todos.each do |dentista| %>
-      <tr>
-        <td><%= dentista.nome %></td>
-        <% val = dentista.producao_entre_datas(@data_inicial,@data_final).split("/")%>
-        <% ind = 0 %>
-        <% val.each do |valor| %>
-          <td align='right'><%= valor.to_f.real %></td>
-          <% total[ind] += valor.to_f %>
-          <% ind += 1 %>
-        <% end %>
-      </tr>
+      <% val = dentista.producao_entre_datas(@data_inicial,@data_final).split("/")%>
+		  <% if val[1].to_f != 0.0 %>
+	      <tr>
+	        <td><%= dentista.nome %></td>
+	        <% ind = 0 %>
+	        <% val.each do |valor| %>
+	          <td align='right'><%= valor.to_f.real %></td>
+	          <% total[ind] += valor.to_f %>
+	          <% ind += 1 %>
+	        <% end %>
+	      </tr>
+      <% end %>
     <% end %>
     <tr>
       <td colspan="2" align='right'>Total : </td>

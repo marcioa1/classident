@@ -18,7 +18,7 @@
   <tr>
     <td><%=h item_tabela.codigo %></td>
     <td><%= link_to item_tabela.descricao, edit_item_tabela_path(item_tabela) %></td>
-    <td align='right'><%=h item_tabela.preco.real %></td>
+    <td align='right'><%=h item_tabela.preco_na_clinica().real %></td>
     <td><%=h item_tabela.ativo ? "sim" : "não" %></td>
     <td><%= link_to 'Excluir', item_tabela, :confirm => 'Tem certeza?', :method => :delete  %></td>
     

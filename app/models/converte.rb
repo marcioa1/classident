@@ -26,10 +26,10 @@ class Converte
         p.nome                  = registro[0].nome_proprio
         p.sequencial            = registro[1].to_i
         tabela                  = Tabela.find_by_sequencial_and_clinica_id(registro[2].to_i, @clinica.id)
-        if tabela.present?
-          p.tabela_id           = tabela.id 
-        else
+        if tabela.nil?
           p.tabela_id           = tabela_inexistente.id
+        else
+          p.tabela_id           = tabela.id 
         end
         p.clinica_id            = @clinica.id unless @clinica.nil?
         p.cpf                   = registro[16]
@@ -122,6 +122,7 @@ class Converte
     puts "Convertendo formas de recebimentos ...."
     f = File.open("doc/convertidos/forma_rec.txt" , "r")
     FormasRecebimento.delete_all
+    FormaRecebimentoTemp.delete_all
     clinica = ''
     while line = f.gets 
       begin
@@ -180,7 +181,7 @@ class Converte
       end
     end
     f.close
-    fecha_arquivo_de_erros('Recebimento')
+    fecha_arquivo_de_erros('R ecebimento')
   end
   
   def tabela

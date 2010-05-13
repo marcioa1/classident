@@ -20,7 +20,8 @@ class Recebimento < ActiveRecord::Base
   named_scope :nao_excluidos, :conditions=>["data_de_exclusao IS NULL"]
      
   def em_cheque?
-    forma = FormasRecebimento.find(formas_recebimento_id)
+    return false if self.formas_recebimento_id.nil?
+    forma = FormasRecebimento.find(self.formas_recebimento_id)
     if forma.nil?
       return false
     else

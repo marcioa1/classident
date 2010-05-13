@@ -22,7 +22,7 @@ def index
   converte.protetico
   converte.tabela_protetico
   converte.trabalho_protetico
-  converte.alta
+  # converte.alta
 end
 
 private
