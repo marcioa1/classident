@@ -39,9 +39,9 @@ class Converte
         p.motivo_sair_da_lista_de_debitos   = registro[30]
         p.data_da_saida_da_lista_de_debitos = registro[31].to_date unless !Date.valid?(registro[31])
         if registro[34].to_i  > 0
-          ortodontista = Dentista.find_by_sequencial(registro[34].to_i)
+          ortodontista = @@dentistas_hash["#{registro[34]}-#{@clinica.id}"]
           p.ortodontia = true
-          p.ortodontista_id = ortodontista.id
+          p.ortodontista_id = ortodontista id ortodontista
           p.mensalidade_de_ortodontia = le_valor(registro[33])
         else
           p.ortodontia = false
@@ -68,7 +68,7 @@ class Converte
           clinica  = registro.last
           @clinica = Clinica.find_by_sigla(clinica)
         end
-        p = Paciente.find_by_nome_and_clinica_id(registro[0].nome_proprio, @clinica.id)
+        p = @@pacientes.find{|pa| pa.nome == registro[0].nome_proprio && pa.clinica_id == @clinica.id}
         if !p.nil?
           p.logradouro   = registro[3]
           p.bairro       = registro[4]
@@ -102,7 +102,7 @@ class Converte
           @clinica = Clinica.find_by_sigla(clinica)
         end
         d               = Debito.new
-        paciente        = Paciente.find_by_sequencial_and_clinica_id(registro[0].to_i, @clinica.id)
+        paciente        = @@pacientes_hash["#{registro[0]}-#{@clinica.id}"]
         d.paciente_id   = paciente.id unless paciente.nil?
         d.data          = registro[1].to_date
         d.valor         = le_valor(registro[2])
@@ -165,7 +165,7 @@ class Converte
           @clinica = Clinica.find_by_sigla(clinica)
         end
         r.data                  = registro[1].to_date
-        paciente                = Paciente.find_by_sequencial_and_clinica_id(registro[2].to_i, @clinica.id)
+        paciente                = @@pacientes_hash["#{registro[2]}-#{@clinica.id}"]
         r.paciente_id           = paciente.id unless paciente.nil?
         forma_recebimento       = FormaRecebimentoTemp.find_by_seq_and_clinica_id(registro[3].to_i, @clinica.id)
         r.formas_recebimento_id = forma_recebimento.id_adm if forma_recebimento.present?
@@ -252,6 +252,10 @@ class Converte
     abre_arquivo_de_erros('Odontograma')
     puts "Convertendo odontograma ...."
     f = File.open("doc/convertidos/odontograma.txt" , "r")
+    itens_das_tabelas = Hash.new
+    ItemTabela.all.each do |it|
+      itens_das_tabelas["#{it.sequencial}-#{it.clinica_id}"] = it.id
+    end
     Tratamento.delete_all
     clinica = ''
     while line = f.gets 
@@ -263,12 +267,16 @@ class Converte
         end
         t                 = Tratamento.new
         t.sequencial      = registro[0].to_i
-        paciente          = Paciente.find_by_sequencial_and_clinica_id(registro[2].to_i, @clinica.id)
-        t.paciente_id     = paciente.id if paciente.present?
-        t.item_tabela_id  = registro[9].to_i
+        debugger
+        paciente          = @@pacientes_hash["#{registro[2]}-#{@clinica.id}"]
+        t.paciente_id     = paciente if paciente
+        if registro[9].to_i > 0
+          item_tabela       = itens_das_tabelas["#{registro[9]}-@clinica.id"]
+          t.item_tabela_id  = item_tabela if item_tabela.present?
+        end
         if !registro[1].blank?
-          dentista = Dentista.find_by_sequencial_and_clinica_id(registro[1].to_i, @clinica.id)
-          t.dentista_id  = dentista.id unless dentista.nil?
+          dentista       = @@dentistas_hash["#{registro[1]}-#{@clinica.id}"]
+          t.dentista_id  = dentista if dentista
         end
         t.valor          = le_valor(registro[6])
         t.data           = registro[7].to_date if Date.valid?(registro[7])
@@ -445,7 +453,7 @@ class Converte
         t.numero          = registro[4]
         t.bom_para        = registro[5].to_date if Date.valid?(registro[5])
         t.valor           = le_valor(registro[6])
-        paciente          = Paciente.find_by_sequencial_and_clinica_id(registro[7].to_i, @clinica.id)
+        paciente          = @@pacientes.find{|pa| pa.sequencial == registro[7].to_i and pa.clinica_id == @clinica.id}
         t.paciente_id     = paciente.id unless paciente.nil?
         t.data            = registro[8].to_date if Date.valid?(registro[8])
         if !registro[10].blank? && registro[9].to_i > 0
@@ -461,11 +469,11 @@ class Converte
           t.data_entrega_administracao = registro[13] if Date.valid?(registro[13])
         end
         if registro[14].to_i > 0
-          paciente2                 = Paciente.find_by_sequencial_and_clinica_id(registro[14].to_i, @clinica.id)
+          paciente2                 = @@pacientes.find{|pa| pa.sequencial == registro[14].to_i and pa.clinica_id == @clinica.id}
           t.segundo_paciente        = paciente2.id if paciente2.present?
         end
         if registro[15].to_i > 0
-          paciente3                 = Paciente.find_by_sequencial_and_clinica_id(registro[15].to_i, @clinica.id)
+          paciente3                 = @@pacientes.find{|pa| pa.sequencial == registro[15].to_i and pa.clinica_id == @clinica.id}
           t.terceiro_paciente       = paciente3.id if paciente3.present?
         end
         t.data_primeira_devolucao   = registro[17].to_date if Date.valid?(registro[17])
@@ -551,10 +559,12 @@ class Converte
         o.sequencial                  = registro[0].to_i
         o.clinica_id                  = @clinica.id
         o.data                        = registro[1].to_date if Date.valid?(registro[1])
-        paciente                      = Paciente.find_by_sequencial_and_clinica_id(registro[2].to_i, @clinica.id)
-        o.paciente_id                 = paciente.id if paciente.present?
-        dentista                      = Dentista.find_by_sequencial_and_clinica_id(registro[3].to_i, @clinica.id)
-        o.dentista_id                 = dentista.id if dentista.present?
+        paciente                      = @@pacientes_hash["#{registro[2]}-#{@clinica.id}"]
+        if paciente
+          o.paciente_id               = paciente
+        end
+        dentista                      = @@dentistas_hash["#{registro[3]}-#{@clinica.id}"]
+        o.dentista_id                 = dentista if !dentista.nil?
         o.numero                      = registro[4]
         o.numero_de_parcelas          = registro[6].to_i
         o.valor_da_parcela            = le_valor(registro[7])
@@ -680,11 +690,11 @@ class Converte
         end
         t                       = TrabalhoProtetico.new
         t.clinica_id            = @clinica.id
-        dentista                = Dentista.find_by_sequencial_and_clinica_id(registro[10].to_i, @clinica.id)
+        dentista                = @@dentistas_hash["#{registro[0]}-#{@clinica.id}"]
         t.dentista_id           = dentista.id unless dentista.nil?
         protetico               = Protetico.find_by_sequencial_and_clinica_id(registro[0].to_i, @clinica.id)
         t.protetico_id          = protetico.id unless protetico.nil?
-        paciente                = Paciente.find_by_sequencial_and_clinica_id(registro[1].to_i, @clinica.id)
+        paciente                = @@pacientes_hash["#{registro[1]}-#{@clinica.id}"]
         t.paciente_id           = paciente.id unless paciente.nil?
         t.dente                 = registro[6]
           t.data_de_envio                           = registro[3].to_date if Date.valid?(registro[3])
@@ -738,6 +748,22 @@ class Converte
   end
   
   
+  def inicia_arquivos_na_memoria
+    @@pacientes = Paciente.all(:select=> ['id, sequencial, clinica_id'])
+    @@dentistas = Dentista.all(:select=> ['id, sequencial, clinica_id'])
+   
+    @@pacientes_hash = Hash.new
+    Paciente.all(:select=> ['id, sequencial, clinica_id']).each do |pa|
+      @@pacientes_hash[pa.sequencial.to_s + '-' + pa.clinica_id.to_s] = pa.id
+    end
+    @@dentistas_hash = Hash.new
+    Dentista.all(:select=> ['id, sequencial, clinica_id']).each do |de|
+      @@dentistas_hash[de.sequencial.to_s + '-' + de.clinica_id.to_s] == de.id
+    end
+      
+  end
+  
+  
   private
   
   def verifica_existencia_do_banco(numero)
@@ -771,4 +797,6 @@ class Converte
     @arquivo.puts '                '
     @arquivo.close
   end
+  
+
 end

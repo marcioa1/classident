@@ -1,11 +1,11 @@
 class CreateDebitos < ActiveRecord::Migration
   def self.up
     create_table :debitos do |t|
-      t.integer :paciente_id
-      t.integer :tratamento_id
-      t.decimal :valor
-      t.string :descricao
-      t.date :data
+      t.integer  :paciente_id
+      t.integer  :tratamento_id
+      t.decimal  :valor, :precision=>9 , :scale=>2
+      t.string   :descricao
+      t.date     :data
 
       t.timestamps
     end

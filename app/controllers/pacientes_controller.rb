@@ -103,14 +103,14 @@ class PacientesController < ApplicationController
     else
       @paciente = Paciente.find(params[:id])
     end
-    @tabelas = Tabela.ativas.collect{|obj| [obj.nome,obj.id]}
-    @indicacoes = Indicacao.por_descricao.collect{|obj| [obj.descricao, obj.id]}
-    @pendentes_protetico = TrabalhoProtetico.pendentes.do_paciente(@paciente.id)
+    @tabelas              = Tabela.ativas.da_clinica(session[:clinica_id]).collect{|obj| [obj.nome,obj.id]}
+    @indicacoes           = Indicacao.por_descricao.collect{|obj| [obj.descricao, obj.id]}
+    @pendentes_protetico  = TrabalhoProtetico.pendentes.do_paciente(@paciente.id)
     @devolvidos_protetico = TrabalhoProtetico.devolvidos.do_paciente(@paciente.id) 
-    @orcamentos = @paciente.orcamentos
-    @ortodontistas = Dentista.ortodontistas.por_nome.collect{|obj| [obj.nome,obj.id]}
+    @orcamentos           = @paciente.orcamentos
+    @ortodontistas        = Dentista.ortodontistas.por_nome.collect{|obj| [obj.nome,obj.id]}
     
-    session[:paciente_id] = @paciente.id
+    session[:paciente_id]   = @paciente.id
     session[:paciente_nome] = @paciente.nome
   end
   

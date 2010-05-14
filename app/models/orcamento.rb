@@ -14,6 +14,7 @@ class Orcamento < ActiveRecord::Base
   named_scope :por_dentista, :order=>:dentista_id
   named_scope :ultimo_codigo, :order=>["numero DESC"]
 
+  validates_numericality_of :valor, :greater_than => 0, :message=>'VAlor deve ser numérico maior que zero.'
 
   def estado
     nao_feito = Tratamento.first(:conditions=>['orcamento_id = ? and data IS NULL', self.id])

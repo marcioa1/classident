@@ -1,8 +1,9 @@
 class ConversaoController < ApplicationController
 
 def index
-  apaga_arquivo_de_erros_de_conversao
+  # apaga_arquivo_de_erros_de_conversao
   converte = Converte.new
+  converte.inicia_arquivos_na_memoria
   converte.clinicas
   converte.tabela
   converte.item_tabela
@@ -22,7 +23,7 @@ def index
   converte.protetico
   converte.tabela_protetico
   converte.trabalho_protetico
-  # converte.alta
+  converte.alta
 end
 
 private

@@ -1,14 +1,15 @@
 <% content_for :main do%>
   <h3>Recebimento das clinicas</h3>
   <% form_tag das_clinicas_recebimentos_path do %>
+  <div style='floate: right; '>
+  <%= render :partial =>"formas_recebimentos/opcoes" , :locals=>{:formas=>@formas_recebimento }%>
+  </div>
+  <%= render :partial =>"clinicas/opcoes", :locals=>{:clinicas=>@todas_as_clinicas} %>
+  <br/>
   Entre : <%= text_field_tag :datepicker, params[:datepicker], :size=>10 %>
   e : <%= text_field_tag :datepicker2, params[:datepicker2], :size=>10%>
   <%= submit_tag "pesquisar"%>
   <br/><br/>
-  <div style='float: right; '>
-  <%= render :partial =>"formas_recebimentos/opcoes" , :locals=>{:formas=>@formas_recebimento }%>
-  </div>
-  <%= render :partial =>"clinicas/opcoes", :locals=>{:clinicas=>@todas_as_clinicas} %>
   <% end %>
   
   <div id="conteudo">
@@ -20,10 +21,10 @@
 	  <th width="290px">Paciente</th>
 	  <th width="80px">Valor</th>
 	  <th width="65px">Forma</th>
-	  <th width="65px">Clínica</th>
+	  <th width="95px">Clínica</th>
 	</tr>
 	<% @total = 0 %>
-	<% @por_clinica = [0,0,0,0,0,0,0,0,0,0,0,0] %>
+	<% @por_clinica = Array.new(12,0) %>
 	  <%= render :partial=>"recebimento" , :collection=>@recebimentos %>
 	<tr>
 	  <td colspan="2" align="center">Total : </td>
