@@ -41,6 +41,7 @@ Rails::Initializer.run do |config|
   config.gem 'haml'
   config.gem "authlogic"
   config.gem "brazilian-rails"
+  config.gem 'hoptoad_notifier'
 #  config.gem "rghost", :version=>">=0.8.7"
 #  config.gem "rghost_rails"
 end
