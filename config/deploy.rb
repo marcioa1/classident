@@ -42,9 +42,7 @@ set :application, "classident"
 
 # the url for your repository
 
-set :repository,  "http://github.com/marcioa1/classident"
-
-
+set :repository, "git://github.com/marcioa1/classident.git"
 
 
 
