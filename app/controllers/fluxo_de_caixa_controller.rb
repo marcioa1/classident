@@ -24,12 +24,12 @@ class FluxoDeCaixaController < ApplicationController
     @remessas     = Entrada.remessa.da_clinica(session[:clinica_id]).do_dia(@fluxo.data)
     @lancamentos  = @recebimentos + @pagamentos + @entradas + @remessas 
     @entradas_adm = []
-    if administracao?
+    if @administracao
       @entradas_adm = Entrada.confirmado.do_dia(@fluxo.data)
       @entradas_adm.each do |entrada| 
         entrada.valor *= -1
       end
-      @lancamentos += @entradas_adm if administracao?
+      @lancamentos += @entradas_adm if @administracao
     end
   end
 end

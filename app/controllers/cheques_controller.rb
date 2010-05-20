@@ -140,7 +140,7 @@ class ChequesController < ApplicationController
   end
   
   def busca_disponiveis
-    if administracao?
+    if @administracao
       @cheques = Cheque.disponiveis_na_administracao.por_valor.menores_que(params[:valor]);
     else
       @cheques = Cheque.da_clinica(session[:clinica_id]).disponiveis.por_valor.menores_que(params[:valor]);
@@ -160,7 +160,7 @@ class ChequesController < ApplicationController
   
   def pesquisa
     @bancos = Banco.por_nome.collect{|obj| [obj.nome, obj.id.to_s]}
-    if administracao?
+    if @administracao
       @cheques = Cheque.na_administracao.do_banco(params[:banco])
     else
       @cheques = Cheque.da_clinica(session[:clinica_id]).do_banco(params[:banco])

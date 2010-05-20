@@ -5,7 +5,7 @@ class DentistasController < ApplicationController
 
   def index
     params[:ativo] = "true" if params[:ativo].nil?
-    if administracao? 
+    if @administracao 
       if params[:ativo]=="true"
         @dentistas = Dentista.por_nome.ativos
       else
@@ -104,7 +104,7 @@ class DentistasController < ApplicationController
         <th width='90px'><br/>Custo</th>
         <th width='90px'><br/>Dentista</th>
         <th width='90px'><br/>Clínica</th>"
-    saida += "<th>Selecionar<br/>p/ pagto</th>" if administracao?
+    saida += "<th>Selecionar<br/>p/ pagto</th>" if @administracao
     saida += "</tr>"
     total = 0.0  
     total_dentista = 0.0
@@ -124,7 +124,7 @@ class DentistasController < ApplicationController
       saida += "<td align='right'>" + tratamento.valor_clinica.real.to_s + "</td>"
       saida += "<td align='center'>" + "<input type='checkbox' id='pagar_dentista_" + tratamento.id.to_s + 
           "' onclick='pagar_dentista(" + tratamento.valor_dentista.to_s + ',' + tratamento.id.to_s + 
-            ',' + tratamento.dentista.id.to_s +  ")'/></tr>" if administracao?
+            ',' + tratamento.dentista.id.to_s +  ")'/></tr>" if @administracao
       total_dentista += tratamento.valor_dentista
       total_custo += tratamento.custo unless tratamento.custo.nil?
       total_clinica += tratamento.valor_clinica
@@ -163,7 +163,7 @@ class DentistasController < ApplicationController
   
   def pesquisar
     params[:ativo] = "true" if params[:ativo].nil?
-     if administracao? 
+     if @administracao 
        @dentistas = Dentista.por_nome
     else
        if params[:ativo]=="true"

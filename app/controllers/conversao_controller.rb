@@ -13,7 +13,7 @@ def index
   #   converte.mala_direta  
   #   converte.inicia_pacientes_em_memoria
   #   converte.orcamento
-   converte.odontograma
+   # converte.odontograma
   # converte.debito 
   # converte.tipo_pagamento 
   # converte.destinacao 
@@ -21,7 +21,7 @@ def index
   # converte.fluxo_de_caixa 
   # converte.formas_recebimento 
   # converte.recebimento 
-  # converte.cheque 
+  converte.cheque 
   # converte.protetico
   # converte.tabela_protetico
   # converte.trabalho_protetico

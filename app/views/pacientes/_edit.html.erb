@@ -1,5 +1,5 @@
 <fieldset class="fieldset_60">
-    <legend>Ficha de cadastro (<%= @paciente.id %>) </legend>
+    <legend>Ficha de cadastro (<%= @paciente.id %> - <%= @paciente.sequencial %>) </legend>
 <% form_for(@paciente) do |f| %>
   <%= f.error_messages %>
   <%= render :partial=>'form', :locals=>{:f=>f} %>

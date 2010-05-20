@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100425221402) do
+ActiveRecord::Schema.define(:version => 20100520021701) do
 
   create_table "altas", :force => true do |t|
     t.integer  "paciente_id"
@@ -198,14 +198,6 @@ ActiveRecord::Schema.define(:version => 20100425221402) do
     t.datetime "updated_at"
   end
 
-  create_table "forma_recebimentos_temp", :force => true do |t|
-    t.integer  "id_adm"
-    t.integer  "sequencial"
-    t.integer  "clinica_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
   create_table "formas_recebimentos", :force => true do |t|
     t.string   "nome"
     t.datetime "created_at"
@@ -236,8 +228,10 @@ ActiveRecord::Schema.define(:version => 20100425221402) do
     t.decimal  "preco",                :precision => 9, :scale => 2
   end
 
+  add_index "item_tabelas", ["clinica_id"], :name => "clinica"
   add_index "item_tabelas", ["descricao_conduta_id"], :name => "index_item_tabelas_on_descricao_conduta_id"
   add_index "item_tabelas", ["id"], :name => "index_item_tabelas_on_id"
+  add_index "item_tabelas", ["sequencial"], :name => "sequencial"
   add_index "item_tabelas", ["tabela_id"], :name => "index_item_tabelas_on_tabela_id"
 
   create_table "orcamentos", :force => true do |t|
@@ -364,10 +358,8 @@ ActiveRecord::Schema.define(:version => 20100425221402) do
     t.string   "cep"
     t.string   "cpf"
     t.date     "nascimento"
-    t.integer  "clinica_id"
   end
 
-  add_index "proteticos", ["clinica_id"], :name => "index_proteticos_on_clinica_id"
   add_index "proteticos", ["id"], :name => "index_proteticos_on_id"
   add_index "proteticos", ["nome"], :name => "index_proteticos_on_nome"
 
@@ -498,13 +490,13 @@ ActiveRecord::Schema.define(:version => 20100425221402) do
   add_index "tratamentos", ["sequencial"], :name => "index_tratamentos_on_sequencial"
 
   create_table "users", :force => true do |t|
-    t.string   "login",                             :null => false
-    t.string   "email",                             :null => false
-    t.string   "crypted_password",                  :null => false
-    t.string   "password_salt",                     :null => false
-    t.string   "persistence_token",                 :null => false
-    t.integer  "login_count",        :default => 0, :null => false
-    t.integer  "failed_login_count", :default => 0, :null => false
+    t.string   "login",                                :null => false
+    t.string   "email",                                :null => false
+    t.string   "crypted_password",                     :null => false
+    t.string   "password_salt",                        :null => false
+    t.string   "persistence_token",                    :null => false
+    t.integer  "login_count",        :default => 0,    :null => false
+    t.integer  "failed_login_count", :default => 0,    :null => false
     t.datetime "last_request_at"
     t.datetime "current_login_at"
     t.datetime "last_login_at"
@@ -515,6 +507,7 @@ ActiveRecord::Schema.define(:version => 20100425221402) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "clinica_id"
+    t.boolean  "ativo",              :default => true
   end
 
   add_index "users", ["clinica_id"], :name => "index_users_on_clinica_id"

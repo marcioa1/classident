@@ -8,7 +8,7 @@
   </tr> 
 <% @protetico.tabela_proteticos.each do |item| %>
   <tr>
-    <td><% if administracao? %>
+    <td><% if @administracao %>
           <%= link_to item.descricao, edit_tabela_protetico_path(item) %>
         <% else %>
           <%= link_to item.descricao, edit_tabela_protetico_path(item) %>

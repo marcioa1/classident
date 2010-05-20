@@ -26,7 +26,7 @@ class TabelaProteticosController < ApplicationController
 
     if @tabela_protetico.save
       flash[:notice] = 'TabelaProtetico criada com sucesso.'
-        if administracao?
+        if @administracao
           redirect_to(tabela_proteticos_path) 
         else
           redirect_to abre_protetico_path(@tabela_protetico.protetico)
@@ -51,7 +51,7 @@ class TabelaProteticosController < ApplicationController
     protetico         = @tabela_protetico.protetico
     @tabela_protetico.destroy
 
-    administracao? ? redirect_to(tabela_proteticos_url) : redirect_to(abre_protetico_path(protetico)) 
+    @administracao ? redirect_to(tabela_proteticos_url) : redirect_to(abre_protetico_path(protetico)) 
   end
   
   def importa_tabela_base

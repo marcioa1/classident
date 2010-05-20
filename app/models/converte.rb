@@ -39,7 +39,7 @@ class Converte
         p.motivo_sair_da_lista_de_debitos   = registro[30]
         p.data_da_saida_da_lista_de_debitos = registro[31].to_date unless !Date.valid?(registro[31])
         if registro[34].to_i  > 0
-          ortodontista = @@dentistas[@clinica_id * 1000 + registro[34].to_i]
+          ortodontista = @@dentistas[clinica_index + registro[34].to_i]
           p.ortodontia = true
           p.ortodontista_id = ortodontista if ortodontista
           p.mensalidade_de_ortodontia = le_valor(registro[33])
@@ -100,9 +100,10 @@ class Converte
         if clinica != registro.last
           clinica = registro.last
           @clinica = Clinica.find_by_sigla(clinica)
+          clinica_index = @clinica.id * 100000
         end
         d               = Debito.new
-        paciente        = @@pacientes_hash["#{registro[0]}-#{@clinica.id}"]
+        paciente        = @@pacientes[@clinica_index+ registro[0].to_i]
         d.paciente_id   = paciente unless paciente.nil?
         d.data          = registro[1].to_date
         d.valor         = le_valor(registro[2])
@@ -162,10 +163,11 @@ class Converte
         if clinica != registro.last
           clinica  = registro.last
           @clinica = Clinica.find_by_sigla(clinica)
+          clinica_index = @clinica.id * 100000
         end
         r                       = Recebimento.new
         r.data                  = registro[1].to_date
-        paciente                = @@pacientes_hash["#{registro[2]}-#{@clinica.id}"]
+        paciente                = @@pacientes[clinica_index + registro[2].to_i]
         if paciente.nil?
           @arquivo.puts "Paciente não encontrado em recebimento: id #{registro[2]}, clínica : #{@clinica.id}"
           @arquivo.puts line
@@ -237,15 +239,15 @@ class Converte
           @clinica = Clinica.find_by_sigla(clinica)
         end
         tabela = Tabela.find_by_sequencial_and_clinica_id(registro[1].to_i,@clinica.id)
-        if !tabela.nil?
-          t = ItemTabela.new
+        if tabela
+          t            = ItemTabela.new
           t.sequencial = registro[0].to_i
           t.clinica_id = @clinica.id
-          t.tabela_id = tabela.id
-          t.codigo = registro[2]
-          t.descricao = registro[3]
+          t.tabela_id  = tabela.id
+          t.codigo     = registro[2]
+          t.descricao  = registro[3]
           t.save
-          valor = le_valor(registro[4])
+          valor        = le_valor(registro[4])
           Preco.create(:item_tabela_id=> t.id, :clinica_id=>@clinica.id, :preco=> valor)
         end
       rescue Exception => ex
@@ -261,36 +263,32 @@ class Converte
     abre_arquivo_de_erros('Odontograma')
     puts "Convertendo odontograma ...."
     f = File.open("doc/convertidos/odontograma.txt" , "r")
-    itens_das_tabelas = Hash.new
+    itens_das_tabelas = Array.new
     ItemTabela.all.each do |it|
-      itens_das_tabelas["#{it.sequencial}-#{it.clinica_id}"] = it.id
+      itens_das_tabelas[it.clinica_id * 100000 + it.sequencial] = it.id
     end
     Tratamento.delete_all
     clinica = ''
-    ct=1
-    while ct < 157601 
-      line = f.gets 
-      ct += 1    
-    end
-    debugger
+    
     while line = f.gets 
       begin
         registro = busca_registro(line)
         if clinica != registro.last
           clinica  = registro.last
           @clinica = Clinica.find_by_sigla(clinica)
+          clinica_index = @clinica.id * 100000
         end
         t                 = Tratamento.new
         t.sequencial      = registro[0].to_i
-        paciente          = @@pacientes_hash["#{registro[2]}-#{@clinica.id}"]
+        paciente          = @@pacientes[clinica_index + registro[2].to_i]
         t.paciente_id     = paciente
         if registro[9].to_i > 0
-          item_tabela       = itens_das_tabelas["#{registro[9]}-#{@clinica.id}"]
+          item_tabela       = itens_das_tabelas[clinica_index + registro[9].to_i]
           t.item_tabela_id  = item_tabela if item_tabela.present?
         end
         debugger
         if !registro[1].blank?
-          dentista       = @@dentistas[@clinica.id * 1000 + registro[1].to_i]
+          dentista       = @@dentistas[clinica_index + registro[1].to_i]
           t.dentista_id  = dentista 
         end
         t.valor          = le_valor(registro[6])
@@ -457,6 +455,7 @@ class Converte
         if clinica != registro.last
           clinica = registro.last
           @clinica = Clinica.find_by_sigla(clinica)
+          clinica_index = @clinica.id * 100000
         end
         t                 = Cheque.new
         t.clinica_id      = @clinica.id
@@ -468,56 +467,56 @@ class Converte
         t.numero          = registro[4]
         t.bom_para        = registro[5].to_date if Date.valid?(registro[5])
         t.valor           = le_valor(registro[6])
-        paciente          = @@pacientes_hash["#{registro[7]}-#{@clinica.id}"]
+        paciente          = @@pacientes[clinica_index + registro[8].to_i]
         if paciente.nil?
-          @arquivo.puts "Paciente não encontrado em cheque: id #{registro[7]}, clínica : #{@clinica.id}"
+          @arquivo.puts "Paciente não encontrado em cheque: id #{registro[8]}, clínica : #{@clinica.id}"
           @arquivo.puts line
         else
           t.paciente_id   = paciente
         end
-        t.data            = registro[8].to_date if Date.valid?(registro[8])
-        if !registro[10].blank? && registro[9].to_i > 0
-          d = Destinacao.find_by_sequencial_and_clinica_id(registro[9].to_i, @clinica.id)
+        t.data            = registro[9].to_date if Date.valid?(registro[9])
+        if !registro[10].blank? && registro[10].to_i > 0
+          d = Destinacao.find_by_sequencial_and_clinica_id(registro[10].to_i, @clinica.id)
           if !d.nil?
             t.destinacao_id   = d.id 
-            t.data_destinacao = registro[10].to_date if Date.valid?(registro[10])
+            t.data_destinacao = registro[11].to_date if Date.valid?(registro[11])
           end
         end
-        pagamento                   = Pagamento.find_by_sequencial_and_clinica_id(registro[11].to_i, @clinica.id)
+        pagamento                   = Pagamento.find_by_sequencial_and_clinica_id(registro[12].to_i, @clinica.id)
         t.pagamento_id              = pagamento.id if pagamento.present?
-        if registro[12] ==  'Verdadeiro'
-          t.data_entrega_administracao = registro[13] if Date.valid?(registro[13])
-        end
-        if registro[14].to_i > 0
-          paciente2                 = @@pacientes_hash["#{registro[14]}-#{@clinica.id}"]
-          t.segundo_paciente        = paciente2 if paciente2.present?
+        if registro[13] ==  'Verdadeiro'
+          t.data_entrega_administracao = registro[14] if Date.valid?(registro[14])
         end
         if registro[15].to_i > 0
-          paciente3                 = @@pacientes_hash["#{registro[15]}-#{@clinica.id}"]
-          t.terceiro_paciente       = paciente3 if paciente3.present?
+          paciente2                 = @@pacientes[clinica_index + registro[15].to_i]
+          t.segundo_paciente        = paciente2 
         end
-        t.data_primeira_devolucao   = registro[17].to_date if Date.valid?(registro[17])
-        t.motivo_primeira_devolucao = registro[18] unless registro[18].blank?
-        t.data_lancamento_primeira_devolucao = registro[19].to_date if Date.valid?(registro[19])
-        t.data_reapresentacao       = registro[20].to_date if Date.valid?(registro[20])
-        t.data_segunda_devolucao    = registro[21].to_date if Date.valid?(registro[21])
-        t.motivo_segunda_devolucao  = registro[22]
-        t.data_solucao              = registro[23].to_date if Date.valid?(registro[23])
-        t.descricao_solucao         = registro[24]
-        t.data_caso_perdido         = registro[25]
-        t.data_segunda_devolucao    = registro[26] if Date.valid?(registro[26])
-        recebimento                 = Recebimento.find_by_sequencial_and_clinica_id(registro[27].to_i, @clinica.id)
+        if registro[16].to_i > 0
+          paciente3                 = @@pacientes[clinica_index + registro[16].to_i]
+          t.terceiro_paciente       = paciente3 
+        end
+        t.data_primeira_devolucao   = registro[18].to_date if Date.valid?(registro[18])
+        t.motivo_primeira_devolucao = registro[19] 
+        t.data_lancamento_primeira_devolucao = registro[20].to_date if Date.valid?(registro[20])
+        t.data_reapresentacao       = registro[21].to_date if Date.valid?(registro[21])
+        t.data_segunda_devolucao    = registro[22].to_date if Date.valid?(registro[22])
+        t.motivo_segunda_devolucao  = registro[23]
+        t.data_solucao              = registro[24].to_date if Date.valid?(registro[24])
+        t.descricao_solucao         = registro[25]
+        t.data_caso_perdido         = registro[26]
+        t.data_segunda_devolucao    = registro[27] if Date.valid?(registro[27])
+        recebimento                 = Recebimento.find_by_sequencial_and_clinica_id(registro[29].to_i, @clinica.id)
         t.recebimento_id            = recebimento.id if recebimento.present?
         t.data_de_exclusao          = registro[28] if Date.valid?(registro[28])
-        t.data_arquivo_morto        = registro[29].to_date if Date.valid?(registro[29])
+        t.data_arquivo_morto        = registro[30].to_date if Date.valid?(registro[30])
         t.pagamento_id              = nil
-        if registro[11].to_i > 0
-          pagamento                 = Pagamento.find_by_sequencial_and_clinica_id(registro[11].to_i, @clinica.id)
-          t.pagamento_id            = pagamento.id if pagamento.present?
+        if registro[12].to_i > 0
+          pagamento                 = Pagamento.find_by_sequencial_and_clinica_id(registro[12].to_i, @clinica.id)
+          t.pagamento_id            = pagamento.id if pagamento
         end
-        if registro[12] == 'Verdadeiro'
-          t.data_entrega_administracao        = registro[10].to_date if Date.valid?(registro[10])
-          t.data_recebimento_na_administracao = registro[10].to_date if Date.valid?(registro[10])
+        if registro[13] == 'Verdadeiro'
+          t.data_entrega_administracao        = registro[11].to_date if Date.valid?(registro[11])
+          t.data_recebimento_na_administracao = registro[11].to_date if Date.valid?(registro[11])
         else
           t.data_recebimento_na_administracao = nil
         end
@@ -574,16 +573,17 @@ class Converte
         if clinica != registro.last
           clinica  = registro.last
           @clinica = Clinica.find_by_sigla(clinica)
+          clinica_index = @clinica.id * 100000
         end
         o                             = Orcamento.new
         o.sequencial                  = registro[0].to_i
         o.clinica_id                  = @clinica.id
         o.data                        = registro[1].to_date if Date.valid?(registro[1])
-        paciente                      = @@pacientes_hash["#{registro[2]}-#{@clinica.id}"]
+        paciente                      = @@pacientes[clinica_index + registro[2].to_i]
         if paciente
           o.paciente_id               = paciente
         end
-        dentista                      = @@dentistas[@clinica_id * 1000 + registro[3].to_i]
+        dentista                      = @@dentistas[clinica_index + registro[3].to_i]
         o.dentista_id                 = dentista if !dentista.nil?
         o.numero                      = registro[4]
         o.numero_de_parcelas          = registro[6].to_i
@@ -707,14 +707,15 @@ class Converte
         if clinica != registro.last
           clinica  = registro.last
           @clinica = Clinica.find_by_sigla(clinica)
+          clinica_index = @clinica * 100000
         end
         t                       = TrabalhoProtetico.new
         t.clinica_id            = @clinica.id
-        dentista                = @@dentistas[@clinica_id * 1000 + registro[0].to_i]
+        dentista                = @@dentistas[clinica_index + registro[0].to_i]
         t.dentista_id           = dentista unless dentista.nil?
         protetico               = Protetico.find_by_sequencial_and_clinica_id(registro[0].to_i, @clinica.id)
         t.protetico_id          = protetico.id unless protetico.nil?
-        paciente                = @@pacientes_hash["#{registro[1]}-#{@clinica.id}"]
+        paciente                = @@pacientes[clinica_index + registro[1].to_i]
         t.paciente_id           = paciente unless paciente.nil?
         t.dente                 = registro[6]
           t.data_de_envio                           = registro[3].to_date if Date.valid?(registro[3])
@@ -777,22 +778,18 @@ class Converte
   end
 
   def inicia_pacientes_em_memoria
-    @@pacientes_hash = Hash.new
+    @@pacientes = Array.new
     Paciente.all(:select=> ['id, sequencial, clinica_id']).each do |pa|
-      @@pacientes_hash[pa.sequencial.to_s + '-' + pa.clinica_id.to_s] = pa.id
+      @@pacientes[pa.clinica_id * 100000 + pa.sequencial] = pa.id
     end
   end  
 
   def inicia_dentistas_em_memoria
     @@dentistas = Array.new
     Dentista.all(:select=> ['id, sequencial, clinica_id']).each do |de|
-      @@dentistas[de.clinica_id * 1000 + de.sequencial] = de.id
+      @@dentistas[de.clinica_id * 100000 + de.sequencial] = de.id
     end
   end 
-  
-  def dentistas_e_itens_odontograma
-    
-  end
   
   private
   

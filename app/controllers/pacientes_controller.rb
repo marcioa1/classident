@@ -11,7 +11,7 @@ class PacientesController < ApplicationController
   end
 
   def new
-    if administracao?
+    if @administracao
       redirect_to administracao_path
     else
       @tabelas       = Tabela.ativas.collect{|obj| [obj.nome,obj.id]}
@@ -66,7 +66,7 @@ class PacientesController < ApplicationController
     # end  
     @pacientes = []
     if !params[:codigo].blank?
-      if administracao?
+      if @administracao
         @pacientes = Paciente.all(:conditions=>["codigo=?", params[:codigo]], :order=>:nome)
       else
         @pacientes = Paciente.all(:conditions=>["clinica_id=? and codigo=?", session[:clinica_id].to_i, params[:codigo].to_i],:order=>:nome)
@@ -82,7 +82,7 @@ class PacientesController < ApplicationController
       end
     else
       if params[:nome]
-        if administracao?
+        if @administracao
           @pacientes = Paciente.all(:conditions=>["nome like ?", params[:nome] + '%'],:order=>:nome)
         else
           @pacientes = Paciente.all(:conditions=>["clinica_id= ? and nome like ?", session[:clinica_id].to_i, params[:nome] + '%'],:order=>:nome)
@@ -124,7 +124,7 @@ class PacientesController < ApplicationController
   
   def nomes_que_iniciam_com
     if params[:nome]
-      if administracao?
+      if @administracao
         @pacientes = Paciente.all(:conditions=>["nome like ?", params[:nome] + '%'],:order=>:nome)
       else
         @pacientes = Paciente.all(:conditions=>["clinica_id= ? and nome like ?", session[:clinica_id].to_i, params[:nome] + '%'],:order=>:nome)

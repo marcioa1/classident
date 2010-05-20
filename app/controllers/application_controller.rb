@@ -18,10 +18,13 @@ class ApplicationController < ActionController::Base
      end
   end
   
-  def administracao?
-    session[:clinica_id].to_i == 10
-  end
+  # def @administracao
+  #     session[:clinica_id].to_i == 10
+  #   end
   
+  def administracao
+    @adminitracao = session[:clinica_id].to_i == 10
+  end
   
   private
   
@@ -68,7 +71,7 @@ class ApplicationController < ActionController::Base
       if !session[:clinica_id].nil?
         @clinica_atual = Clinica.find(session[:clinica_id]) 
       end
-      @administracao = administracao?
+      @administracao = session[:clinica_id] == 10
     end
     
     

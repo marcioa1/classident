@@ -37,7 +37,7 @@
     <td><%= cheque.agencia  %></td>
     <td><%= cheque.conta_corrente %></td>
     <td><%= cheque.numero %></td>
-    <td><% if cheque.entregue_a_administracao?  %>
+    <td><% if cheque.entregue_a_@administracao  %>
           <%= image_tag "ok.png" %>
           <%= cheque.data_entrega_administracao.to_s_br %>
         <% else if cheque.disponivel? %>

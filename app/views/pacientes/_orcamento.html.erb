@@ -1,4 +1,4 @@
 <p>
-<%= link_to 'novo orçamento', new_orcamento_path(:paciente_id=> @paciente.id) unless administracao? %>
+<%= link_to 'novo orçamento', new_orcamento_path(:paciente_id=> @paciente.id) unless @administracao %>
 </p>
 <%= render :partial=>'orcamentos_do_paciente' %>

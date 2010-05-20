@@ -15,7 +15,7 @@
     <td><%= trab.valor.real %></td>
     <td align="center"><%= trab.data_de_devolucao.to_s_br %></td>
     <td><%= trab.protetico.nome %></td>
-    <td><%= trab.dentista.nome %></td>
+    <td><%= trab.dentista.nome if trab.dentista %></td>
 
   </tr>
 

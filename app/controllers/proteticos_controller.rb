@@ -4,7 +4,7 @@ class ProteticosController < ApplicationController
   before_filter :busca_protetico, :only => [:edit, :abre, :show, :update, :destroy]
   
   def index
-    if administracao?
+    if @administracao
       @proteticos = Protetico.por_nome
     else
       @proteticos = @clinica_atual.proteticos.por_nome
@@ -51,7 +51,7 @@ class ProteticosController < ApplicationController
   
   def abre
     @clinicas = Clinica.por_nome - Clinica.administracao
-    if administracao?
+    if @administracao
       @trabalhos_pendentes = TrabalhoProtetico.do_protetico(@protetico.id).pendentes
       @trabalhos_devolvidos = TrabalhoProtetico.do_protetico(@protetico.id).devolvidos.nao_pagos
     else

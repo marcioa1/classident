@@ -1,7 +1,7 @@
 <fieldset class="fieldset_50">
   Entre : <%= text_field_tag :datepicker5, @inicio.to_s_br, :size=>10 %>
   &nbsp;&nbsp;&nbsp;e : <%= text_field_tag :datepicker6 , @fim.to_s_br, :size=>10 %>
-  <% if administracao? %>
+  <% if @administracao %>
     <br/>
     Clínicas :  
     <% @dentista.clinicas.each() do |clinica| %>

@@ -1,4 +1,4 @@
-<% if !administracao? %>
+<% if !@administracao %>
   <%= link_to "Novo procedimento" , new_tratamento_path(:paciente_id=>@paciente.id)  %> 
 <% end %>
 <br/><br/>
@@ -25,7 +25,7 @@
   </td>
   <td><%= tratamento.faces %></td>
     <td><%= tratamento.item_tabela.codigo  unless tratamento.item_tabela.nil? %></td>
-    <td><%= link_to tratamento.item_tabela.descricao, edit_tratamento_path(tratamento) unless tratamento.item_tabela.nil?%></td>
+    <td><%= link_to tratamento.descricao, edit_tratamento_path(tratamento) %></td>
     <td align="right"><%= tratamento.valor.real%></td>
     <td align="right"><%= tratamento.custo.real%></td>
     <td><%= tratamento.dentista.nome unless tratamento.dentista.nil? %></td>

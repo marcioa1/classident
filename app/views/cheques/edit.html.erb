@@ -75,11 +75,11 @@
         </div>
       </div>
   </div>
-  <% if @cheque.entregue_a_administracao? %>
+  <% if @cheque.entregue_a_@administracao %>
   <p>Entregue à Administração em <%= @cheque.data_entrega_administracao.to_s_br %></p>
   <% end %>
   <p>
-    <%= f.submit 'Update' unless @cheque.entregue_a_administracao?%>
+    <%= f.submit 'Update' unless @cheque.entregue_a_@administracao%>
   </p>
 <% end %>
 <%= link_to 'voltar', :back %>
