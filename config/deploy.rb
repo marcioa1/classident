@@ -2,14 +2,14 @@
 
 # Your cPanel/SSH login name
 
-set :user , "anadatac"
-
+set :user , "root"
+# set :user, "anadatac"
 
 
 # The domain name of the server to deploy to, this can be your domain or the domain of the server.
 
-set :server_name, "anadata.com.br"
-
+# set :server_name, "anadata.com.br"
+set :server_name , "68.233.11.17"
 
 
 # Your svn / git login name
@@ -48,7 +48,7 @@ set :repository, "git://github.com/marcioa1/classident.git"
 
 ###### There is no need to edit anything below this line ######
 
-set :deploy_to, "/home/#{user}/rails_app/#{application}"
+set :deploy_to, "/home/anadata/domains/classident.anadata.com.br/classident"
 
 set :use_sudo, false
 
