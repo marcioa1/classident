@@ -10,7 +10,7 @@
   <table class="transparente">
     <tr><td>Início : </td><td><%= text_field_tag :datepicker, @data_inicial.to_s_br, :size=>10 %> </td></tr>
     <tr><td>Fim : </td><td><%= text_field_tag :datepicker2, @data_final.to_s_br, :size=>10 %></td></tr>
-    <% if clinica? %>
+    <% if !@administracao %>
       <tr>
         <td colspan='2'><%= check_box_tag :pela_adm, params[:pela_adm], params[:pela_adm] %> Incluir pagos pela Adm
         </td>

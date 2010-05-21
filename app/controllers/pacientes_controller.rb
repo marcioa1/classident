@@ -41,7 +41,7 @@ class PacientesController < ApplicationController
 
   def update
     @paciente.inicio_tratamento = params[:datepicker2].to_date
-    @paciente.data_da_suspensao_da_cobranca_de_orto = parasm[:datepicker3].to_date unless params[:datepicker3].blank?
+    @paciente.data_da_suspensao_da_cobranca_de_orto = params[:datepicker3].to_date unless params[:datepicker3].blank?
     @paciente.data_da_saida_da_lista_de_debitos = params[:datepicker4].to_date unless params[:datepicker4].blank?
     if @paciente.update_attributes(params[:paciente])
       redirect_to(abre_paciente_path(:id=>@paciente.id)) 

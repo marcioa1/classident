@@ -7,7 +7,7 @@ class RecebimentosController < ApplicationController
   before_filter :busca_recebimento, :only => [:show, :edit]
   
   def index
-    @recebimentos = Recebimento.all
+   # @recebimentos = Recebimento.all
   end
 
   def show

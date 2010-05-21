@@ -68,11 +68,14 @@ class OrcamentosController < ApplicationController
       params[:datepicker] = Date.today.to_s_br
       params[:datepicker2] = Date.today.to_s_br
     end
-    if params[:acima_de_um_valor]
-      @orcamentos = Orcamento.da_clinica(session[:clinica_id]).entre_datas(params[:datepicker].to_date, params[:datepicker2].to_date).acima_de(params[:valor])
+    if Date.valid?(params[:datepicker]) and Date.valid?(params[:datepicker2])
+      if params[:acima_de_um_valor]
+        @orcamentos = Orcamento.da_clinica(session[:clinica_id]).entre_datas(params[:datepicker].to_date, params[:datepicker2].to_date).acima_de(params[:valor])
+      else
+        @orcamentos = Orcamento.da_clinica(session[:clinica_id]).entre_datas(params[:datepicker].to_date, params[:datepicker2].to_date)
+      end
     else
-      @orcamentos = Orcamento.da_clinica(session[:clinica_id]).entre_datas(params[:datepicker].to_date, params[:datepicker2].to_date)
-      
+      flash[:error] = 'Data inválida.'
     end
   end
 

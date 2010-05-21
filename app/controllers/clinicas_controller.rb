@@ -67,6 +67,7 @@ class ClinicasController < ApplicationController
   end
   
   def abandono_de_tratamento
+    #FIXME Falta fazer
     if params[:dias].blank?
       @abandonos = [:nome=>'marcio', :ultima_intervencao=>Date.today - 30.days]
     else

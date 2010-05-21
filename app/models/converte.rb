@@ -15,14 +15,18 @@ class Converte
     tabela_inexistente = Tabela.find_by_nome('Inexistente')
     Paciente.delete_all
     clinica = ''
+    codigo  = 1
     while line = f.gets
       begin
         registro = busca_registro(line)
         if clinica != registro.last
           clinica  = registro.last
           @clinica = Clinica.find_by_sigla(clinica)
+          codigo   = 1
         end
         p                       = Paciente.new
+        p.codigo                = codigo
+        codigo                  = codigo + 1
         p.nome                  = registro[0].nome_proprio
         p.sequencial            = registro[1].to_i
         tabela                  = Tabela.find_by_sequencial_and_clinica_id(registro[2].to_i, @clinica.id)
@@ -582,22 +586,25 @@ class Converte
         paciente                      = @@pacientes[clinica_index + registro[2].to_i]
         if paciente
           o.paciente_id               = paciente
+          dentista                      = @@dentistas[clinica_index + registro[3].to_i]
+          o.dentista_id                 = dentista if !dentista.nil?
+          o.numero                      = registro[4]
+          o.numero_de_parcelas          = registro[6].to_i
+          o.valor_da_parcela            = le_valor(registro[7])
+          o.vencimento_primeira_parcela = registro[8].to_date if Date.valid?(registro[8])
+          #FIXME traduzir isto aqui para as formas conhecidas
+          o.forma_de_pagamento          = 'cheque pre' if registro[9]=='P'
+          o.forma_de_pagamento          = 'a vista' if registro[9]=='V'
+          o.forma_de_pagamento          = 'cartao' if registro[9]=='C'
+          o.data_de_inicio              = registro[10].to_date if  Date.valid?(registro[10])
+          o.valor_com_desconto          = le_valor(registro[12])
+          o.desconto                    = registro[13].to_i
+          o.valor                       = o.valor_com_desconto / (100 - (o.desconto / 100)) * 100
+          o.save
+        else
+          @arquivo.puts "Orcamento #{registro[0]} sem paciente #{registro[2]} na clínica #{@clinica.id}"          
+          @arquivo.puts line
         end
-        dentista                      = @@dentistas[clinica_index + registro[3].to_i]
-        o.dentista_id                 = dentista if !dentista.nil?
-        o.numero                      = registro[4]
-        o.numero_de_parcelas          = registro[6].to_i
-        o.valor_da_parcela            = le_valor(registro[7])
-        o.vencimento_primeira_parcela = registro[8].to_date if Date.valid?(registro[8])
-        #FIXME traduzir isto aqui para as formas conhecidas
-        o.forma_de_pagamento          = 'cheque pre' if registro[9]=='P'
-        o.forma_de_pagamento          = 'a vista' if registro[9]=='V'
-        o.forma_de_pagamento          = 'cartao' if registro[9]=='C'
-        o.data_de_inicio              = registro[10].to_date if  Date.valid?(registro[10])
-        o.valor_com_desconto          = le_valor(registro[12])
-        o.desconto                    = registro[13].to_i
-        o.valor                       = o.valor_com_desconto / (100 - (o.desconto / 100)) * 100
-        o.save
       rescue Exception => ex
         @arquivo.puts line + "\n"+ "      ->" + ex
       end

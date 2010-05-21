@@ -115,18 +115,21 @@ class PagamentosController < ApplicationController
   
    def relatorio
      @tipos_pagamento = TipoPagamento.da_clinica(session[:clinica_id]).por_nome.collect{|obj| [obj.nome, obj.id.to_s]}
-     if params[:datepicker]
-       @data_inicial = params[:datepicker].to_date
-       @data_final   = params[:datepicker2].to_date
-     else
-       @data_inicial = Date.today  - Date.today.day + 1.day
-       @data_final   = Date.today
-     end
-     @pagamentos = Pagamento.da_clinica(session[:clinica_id]).nao_excluidos.por_data.entre_datas(@data_inicial, @data_final).tipos(params[:tipo_pagamento_id])
-     if params[:pela_adm]
-       @pela_administracao = Pagamento.pela_administracao.entre_datas(@data_inicial, @data_final).da_clinica(session[:clinica_id])
-       @pagamentos += @pela_administracao
-     end
-   end
+     if params[:datepicker] && Date.valid(params[:datepicker])
+       @data_inicial = params[:datepicker].to_date 
+    else
+      @data_inicial = Date.today  - Date.today.day + 1.day
+    end
+    if params[:datepicker2] && Date.valid?params[:datepicker2]
+      @data_final   = params[:datepicker2].to_date  
+    else
+      @data_final   = Date.today
+    end
+    @pagamentos = Pagamento.da_clinica(session[:clinica_id]).nao_excluidos.por_data.entre_datas(@data_inicial, @data_final).tipos(params[:tipo_pagamento_id])
+    if params[:pela_adm]
+      @pela_administracao = Pagamento.pela_administracao.entre_datas(@data_inicial, @data_final).da_clinica(session[:clinica_id])
+      @pagamentos += @pela_administracao
+    end
+  end
    
 end

@@ -51,11 +51,14 @@ class ChequesController < ApplicationController
   end
   
   def cheques_recebidos
-    if params[:datepicker]
+    if params[:datepicker] && Date.valid?(params[:datepicker])
       @data_inicial = params[:datepicker].to_date
-      @data_final = params[:datepicker2].to_date
     else
       @data_inicial = Date.today - Date.today.day.days + 1.day
+    end
+    if params[:datepicker2] && Date.valid?(params[:datepicker2])
+      @data_final = params[:datepicker2].to_date
+    else
       @data_final = Date.today
     end
     @status = [["todos","todos"],["disponíveis","disponíveis"],
@@ -86,11 +89,10 @@ class ChequesController < ApplicationController
               usados_para_pagamento
     end  
     if params[:status]=="destinação"
-      @cheques = Cheque.por_bom_para.da_clinica(session[:clinica_id]).entre_datas(@data_inicial,@data_final).
-              com_destinacao
+      @cheques = Cheque.por_bom_para.da_clinica(session[:clinica_id]).entre_datas(@data_inicial,@data_final).com_destinacao
     end  
     if params[:status]=="devolvido"
-      @cheques = Cheque.por_bom_para.da_clinica(session[:clinica_id]).devolvido(@data_inicial,@data_final)
+      @cheques = Cheque.por_bom_para.da_clinica(session[:clinica_id]).devolvidos(@data_inicial,@data_final)
     end
     if params[:status]=="reapresentado"
       @cheques = Cheque.por_bom_para.da_clinica(session[:clinica_id]).reapresentado(@data_inicial,@data_final)
