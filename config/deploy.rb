@@ -2,13 +2,12 @@
 
 # Your cPanel/SSH login name
 
-set :user , "anadatar.vm"
+set :user , "root"
 # set :user, "anadatac"
 
 
 # The domain name of the server to deploy to, this can be your domain or the domain of the server.
 
-# set :server_name, "anadata.com.br"
 set :server_name , "68.233.11.17"
 
 
@@ -70,6 +69,7 @@ role :db,  server_name, :primary => true
 
 task :after_update_code, :roles => [:web, :db, :app] do
 
+  run "chown anadata.anadata #{release_path} -R"
   run "chmod 755 #{release_path}/public"
 
 end
