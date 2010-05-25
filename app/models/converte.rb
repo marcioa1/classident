@@ -22,6 +22,7 @@ class Converte
         if clinica != registro.last
           clinica  = registro.last
           @clinica = Clinica.find_by_sigla(clinica)
+          clinica_index = @clinica.id * 100000
           codigo   = 1
         end
         p                       = Paciente.new
@@ -107,7 +108,7 @@ class Converte
           clinica_index = @clinica.id * 100000
         end
         d               = Debito.new
-        paciente        = @@pacientes[@clinica_index+ registro[0].to_i]
+        paciente        = @@pacientes[clinica_index + registro[0].to_i]
         d.paciente_id   = paciente unless paciente.nil?
         d.data          = registro[1].to_date
         d.valor         = le_valor(registro[2])
@@ -125,7 +126,7 @@ class Converte
   def formas_recebimento
     abre_arquivo_de_erros('Formas de recebimento')
     puts "Convertendo formas de recebimentos ...."
-    f = File.open("doc/convertidos/forma_rec.txt" , "r")
+    f = File.open("doc/convertidos/formarec.txt" , "r")
     FormasRecebimento.delete_all
     FormaRecebimentoTemp.delete_all
     clinica = ''
@@ -303,7 +304,7 @@ class Converte
         orcamento        = Orcamento.find_by_sequencial_and_clinica_id(registro[8].to_i, @clinica.id)
         t.orcamento_id   = orcamento.id if orcamento.present?
         t.custo          = le_valor(registro[12])
-        t.excluido       = registro[16].to_i == 'Verdadeiro'
+        t.excluido       = registro[16] == 'Verdadeiro'
         t.clinica_id     = @clinica.id
         t.created_at     = registro[14].to_date if Date.valid?(registro[14])
         t.save
@@ -453,6 +454,7 @@ class Converte
     Cheque.delete_all
     #TODO verificar se o cheque está disponível
     clinica = ''
+    @dest   = Destinacao.all
     while line = f.gets 
       begin
         registro = busca_registro(line)
@@ -471,60 +473,48 @@ class Converte
         t.numero          = registro[4]
         t.bom_para        = registro[5].to_date if Date.valid?(registro[5])
         t.valor           = le_valor(registro[6])
-        paciente          = @@pacientes[clinica_index + registro[8].to_i]
+        paciente          = @@pacientes[clinica_index + registro[7].to_i]
         if paciente.nil?
-          @arquivo.puts "Paciente não encontrado em cheque: id #{registro[8]}, clínica : #{@clinica.id}"
+          debugger
+          @arquivo.puts "Paciente não encontrado em cheque: id #{registro[7]}, clínica : #{@clinica.id}"
           @arquivo.puts line
         else
           t.paciente_id   = paciente
         end
-        t.data            = registro[9].to_date if Date.valid?(registro[9])
-        if !registro[10].blank? && registro[10].to_i > 0
-          d = Destinacao.find_by_sequencial_and_clinica_id(registro[10].to_i, @clinica.id)
+        t.data            = registro[8].to_date if Date.valid?(registro[8])
+        if !registro[9].blank? && registro[9].to_i > 0
+          d = @dest.find{|de| de.sequencial == registro[9].to_i && de.clinica_id == @clinica.id }
           if !d.nil?
             t.destinacao_id   = d.id 
-            t.data_destinacao = registro[11].to_date if Date.valid?(registro[11])
+            t.data_destinacao = registro[10].to_date if Date.valid?(registro[10])
           end
         end
-        pagamento                   = Pagamento.find_by_sequencial_and_clinica_id(registro[12].to_i, @clinica.id)
+        pagamento                   = Pagamento.find_by_sequencial_and_clinica_id(registro[11].to_i, @clinica.id)
         t.pagamento_id              = pagamento.id if pagamento.present?
-        if registro[13] ==  'Verdadeiro'
-          t.data_entrega_administracao = registro[14] if Date.valid?(registro[14])
+        if registro[12] ==  'Verdadeiro'
+          t.data_entrega_administracao = registro[13] if Date.valid?(registro[13])
         end
-        if registro[15].to_i > 0
-          paciente2                 = @@pacientes[clinica_index + registro[15].to_i]
+        if registro[14].to_i > 0
+          paciente2                 = @@pacientes[clinica_index + registro[14].to_i]
           t.segundo_paciente        = paciente2 
         end
-        if registro[16].to_i > 0
-          paciente3                 = @@pacientes[clinica_index + registro[16].to_i]
+        if registro[15].to_i > 0
+          paciente3                 = @@pacientes[clinica_index + registro[15].to_i]
           t.terceiro_paciente       = paciente3 
         end
-        t.data_primeira_devolucao   = registro[18].to_date if Date.valid?(registro[18])
-        t.motivo_primeira_devolucao = registro[19] 
-        t.data_lancamento_primeira_devolucao = registro[20].to_date if Date.valid?(registro[20])
-        t.data_reapresentacao       = registro[21].to_date if Date.valid?(registro[21])
-        t.data_segunda_devolucao    = registro[22].to_date if Date.valid?(registro[22])
-        t.motivo_segunda_devolucao  = registro[23]
-        t.data_solucao              = registro[24].to_date if Date.valid?(registro[24])
-        t.descricao_solucao         = registro[25]
-        t.data_caso_perdido         = registro[26]
-        t.data_segunda_devolucao    = registro[27] if Date.valid?(registro[27])
-        recebimento                 = Recebimento.find_by_sequencial_and_clinica_id(registro[29].to_i, @clinica.id)
+        t.data_primeira_devolucao   = registro[17].to_date if Date.valid?(registro[17])
+        t.motivo_primeira_devolucao = registro[18] 
+        t.data_lancamento_primeira_devolucao = registro[19].to_date if Date.valid?(registro[19])
+        t.data_reapresentacao       = registro[20].to_date if Date.valid?(registro[20])
+        t.data_segunda_devolucao    = registro[21].to_date if Date.valid?(registro[21])
+        t.motivo_segunda_devolucao  = registro[22]
+        t.data_solucao              = registro[23].to_date if Date.valid?(registro[23])
+        t.descricao_solucao         = registro[24]
+        t.data_caso_perdido         = registro[25]
+        recebimento                 = Recebimento.find_by_sequencial_and_clinica_id(registro[27].to_i, @clinica.id)
         t.recebimento_id            = recebimento.id if recebimento.present?
         t.data_de_exclusao          = registro[28] if Date.valid?(registro[28])
-        t.data_arquivo_morto        = registro[30].to_date if Date.valid?(registro[30])
-        t.pagamento_id              = nil
-        if registro[12].to_i > 0
-          pagamento                 = Pagamento.find_by_sequencial_and_clinica_id(registro[12].to_i, @clinica.id)
-          t.pagamento_id            = pagamento.id if pagamento
-        end
-        if registro[13] == 'Verdadeiro'
-          t.data_entrega_administracao        = registro[11].to_date if Date.valid?(registro[11])
-          t.data_recebimento_na_administracao = registro[11].to_date if Date.valid?(registro[11])
-        else
-          t.data_recebimento_na_administracao = nil
-        end
-        t.data_de_exclusao       = registro[28].to_date if Date.valid?(registro[28])
+        t.data_arquivo_morto        = registro[29].to_date if Date.valid?(registro[29])
         t.save
         if recebimento.present?
           recebimento.cheque_id  = t.id
@@ -714,7 +704,7 @@ class Converte
         if clinica != registro.last
           clinica  = registro.last
           @clinica = Clinica.find_by_sigla(clinica)
-          clinica_index = @clinica * 100000
+          clinica_index = @clinica.id * 100000
         end
         t                       = TrabalhoProtetico.new
         t.clinica_id            = @clinica.id
