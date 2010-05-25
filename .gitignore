@@ -9,3 +9,4 @@ doc/*.txt
 doc/anteriores/*.*
 doc/convertidos/*.*
 *.sql
+config/database.yml

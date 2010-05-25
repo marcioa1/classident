@@ -18,7 +18,7 @@ test:
 
 production:
   adapter: mysql
-  database: anadatac_classiden
+  database: classident
   encode: utf8
-  username: anadatac_marcio
+  username: classident
   password: JoaoPE1506

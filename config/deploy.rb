@@ -2,7 +2,7 @@
 
 # Your cPanel/SSH login name
 
-set :user , "root"
+set :user , "anadata"
 # set :user, "anadatac"
 
 
