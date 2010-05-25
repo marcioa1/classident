@@ -2,7 +2,7 @@
 
 # Your cPanel/SSH login name
 
-set :user , "anadata"
+set :user , "anadatar.vm"
 # set :user, "anadatac"
 
 
