@@ -1,5 +1,4 @@
 <p>
-  <%= f.label :paciente %> : <%= @paciente.nome %>
   <%= f.hidden_field :paciente_id  %>
   <%= hidden_field_tag :tratamento_ids , params[:tratamento_ids]%>
 </p>
@@ -35,7 +34,7 @@
 </p>
 <p>
   <%= f.label :data_de_inicio %>: 
-  <%= text_field_tag :datepicker3, {}, :size=>10 , :on_change => "alert('trocou');"%>
+  <%= f.text_field :data_de_inicio, :class=> 'datepicker',  :size=>10 , :on_change => "alert('trocou');"%>
 </p>
 <p>
   <table class='transparente' >

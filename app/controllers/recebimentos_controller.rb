@@ -51,7 +51,7 @@ class RecebimentosController < ApplicationController
     else
       @cheque = nil
     end
-    if params[:segundo_paciente].present?
+    if params[:segundo_paciente]
       @recebimento2                       = Recebimento.new
       @recebimento2.paciente_id           = params[:id_segundo_paciente]
       @recebimento2.valor                 = params[:valor_paciente_2]
@@ -61,7 +61,7 @@ class RecebimentosController < ApplicationController
       @recebimento2.clinica_id            = session[:clinica_id]
       @recebimento2.cheque                = @cheque
     end
-    if params[:terceiro_paciente].present?
+    if params[:terceiro_paciente]
       @recebimento3                       = Recebimento.new
       @recebimento3.paciente_id           = params[:id_terceiro_paciente]
       @recebimento3.valor                 = params[:valor_paciente_3]
@@ -72,18 +72,15 @@ class RecebimentosController < ApplicationController
       @recebimento3.cheque                = @cheque
     end
     Recebimento.transaction do
-      respond_to do |format|
-        if ((@recebimento.em_cheque? && @cheque.valid?) || (!@recebimento.em_cheque?)) && @recebimento.save 
-          redirect_to(abre_paciente_path(:id=>@recebimento.paciente_id)) 
-        else
-          @paciente = Paciente.find(session[:paciente_id])
-          @bancos   = Banco.all(:order=>:nome).collect{|obj| [obj.numero + " - " + obj.nome,obj.id]}
-          @formas_recebimentos = FormasRecebimento.por_nome.collect{|obj| [obj.nome,obj.id]}
-          
-          render :action => "new" 
-        end
-      end #transaction
-    end
+      if ((@recebimento.em_cheque? && @cheque.valid?) || (!@recebimento.em_cheque?)) && @recebimento.save 
+        redirect_to(abre_paciente_path(:id=>@recebimento.paciente_id)) 
+      else
+        @paciente = Paciente.find(session[:paciente_id])
+        @bancos   = Banco.all(:order=>:nome).collect{|obj| [obj.numero + " - " + obj.nome,obj.id]}
+        @formas_recebimentos = FormasRecebimento.por_nome.collect{|obj| [obj.nome,obj.id]}
+        render :action => "new" 
+      end
+    end #transaction
   end
 
   def update
@@ -99,8 +96,8 @@ class RecebimentosController < ApplicationController
 
     if @recebimento.update_attributes(params[:recebimento])
       #TODO fazer redirect_to back votlar para a presquisa feita com dados
-      redirect_to :back
-      # redirect_to(abre_paciente_path(:id=>@recebimento.paciente_id)) 
+      # redirect_to :back
+      redirect_to(abre_paciente_path(:id=>@recebimento.paciente_id)) 
     else
       render :action => "edit" 
     end

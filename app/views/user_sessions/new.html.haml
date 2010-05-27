@@ -1,0 +1,26 @@
+- content_for :main do
+  - form_for @user_session, :url => user_sessions_path do |f|
+    = f.error_messages
+    = flash[:notice]
+    #flash_erro
+      = flash[:error]
+    %table{ :cellspacing => "0", :border => "0", :cellpadding => "0" }
+      %tr
+        %td{ :align => "left" }
+          = f.label :login
+        %td
+          \&nbsp;&nbsp;&nbsp;&nbsp;
+        %td{ :align => "left" }
+          = f.label :senha
+        %td
+          \&nbsp;
+      %tr
+        %td
+          = f.text_field :login, :size=>10
+        %td
+          \&nbsp;&nbsp;&nbsp;&nbsp;
+        %td
+          = f.password_field :password, :size=>10
+        %td
+          \&nbsp;
+          = f.submit "Entrar"

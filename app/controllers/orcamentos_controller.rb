@@ -13,11 +13,11 @@ class OrcamentosController < ApplicationController
 
   def new
     params[:tratamento_ids] = Tratamento.ids_orcamento(params[:paciente_id]).join(",")
-    @paciente = Paciente.find(params[:paciente_id])
+    @paciente = Paciente.find(session[:paciente_id], :select=>'id,nome')
     @orcamento = Orcamento.new
     @orcamento.paciente = @paciente
-    @orcamento.numero = Orcamento.proximo_numero(params[:paciente_id])
-    @orcamento.valor = Tratamento.valor_a_fazer(params[:paciente_id])
+    @orcamento.numero = Orcamento.proximo_numero(session[:paciente_id])
+    @orcamento.valor = Tratamento.valor_a_fazer(session[:paciente_id])
     @orcamento.desconto = 0
     @orcamento.valor_com_desconto = @orcamento.valor
     @dentistas = Clinica.find(session[:clinica_id]).dentistas.ativos.por_nome.collect{|obj| [obj.nome,obj.id]}
@@ -30,16 +30,21 @@ class OrcamentosController < ApplicationController
   end
 
   def create
+    params[:orcamento][:valor_da_parcela] = params[:orcamento][:valor_da_parcela].gsub('.','').gsub(',','.')
     @orcamento = Orcamento.new(params[:orcamento])
     @orcamento.data = params[:datepicker].to_date
-    @orcamento.vencimento_primeira_parcela = params[:datepicker2].to_date
-    @orcamento.data_de_inicio = params[:datepicker3].to_date unless params[:datepicker3].blank?
+    debugger
+    @orcamento.vencimento_primeira_parcela = params[:orcamento][:vencimento_primeira_parcela].to_date if Date.valid?(params[:orcamento][:vencimento_primeira_parcela])
+    @orcamento.data_de_inicio = params[:orcamento][:data_de_inicio].to_date if Date.valid?(params[:orcamento][:data_de_inicio])
     if @orcamento.save
       Tratamento.associa_ao_orcamento(params[:tratamento_ids], @orcamento.id)
       Debito.cria_debitos_do_orcamento(@orcamento.id) unless @orcamento.data_de_inicio.nil?
       redirect_to(abre_paciente_path(@orcamento.paciente_id)) 
     else
-      render :action => "new" 
+      debugger
+      @paciente  = Paciente.find(session[:paciente_id], :select=>'id,nome')
+      @dentistas = Clinica.find(session[:clinica_id]).dentistas.ativos.por_nome.collect{|obj| [obj.nome,obj.id]}
+      render :action => "new"
     end
   end
 
