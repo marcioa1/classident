@@ -66,7 +66,7 @@
   </p>
   <p>
     <%= f.label :data_de_término %>
-    <%= f.text_field :data,  :class=>'datepicker', :size=>10 %>
+    <%= text_field_tag :data_de_termino,  @tratamento.data.to_s_br, :class=>'datepicker', :size=>10 %>
   </p>
   <p>
   </p>

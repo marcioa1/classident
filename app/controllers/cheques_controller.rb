@@ -145,7 +145,7 @@ class ChequesController < ApplicationController
     if @administracao
       @cheques = Cheque.disponiveis_na_administracao.por_valor.menores_que(params[:valor]);
     else
-      @cheques = Cheque.da_clinica(session[:clinica_id]).disponiveis.por_valor.menores_que(params[:valor]);
+      @cheques = Cheque.da_clinica(session[:clinica_id]).disponiveis_na_clinica.por_valor.menores_que(params[:valor]);
     end
     result = "<table >"
     result += "<tr><th>Bom para</th><th>valor</th><th>Paciente</th><th>&nbsp;</th></tr>"

@@ -14,6 +14,7 @@
     <th>Data de realização</th>
     <th>Orçamento</th>
   </tr>
+<% total = 0.0 %>
 <% Tratamento.do_paciente(@paciente.id).each()  do |tratamento|  %>
   <tr>
   <td align="center">
@@ -39,5 +40,11 @@
     <% end %>
     <td align='center'><%= tratamento.orcamento.numero unless tratamento.orcamento.nil? %></td>
   </tr>
+  <% total += tratamento.valor %>
 <% end %>
+  <tr>
+  	<td colspan="4" align="center">Total</td>
+    <td align = 'right'><%= total.real %></td>
+    <td colspan='4'>&nbsp;</td>
+  </tr>
 </table>

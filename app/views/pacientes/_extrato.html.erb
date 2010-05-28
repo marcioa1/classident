@@ -14,16 +14,20 @@
     <th>Bom para</th>
     <th>Detalhes</th>
   </tr>
-  <% saldo = 0 %>
+  <% saldo         = 0.0 %>
+  <% total_debito  = 0.0 %>
+  <% total_credito = 0.0 %>
 <% @paciente.extrato.each do |lancamento| %>
   <tr>
     <td align="center"><%= lancamento.data.to_s_br%></td>
     <% if lancamento.class == Debito %>
+      <% total_debito += lancamento.valor %>
       <td><%= lancamento.descricao %></td>
       <td align="right"><%= link_to lancamento.valor.real, edit_debito_path(lancamento) %></td>
       <td>&nbsp;</td>
       <% saldo -= lancamento.valor %>
     <% else %>
+      <% total_credito += lancamento.valor %>
       <td><%= lancamento.observacao_do_recebimento %></td>
       <td>&nbsp;</td>
       <td align="right"><%= link_to lancamento.valor.real, edit_recebimento_path(lancamento) %></td>
@@ -41,4 +45,10 @@
   </td>
   </tr>
 <% end %>
+<tr>
+	<td align='center'colspan="2">Total</td>
+	<td align='right'><%= total_credito.real %></td>
+	<td align='right'><%= total_debito.real %></td>
+	<td colspan='3'>&nbsp;</td>
+</tr>
 </table>

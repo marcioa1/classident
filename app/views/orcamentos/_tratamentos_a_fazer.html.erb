@@ -17,7 +17,7 @@
     <td><%= tratamento.item_tabela.codigo  unless tratamento.item_tabela.nil? %></td>
     <td><%= link_to tratamento.item_tabela.descricao, edit_tratamento_path(tratamento) unless tratamento.item_tabela.nil?%></td>
     <td align="right"><%= tratamento.valor.real%></td>
-    <td><%= tratamento.dentista.nome %></td>
+    <td><%= tratamento.dentista.nome if tratamento.dentista %></td>
     <td><%= check_box_tag :selecionado, tratamento.valor, true, :onclick=>'selecionou_tratamento()', :id=>tratamento.id %></td>
 
   </tr>

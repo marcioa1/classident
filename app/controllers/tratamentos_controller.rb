@@ -1,6 +1,8 @@
 class TratamentosController < ApplicationController
   layout "adm"
   before_filter :require_user
+  before_filter :busca_registro, :only => [:finalizar_procedimento, :update, :edit]
+  
   def new
     @paciente               = Paciente.find(params[:paciente_id])
     @tratamento             = Tratamento.new
@@ -29,7 +31,7 @@ class TratamentosController < ApplicationController
         end
       end
       if !erro
-        redirect_to(abre_paciente_path(:id=>@tratamento.paciente_id)) 
+        redirect_to(abre_paciente_path(:id=>session[:paciente_id])) 
       else 
         render :action => "new" 
       end  # respond_to
@@ -37,15 +39,13 @@ class TratamentosController < ApplicationController
   end
   
   def edit  
-    @tratamento = Tratamento.find(params[:id])
     @items = @tratamento.paciente.tabela.item_tabelas.
         collect{|obj| [obj.codigo + " - " + obj.descricao,obj.id]}
     @dentistas = @clinica_atual.dentistas.collect{|obj| [obj.nome,obj.id]}
   end
   
   def update
-    @tratamento = Tratamento.find(params[:id])
-    @tratamento.data = params[:datepicker].to_date if params[:datepicker]
+    @tratamento.data   = params[:data_de_termino].to_date if params[:data_de_termino]
     if @tratamento.update_attributes(params[:tratamento])
       if !@tratamento.data.nil?
         @tratamento.paciente.verifica_alta_automatica
@@ -68,7 +68,6 @@ class TratamentosController < ApplicationController
   
   def finalizar_procedimento
     begin
-      @tratamento = Tratamento.find(params[:id])
       @tratamento.data = Date.today
       @tratamento.finalizar_procedimento(current_user)
       @tratamento.save
@@ -78,4 +77,10 @@ class TratamentosController < ApplicationController
       head :bad_request
     end
   end
+
+  def busca_registro
+    @tratamento = Tratamento.find(params[:id])
+  end
+  
 end
+
