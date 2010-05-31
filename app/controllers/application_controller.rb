@@ -26,6 +26,10 @@ class ApplicationController < ActionController::Base
     @adminitracao = session[:clinica_id].to_i == 10
   end
   
+  def primeiro_dia_do_mes
+    Date.new(Date.today.year, Date.today.month, 1)
+  end
+  
   private
   
     def require_user

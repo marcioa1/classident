@@ -89,8 +89,8 @@ class DentistasController < ApplicationController
   
   def producao
     dentista = Dentista.find(params[:id])
-    inicio = params[:datepicker].to_date
-    fim = params[:datepicker2].to_date
+    inicio   = params[:datepicker].to_date if Date.valid?(params[:datepicker])
+    fim      = params[:datepicker2].to_date if Date.valid?(params[:datepicker2])
     if params[:clinicas]
       clinicas = params[:clinicas].split(",").to_a
     else
@@ -113,11 +113,7 @@ class DentistasController < ApplicationController
     @producao.each() do |tratamento|
       saida += "<tr><td align='center'>"+ tratamento.data.to_s_br + "</td>"
       saida += "<td>" + tratamento.paciente.nome + "</td>"
-      if tratamento.item_tabela.nil?
-        saida += "<td>&nbsp;</td>"
-      else
-        saida += "<td>" + tratamento.item_tabela.descricao + "</td>"
-      end  
+      saida += "<td>" + tratamento.descricao + "</td>"
       saida += "<td align='right'>" + tratamento.valor.real.to_s + "</td>"
       saida += "<td align='right'>" + tratamento.custo.real.to_s + "</td>"
       saida += "<td align='right'>" + tratamento.valor_dentista.real.to_s + "</td>"

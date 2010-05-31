@@ -1,29 +1,25 @@
 class TabelasController < ApplicationController
   layout "adm"
   before_filter :require_user
+  before_filter :find_tabela, :only => [:show, :edit, :update, :destroy, :reativar]
 
   def index
-    @tabelas = Tabela.da_clinica(session[:clinica_id]).por_nome
+    if params[:ativa] == 'nao'
+      @tabelas = Tabela.da_clinica(session[:clinica_id]).por_nome.inativas
+    else
+      params[:ativa] = 'sim'
+      @tabelas       = Tabela.da_clinica(session[:clinica_id]).por_nome.ativas
+    end
   end
 
   def show
-    @tabela = Tabela.find(params[:id])
   end
 
   def new
-    # if !current_user.pode_incluir_tabela
-    #   redirect_to tabelas_path
-    # else
       @tabela = Tabela.new
-    # end
   end
 
   def edit
-    # if !current_user.pode_incluir_tabela
-    #   redirect_to tabelas_path
-    # else
-      @tabela = Tabela.find(params[:id])
-    # end
   end
 
   def create
@@ -39,8 +35,6 @@ class TabelasController < ApplicationController
   end
 
   def update
-    @tabela = Tabela.find(params[:id])
-
     if @tabela.update_attributes(params[:tabela])
       flash[:notice] = 'Tabela alterado com sucesso.'
       redirect_to(@tabela) 
@@ -50,16 +44,24 @@ class TabelasController < ApplicationController
   end
 
   def destroy
-    @tabela = Tabela.find(params[:id])
     @tabela.ativa = false
     @tabela.save
 
     redirect_to(tabelas_url) 
   end
   
+  def reativar
+    @tabela.ativa = true
+    @tabela.save
+    redirect_to(tabelas_url) 
+  end
+  
   def print
-     @tabela = Tabela.find(params[:id])
 #     rghost_render :pdf, :report => {:action => 'relatorio'}, :filename => 'tabela.pdf'
   end
   #TODO terminar esta impressão
+  
+  def find_tabela
+    @tabela = Tabela.find(params[:id])
+  end
 end

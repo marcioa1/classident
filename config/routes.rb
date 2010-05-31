@@ -34,7 +34,8 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :precos
   map.resources :proteticos, :member=>{:abre=>:get}, :collection=>{:busca_tabela=>:get, :relatorio=>:get}
   map.resources :recebimentos, :collection=>{:relatorio=>:get, :das_clinicas=>:get, :entradas_no_mes=>:get}
-  map.resources :tabelas, :collection=>{:print=>:get }
+  map.resources :tabelas, :collection=>{:print=>:get },
+                  :member => {:reativar => :get}
 
   map.resources :tabelas do |item|
      item.resources :item_tabelas

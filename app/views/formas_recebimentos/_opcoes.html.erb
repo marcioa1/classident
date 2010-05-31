@@ -1,5 +1,5 @@
 <Fieldset class="fieldset_40">
-	<legend>Formas de recebimento</legend>
+	<legend>Formas de recebimento : <%= check_box_tag :todas, value = '1', checked = (params[:todas] == 1), options={ :onclick=> "seleciona_todas_as_formas_de_recebimento();"}%> Todas </legend>
 <% ct=0 %>
 <table class="transparente">
   <tr>
@@ -8,7 +8,7 @@
       <% ct=0 %>
       </tr><tr>
     <% end %>
-	<td><%= check_box_tag "forma_"+forma.id.to_s, forma.id, params["forma_#{forma.id}"] %> <%= forma.nome %></td>
+	<td><%= check_box_tag "forma_"+forma.id.to_s, forma.id, params["forma_#{forma.id}"], :name => 'forma_recebimento' %> <%= forma.nome %></td>
 	<% ct += 1 %>
 <% end %>
   </tr>

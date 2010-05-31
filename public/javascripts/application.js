@@ -149,3 +149,12 @@ function formata_valor(elemento){
      thousandsSeparator: "."  
   });
 }
+
+function seleciona_todas_as_formas_de_recebimento(){
+	if ($('#todas').is(':checked')){
+    $("input[name$='forma_recebimento']").attr('checked', true);
+  } else{
+	  $("input[name$='forma_recebimento']").attr('checked', false);
+	
+  }
+}

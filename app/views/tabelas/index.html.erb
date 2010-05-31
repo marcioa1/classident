@@ -1,6 +1,14 @@
 <% content_for :main do %>
 <h3>Listando tabelas</h3>
 
+<% form_tag tabelas_path, :method => :get do %>
+	<%= radio_button_tag :ativa, :sim, params[:ativa] == 'sim' %> Ativa
+	<%= radio_button_tag :ativa, :nao, params[:ativa] == 'nao' %> Excluida
+	<%= submit_tag 'Pesquisar'%>
+<% end -%>	
+<p/>
+
+
 <table>
   <tr>
     <th width="150px">Tabela</th>
@@ -15,7 +23,13 @@
     <td><%= tabela.clinica.nome %></td>
     <td><%= tabela.ativa ? "sim" : "não" %></td>
     <td><%= link_to 'Editar', edit_tabela_path(tabela)  %></td>
-    <td><%= link_to 'Excluir', tabela, :confirm => 'Tem certeza ?', :method => :delete %></td>
+    <td><% if params[:ativa] == 'nao'%>
+	        <%= link_to 'Reativar', reativar_tabela_path(tabela), :confirm => 'Tem certeza ?' %>
+        <% else %>
+          <%= link_to 'Excluir', tabela, :confirm => 'Tem certeza ?', :method => :delete %>
+        <% end %>
+    </td>
+
   </tr>
 <% end %>
 </table>

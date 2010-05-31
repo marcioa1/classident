@@ -54,23 +54,28 @@ class ClinicasController < ApplicationController
   
   def relatorio_alta
     if params[:datepicker].nil?
-      @data_inicial = Date.today
-      @data_final = Date.today
+      @data_inicial = Date.new(Date.today.year,Date.today.month,1)
+      @data_final   = Date.today
     else
-      @data_inicial = params[:datepicker].to_date
-      @data_final = params[:datepicker2].to_date
+      @data_inicial = params[:datepicker].to_date if Date.valid?(params[:datepicker])
+      @data_final   = params[:datepicker2].to_date if Date.valid?(params[:datepicker2])
     end
-    if params[:somente_em_alta]
-      @altas = Alta.da_clinica(session[:clinica_id]).entre_datas(@data_inicial, @data_final).em_alta
+    if @data_inicial.nil? || @data_final.nil?
+      @altas = []
+      @erro  = 'Data inválida.'
     else
-      @altas = Alta.da_clinica(session[:clinica_id]).entre_datas(@data_inicial, @data_final)
+      if params[:somente_em_alta]
+        @altas = Alta.da_clinica(session[:clinica_id]).entre_datas(@data_inicial, @data_final).em_alta
+      else
+        @altas = Alta.da_clinica(session[:clinica_id]).entre_datas(@data_inicial, @data_final)
+      end
     end
   end
   
   def abandono_de_tratamento
     #FIXME Falta fazer
     if params[:dias].blank?
-      @abandonos = [:nome=>'marcio', :ultima_intervencao=>Date.today - 30.days]
+      @abandonos = []
     else
       @abandonos = []  
     end

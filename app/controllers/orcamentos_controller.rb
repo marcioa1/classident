@@ -70,7 +70,7 @@ class OrcamentosController < ApplicationController
   
   def relatorio
     if params[:datepicker].nil?
-      params[:datepicker] = Date.today.to_s_br
+      params[:datepicker] = primeiro_dia_do_mes.to_s_br
       params[:datepicker2] = Date.today.to_s_br
     end
     if Date.valid?(params[:datepicker]) and Date.valid?(params[:datepicker2])

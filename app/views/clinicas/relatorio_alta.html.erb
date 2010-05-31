@@ -7,21 +7,25 @@
   <br/>
 <% end %>
 </p>
-<br/>
-<table>
-  <tr>
-    <th>Data início</th>
-    <th>Paciente</th>
-    <th>Observação</th>
-    <th>Data de término</th>
-  </tr>
-  <% @altas.each do |alta| %>
-    <tr>
-      <td><%= alta.data_inicio.to_s_br %></td>
-      <td><%= alta.paciente.nome if paciente.present?%></td>
-      <td><%= alta.observacao %></td>
-      <td><%= alta.data_termino.to_s_br %></td>
-    </tr>
-  <% end %>
-</table>
+<% if @erro %>
+  <h3><%= @erro %> </h3>
+<% else %>
+	<br/>
+	<table>
+	  <tr>
+	    <th>Data início</th>
+	    <th>Paciente</th>
+	    <th>Observação</th>
+	    <th>Data de término</th>
+	  </tr>
+	  <% @altas.each do |alta| %>
+	    <tr>
+	      <td><%= alta.data_inicio.to_s_br %></td>
+	      <td><%= alta.paciente.nome if paciente.present?%></td>
+	      <td><%= alta.observacao %></td>
+	      <td><%= alta.data_termino.to_s_br %></td>
+	    </tr>
+	  <% end %>
+	</table>
+<% end %>
 <% end %>

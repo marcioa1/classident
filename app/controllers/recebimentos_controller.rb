@@ -7,7 +7,7 @@ class RecebimentosController < ApplicationController
   before_filter :busca_recebimento, :only => [:show, :edit]
   
   def index
-   # @recebimentos = Recebimento.all
+    @recebimentos = Recebimento.all(:limit=> 50,:order => 'created_at desc')
   end
 
   def show
@@ -109,7 +109,7 @@ class RecebimentosController < ApplicationController
     @recebimento.observacao_exclusao = "."
     #TODO fazer exclusao de recebimento lembrando que é preciso excluir o respectivo cheque
 
-    redirect_to(recebimentos_url) 
+    redirect_to(relatorio_recebimentos_path) 
   end
   
   def relatorio

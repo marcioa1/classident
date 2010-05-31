@@ -21,10 +21,10 @@ class Orcamento < ActiveRecord::Base
   def estado
     nao_feito = Tratamento.first(:conditions=>['orcamento_id = ? and data IS NULL', self.id])
     feito     = Tratamento.first(:conditions=>['orcamento_id = ? and data IS NOT NULL', self.id])
-    return 'em aberto' if data_de_inicio.nil?
-    return 'iniciado' if nao_feito.present? and feito.present?
-    return 'terminado' if nao_feito.blank?
-    'aceito'
+    return 'em aberto' if feito.nil?
+    return 'iniciado'  if !feito.nil?
+    return 'terminado' if nao_feito.nil?
+    return 'aceito'
   end
   
   def em_aberto?
