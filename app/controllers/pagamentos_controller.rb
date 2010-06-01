@@ -30,7 +30,7 @@ class PagamentosController < ApplicationController
       session[:dentista_id] = nil
     end
     @tipos_pagamento = TipoPagamento.da_clinica(session[:clinica_id]).ativos.por_nome.collect{|obj| [obj.nome, obj.id]}
-    @pagamento = Pagamento.new
+    @pagamento       = Pagamento.new
     if params[:valor]
       @pagamento.valor = params[:valor]
     end
@@ -38,20 +38,20 @@ class PagamentosController < ApplicationController
   end
 
   def edit
-    @tipos_pagamento  = TipoPagamento.por_nome.collect{|obj| [obj.nome, obj.id]}
+    @tipos_pagamento  = TipoPagamento.ativos.por_nome.collect{|obj| [obj.nome, obj.id]}
     @pagamento        = Pagamento.find(params[:id])
     @contas_bancarias = ContaBancaria.all.collect{|obj| [obj.nome, obj.id]}
   end
 
   def create
-    @pagamento = Pagamento.new(params[:pagamento])
+    @pagamento                   = Pagamento.new(params[:pagamento])
     @pagamento.data_de_pagamento = params[:datepicker].to_date
-    @pagamento.clinica_id = session[:clinica_id]
-    if params[:opcao_restante]!="pago_em_cheque"
+    @pagamento.clinica_id        = session[:clinica_id]
+    if params[:opcao_restante]  !=" pago_em_cheque"
       @pagamento.conta_bancaria_id = nil
     end
     @pagamento.protetico_id = session[:protetico_id] unless session[:protetico_id].nil?
-    @pagamento.dentista_id = session[:dentista_id] unless session[:dentista_id].nil?
+    @pagamento.dentista_id  = session[:dentista_id] unless session[:dentista_id].nil?
     Pagamento.transaction do
       ids = params[:cheques_ids].split(",")
       ids.each do |id|
@@ -62,7 +62,7 @@ class PagamentosController < ApplicationController
         if !session[:trabalho_protetico_id].nil?
           ids = session[:trabalho_protetico_id].split(",")
           ids.each do |id|
-            trab = TrabalhoProtetico.find(id)
+            trab              = TrabalhoProtetico.find(id)
             trab.pagamento_id = @pagamento.id
             trab.save
           end

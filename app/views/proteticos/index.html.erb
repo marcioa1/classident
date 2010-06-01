@@ -1,6 +1,17 @@
 <% content_for :main do %>
 <h2>Listando protéticos</h2>
 
+<% form_tag proteticos_path, :method=>:get do %>
+  <p>
+  <%= radio_button_tag :ativo, true , params[:ativo]=="true" -%> Ativos
+  <%= radio_button_tag :ativo, false, params[:ativo]=="false" -%> Inativos
+  &nbsp;&nbsp;&nbsp;
+  <%= label_tag :que_iniciam_com %> : 
+  <%= text_field_tag :iniciais, params[:iniciais] %>
+  &nbsp;&nbsp;&nbsp;<%= submit_tag "pesquisar"-%>
+  </p>
+<% end %>
+
 <table>
   <tr>
     <th width="220px">Nome</th>

@@ -41,7 +41,7 @@ class TratamentosController < ApplicationController
   def edit  
     @items = @tratamento.paciente.tabela.item_tabelas.
         collect{|obj| [obj.codigo + " - " + obj.descricao,obj.id]}
-    @dentistas = @clinica_atual.dentistas.collect{|obj| [obj.nome,obj.id]}
+    @dentistas = @clinica_atual.dentistas.ativos.collect{|obj| [obj.nome,obj.id]}
   end
   
   def update

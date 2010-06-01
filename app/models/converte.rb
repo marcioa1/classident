@@ -366,7 +366,7 @@ class Converte
         t            = TipoPagamento.new
         t.seq        = registro[0].to_i
         t.nome       = registro[1].nome_proprio
-        t.ativo      = (registro[2]=='Verdadeiro')
+        t.ativo      = (registro[2]=='Verdadeiro' || registro[2]=='True')
         t.clinica_id = @clinica.id
         t.save
       rescue Exception => ex

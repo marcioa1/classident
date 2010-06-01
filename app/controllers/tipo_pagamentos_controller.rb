@@ -3,7 +3,12 @@ class TipoPagamentosController < ApplicationController
   before_filter :require_user 
 
   def index
-    @tipo_pagamentos = TipoPagamento.da_clinica(session[:clinica_id]).por_nome
+    params[:ativo] = 'true' if !params[:ativo]
+    if params[:ativo] == 'true'
+      @tipo_pagamentos = TipoPagamento.da_clinica(session[:clinica_id]).por_nome.ativos
+    else
+      @tipo_pagamentos = TipoPagamento.da_clinica(session[:clinica_id]).por_nome.inativos
+    end
   end
 
   def show
@@ -43,7 +48,7 @@ class TipoPagamentosController < ApplicationController
   end
 
   def destroy
-    @tipo_pagamento = TipoPagamento.find(params[:id])
+    @tipo_pagamento       = TipoPagamento.find(params[:id])
     @tipo_pagamento.ativo = false
     @tipo_pagamento.save
 
@@ -51,7 +56,7 @@ class TipoPagamentosController < ApplicationController
   end
   
   def reativar
-    @tipo_pagamento = TipoPagamento.find(params[:id])
+    @tipo_pagamento       = TipoPagamento.find(params[:id])
     @tipo_pagamento.ativo = true
     @tipo_pagamento.save
 

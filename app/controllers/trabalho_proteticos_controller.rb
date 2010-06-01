@@ -15,14 +15,14 @@ class TrabalhoProteticosController < ApplicationController
     @trabalho_protetico            = TrabalhoProtetico.new
     @trabalho_protetico.paciente   = @paciente
     @trabalho_protetico.clinica_id = session[:clinica_id]
-    @dentistas                     = @clinica_atual.dentistas.collect{|obj| [obj.nome,obj.id]}.sort
-    @proteticos                    = @clinica_atual.proteticos.collect{|obj| [obj.nome,obj.id]}.sort
+    @dentistas                     = @clinica_atual.dentistas.ativos.collect{|obj| [obj.nome,obj.id]}.sort
+    @proteticos                    = @clinica_atual.proteticos.ativos.collect{|obj| [obj.nome,obj.id]}.sort
   end
 
   def edit
     @paciente   = @trabalho_protetico.paciente
-    @dentistas  = @clinica_atual.dentistas.collect{|obj| [obj.nome,obj.id]}.sort
-    @proteticos = Protetico.por_nome.collect{|obj| [obj.nome,obj.id]}
+    @dentistas  = @clinica_atual.dentistas.ativos.collect{|obj| [obj.nome,obj.id]}.sort
+    @proteticos = Protetico.por_nome.ativos.collect{|obj| [obj.nome,obj.id]}
   end
 
   def create

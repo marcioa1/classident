@@ -1,5 +1,3 @@
-<h1>Editando protético</h1>
-
 <% form_for(@protetico) do |f| %>
   <%= f.error_messages %>
 
@@ -42,7 +40,10 @@
     <%= f.label :observação %><br />
     <%= f.text_field :observacao, :size=>35 %>
   </p>
-  
+  <p>
+    <%= f.check_box :ativo %>
+    <%= f.label :ativo %>
+  </p>
   <p>
     <%= f.submit 'salvar' %>
   </p>

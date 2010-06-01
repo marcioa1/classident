@@ -10,7 +10,7 @@
 	        <li><a href="#fragment-4"><span>Tabela</span></a></li>
 	    </ul>
 	    <div id="fragment-1">
-	      <%= render :partial=>"edit" , :locals=>{:paciente=>@paciente} %>
+	      <%= render :partial=>"edit" , :locals=>{:protetico=>@protetico} %>
 	    </div>
 	    <div id="fragment-2">
 	      <%= render :partial=>"trabalhos_entregues_nao_pagos" %>
@@ -32,7 +32,7 @@
         <li><a href="#fragment-4"><span>Tabela</span></a></li>
     </ul>
     <div id="fragment-1">
-      <%= render :partial=>"show"  %>
+      <%= render :partial=>"edit", :locals => { :protetico => @protetico }  %>
     </div>
     <div id="fragment-2">
       <%= render :partial=>"trabalhos_pendentes" , :locals=>{:trabalhos_pendentes=>@trabalhos_pendentes}%>
