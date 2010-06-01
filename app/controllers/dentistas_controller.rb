@@ -2,6 +2,7 @@ class DentistasController < ApplicationController
   layout "adm"
   before_filter :require_user
   before_filter :quinze_dias, :on=>:producao_geral
+  before_filter :busca_dentista, :only=>[:abre, :desativar, :update, :destroy, :show, :edit]
 
   def index
     params[:ativo] = "true" if params[:ativo].nil?
@@ -24,7 +25,6 @@ class DentistasController < ApplicationController
   end
 
   def show
-    @dentista = Dentista.find(params[:id])
   end
 
   def new
@@ -33,7 +33,6 @@ class DentistasController < ApplicationController
   end
 
   def edit
-    @dentista = Dentista.find(params[:id])
     @clinicas = Clinica.all(:order=>:nome)
   end
 
@@ -55,7 +54,6 @@ class DentistasController < ApplicationController
   end
 
   def update
-    @dentista = Dentista.find(params[:id])
     @dentista.clinicas = []
     clinicas = Clinica.all
     clinicas.each() do |clinica|
@@ -71,15 +69,19 @@ class DentistasController < ApplicationController
   end
 
   def destroy
-    @dentista = Dentista.find(params[:id])
     @dentista.ativo = false
     @dentista.save
 
-    redirect_to(dentistas_url) 
+    redirect_to(dentistas_path) 
+  end
+  
+  def reativar
+    @dentista.ativo = true
+    @dentista.save
+    redirect_to(dentistas_path())
   end
 
   def abre
-    @dentista = Dentista.find(params[:id])  
     @clinicas = Clinica.all(:order=>:nome)
     @clinica_atual = Clinica.find(session[:clinica_id])
     @inicio = Date.today - 15.days
@@ -206,6 +208,10 @@ class DentistasController < ApplicationController
   
   def producao_geral
     @todos = Dentista.ativos.por_nome
+  end
+  
+  def busca_dentista
+    @dentista = Dentista.find(params[:id])  
   end
   
 end

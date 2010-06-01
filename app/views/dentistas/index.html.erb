@@ -31,6 +31,13 @@
     <td><%=h dentista.ativo  ? "sim" : "não"  %></td>
     <td align="center"><%= dentista.percentual %></td>
     <td><%=h dentista.sigla_das_clinicas %></td>
+    <td>
+	    <% if dentista.ativo? %>
+	      <%= link_to 'desativar', dentista, :confirm => 'Tem certeza ?', :method => :delete %>
+	    <% else %>
+	      <%= link_to 'reativar', reativar_dentista_path(dentista) %>
+      <% end %>
+    </td>
   </tr>
 <% end %>
 </table>
