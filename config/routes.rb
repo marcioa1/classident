@@ -23,7 +23,8 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :indicacaos
   
   map.resources :item_tabelas, :collection=>{:busca_descricao=>:get}
-  map.resources :orcamentos, :collection=>{:relatorio=>:get, :aproveitamento=>:get, :monta_tabela_de_parcelas => :get}
+  map.resources :orcamentos, 
+                  :collection=>{:relatorio=>:get, :aproveitamento=>:get, :monta_tabela_de_parcelas => :get}
   map.resources :pacientes, 
                   :collection=>{:pesquisa=>:get,:nomes_que_iniciam_com=>:get, 
                                 :pesquisa_nomes=> :get, :retorna_paciente_por_nome=>:get},
@@ -47,6 +48,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :tratamentos, :member=>{:finalizar_procedimento=>:get}
   map.resources :users, :member =>[:troca_senha=>:get]
   map.resource :user_sessions
+  
   
   map.registra_devolucao_de_trabalho '/registra_devolucao_de_trabalho',
              :controller=>'trabalho_proteticos',

@@ -2,6 +2,7 @@ class TratamentosController < ApplicationController
   layout "adm"
   before_filter :require_user
   before_filter :busca_registro, :only => [:finalizar_procedimento, :update, :edit]
+  before_filter :converte_valor_lido, :only => [:create, :update]
   
   def new
     @paciente               = Paciente.find(params[:paciente_id])
@@ -45,7 +46,7 @@ class TratamentosController < ApplicationController
   end
   
   def update
-    @tratamento.data   = params[:data_de_termino].to_date if params[:data_de_termino]
+    @tratamento.data   = params[:data_de_termino].to_date if Date.valid?(params[:data_de_termino])
     if @tratamento.update_attributes(params[:tratamento])
       if !@tratamento.data.nil?
         @tratamento.paciente.verifica_alta_automatica
@@ -80,6 +81,11 @@ class TratamentosController < ApplicationController
 
   def busca_registro
     @tratamento = Tratamento.find(params[:id])
+  end
+  
+  def converte_valor_lido
+    params[:tratamento][:valor] = params[:tratamento][:valor].gsub(',', '.')
+    params[:tratamento][:custo] = params[:tratamento][:custo].gsub(',', '.')
   end
   
 end

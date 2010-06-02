@@ -74,5 +74,9 @@ class Tratamento < ActiveRecord::Base
     end
     result
   end
-
+  
+  def dentes
+    self.dente
+  end
+  
 end

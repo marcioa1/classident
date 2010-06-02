@@ -48,4 +48,5 @@ class Orcamento < ActiveRecord::Base
       return maior_codigo.numero + 1
     end
   end
+
 end

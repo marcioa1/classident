@@ -4,7 +4,7 @@
   
   <p>
     <%= f.label :dente %> : 
-    <%= text_field_tag :dentes %>
+    <%= text_field_tag :dentes, @tratamento.dentes %>
   </p>
   <p>
    <Fieldset class='fieldset_20'>
@@ -54,11 +54,13 @@
     <%= f.label :descrição %> : 
     <%= f.text_field :descricao, :size=>50 %>
   </p>
-  <p><%= f.label :valor %> :
-  <%= f.text_field :valor, :size=>10 %>
+  <p>
+    <%= f.label :valor %> :
+    <%= f.text_field :valor, :size=>10 %>
   </p>
-  <p><%= f.label :custo %> :
-  <%= f.text_field :custo, :size=>10 %>
+  <p>
+    <%= f.label :custo %> :
+    <%= f.text_field :custo, :size=>10 %>
   </p>
   <p>
     <%= f.label :dentista %>

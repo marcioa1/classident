@@ -1,6 +1,6 @@
 <% content_for :main do %>
 <fieldset class='fieldset_50'>
-<legend>Editando orçamento</legend>
+<legend>Editando orçamento : <%= @orcamento.paciente.nome %></legend>
 
 <% form_for(@orcamento) do |f| %>
   <%= f.error_messages %>

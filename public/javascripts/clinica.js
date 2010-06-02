@@ -139,22 +139,28 @@ function calcula_valor_orcamento(){
 }
 
 function calcula_valor_da_parcela(){
-    valor = parseFloat($('#orcamento_valor_com_desconto').val());
+	alert("calcula valor da peracela");
+	  valor_com_desconto = $('#orcamento_valor_com_desconto').val().replace(',','.')
+    valor = parseFloat(valor_com_desconto);
     numero = $('#orcamento_numero_de_parcelas').val();
     $('#orcamento_valor_da_parcela').val(parseInt((valor / numero)*100));
     
     formata_valor($('#orcamento_valor_da_parcela'));
-    $.ajax({
-       type: 'GET',
-       url: "monta_tabela_de_parcelas",
-       data:({numero_de_parcelas: numero, 
-              valor_da_parcela: valor, 
-              data_primeira_parcela: $('#orcamento_vencimento_primeira_parcela').val()
-              }),
-       success: function(result){
-         $('#parcelas').replaceWith(result);
-       }
-     });
+//# FIXME escrever este ajax de outra maneira
+  $.getJSON('monta_tabela_de_parcelas?numero_de_parcelas='+numero + '&valor_da_parcela=' + valor +
+        'data_primeira_parcela=' + $('#orcamento_vencimento_primeira_parcela').val(),
+    function(data){$('#parcelas').replaceWith(data);});
+    // $.ajax({
+    //    type: 'GET',
+    //    url: "monta_tabela_de_parcelas",
+    //    data:({numero_de_parcelas: numero, 
+    //           valor_da_parcela: valor, 
+    //           data_primeira_parcela: $('#orcamento_vencimento_primeira_parcela').val()
+    //           }),
+    //    success: function(result){
+    //      $('#parcelas').replaceWith(result);
+    //    }
+    //  });
 }
 
 function definir_valor(){

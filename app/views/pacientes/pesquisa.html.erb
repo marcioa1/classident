@@ -8,7 +8,7 @@
       $("#iniciais").autocomplete({
         source: "pesquisa_nomes",
         minLength: 6,
-        maxLength: 12,
+        maxRows: 5,
         select: function(event,ui){
           nome = ui.item.value;
           busca_por_nome(nome);

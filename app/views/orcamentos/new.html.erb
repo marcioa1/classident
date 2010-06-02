@@ -1,6 +1,6 @@
 <% content_for :main do %>
 <fieldset class='fieldset_50'>
-<legend>Novo orçamento : <%= @paciente.nome %></legend>
+<legend>Novo orçamento : <%= @orcamento.paciente.nome %></legend>
 <% @tratamentos = Tratamento.do_paciente(@paciente.id).nao_feito.sem_orcamento %>
 <% if @tratamentos.empty? %>
   <h3>Não há procedimentos a serem orçados</h3>
