@@ -16,6 +16,10 @@ class Tratamento < ActiveRecord::Base
   named_scope :por_data, :order=>:data
   named_scope :sem_orcamento, :conditions=>["orcamento_id IS NULL"]
   
+  validates_presence_of :descricao, :message => "não pode ser vazio."
+  validates_presence_of :dentista,  :message => "não pode ser vazio."
+  validates_presence_of :dente,     :message => "can't be blank"
+  
   def self.valor_a_fazer(paciente_id)
     Tratamento.sum(:valor, :conditions=>["paciente_id = ? and data IS NULL and excluido  = ? and orcamento_id IS NULL", paciente_id, false])
   end

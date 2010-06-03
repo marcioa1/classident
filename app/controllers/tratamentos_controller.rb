@@ -15,27 +15,31 @@ class TratamentosController < ApplicationController
   
   def create
     dentes = params[:dentes].split(',')
-    Tratamento.transaction do
-      erro = false
-      dentes.each do |dente|
-        @tratamento            = Tratamento.new(params[:tratamento])
-        @tratamento.dente      = dente
-        @tratamento.clinica_id = session[:clinica_id]
-        @tratamento.excluido   = false
-        erro                   = false
-        if !erro && @tratamento.save 
-          if !@tratamento.data.nil?
-            @tratamento.finalizar_procedimento(current_user)
-          end
-        else
-          erro = true
+    erro = true
+    dentes.each do |dente|
+      @tratamento             = Tratamento.new(params[:tratamento])
+      @tratamento.paciente_id = session[:paciente_id]
+      @tratamento.dente       = dente
+      @tratamento.clinica_id  = session[:clinica_id]
+      @tratamento.excluido    = false
+      if @tratamento.save 
+        if !@tratamento.data.nil?
+          @tratamento.finalizar_procedimento(current_user)
+          erro = false
         end
       end
-      if !erro
-        redirect_to(abre_paciente_path(:id=>session[:paciente_id])) 
-      else 
-        render :action => "new" 
-      end  # respond_to
+    end
+    if erro
+      @paciente = Paciente.find(session[:paciente_id])
+      @tratamento             = Tratamento.new
+      @tratamento.paciente_id = @paciente.id
+      @items                  = @paciente.tabela.item_tabelas.
+          collect{|obj| [obj.codigo + " - " + obj.descricao,obj.id]}.insert(0,"")
+      @dentistas              = @clinica_atual.dentistas.ativos.collect{|obj| [obj.nome,obj.id]}.sort
+      
+      render :action => "new" 
+    else
+      redirect_to(abre_paciente_path(:id=>session[:paciente_id])) 
     end
   end
   

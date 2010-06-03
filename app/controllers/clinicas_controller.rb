@@ -5,7 +5,6 @@ class ClinicasController < ApplicationController
   def selecionou_clinica
     session[:clinica_id] = params[:clinica_id]
     @clinica_atual = Clinica.find(params[:clinica_id])
-    debugger
     if @clinica_atual.e_administracao
       redirect_to administracao_path
     else  

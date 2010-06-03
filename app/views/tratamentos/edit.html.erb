@@ -1,8 +1,8 @@
 <% content_for :main do %>
-<fieldset>
+<fieldset class='fieldset_60'>
 <legend>Alterando tratamento</legend>
-
-<div class= 'destaque'>Paciente : <%= @tratamento.paciente.nome %> ( Tabela: <%= @tratamento.paciente.tabela.nome %> )</div><br/>
+<%= nome_paciente(@paciente) %>
+<br/>
 <%= render :partial=>"form"%>
 
 </fieldset>
