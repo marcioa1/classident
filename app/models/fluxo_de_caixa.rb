@@ -1,6 +1,5 @@
 class FluxoDeCaixa < ActiveRecord::Base
   
-  named_scope :atual, :conditions=>[:last]
   named_scope :da_clinica, lambda{|clinica_id| {:conditions=>["clinica_id=?", clinica_id]}}
   named_scope :saldo_na_data, lambda{|data| {:conditions=>['data = ?', data]}}
   

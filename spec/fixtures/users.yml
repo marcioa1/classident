@@ -1,0 +1,10 @@
+
+usuario_master:
+  nome: ricardo
+  tipo_usuario_id: 1
+  login: ricardo
+  email: ricardo@classident.com.br
+  crypted_password: "25b5798823d15b48dbe9f29e5861bba397497f3998a1ba7f9a4564d4f2107cb9b9a34b5fd458b621626dcfb8d1804572a874ab5795d94f68008a6dc6840bb283"
+  password_salt: "OJLOEkNMMGubjQFAsGEV"
+  persistence_token: "d4f1fd8fa8a4070b5bb4ec2a9a8af8a4530a3e16cd3ac5aaaf4747093d078acc9d742bfc2a1c1c34bef4b036d473f6eacf53b6a701b97f0ff3f0d5d28bf247cb"
+  

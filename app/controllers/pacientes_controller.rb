@@ -26,12 +26,12 @@ class PacientesController < ApplicationController
   end
 
   def create
-    @paciente = Paciente.new(params[:paciente])
-    @paciente.clinica_id = session[:clinica_id]
-    @paciente.codigo = @paciente.gera_codigo(session[:clinica_id])
+    @paciente                   = Paciente.new(params[:paciente])
+    @paciente.clinica_id        = session[:clinica_id]
+    @paciente.codigo            = @paciente.gera_codigo(session[:clinica_id])
     @paciente.inicio_tratamento = params[:datepicker2].to_date
     @paciente.data_da_suspensao_da_cobranca_de_orto = parasm[:datepicker3].to_date unless params[:datepicker3].blank?
-    @paciente.data_da_saida_da_lista_de_debitos = params[:datepicker4].to_date unless params[:datepicker4].blank?
+    @paciente.data_da_saida_da_lista_de_debitos     = params[:datepicker4].to_date unless params[:datepicker4].blank?
     if @paciente.save
       redirect_to(pesquisa_pacientes_path) 
     else
@@ -40,13 +40,16 @@ class PacientesController < ApplicationController
   end
 
   def update
-    @paciente.inicio_tratamento = params[:datepicker2].to_date
+    @paciente.inicio_tratamento                     = params[:datepicker2].to_date
     @paciente.data_da_suspensao_da_cobranca_de_orto = params[:datepicker3].to_date unless params[:datepicker3].blank?
-    @paciente.data_da_saida_da_lista_de_debitos = params[:datepicker4].to_date unless params[:datepicker4].blank?
+    @paciente.data_da_saida_da_lista_de_debitos     = params[:datepicker4].to_date unless params[:datepicker4].blank?
+    debugger
     if @paciente.update_attributes(params[:paciente])
       redirect_to(abre_paciente_path(:id=>@paciente.id)) 
     else
-      render :action => "edit" 
+      # render :edit
+      #FIXME Verificar validação de email e redirecionar para o _edit
+      render :partial=>"edit"
     end
   end
 

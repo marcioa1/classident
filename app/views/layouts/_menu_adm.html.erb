@@ -34,6 +34,9 @@
       <li><%= link_to "Recebimentos", das_clinicas_recebimentos_path %></li>
       <li><%= link_to "Contas Bancárias", conta_bancarias_path %></li>
       <li><%= link_to "Entrada de dinheiro", administracao_entradas_path %></li>
+      <% if current_user.master? %>
+        <li><%= link_to "Saldo fluxo de caixa" , conserta_saldo_path %></li>
+      <% end %>
     </ul>
   </li>
 </ul>

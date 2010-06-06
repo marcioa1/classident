@@ -33,4 +33,19 @@ class FluxoDeCaixaController < ApplicationController
       @lancamentos += @entradas_adm if @administracao
     end
   end
+  
+  
+  def conserta_saldo
+    if !current_user.master? 
+      render  :nothing
+    else
+    end
+  end
+  
+  def busca_saldo
+    fluxo = FluxoDeCaixa.da_clinica(params[:clinica]).last
+    result = (fluxo.saldo_em_cheque.real.to_s + '/' + fluxo.saldo_em_dinheiro.real.to_s)
+    debugger
+    render :json => result.to_json
+  end
 end

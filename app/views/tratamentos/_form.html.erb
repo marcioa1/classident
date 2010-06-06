@@ -72,5 +72,5 @@
   </p>
   <p>
   </p>
-  <%= f.submit "salvar"%>
+  <%= f.submit "salvar" if !@tratamento.data || (@tratamento.data + 15.days > Date.today )%>
 <% end %>

@@ -49,6 +49,11 @@ class ItemTabelasController < ApplicationController
       flash[:notice] = 'ItemTabela was successfully created.'
       redirect_to(item_tabelas_path(:tabela_id=>@item_tabela.tabela_id)) 
     else
+      @tabela = Tabela.find(params[:tabela_id])
+      @item_tabela = ItemTabela.new
+      @item_tabela.tabela_id = @tabela.id
+      @descricao_condutas = DescricaoConduta.all.collect{|obj| [obj.descricao, obj.id]}
+      
       render :action => "new" 
     end
   end

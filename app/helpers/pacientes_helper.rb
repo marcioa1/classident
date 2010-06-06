@@ -1,7 +1,11 @@
 module PacientesHelper
   
   def nome_paciente(paciente)
-    "<div class= 'destaque'>Paciente : #{paciente.nome} ( Tabela: #{paciente.tabela.nome})</div>"
+    debugger
+    result = "<div class= 'destaque'>Paciente : #{paciente.nome} "
+    result += " ( Tabela: #{paciente.tabela.nome}) " if paciente.tabela
+    result += "</div>"
+    result
   end
   
 end

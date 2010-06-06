@@ -1,0 +1,15 @@
+- content_for :main do
+  %h4
+    Conserta saldo
+  - form_tag do
+    Clínica
+    = select_tag :clinica, options_for_select(@as_clinicas), :onchange=>"busca_saldo();"
+    %p
+      = label_tag :Saldo_em_dinheiro
+      = text_field_tag :saldo_em_dinheiro
+    %p
+      = label_tag :Saldo_em_cheque
+      = text_field_tag :saldo_em_cheque
+ 
+    %p
+      = submit_tag :salvar

@@ -13,7 +13,7 @@ class User < ActiveRecord::Base
               :joins => ["INNER JOIN tipo_usuarios ON tipo_usuarios.id = users.tipo_usuario_id"],
               :conditions=>["tipo_usuarios.nivel == 0"]
               
-  def master
+  def master?
     tipo_usuario.nivel==0
   end
 

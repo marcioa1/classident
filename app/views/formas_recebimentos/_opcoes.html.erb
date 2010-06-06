@@ -8,7 +8,7 @@
       <% ct=0 %>
       </tr><tr>
     <% end %>
-	<td><%= check_box_tag "forma_"+forma.id.to_s, forma.id, params["forma_#{forma.id}"], :name => 'forma_recebimento' %> <%= forma.nome %></td>
+	<td><%= check_box_tag "forma_"+forma.id.to_s, forma.id, params["forma_#{forma.id}"], :name => 'forma_'+forma.id.to_s %> <%= forma.nome %></td>
 	<% ct += 1 %>
 <% end %>
   </tr>
