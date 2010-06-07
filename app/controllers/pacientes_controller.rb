@@ -43,7 +43,6 @@ class PacientesController < ApplicationController
     @paciente.inicio_tratamento                     = params[:datepicker2].to_date
     @paciente.data_da_suspensao_da_cobranca_de_orto = params[:datepicker3].to_date unless params[:datepicker3].blank?
     @paciente.data_da_saida_da_lista_de_debitos     = params[:datepicker4].to_date unless params[:datepicker4].blank?
-    debugger
     if @paciente.update_attributes(params[:paciente])
       redirect_to(abre_paciente_path(:id=>@paciente.id)) 
     else
@@ -69,7 +68,7 @@ class PacientesController < ApplicationController
     # end  
     @pacientes = []
     if !params[:codigo].blank?
-      if @administracao
+      if administracao
         @pacientes = Paciente.all(:conditions=>["codigo=?", params[:codigo]], :order=>:nome)
       else
         @pacientes = Paciente.all(:conditions=>["clinica_id=? and codigo=?", session[:clinica_id].to_i, params[:codigo].to_i],:order=>:nome)

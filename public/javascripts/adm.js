@@ -76,14 +76,18 @@ function registra_confirmacao_de_entrada(){
 }
 
 function busca_saldo(){
+	$("#data").replaceWith('<span id=data></span>');
+  $("#saldo_em_dinheiro").val('');
+  $("#saldo_em_cheque").val('');
 	$.ajax({
     url    : '/busca_saldo',
     type   : 'GET',
     data   : { 'clinica' : $('#clinica').val() },
     success: function (result){
-	    var array = result.split('/');
-	    $("#saldo_em_dinheiro").val(array[0]);
-	    $("#saldo_em_cheque").val(array[1]);
+	    var array = result.split(';');
+	    $("#data").replaceWith(array[0]);
+	    $("#saldo_em_dinheiro").val(array[1]);
+	    $("#saldo_em_cheque").val(array[2]);
       }
   });
 }

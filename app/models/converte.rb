@@ -15,7 +15,6 @@ class Converte
     tabela_inexistente = Tabela.find_by_nome('Inexistente')
     Paciente.delete_all
     clinica = ''
-    codigo  = 1
     while line = f.gets
       begin
         registro = busca_registro(line)
@@ -23,12 +22,17 @@ class Converte
           clinica  = registro.last
           @clinica = Clinica.find_by_sigla(clinica)
           clinica_index = @clinica.id * 100000
-          codigo   = 1
         end
         p                       = Paciente.new
-        p.codigo                = codigo
-        codigo                  = codigo + 1
-        p.nome                  = registro[0].nome_proprio
+        p.codigo                = registro[1].to_i
+        if registro[0].upcase.include?('ORTO')
+          index                 = registro[0].upcase.index('ORTO')
+          p.nome                = registro[0][0..index-1].nome_proprio
+          p.ortodontia          = true
+        else
+          p.nome                = registro[0].nome_proprio
+          p.ortodontia          = false
+        end
         p.sequencial            = registro[1].to_i
         tabela                  = Tabela.find_by_sequencial_and_clinica_id(registro[2].to_i, @clinica.id)
         if tabela.nil?
@@ -73,7 +77,14 @@ class Converte
           clinica  = registro.last
           @clinica = Clinica.find_by_sigla(clinica)
         end
-        p = Paciente.find_by_nome_and_clinica_id(registro[0].nome_proprio, @clinica.id)
+        if registro[0].upcase.include?('ORTO')
+          index                 = registro[0].upcase.index('ORTO')
+          nome                  = registro[0][0..index-1].nome_proprio
+        else
+          nome                  = registro[0].nome_proprio
+        end
+        
+        p = Paciente.find_by_nome_and_clinica_id(nome, @clinica.id)
         if !p.nil?
           p.logradouro   = registro[3]
           p.bairro       = registro[4]
@@ -218,7 +229,7 @@ class Converte
         t              = Tabela.new
         t.sequencial   = registro[0].to_i
         t.nome         = registro[1].nome_proprio
-        t.ativa        = (registro[5] == 'Verdadeiro')
+        t.ativa        = ['Verdadeiro', 'True'].include?(registro[5])
         t.clinica_id   = @clinica.id
         t.save
       rescue Exception => ex
@@ -291,7 +302,6 @@ class Converte
           item_tabela       = itens_das_tabelas[clinica_index + registro[9].to_i]
           t.item_tabela_id  = item_tabela if item_tabela.present?
         end
-        debugger
         if !registro[1].blank?
           dentista       = @@dentistas[clinica_index + registro[1].to_i]
           t.dentista_id  = dentista 
@@ -304,7 +314,7 @@ class Converte
         orcamento        = Orcamento.find_by_sequencial_and_clinica_id(registro[8].to_i, @clinica.id)
         t.orcamento_id   = orcamento.id if orcamento.present?
         t.custo          = le_valor(registro[12])
-        t.excluido       = registro[16] == 'Verdadeiro'
+        t.excluido       = ['Verdadeiro', 'True'].include?(registro[16])
         t.clinica_id     = @clinica.id
         t.created_at     = registro[14].to_date if Date.valid?(registro[14])
         t.save
@@ -366,7 +376,7 @@ class Converte
         t            = TipoPagamento.new
         t.seq        = registro[0].to_i
         t.nome       = registro[1].nome_proprio
-        t.ativo      = (registro[2]=='Verdadeiro' || registro[2]=='True')
+        t.ativo      = ['Verdadeiro','True'].include?(registro[2]) 
         t.clinica_id = @clinica.id
         t.save
       rescue Exception => ex
@@ -475,7 +485,6 @@ class Converte
         t.valor           = le_valor(registro[6])
         paciente          = @@pacientes[clinica_index + registro[7].to_i]
         if paciente.nil?
-          debugger
           @arquivo.puts "Paciente não encontrado em cheque: id #{registro[7]}, clínica : #{@clinica.id}"
           @arquivo.puts line
         else
@@ -491,7 +500,7 @@ class Converte
         end
         pagamento                   = Pagamento.find_by_sequencial_and_clinica_id(registro[11].to_i, @clinica.id)
         t.pagamento_id              = pagamento.id if pagamento.present?
-        if registro[12] ==  'Verdadeiro'
+        if ['Verdadeiro', 'True'].include?(registro[12])
           t.data_entrega_administracao = registro[13] if Date.valid?(registro[13])
         end
         if registro[14].to_i > 0

@@ -5,7 +5,6 @@ class FluxoDeCaixaController < ApplicationController
   before_filter :require_user
   
   def index
-    debugger
     @fluxo = FluxoDeCaixa.da_clinica(session[:clinica_id]).last
     if @fluxo.nil?
       FluxoDeCaixa.create(:clinica_id=>session[:clinica_id], :data=>Date.today, :saldo_em_dinheiro=>0.0, :saldo_em_cheque=>0.0)
@@ -44,8 +43,19 @@ class FluxoDeCaixaController < ApplicationController
   
   def busca_saldo
     fluxo = FluxoDeCaixa.da_clinica(params[:clinica]).last
-    result = (fluxo.saldo_em_cheque.real.to_s + '/' + fluxo.saldo_em_dinheiro.real.to_s)
-    debugger
+    result = (fluxo.data.to_s_br + ';' + fluxo.saldo_em_dinheiro.real.to_s + ';' + fluxo.saldo_em_cheque.real.to_s)
     render :json => result.to_json
   end
+  
+  def grava_saldo
+    clinica  = params[:clinica]
+    dinheiro = params[:saldo_em_dinheiro].gsub('.','').gsub(',', '.').to_f
+    cheque   = params[:saldo_em_cheque].gsub('.','').gsub(',', '.').to_f
+    fluxo    = FluxoDeCaixa.da_clinica(clinica).last
+    fluxo.saldo_em_dinheiro = dinheiro
+    fluxo.saldo_em_cheque   = cheque
+    fluxo.save
+    redirect_to conserta_saldo_path
+  end
+  
 end

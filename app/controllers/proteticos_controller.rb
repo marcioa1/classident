@@ -59,7 +59,6 @@ class ProteticosController < ApplicationController
   end
   
   def abre
-    debugger
     @clinicas = Clinica.por_nome - Clinica.administracao
     if @administracao
       @trabalhos_pendentes  = TrabalhoProtetico.do_protetico(@protetico.id).pendentes

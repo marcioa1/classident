@@ -33,7 +33,6 @@ class OrcamentosController < ApplicationController
     params[:orcamento][:valor_da_parcela] = params[:orcamento][:valor_da_parcela].gsub('.','').gsub(',','.')
     @orcamento = Orcamento.new(params[:orcamento])
     @orcamento.data = params[:datepicker].to_date
-    debugger
     @orcamento.vencimento_primeira_parcela = params[:orcamento][:vencimento_primeira_parcela].to_date if Date.valid?(params[:orcamento][:vencimento_primeira_parcela])
     @orcamento.data_de_inicio = params[:orcamento][:data_de_inicio].to_date if Date.valid?(params[:orcamento][:data_de_inicio])
     if @orcamento.save
@@ -41,7 +40,6 @@ class OrcamentosController < ApplicationController
       Debito.cria_debitos_do_orcamento(@orcamento.id) unless @orcamento.data_de_inicio.nil?
       redirect_to(abre_paciente_path(@orcamento.paciente_id)) 
     else
-      debugger
       @paciente  = Paciente.find(session[:paciente_id], :select=>'id,nome')
       @dentistas = Clinica.find(session[:clinica_id]).dentistas.ativos.por_nome.collect{|obj| [obj.nome,obj.id]}
       render :action => "new"

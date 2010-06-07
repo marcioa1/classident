@@ -123,7 +123,6 @@ class RecebimentosController < ApplicationController
        @data_inicial = Date.today  - Date.today.day.days + 1.day
        @data_final = Date.today
      end
-     debugger
      formas_selecionadas = ""
      @formas_recebimento.each() do |forma|
        if params["forma_#{forma.id.to_s}"]

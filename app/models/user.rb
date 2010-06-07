@@ -24,5 +24,9 @@ class User < ActiveRecord::Base
   def pode_incluir_tabela
     tipo_usuario.nivel < 2
   end
+  
+  def acesso_com_senha?
+    tipo_usuario.nivel == TipoUsuario::NIVEL_MASTER or tipo_usuario.nivel == TipoUsuario::NIVEL_SECRETARIA
+  end
 
 end

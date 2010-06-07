@@ -59,14 +59,28 @@
     <tr>
       <td align='right'><%= f.label :ortodontista %> : </td><td><%= f.select :ortodontista_id, @ortodontistas , :include_blank=>true %></td>
     </tr>
-    <tr><td align='right'><%= f.label 'Suspender cobrança de orto a partir de'%> : </td><td> <%= text_field_tag :datepicker3, @paciente.data_da_suspensao_da_cobranca_de_orto, :size=>8 %></td>
-    </tr>
+	    <tr><td align='right'><%= f.label 'Suspender cobrança de orto a partir de'%> : </td>
+		     <td>    
+      		<% if current_user.acesso_com_senha? %>
+        		<%= text_field_tag :datepicker3, @paciente.data_da_suspensao_da_cobranca_de_orto, :size=>8 %>
+          <% else %>
+            <%= @paciente.data_da_suspensao_da_cobranca_de_orto &&  @paciente.data_da_suspensao_da_cobranca_de_orto.to_s_br %>
+         <% end %> 
+         </td>
+	    </tr>
     <tr> 
       <td align='right'><%= f.label :motivo_da_suspensão_da_cobrança%> : </td><td><%= f.text_field :motivo_suspensao_cobranca_orto , :size=>20 %></td></tr>
   </table>
   </fieldset>
   <fieldset class="fieldset_40">
-    <legend><%= f.check_box :sair_da_lista_de_debitos %> <%= f.label :sair_da_lista_de_débito%></legend>
+    <legend>
+	  <% if current_user.acesso_com_senha? %>
+      <%= f.check_box :sair_da_lista_de_debitos  %> 
+    <% else %>
+      <%= f.check_box :sair_da_lista_de_debitos,  :disabled => 'disabled'  %> 
+    <% end %>
+<%= f.label :sair_da_lista_de_débito %>
+    </legend>
     <p><%= f.label :data_da_saída_da_lista_de_débitos %> : <%= text_field_tag :datepicker4, @paciente.data_da_saida_da_lista_de_debitos.to_s_br , :size=>10%></p>
     <p><%= f.label :motivo_para_sair_da_lista_de_debitos%> : <%= f.text_field :motivo_sair_da_lista_de_debitos%></p>
   </fieldset>
