@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100601030919) do
+ActiveRecord::Schema.define(:version => 20100608013543) do
 
   create_table "altas", :force => true do |t|
     t.integer  "paciente_id"
@@ -517,6 +517,8 @@ ActiveRecord::Schema.define(:version => 20100601030919) do
     t.datetime "updated_at"
     t.integer  "clinica_id"
     t.boolean  "ativo",              :default => true
+    t.string   "hora_de_inicio"
+    t.string   "hora_de_termino"
   end
 
   add_index "users", ["clinica_id"], :name => "index_users_on_clinica_id"

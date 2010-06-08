@@ -140,10 +140,10 @@ class RecebimentosController < ApplicationController
                           excluidos
     debugger
     forma_cheque_id = FormasRecebimento.find_by_nome('cheque').id
-    if formas_selecionadas.include?(forma_cheque_id.to_s)
-      @recebimentos_devolvidos = Recebimento.em_cheque.com_problema.entre_datas(@data_inicial,@data_final)
-      @recebimentos = @recebimentos - @recebimentos_devolvidos 
-    end
+    # if formas_selecionadas.include?(forma_cheque_id.to_s)
+    #   @recebimentos_devolvidos = Recebimento.em_cheque.com_problema.entre_datas(@data_inicial,@data_final)
+    #   @recebimentos = @recebimentos - @recebimentos_devolvidos 
+    # end
   end
   
   def das_clinicas
