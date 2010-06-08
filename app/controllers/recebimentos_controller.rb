@@ -129,6 +129,7 @@ class RecebimentosController < ApplicationController
          formas_selecionadas += forma.id.to_s + ","
        end
      end
+     debugger
      @recebimentos = Recebimento.da_clinica(session[:clinica_id]).
                por_data.entre_datas(@data_inicial, @data_final).
                nas_formas(formas_selecionadas.split(",").to_a).
@@ -137,6 +138,12 @@ class RecebimentosController < ApplicationController
                           por_data.entre_datas(@data_inicial, @data_final).
                           nas_formas(formas_selecionadas.split(",").to_a).
                           excluidos
+    debugger
+    forma_cheque_id = FormasRecebimento.find_by_nome('cheque').id
+    if formas_selecionadas.include?(forma_cheque_id.to_s)
+      @recebimentos_devolvidos = Recebimento.em_cheque.com_problema.entre_datas(@data_inicial,@data_final)
+      @recebimentos = @recebimentos - @recebimentos_devolvidos 
+    end
   end
   
   def das_clinicas
@@ -171,10 +178,10 @@ class RecebimentosController < ApplicationController
   end
   
   def entradas_no_mes
-    @data = Date.today
-    @entradas = Array.new(32,0)
-    @devolvidos = Array.new(32,0)
-    @reapresentados = Array.new(32,0)
+    @data                 = Date.today
+    @entradas             = Array.new(32,0)
+    @devolvidos           = Array.new(32,0)
+    @reapresentados       = Array.new(32,0)
     @devolvido_duas_vezes = Array.new(32,0)
     if params[:date]
       @inicio = Date.new(params[:date][:year].to_i, params[:date][:month].to_i,1)

@@ -8,10 +8,11 @@ class Recebimento < ActiveRecord::Base
   
   named_scope :por_data, :order=>:data
   named_scope :entre_datas, lambda{|inicio,fim| 
-       {:conditions=>["data >= ? and data <= ?", inicio,fim]}}
+       {:conditions=>["recebimentos.data >= ? and recebimentos.data <= ?", inicio,fim]}}
   named_scope :da_clinica, lambda{|clinica_id| {:conditions=>["clinica_id=?", clinica_id]}}
   named_scope :das_clinicas, lambda{|clinicas| 
        {:conditions=>["clinica_id in (?)", clinicas]}}
+  named_scope :em_cheque, :conditions=>['cheque_id IS NOT NULL']
   named_scope :excluidos, :conditions=>["data_de_exclusao IS NOT NULL"]
   named_scope :nas_formas, lambda{|formas| 
        {:conditions=>["formas_recebimento_id in (?)", formas]}}
@@ -19,6 +20,8 @@ class Recebimento < ActiveRecord::Base
        {:conditions=>["data = ?",dia]}} 
   named_scope :nao_excluidos, :conditions=>["data_de_exclusao IS NULL"]
      
+  named_scope :com_problema, :include=>:cheque, :conditions => ['cheques.data_reapresentacao IS NULL and cheques.data_primeira_devolucao IS NOT NULL']
+
   def em_cheque?
     return false if self.formas_recebimento_id.nil?
     forma = FormasRecebimento.find(self.formas_recebimento_id)

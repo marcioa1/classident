@@ -11,7 +11,7 @@
 <% @devolvidos_protetico.each do |trab| %>
   <tr>
     <td><%= trab.data_de_envio.to_s_br%></td>
-    <td><%= link_to trab.tabela_protetico.descricao, edit_trabalho_protetico_path(trab) %></td>
+    <td><%= link_to trab.tabela_protetico.descricao, edit_trabalho_protetico_path(trab) if trab.tabela_protetico %></td>
     <td><%= trab.valor.real %></td>
     <td align="center"><%= trab.data_de_devolucao.to_s_br %></td>
     <td><%= trab.protetico.nome %></td>

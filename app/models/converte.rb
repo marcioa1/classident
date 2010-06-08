@@ -525,10 +525,14 @@ class Converte
         t.data_de_exclusao          = registro[28] if Date.valid?(registro[28])
         t.data_arquivo_morto        = registro[29].to_date if Date.valid?(registro[29])
         t.save
-        if recebimento.present?
-          recebimento.cheque_id  = t.id
-          recebimento.observacao = t.banco.nome + " - " + t.numero if !recebimento.observacao.present?
-          recebimento.save
+    
+        if t.segundo_paciente
+          recebimentos = Recebimento.find_all_by_clinica_id_and_sequencial(@clinica.id, t.sequencial)
+          recebimentos.each do |rec|
+            rec.cheque_id  = t.id
+            rec.observacao = t.banco.nome + " - " + t.numero if !recebimento.observacao.present?
+            rec.save
+          end
         end
       rescue Exception => ex
         @arquivo.puts line + "\n"+ "      ->" + ex

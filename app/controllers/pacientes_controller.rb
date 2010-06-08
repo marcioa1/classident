@@ -67,6 +67,7 @@ class PacientesController < ApplicationController
     #   params[:nome]   = @paciente.nome
     # end  
     @pacientes = []
+    debugger
     if !params[:codigo].blank?
       if administracao
         @pacientes = Paciente.all(:conditions=>["codigo=?", params[:codigo]], :order=>:nome)
@@ -84,7 +85,7 @@ class PacientesController < ApplicationController
       end
     else
       if params[:nome]
-        if @administracao
+        if administracao
           @pacientes = Paciente.all(:conditions=>["nome like ?", params[:nome] + '%'],:order=>:nome)
         else
           @pacientes = Paciente.all(:conditions=>["clinica_id= ? and nome like ?", session[:clinica_id].to_i, params[:nome] + '%'],:order=>:nome)
@@ -95,13 +96,26 @@ class PacientesController < ApplicationController
   
   
   def pesquisa_nomes
-    nomes = Paciente.all(:select=>'nome', :conditions=>["nome like ?", "#{params[:term].nome_proprio}%" ])  
-    render :json => nomes.map(&:nome).to_json
+    if administracao
+    nomes = Paciente.all(:select=>'nome,clinica_id', :conditions=>["nome like ?", "#{params[:term].nome_proprio}%" ])  
+    else
+      nomes = Paciente.all(:select=>'nome,clinica_id', :conditions=>["nome like ? and clinica_id = ? ", "#{params[:term].nome_proprio}%", session[:clinica_id] ])  
+    end
+    result = []
+    nomes.each do |nome|
+      if administracao
+        result << nome.nome + '-' + Clinica.find(nome.clinica_id).sigla
+      else
+        result << nome.nome 
+      end      
+    end
+    render :json => result.to_json
   end
   
   def abre
     if params[:nome]
-      @paciente = Paciente.find_by_nome(params[:nome])
+      nome_sem_clinica = params[:nome].split('-')[0]
+      @paciente = Paciente.find_by_nome(nome_sem_clinica)
     else
       @paciente = Paciente.find(params[:id])
     end
