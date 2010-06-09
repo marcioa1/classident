@@ -1,5 +1,6 @@
 class TrabalhoProteticosController < ApplicationController
   layout "adm"
+  before_filter :require_user
 
   before_filter :busca_trabalho, :only =>[:show, :edit, :update, :destroy]
 

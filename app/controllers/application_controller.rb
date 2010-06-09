@@ -33,7 +33,7 @@ class ApplicationController < ActionController::Base
   private
   
     def require_user
-      unless current_user
+      unless current_user 
         store_location
         flash[:notice] = "Você precisa estar logado para ter acesso à esta página."
         redirect_to new_user_sessions_url
@@ -56,8 +56,8 @@ class ApplicationController < ActionController::Base
     end
 
     def current_user
-      return @current_user if defined?(@current_user)
-      @current_user = current_user_session && current_user_session.user
+      return @current_user if defined?(@current_user) && (@current_user.horario_de_trabalho?)
+      @current_user = current_user_session && current_user_session.user 
     end
     
     def store_location
@@ -76,6 +76,14 @@ class ApplicationController < ActionController::Base
         @clinica_atual = Clinica.find(session[:clinica_id]) 
       end
       @administracao = session[:clinica_id] == 10
+    end
+    
+    def verifica_horario_de_trabalho
+      if !current_user.horario_de_trabalho?
+        current_user_session.destroy
+        flash[:notice] = "Volte no seu horário de trabalho !"
+        redirect_to root_path
+      end
     end
     
     

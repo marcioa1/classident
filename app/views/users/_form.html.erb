@@ -15,7 +15,22 @@
 <%= form.select :tipo_usuario_id, @tipos_usuario %>
 <br/><br/>
 <%= form.label :clinicas %><br/>
-<%= form.select :clinica_id, @clinicas, :include_blank=>true %>
+<%= form.select :clinica_id, options_from_collection_for_select(@clinicas, :id, :nome), :include_blank=>true %>
 <br/><br/>
 <%= form.check_box :ativo %>
 <%= form.label :ativo %>
+<p/>
+<fieldset class='fieldset_40'>
+<table class='transparente'>
+<% (0..6).each do |dia| %>
+  <tr>
+    <td><%= form.check_box "dia_da_semana_#{dia}"%></td>
+    <td><%= form.label Date::DAYNAMES[dia] %>  </td>
+    <td><%= form.label :Início %> : </td>
+    <td><%= form.time_select "hora_de_inicio_"+ dia.to_s %></td>
+    <td><%= form.label :Término %> : </td>
+    <td><%= form.time_select "hora_de_termino_#{dia.to_s}" %></td>
+  </tr>
+<% end %>
+</table>
+</fieldset>

@@ -2,6 +2,8 @@ class AltasController < ApplicationController
 
   layout "adm"
 
+  before_filter :require_user
+
   def index
     @altas = Alta.all
   end

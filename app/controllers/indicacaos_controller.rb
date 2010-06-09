@@ -1,6 +1,7 @@
 class IndicacaosController < ApplicationController
 
   layout "adm"
+  before_filter :require_user
 
   def index
     @indicacaos = Indicacao.por_descricao

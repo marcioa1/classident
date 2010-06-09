@@ -1,5 +1,6 @@
 class OrcamentosController < ApplicationController
   layout "adm"
+  before_filter :require_user
   
   before_filter :quinze_dias, :only=>:aproveitamento
   

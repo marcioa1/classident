@@ -1,5 +1,6 @@
 class FormasRecebimentosController < ApplicationController
   layout "adm"
+  before_filter :require_user
 
   def index
     @formas_recebimentos = FormasRecebimento.all(:order=>:nome)

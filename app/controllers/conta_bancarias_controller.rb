@@ -1,6 +1,8 @@
 class ContaBancariasController < ApplicationController
  
   layout "adm"
+  
+  before_filter :require_user
 
   def index
     @conta_bancarias = ContaBancaria.all

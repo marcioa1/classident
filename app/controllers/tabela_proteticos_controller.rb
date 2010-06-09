@@ -1,5 +1,6 @@
 class TabelaProteticosController < ApplicationController
   layout "adm"
+  before_filter :require_user
 
   def index
     @tabela_proteticos = TabelaProtetico.tabela_base.por_descricao

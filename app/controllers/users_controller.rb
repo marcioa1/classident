@@ -11,9 +11,10 @@ class UsersController < ApplicationController
 
   def new
     redirect_to users_path unless current_user.pode_incluir_user
-    @user = User.new
+    @clinicas      = Clinica.all
+    @user          = User.new
     @tipos_usuario = TipoUsuario.all(:order=>:nome).collect{|obj| [obj.nome,obj.id]}
-    if !current_user.master
+    if !current_user.master?
        master = TipoUsuario.master.collect{|obj| [obj.nome,obj.id]}
        @tipos_usuario = @tipos_usuario - master
     end
@@ -38,9 +39,10 @@ class UsersController < ApplicationController
   end
 
   def edit
-    @user = User.find(params[:id])
+    @user     = User.find(params[:id])
+    @clinicas = Clinica.all
     @tipos_usuario = TipoUsuario.all(:order=>:nome).collect{|obj| [obj.nome,obj.id]}
-    if !current_user.master
+    if !current_user.master?
        master = TipoUsuario.master.collect{|obj| [obj.nome,obj.id]}
        @tipos_usuario = @tipos_usuario - master
     end

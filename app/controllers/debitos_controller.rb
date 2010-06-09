@@ -1,5 +1,7 @@
 class DebitosController < ApplicationController
   layout "adm"
+  
+  before_filter :require_user
 
   def index
     @debitos = Debito.all

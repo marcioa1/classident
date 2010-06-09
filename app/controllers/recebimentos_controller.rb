@@ -3,6 +3,7 @@ class RecebimentosController < ApplicationController
   layout "adm"
   
   before_filter :require_user
+  before_filter :verifica_horario_de_trabalho
   before_filter :busca_bancos_e_forma_de_recebimento, :only=>[:new, :edit]
   before_filter :busca_recebimento, :only => [:show, :edit]
   

@@ -14,16 +14,11 @@ class UserSessionsController < ApplicationController
         if current_user.password == "1234"
           redirect_to troca_senha_user_path
         else
-         
-          if current_user.clinica.nil?
-            session[:clinica_id] = Clinica.find_by_sigla("ad").id
-          else
-            session[:clinica_id] = current_user.clinica.id
-          end
+          session[:clinica_id] = current_user.clinica.id
           redirect_to pesquisa_pacientes_path
         end
       else
-        flash[:error] = " Usuário não encontrato. Por favor verifique email e senha."
+        flash[:error] = " Usuário não encontrado. Por favor verifique usuário, senha e dias e horários permitidos."
         redirect_to new_user_sessions_path 
       end
     end

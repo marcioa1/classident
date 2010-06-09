@@ -1,6 +1,7 @@
 class TipoPagamentosController < ApplicationController
   layout "adm"
   before_filter :require_user 
+  before_filter :require_user
 
   def index
     params[:ativo] = 'true' if !params[:ativo]

@@ -1,5 +1,6 @@
 class ItemTabelasController < ApplicationController
   layout "adm"
+  before_filter :require_user
 
   def index
     @tabela       = Tabela.find(params[:tabela_id])

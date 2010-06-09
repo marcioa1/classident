@@ -16,7 +16,7 @@
     <td><%= user.tipo_usuario.nome%></td>
     <td><%= user.clinica.nome unless user.clinica.nil? %></td>
     <td><%= user.email %></td>
-    <td><%= link_to "editar", edit_user_path(user.id) if !user.master or current_user.master %></td>
+    <td><%= link_to "editar", edit_user_path(user.id) if current_user.master? %></td>
   </tr>
   <% end %>
 </table>

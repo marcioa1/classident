@@ -499,13 +499,13 @@ ActiveRecord::Schema.define(:version => 20100608013543) do
   add_index "tratamentos", ["sequencial"], :name => "index_tratamentos_on_sequencial"
 
   create_table "users", :force => true do |t|
-    t.string   "login",                                :null => false
-    t.string   "email",                                :null => false
-    t.string   "crypted_password",                     :null => false
-    t.string   "password_salt",                        :null => false
-    t.string   "persistence_token",                    :null => false
-    t.integer  "login_count",        :default => 0,    :null => false
-    t.integer  "failed_login_count", :default => 0,    :null => false
+    t.string   "login",                                                 :null => false
+    t.string   "email",                                                 :null => false
+    t.string   "crypted_password",                                      :null => false
+    t.string   "password_salt",                                         :null => false
+    t.string   "persistence_token",                                     :null => false
+    t.integer  "login_count",        :default => 0,                     :null => false
+    t.integer  "failed_login_count", :default => 0,                     :null => false
     t.datetime "last_request_at"
     t.datetime "current_login_at"
     t.datetime "last_login_at"
@@ -517,8 +517,29 @@ ActiveRecord::Schema.define(:version => 20100608013543) do
     t.datetime "updated_at"
     t.integer  "clinica_id"
     t.boolean  "ativo",              :default => true
-    t.string   "hora_de_inicio"
-    t.string   "hora_de_termino"
+    t.datetime "hora_de_inicio_0",   :default => '2010-06-09 11:00:00'
+    t.datetime "hora_de_termino_0",  :default => '2010-06-09 21:00:00'
+    t.datetime "hora_de_inicio_1",   :default => '2010-06-09 11:00:00'
+    t.datetime "hora_de_termino_1",  :default => '2010-06-09 21:00:00'
+    t.datetime "hora_de_inicio_2",   :default => '2010-06-09 11:00:00'
+    t.datetime "hora_de_termino_2",  :default => '2010-06-09 21:00:00'
+    t.datetime "hora_de_inicio_3",   :default => '2010-06-09 11:00:00'
+    t.datetime "hora_de_termino_3",  :default => '2010-06-09 21:00:00'
+    t.datetime "hora_de_inicio_4",   :default => '2010-06-09 11:00:00'
+    t.datetime "hora_de_termino_4",  :default => '2010-06-09 21:00:00'
+    t.datetime "hora_de_inicio_5",   :default => '2010-06-09 11:00:00'
+    t.datetime "hora_de_termino_5",  :default => '2010-06-09 21:00:00'
+    t.datetime "hora_de_inicio_6",   :default => '2010-06-09 11:00:00'
+    t.datetime "hora_de_termino_6",  :default => '2010-06-09 21:00:00'
+    t.datetime "hora_de_inicio_7",   :default => '2010-06-09 11:00:00'
+    t.datetime "hora_de_termino_7",  :default => '2010-06-09 21:00:00'
+    t.boolean  "dia_da_semana_0",    :default => false
+    t.boolean  "dia_da_semana_1",    :default => true
+    t.boolean  "dia_da_semana_2",    :default => true
+    t.boolean  "dia_da_semana_3",    :default => true
+    t.boolean  "dia_da_semana_4",    :default => true
+    t.boolean  "dia_da_semana_5",    :default => true
+    t.boolean  "dia_da_semana_6",    :default => false
   end
 
   add_index "users", ["clinica_id"], :name => "index_users_on_clinica_id"
