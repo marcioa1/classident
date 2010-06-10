@@ -1,5 +1,5 @@
 class Clinica < ActiveRecord::Base
-  has_many :users
+  has_and_belongs_to_many :users
   has_many :pagamentos
   has_and_belongs_to_many :dentistas
   has_many :recebimentos
@@ -15,5 +15,7 @@ class Clinica < ActiveRecord::Base
   named_scope :por_nome, :order=>:nome
   named_scope :administracao, :conditions=>["sigla = 'ad'"]
   named_scope :todas, :conditions=>["sigla <> 'ad'"]
-  
+
+  ADMINISTRACAO_ID = 10
+
 end

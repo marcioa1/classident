@@ -22,8 +22,13 @@ class UsersController < ApplicationController
 
   def create
     @user = User.new(params[:user])
+    (1..10).each do |id|
+      if params[("clinica_" + id.to_s).to_sym]
+        @user.clinicas << Clinica.find(id)
+      end
+    end
     if @user.save
-      flash[:notice] = "Account registered!"
+      flash[:notice] = "Usuário registrado!"
       redirect_back_or_default @user
     else  @tipos_usuario = TipoUsuario.all(:order=>:nome).collect{|obj| [obj.nome,obj.id]}
       if !current_user.master
@@ -50,8 +55,15 @@ class UsersController < ApplicationController
 
   def update
     @user = User.find(params[:id])
+    debugger
+    @user.clinicas = []
+    (1..10).each do |id|
+      if params[("clinica_" + id.to_s).to_sym]
+        @user.clinicas << Clinica.find(id)
+      end
+    end
     if @user.update_attributes(params[:user])
-      flash[:notice] = "Account updated!"
+      flash[:notice] = "Usuário alterado!"
       redirect_to users_path
     else
        @tipos_usuario = TipoUsuario.all(:order=>:nome).collect{|obj| [obj.nome,obj.id]}

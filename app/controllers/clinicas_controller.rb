@@ -15,11 +15,11 @@ class ClinicasController < ApplicationController
   def producao_entre_datas
     @valores = []
     if params[:datepicker].nil?
-      @data_inicial = Date.today
-      @data_final = Date.today
+      @data_inicial = Date.today - 15.days
+      @data_final   = Date.today
     else
-      @data_inicial = params[:datepicker].to_date
-      @data_final = params[:datepicker2].to_date
+      @data_inicial = params[:datepicker].to_date if Date.valid?(params[:datepicker])
+      @data_final   = params[:datepicker2].to_date if Date.valid?(params[:datepicker2])
     end
     @dentistas = Clinica.find(session[:clinica_id]).dentistas.por_nome
     @dentistas.each do |den|

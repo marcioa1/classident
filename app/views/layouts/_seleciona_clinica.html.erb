@@ -1,5 +1,5 @@
 <% form_tag selecionou_clinica_path do  %>
     Clínica : 
-    <%= select_tag :clinica_id, options_for_select(@as_clinicas), :include_blank=>true %>
+    <%= select_tag :clinica_id, options_from_collection_for_select(current_user.clinicas, :id, :nome), :include_blank=>true %>
     <%= submit_tag "entrar"%>
 <% end %>

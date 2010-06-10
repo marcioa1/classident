@@ -2,7 +2,7 @@ class User < ActiveRecord::Base
   acts_as_authentic
   
   belongs_to :tipo_usuario
-  belongs_to :clinica
+  has_and_belongs_to_many :clinicas
   belongs_to :alta
   
   validates_presence_of :nome, :on => :create, :message => "campo obrigatório."
@@ -42,4 +42,11 @@ class User < ActiveRecord::Base
     end
   end
 
+  def nome_das_clinicas
+    result = ''
+    self.clinicas.each do |cl|
+      result += cl.nome + ','
+    end
+    result
+  end
 end

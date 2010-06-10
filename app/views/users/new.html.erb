@@ -4,6 +4,8 @@
 <% form_for(@user) do |form| %>
   <%= form.error_messages %>
   <%= render :partial => 'form' , :locals => { :form => form }%>
+  <br/>  
+  <%= form.submit "Salvar" %>
 <% end %>
 <br/>
 <%= link_to "Voltar", users_path %>

@@ -4,7 +4,7 @@
   Login : <%= @user.login %><br/>	
   email : <%= @user.email %><br/>
   tipo : <%= @user.tipo_usuario.nome %><br/>
-  clínica : <%= @user.clinica.nome unless @user.clinica.nil?%><br/>
+  clínica : <%= @user.nome_das_clinicas %><br/>
 </p>
 <%= link_to "voltar", users_path %> | <%= link_to  "editar", edit_user_path(@user.id)%>
 <% end %>

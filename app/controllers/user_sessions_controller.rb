@@ -1,6 +1,6 @@
 class UserSessionsController < ApplicationController
 
-  layout "login"
+   layout "login"
    before_filter :require_user, :only => :destroy
 
     def new
@@ -14,7 +14,12 @@ class UserSessionsController < ApplicationController
         if current_user.password == "1234"
           redirect_to troca_senha_user_path
         else
-          session[:clinica_id] = current_user.clinica.id
+          debugger
+          if current_user.clinicas.map(&:id).include?(Clinica::ADMINISTRACAO_ID)
+            session[:clinica_id] = Clinica::ADMINISTRACAO_ID
+          else
+            session[:clinica_id] = current_user.clinicas.first.id
+          end
           redirect_to pesquisa_pacientes_path
         end
       else

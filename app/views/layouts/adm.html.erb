@@ -6,15 +6,15 @@
 <head>
   <meta http-equiv="content-type" content="text/html;charset=utf-8" />
   <title>Classident</title>
-	<%= javascript_include_tag 'jquery-1.4.js' %>
-	<%= javascript_include_tag 'jquery-ui-1.8.custom.min.js'%>
-	<%= javascript_include_tag 'jquery.price_format.1.0.js'%>
-	<%= javascript_include_tag 'jrails.js'%>
-	<%= javascript_include_tag 'select_boxes.js'%>
-	<%= javascript_include_tag 'application.js'%>
-	<%= javascript_include_tag 'ui.datepicker-pt-BR.js'%>
-	<%= javascript_include_tag 'adm.js'%>
-	<%= javascript_include_tag 'clinica.js' %>
+  <%= javascript_include_tag 'jquery-1.4.js' %>
+  <%= javascript_include_tag 'jquery-ui-1.8.custom.min.js'%>
+  <%= javascript_include_tag 'jquery.price_format.1.0.js'%>
+  <%= javascript_include_tag 'jrails.js'%>
+  <%= javascript_include_tag 'select_boxes.js'%>
+  <%= javascript_include_tag 'application.js'%>
+  <%= javascript_include_tag 'ui.datepicker-pt-BR.js'%>
+  <%= javascript_include_tag 'adm.js'%>
+  <%= javascript_include_tag 'clinica.js' %>
   
   <%= stylesheet_link_tag 'jquery.ui.autocomplete.css'%>
   <%= stylesheet_link_tag 'adm.css' %>
@@ -30,11 +30,11 @@
     <div id="cabecalho">
       <div id="logo"><%= image_tag "logo2.jpg"%>
       <div id="login">Usuário : <%= current_user.nome %> ( <%= current_user.tipo_usuario.nome %> ) | <%= @clinica_atual.nome %>
-    <% if current_user.tipo_usuario.nivel < 2 %>
-     | <a href="#" onClick='outra_clinica();'> outra clinica</a>
-    <div id="seleciona_clinica" style="display:none;">
-	  <%= render :partial=>"layouts/seleciona_clinica" %>
-    </div>
+     <% if current_user.clinicas.size > 1 %>
+       | <a href="#" onClick='outra_clinica();'> outra clinica</a>
+      <div id="seleciona_clinica" style="display:none;">
+      <%= render :partial=>"layouts/seleciona_clinica" %>
+      </div>
     <% end %>
       | <%= link_to "trocar senha", troca_senha_path %>
       | <%= link_to "logout", logout_path %></div>

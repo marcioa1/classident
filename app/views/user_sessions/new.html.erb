@@ -1,5 +1,4 @@
 <% content_for :main do %>
-errado
 <% form_for @user_session, :url => user_sessions_path do |f| %>
   <%= f.error_messages %>
   <%= flash[:notice]%>
@@ -19,5 +18,5 @@ errado
     </tr>
 </table>
 <% end %>
-
+erb
 <% end %>

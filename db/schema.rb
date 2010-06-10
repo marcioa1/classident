@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100608013543) do
+ActiveRecord::Schema.define(:version => 20100610024415) do
 
   create_table "altas", :force => true do |t|
     t.integer  "paciente_id"
@@ -108,6 +108,11 @@ ActiveRecord::Schema.define(:version => 20100608013543) do
   add_index "clinicas_proteticos", ["clinica_id", "protetico_id"], :name => "index_clinicas_proteticos_on_clinica_id_and_protetico_id"
   add_index "clinicas_proteticos", ["protetico_id", "clinica_id"], :name => "index_clinicas_proteticos_on_protetico_id_and_clinica_id"
 
+  create_table "clinicas_users", :id => false, :force => true do |t|
+    t.integer "clinica_id"
+    t.integer "user_id"
+  end
+
   create_table "conta_bancarias", :force => true do |t|
     t.string   "nome"
     t.datetime "created_at"
@@ -121,7 +126,7 @@ ActiveRecord::Schema.define(:version => 20100608013543) do
   create_table "debitos", :force => true do |t|
     t.integer  "paciente_id"
     t.integer  "tratamento_id"
-    t.decimal  "valor",         :precision => 9, :scale => 2
+    t.integer  "valor",         :limit => 10, :precision => 10, :scale => 0
     t.string   "descricao"
     t.date     "data"
     t.datetime "created_at"
@@ -236,8 +241,10 @@ ActiveRecord::Schema.define(:version => 20100608013543) do
     t.decimal  "preco",                :precision => 9, :scale => 2
   end
 
+  add_index "item_tabelas", ["clinica_id"], :name => "clinica"
   add_index "item_tabelas", ["descricao_conduta_id"], :name => "index_item_tabelas_on_descricao_conduta_id"
   add_index "item_tabelas", ["id"], :name => "index_item_tabelas_on_id"
+  add_index "item_tabelas", ["sequencial"], :name => "sequencial"
   add_index "item_tabelas", ["tabela_id"], :name => "index_item_tabelas_on_tabela_id"
 
   create_table "orcamentos", :force => true do |t|
@@ -245,13 +252,13 @@ ActiveRecord::Schema.define(:version => 20100608013543) do
     t.integer  "numero"
     t.date     "data"
     t.integer  "dentista_id"
-    t.decimal  "desconto",                    :precision => 9, :scale => 2
-    t.decimal  "valor",                       :precision => 9, :scale => 2
-    t.decimal  "valor_com_desconto",          :precision => 9, :scale => 2
+    t.integer  "desconto",                    :limit => 10, :precision => 10, :scale => 0
+    t.integer  "valor",                       :limit => 10, :precision => 10, :scale => 0
+    t.integer  "valor_com_desconto",          :limit => 10, :precision => 10, :scale => 0
     t.string   "forma_de_pagamento"
     t.integer  "numero_de_parcelas"
     t.date     "vencimento_primeira_parcela"
-    t.decimal  "valor_da_parcela",            :precision => 9, :scale => 2
+    t.integer  "valor_da_parcela",            :limit => 10, :precision => 10, :scale => 0
     t.date     "data_de_inicio"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -368,7 +375,6 @@ ActiveRecord::Schema.define(:version => 20100608013543) do
     t.boolean  "ativo",       :default => true
   end
 
-  add_index "proteticos", ["clinica_id"], :name => "index_proteticos_on_clinica_id"
   add_index "proteticos", ["id"], :name => "index_proteticos_on_id"
   add_index "proteticos", ["nome"], :name => "index_proteticos_on_nome"
 
@@ -515,7 +521,6 @@ ActiveRecord::Schema.define(:version => 20100608013543) do
     t.string   "nome"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "clinica_id"
     t.boolean  "ativo",              :default => true
     t.datetime "hora_de_inicio_0",   :default => '2010-06-09 11:00:00'
     t.datetime "hora_de_termino_0",  :default => '2010-06-09 21:00:00'
@@ -542,7 +547,6 @@ ActiveRecord::Schema.define(:version => 20100608013543) do
     t.boolean  "dia_da_semana_6",    :default => false
   end
 
-  add_index "users", ["clinica_id"], :name => "index_users_on_clinica_id"
   add_index "users", ["id"], :name => "index_users_on_id"
   add_index "users", ["tipo_usuario_id"], :name => "index_users_on_tipo_usuario_id"
 
