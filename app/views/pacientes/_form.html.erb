@@ -5,7 +5,7 @@
 <%= f.label :tabela_id %> : 
 <%= f.select :tabela_id, @tabelas %>
 <%= f.label :inicio_de_tratamento %> :
-<%= text_field_tag :datepicker2, @paciente.inicio_tratamento.to_s_br || Date.toda.to_s_br, :size=>10 %>
+<%= f.text_field :inicio_tratamento_br, :size=>10, :class=>'datepicker' %>
   </p>
   <p>
 	<%= f.label :cep %> :

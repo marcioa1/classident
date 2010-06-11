@@ -1,6 +1,9 @@
 class Debito < ActiveRecord::Base
   belongs_to :paciente
   
+  validates_presence_of :valor, :only => [:create, :update], :message => "campo obrigatório"
+  validates_presence_of :descricao, :only => [:create, :update], :message => "campo obrigatório"
+  
   def self.cria_debitos_do_orcamento(orcamento_id)
     orcamento = Orcamento.find(orcamento_id)
     (1..orcamento.numero_de_parcelas).each do |par|

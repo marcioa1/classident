@@ -7,15 +7,16 @@
 
     <%= f.hidden_field :paciente_id %>
   <p>
+    <%= f.label :data %> :
   	<%= text_field_tag :datepicker, Date.today.to_s_br, :size=>10 %>
   </p>
   <p>
-    <%= f.label :valor %><br />
+    <%= f.label :valor %> :
     <%= f.text_field :valor, :size=>12 %>
   </p>
   <p>
-    <%= f.label :descrição %><br />
-    <%= f.text_field :descricao %>
+    <%= f.label :descrição %> :
+    <%= f.text_field :descricao, options={:size=>30} %>
   </p>
   <p>
     <%= f.submit 'salvar' %>

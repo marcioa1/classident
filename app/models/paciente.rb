@@ -15,6 +15,8 @@ class Paciente < ActiveRecord::Base
   validates_presence_of :tabela, :on => :create, :message => "Tabela obrigatória"  
   validates_format_of :email, :with => /^(([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,}))?$/i, :only => [:create, :update], 
                          :message => 'Formato de email inválido.'
+  validates_presence_of :inicio_tratamento, :only => [:create, :update], :message => "A data de início do tratamento é obrigatória."
+  #validates_format_of :inicio_tratamento, :with => /^[\w\d]+$/, :on => :create, :message => "is invalid"
   
   named_scope :da_clinica, lambda{|clinica_id| {:conditions=>["clinica_id=?", clinica_id]}}
   named_scope :de_clinica, :conditions=>["ortodontia = ?", false]
@@ -24,6 +26,20 @@ class Paciente < ActiveRecord::Base
     and data_da_saida_da_lista_de_debitos between ? and ?", true, inicio,fim]}}
   named_scope :por_nome, :order=>:nome
   
+  
+  attr_accessor :inicio_tratamento_br
+  
+  def inicio_tratamento_br
+    self.inicio_tratamento.nil? ? Date.today.to_s_br : self.inicio_tratamento.to_s_br
+  end
+  
+  def inicio_tratamento_br=(value)
+    if Date.valid?(value)
+      self.inicio_tratamento = value.to_date
+    else
+      self.inicio_tratamento = nil
+    end
+  end
   #validates_uniqueness_of :codigo
   
   def extrato

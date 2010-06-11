@@ -2,6 +2,7 @@ class PacientesController < ApplicationController
   layout "adm"
   before_filter :require_user
   before_filter :busca_paciente, :only =>[:edit, :show, :update]
+  before_filter :busca_tabelas
   
   def index
     @pacientes = Paciente.all
@@ -14,10 +15,7 @@ class PacientesController < ApplicationController
     if @administracao
       redirect_to administracao_path
     else
-      @tabelas       = Tabela.ativas.collect{|obj| [obj.nome,obj.id]}
-      @paciente      = Paciente.new
-      @indicacoes    = Indicacao.por_descricao.collect{|obj| [obj.descricao, obj.id]}
-      @ortodontistas = Dentista.ortodontistas.collect{|obj| [obj.nome,obj.id]}
+      @paciente      = Paciente.new(:inicio_tratamento => Date.current)
     end
   end
 
@@ -29,7 +27,6 @@ class PacientesController < ApplicationController
     @paciente                   = Paciente.new(params[:paciente])
     @paciente.clinica_id        = session[:clinica_id]
     @paciente.codigo            = @paciente.gera_codigo(session[:clinica_id])
-    @paciente.inicio_tratamento = params[:datepicker2].to_date
     @paciente.data_da_suspensao_da_cobranca_de_orto = parasm[:datepicker3].to_date unless params[:datepicker3].blank?
     @paciente.data_da_saida_da_lista_de_debitos     = params[:datepicker4].to_date unless params[:datepicker4].blank?
     if @paciente.save
@@ -40,9 +37,8 @@ class PacientesController < ApplicationController
   end
 
   def update
-    @paciente.inicio_tratamento                     = params[:datepicker2].to_date
-    @paciente.data_da_suspensao_da_cobranca_de_orto = params[:datepicker3].to_date unless params[:datepicker3].blank?
-    @paciente.data_da_saida_da_lista_de_debitos     = params[:datepicker4].to_date unless params[:datepicker4].blank?
+    @paciente.data_da_suspensao_da_cobranca_de_orto = params[:datepicker3].to_date if Date.valid?(params[:datepicker3])
+    @paciente.data_da_saida_da_lista_de_debitos     = params[:datepicker4].to_date if Date.valid?(params[:datepicker4])
     if @paciente.update_attributes(params[:paciente])
       redirect_to(abre_paciente_path(:id=>@paciente.id)) 
     else
@@ -119,12 +115,10 @@ class PacientesController < ApplicationController
     else
       @paciente = Paciente.find(params[:id])
     end
-    @tabelas              = Tabela.ativas.da_clinica(session[:clinica_id]).collect{|obj| [obj.nome,obj.id]}
     @indicacoes           = Indicacao.por_descricao.collect{|obj| [obj.descricao, obj.id]}
     @pendentes_protetico  = TrabalhoProtetico.pendentes.do_paciente(@paciente.id)
     @devolvidos_protetico = TrabalhoProtetico.devolvidos.do_paciente(@paciente.id) 
     @orcamentos           = @paciente.orcamentos
-    @ortodontistas        = Dentista.ortodontistas.por_nome.collect{|obj| [obj.nome,obj.id]}
     
     session[:paciente_id]   = @paciente.id
     session[:paciente_nome] = @paciente.nome
@@ -157,5 +151,11 @@ class PacientesController < ApplicationController
   def busca_paciente
     @paciente = Paciente.find(params[:id])
   end  
+
+  def busca_tabelas
+    @tabelas    = Tabela.ativas.collect{|obj| [obj.nome,obj.id]}
+    @indicacoes = Indicacao.por_descricao.collect{|obj| [obj.descricao, obj.id]}
+    @ortodontistas        = Dentista.ortodontistas.por_nome.collect{|obj| [obj.nome,obj.id]}
+  end
 
 end

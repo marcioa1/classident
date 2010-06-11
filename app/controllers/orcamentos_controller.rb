@@ -15,7 +15,7 @@ class OrcamentosController < ApplicationController
   def new
     params[:tratamento_ids] = Tratamento.ids_orcamento(params[:paciente_id]).join(",")
     @paciente = Paciente.find(session[:paciente_id], :select=>'id,nome')
-    @orcamento = Orcamento.new
+    @orcamento = Orcamento.new(:vencimento_primeira_parcela => Date.today + 30.days, :data => Date.today, :forma_de_pagamento => 'cheque_pre')
     @orcamento.paciente = @paciente
     @orcamento.numero = Orcamento.proximo_numero(session[:paciente_id])
     @orcamento.valor = Tratamento.valor_a_fazer(session[:paciente_id])
@@ -111,7 +111,7 @@ class OrcamentosController < ApplicationController
 
   def monta_tabela_de_parcelas
     numero_de_parcelas = params[:numero_de_parcelas].to_i
-    data               = params[:data_primeira_parcela].to_date
+    data               = params[:data_primeira_parcela].to_date if Date.valid?(params[:data_primeira_parcela])
     valor              = (params[:valor_da_parcela].to_f / numero_de_parcelas).real
     result = "<div id='parcelas' style='padding-left: 14em; padding-top: 1em;'><table><tr><th>N. parcela</th><th>Data</th><th>Valor</th></tr>"
     #TODO colocar esta motnagem num helper
