@@ -55,7 +55,6 @@ class UsersController < ApplicationController
 
   def update
     @user = User.find(params[:id])
-    debugger
     @user.clinicas = []
     (1..10).each do |id|
       if params[("clinica_" + id.to_s).to_sym]

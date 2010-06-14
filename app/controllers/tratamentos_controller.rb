@@ -55,7 +55,7 @@ class TratamentosController < ApplicationController
       if !@tratamento.data.nil?
         @tratamento.paciente.verifica_alta_automatica
         @debito = Debito.find_by_tratamento_id(@tratamento.id)
-        if @debito.nil?
+        if @debito.nil? && @tratamento.orcamento.nil?
           @debito = Debito.new
           @debito.paciente_id = @tratamento.paciente_id
           @debito.tratamento_id = @tratamento.id

@@ -22,6 +22,24 @@ class Recebimento < ActiveRecord::Base
      
   named_scope :com_problema, :include=>:cheque, :conditions => ['cheques.data_reapresentacao IS NULL and cheques.data_primeira_devolucao IS NOT NULL']
 
+  attr_accessor :valor_real, :data_real
+  
+  def valor_real
+    self.valor.real
+  end
+  
+  def valor_real=(valor)
+    self.valor = valor.gsub('.','').gsub(',', '.')
+  end
+  
+  def data_real
+    self.data.to_s_br
+  end
+  
+  def data_real=(data)
+    self.data = data.to_date if Date.valid?(data)
+  end
+
   def em_cheque?
     return false if self.formas_recebimento_id.nil?
     forma = FormasRecebimento.find(self.formas_recebimento_id)

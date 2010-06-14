@@ -52,13 +52,15 @@ class Tratamento < ActiveRecord::Base
   end
   
   def finalizar_procedimento(user)
-    debito = Debito.new
-    debito.paciente_id = paciente_id
-    debito.tratamento_id = id
-    debito.descricao = item_tabela.descricao
-    debito.valor = valor
-    debito.data = data
-    debito.save
+    if self.orcamento.nil?
+      debito = Debito.new
+      debito.paciente_id = paciente_id
+      debito.tratamento_id = id
+      debito.descricao = item_tabela.descricao
+      debito.valor = valor
+      debito.data = data
+      debito.save
+    end
     if paciente.em_alta?
       alta = paciente.altas.last(:order=>:id)
       alta.data_termino = Time.now

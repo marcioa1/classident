@@ -106,7 +106,7 @@ class ChequesController < ApplicationController
   def recebe_cheques
     lista = params[:cheques].split(",")
     lista.each() do |numero|
-      id = numero.split("_")
+      id      = numero.split("_")
       cheque = Cheque.find(id[1].to_i)
       cheque.data_entrega_administracao = Date.today
       cheque.save

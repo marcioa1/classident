@@ -86,11 +86,19 @@ class RecebimentosController < ApplicationController
 
   def update
     @recebimento = Recebimento.find(params[:id])
-    @recebimento.data = params[:datepicker].to_date
     if @recebimento.em_cheque?
       @recebimento.cheque.bom_para = params[:datepicker2].to_date
       @recebimento.cheque.clinica_id = session[:clinica_id]
       @recebimento.cheque.paciente_id = @recebimento.paciente_id
+      @recebimento.cheque.banco_id        = params[:banco_id]
+      @recebimento.cheque.agencia         = params[:agencia]
+      @recebimento.cheque.numero          = params[:numero]
+      @recebimento.cheque.conta_corrente  = params[:conta_corrente]
+      @recebimento.cheque.valor           = params[:valor_cheque].gsub('.','').gsub(',','.')
+      @recebimento.errors.add(:banco, 'não pode ser branco') if !@recebimento.cheque.banco.present?
+      @recebimento.errors.add(:numero, 'do cheque não pode ser branco') if !@recebimento.cheque.numero.present?
+      @recebimento.errors.add(:valor, ' do cheque não pode ser branco') if !@recebimento.cheque.valor.present?
+      
     else
       @recebimento.cheque = nil
     end
@@ -130,7 +138,6 @@ class RecebimentosController < ApplicationController
          formas_selecionadas += forma.id.to_s + ","
        end
      end
-     debugger
      @recebimentos = Recebimento.da_clinica(session[:clinica_id]).
                por_data.entre_datas(@data_inicial, @data_final).
                nas_formas(formas_selecionadas.split(",").to_a).
@@ -139,7 +146,6 @@ class RecebimentosController < ApplicationController
                           por_data.entre_datas(@data_inicial, @data_final).
                           nas_formas(formas_selecionadas.split(",").to_a).
                           excluidos
-    debugger
     forma_cheque_id = FormasRecebimento.find_by_nome('cheque').id
     # if formas_selecionadas.include?(forma_cheque_id.to_s)
     #   @recebimentos_devolvidos = Recebimento.em_cheque.com_problema.entre_datas(@data_inicial,@data_final)

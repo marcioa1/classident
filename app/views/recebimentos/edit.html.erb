@@ -12,7 +12,7 @@
     </tr>
     <tr>
       <td align='right'><%= f.label :data %></td>
-      <td><%= text_field_tag :datepicker, @recebimento.data.to_s_br, :size=>10 %></td>
+      <td><%= f.text_field :data_real, :class=> :datepicker, :size=>10 %></td>
     </tr>
     <tr>
       <td align='right'><%= f.label :forma_recebimento_id %> :</td>
@@ -20,7 +20,7 @@
     </tr>
     <tr>
       <td align='right'><%= f.label :valor %> :</td>
-      <td><%= f.text_field :valor, :size=>10, :onblur=>"copia_valor();"  %></td>
+      <td><%= f.text_field :valor_real, :size=>10, :onblur=>"copia_valor();"  %></td>
     </tr>
     <tr>
       <td align='right'><%= f.label :observação %> :</td>
@@ -50,7 +50,7 @@
     </tr>
     <tr>
       <td align='right'><%= label_tag :valor_do_cheque %> : </td>
-      <td><%= text_field_tag :valor, (@cheque.nil? ? '' : @cheque.valor.real), :size=>8%></td>
+      <td><%= text_field_tag :valor_cheque, (@cheque.nil? ? '' : @cheque.valor.real), :size=>8%></td>
     </tr>
     <tr>
       <td align='right'><%= f.label :bom_para %> : </td>
@@ -61,8 +61,8 @@
     </tr>
     <tr>
       <td align='right'><%= label_tag :segundo_paciente %> : </td>
-      <td><%= text_field_tag :segundo_paciente,@cheque.nil? ? '' : @cheque.recebimentos[1].paciente.nome, :size=>30 %>
-        <%= hidden_field_tag :id_segundo_paciente , @cheque.nil? ? '' : @cheque.recebimentos[1].paciente.id %> 
+      <td><%= text_field_tag :segundo_paciente,@cheque.nil? ? '' : @cheque.recebimentos[1] && @cheque.recebimentos[1].paciente.nome, :size=>30 %>
+        <%= hidden_field_tag :id_segundo_paciente , @cheque.nil? ? '' : @cheque.recebimentos[1] && @cheque.recebimentos[1].paciente.id %> 
         <%= link_to "pesquisar", "#" , :onclick=>"busca_pacientes_que_iniciam_com('segundo_paciente')"%>
       </td>
     </tr>
@@ -81,15 +81,15 @@
     </tr>
     <tr>
       <td align='right'><%= label_tag :observação %> : </td>
-      <td><%= text_field_tag :observacao_paciente_2 , @cheque.nil? ? '': @cheque.recebimentos[1].observacao, :size=>30 %></td>
+      <td><%= text_field_tag :observacao_paciente_2 , @cheque.nil? ? '': @cheque.recebimentos[1] && @cheque.recebimentos[1].observacao, :size=>30 %></td>
     </tr>
     <tr>
       <td colspan="2"><hr></td>
     </tr>
     <tr>
       <td align='right'><%= label_tag :terceiro_paciente %> : </td>
-      <td><%= text_field_tag :terceiro_paciente,@cheque.nil? ? '': @cheque.recebimentos[2].paciente.nome, :size=>30 %>
-        <%= hidden_field_tag :id_terceiro_paciente , @cheque.nil? ? '': @cheque.recebimentos[2].paciente.id %>
+      <td><%= text_field_tag :terceiro_paciente,@cheque.nil? ? '': @cheque.recebimentos[2] && @cheque.recebimentos[2].paciente.nome, :size=>30 %>
+        <%= hidden_field_tag :id_terceiro_paciente , @cheque.nil? ? '': @cheque.recebimentos[2] && @cheque.recebimentos[2].paciente.id %>
         <%= link_to "pesquisar", "#" , :onclick=>"busca_pacientes_que_iniciam_com('terceiro_paciente')"%></td>
     </tr>
      <tr id='linha_terceiro_paciente' style='display:none;'>
@@ -106,7 +106,7 @@
     </tr>
     <tr>
       <td align='right'><%= label_tag :observação %> : </td>
-      <td><%= text_field_tag :observacao_paciente_3 , @cheque.nil? ? '': @cheque.recebimentos[2].observacao, :size=>30 %></td>
+      <td><%= text_field_tag :observacao_paciente_3 , @cheque.nil? ? '': @cheque.recebimentos[2] && @cheque.recebimentos[2].observacao, :size=>30 %></td>
     </tr>
   </table>
  

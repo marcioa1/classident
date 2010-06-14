@@ -46,6 +46,17 @@ class Cheque < ActiveRecord::Base
   named_scope :spc, lambda{|data_inicial, data_final| 
       {:conditions=>["data_spc between ? and ?", data_inicial, data_final]}}
   named_scope :usados_para_pagamento, :conditions=>["pagamento_id IS NOT NULL"]
+  
+  attr_accessor :valor_real
+  
+  def valor_real
+    self.valor.real
+  end
+  
+  def valor_real=(valor)
+    self.valor = valor
+  end
+  
   def status
     return "arquivo morto" unless !arquivo_morto?
     return "SPC" unless !spc?

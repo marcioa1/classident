@@ -30,7 +30,7 @@ class PacientesController < ApplicationController
     @paciente.data_da_suspensao_da_cobranca_de_orto = parasm[:datepicker3].to_date unless params[:datepicker3].blank?
     @paciente.data_da_saida_da_lista_de_debitos     = params[:datepicker4].to_date unless params[:datepicker4].blank?
     if @paciente.save
-      redirect_to(pesquisa_pacientes_path) 
+      redirect_to(abre_paciente_path(@paciente)) 
     else
       render :action => "new" 
     end
@@ -63,7 +63,6 @@ class PacientesController < ApplicationController
     #   params[:nome]   = @paciente.nome
     # end  
     @pacientes = []
-    debugger
     if !params[:codigo].blank?
       if administracao
         @pacientes = Paciente.all(:conditions=>["codigo=?", params[:codigo]], :order=>:nome)

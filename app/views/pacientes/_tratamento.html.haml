@@ -1,0 +1,70 @@
+- if !@administracao
+  = link_to "Novo procedimento" , new_tratamento_path(:paciente_id=>@paciente.id)
+%br
+%br
+%table
+  %tr
+    %th
+      %br
+      Dente
+    %th
+      %br
+      Face
+    %th{ :width => "40px" }
+      %br
+      Código
+    %th{ :width => "190px" }
+      %br
+      Descrição
+    %th{ :width => "60px" }
+      %br
+      Valor
+    %th{ :width => "60px" }
+      %br
+      Custo
+    %th
+      %br
+      Dentista
+    %th
+      Data de
+      %br
+      realização
+    %th
+      %br
+      Orçamento
+  - total = 0.0
+  - @paciente.tratamentos.each() do |tratamento|
+    %tr
+      %td{ :align => "center" }
+        - if tratamento.nao_pode_alterar?
+          = tratamento.dente
+        - else
+          = link_to tratamento.dente, edit_tratamento_path(:id=>tratamento.id)
+      %td
+        = tratamento.faces
+      %td
+        = tratamento.item_tabela.codigo  unless tratamento.item_tabela.nil?
+      %td
+        = link_to tratamento.descricao, edit_tratamento_path(tratamento)
+      %td{ :align => "right" }
+        = tratamento.valor.real
+      %td{ :align => "right" }
+        = tratamento.custo.real
+      %td
+        = tratamento.dentista.nome unless tratamento.dentista.nil?
+      %td{ :align => "center" }
+        - if tratamento.data.to_s_br.blank?
+        %span{ :id => "finalizar_#{tratamento.id.to_s}" }
+          = link_to "finalizar", "#", :onclick=>'finalizar_tratamento(' + tratamento.id.to_s + ')'
+        - else
+          = tratamento.data.to_s_br
+      %td{ :align => "center" }
+        = tratamento.orcamento.numero unless tratamento.orcamento.nil?
+    - total += tratamento.valor
+    %tr
+      %td{ :align => "center", :colspan => "4" }
+        Total
+      %td{ :align => "right" }
+        = total.real
+      %td{ :colspan => "4" }
+
