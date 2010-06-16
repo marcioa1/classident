@@ -1,0 +1,17 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+# one:
+#   column: value
+#
+# two:
+#   column: value
+
+um:
+  banco: bb
+  valor: 130.00
+    
+    
+dois:
+  banco: itau
+  valor: 400.00
+  

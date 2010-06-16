@@ -5,7 +5,17 @@
 #
 # two:
 #   column: value
-first:
+um:
   paciente_id: 1 #marcio
-  valor: 30
+  valor: 100
+  cheque: um
+  formas_recebimento_id: 1
   data_de_exclusao: nil
+  
+dois:
+  paciente_id: 2 #ana
+  valor: 30
+  cheque: um
+  formas_recebimento_id: 1
+  data_de_exclusao: nil
+  

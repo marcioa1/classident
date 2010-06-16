@@ -2,7 +2,7 @@
 <fieldset class="fieldset_40">
 <legend>Novo recebimento</legend>
 
-<% form_for(@recebimento) do |f| %>
+<% form_for(@recebimento, @cheque) do |f| %>
   <%= f.error_messages %>
   <%= f.hidden_field :paciente_id %>
   <%= f.hidden_field :clinica_id %>
@@ -13,7 +13,7 @@
     </tr>
     <tr>
       <td align='right'><%= f.label :data %></td>
-      <td><%= text_field_tag :datepicker, Date.today.to_s_br, :size=>10 %></td>
+      <td><%= f.text_field :data_pt_br, :size=>10 %></td>
     </tr>
     <tr>
       <td align='right'><%= f.label :forma_recebimento_id %> :</td>
@@ -21,7 +21,7 @@
     </tr>
     <tr>
       <td align='right'><%= f.label :valor %> :</td>
-      <td><%= f.text_field :valor, :size=>10, :onblur=>"copia_valor();"  %></td>
+      <td><%= f.text_field :valor_real, :size=>10, :onblur=>"copia_valor();"  %></td>
     </tr>
     <tr>
       <td align='right'><%= f.label :observação %> :</td>
@@ -49,7 +49,7 @@
     </tr>
     <tr>
       <td align='right'><%= label_tag :valor_do_cheque %> : </td>
-      <td><%= text_field_tag :valor, params[:valor], :size=>8%></td>
+      <td><%= text_field_tag :valor_do_cheque, '', :size=>8%></td>
     </tr>
     <tr>
       <td align='right'><%= f.label :bom_para %> : </td>
@@ -74,7 +74,7 @@
     </tr>
     <tr>
       <td align='right'><%= label_tag :valor %> : </td>
-      <td><%= text_field_tag :valor_paciente_2 , '', :size=>10 %></td>
+      <td><%= text_field_tag :valor_segundo_paciente , '',:size=>10 %></td>
     </tr>
     <tr>
       <td align='right'><%= label_tag :observação %> : </td>
@@ -99,7 +99,7 @@
       </tr>
     <tr>
       <td align='right'><%= label_tag :valor %> : </td>
-      <td><%= text_field_tag :valor_paciente_3 , '', :size=>10 %></td>
+      <td><%= text_field_tag :valor_terceiro_paciente, '', :size=>10 %></td>
     </tr>
     <tr>
       <td align='right'><%= label_tag :observação %> : </td>

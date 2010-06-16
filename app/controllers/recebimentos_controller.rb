@@ -32,48 +32,55 @@ class RecebimentosController < ApplicationController
   end
 
   def create
-    @recebimento = Recebimento.new(params[:recebimento])
-    @recebimento.data = params[:datepicker].to_date
+    debugger
+    @recebimento      = Recebimento.new(params[:recebimento])
     if @recebimento.em_cheque?
-     # @cheque.error.add_on_blank(:cheque, :valor) if params[:banco_id].to_i == 0
-      @cheque = Cheque.new
-      @cheque.bom_para        = params[:datepicker2].to_date
-      @cheque.clinica_id      = session[:clinica_id]
-      @cheque.paciente_id     = @recebimento.paciente_id
-      @cheque.banco_id        = params[:banco_id]
-      @cheque.agencia         = params[:agencia]
-      @cheque.numero          = params[:numero]
-      @cheque.conta_corrente  = params[:conta_corrente]
-      @cheque.valor           = params[:valor]
-      @recebimento.cheque     = @cheque
-      @recebimento.errors.add(:banco, 'não pode ser branco') if !@cheque.banco.present?
-      @recebimento.errors.add(:numero, 'do cheque não pode ser branco') if !@cheque.numero.present?
-      @recebimento.errors.add(:valor, ' do cheque não pode ser branco') if !@cheque.valor.present?
+      if !Recebimento::FORMATO_VALIDO_BR.match(params[:valor_do_cheque])
+        @recebimento.errors.add("Formato do cheque inválido!")
+      else
+        @cheque                 = Cheque.new
+        @cheque.bom_para        = params[:datepicker2].to_date
+        @cheque.clinica_id      = session[:clinica_id]
+        @cheque.banco_id        = params[:banco_id]
+        @cheque.agencia         = params[:agencia]
+        @cheque.numero          = params[:numero]
+        @cheque.conta_corrente  = params[:conta_corrente]
+        @cheque.valor           = params[:valor_do_cheque].gsub('.','').gsub(',','.')
+        @recebimento.cheque     = @cheque
+        @recebimento.errors.add(:banco, 'não pode ser branco') if !@cheque.banco.present?
+        @recebimento.errors.add(:numero, 'do cheque não pode ser branco') if !@cheque.numero.present?
+        @recebimento.errors.add(:valor, ' do cheque não pode ser branco') if !@cheque.valor.present?
+      end
+      if params[:segundo_paciente].present?
+        if !Recebimento::FORMATO_VALIDO_BR.match(params[:valor_segundo_paciente])
+          @recebimento.errors.add("Formato do valor do segundo paciente inválido!")
+       else
+         @recebimento2                       = Recebimento.new
+         @recebimento2.paciente_id           = params[:id_segundo_paciente]
+         @recebimento2.valor                 = params[:valor_segundo_paciente].gsub('.','').gsub(',','.')
+         @recebimento2.observacao            = params[:observacao_paciente_2]
+         @recebimento2.formas_recebimento_id = @recebimento.formas_recebimento_id
+         @recebimento2.data                  = @recebimento.data
+         @recebimento2.clinica_id            = session[:clinica_id]
+         @recebimento2.cheque                = @cheque
+       end
+     end
+      if params[:terceiro_paciente].present?
+        @recebimento3                       = Recebimento.new
+        @recebimento3.paciente_id           = params[:id_terceiro_paciente]
+        @recebimento3.valor                 = @recebimento.valor_terceiro_paciente
+        @recebimento3.observacao            = params[:observacao_paciente_3]
+        @recebimento3.formas_recebimento_id = @recebimento.formas_recebimento_id
+        @recebimento3.data                  = @recebimento.data
+        @recebimento3.clinica_id            = session[:clinica_id]
+        @recebimento3.cheque                = @cheque
+      end
     else
       @cheque = nil
     end
-    if params[:segundo_paciente]
-      @recebimento2                       = Recebimento.new
-      @recebimento2.paciente_id           = params[:id_segundo_paciente]
-      @recebimento2.valor                 = params[:valor_paciente_2]
-      @recebimento2.observacao            = params[:observacao_paciente_2]
-      @recebimento2.formas_recebimento_id = params[:recebimento][:formas_recebimento_id]
-      @recebimento2.data                  = params[:datepicker].to_date
-      @recebimento2.clinica_id            = session[:clinica_id]
-      @recebimento2.cheque                = @cheque
-    end
-    if params[:terceiro_paciente]
-      @recebimento3                       = Recebimento.new
-      @recebimento3.paciente_id           = params[:id_terceiro_paciente]
-      @recebimento3.valor                 = params[:valor_paciente_3]
-      @recebimento3.observacao            = params[:observacao_paciente_3]
-      @recebimento3.formas_recebimento_id = params[:recebimento][:formas_recebimento_id]
-      @recebimento3.data                  = params[:datepicker].to_date
-      @recebimento3.clinica_id            = session[:clinica_id]
-      @recebimento3.cheque                = @cheque
-    end
+    debugger
     Recebimento.transaction do
-      if ((@recebimento.em_cheque? && @cheque.valid?) || (!@recebimento.em_cheque?)) && @recebimento.save 
+      if (@recebimento.errors.size==0) && (((@recebimento.em_cheque? && @cheque.valid? && @cheque.save) || ((!@recebimento.em_cheque?)) && @recebimento.save))
         redirect_to(abre_paciente_path(:id=>@recebimento.paciente_id)) 
       else
         @paciente = Paciente.find(session[:paciente_id])

@@ -47,7 +47,7 @@ class Cheque < ActiveRecord::Base
       {:conditions=>["data_spc between ? and ?", data_inicial, data_final]}}
   named_scope :usados_para_pagamento, :conditions=>["pagamento_id IS NOT NULL"]
   
-  attr_accessor :valor_real
+  attr_accessor :valor_real, :bom_para
   
   def valor_real
     self.valor.real
