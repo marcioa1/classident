@@ -61,10 +61,10 @@
       %td{ :align => "center" }
         = tratamento.orcamento.numero unless tratamento.orcamento.nil?
     - total += tratamento.valor
-    %tr
-      %td{ :align => "center", :colspan => "4" }
-        Total
-      %td{ :align => "right" }
-        = total.real
-      %td{ :colspan => "4" }
+  %tr
+    %td{ :align => "center", :colspan => "4" }
+      Total
+    %td{ :align => "right" }
+      = total.real
+    %td{ :colspan => "4" }
 

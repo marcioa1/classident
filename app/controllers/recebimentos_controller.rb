@@ -68,7 +68,7 @@ class RecebimentosController < ApplicationController
       if params[:terceiro_paciente].present?
         @recebimento3                       = Recebimento.new
         @recebimento3.paciente_id           = params[:id_terceiro_paciente]
-        @recebimento3.valor                 = @recebimento.valor_terceiro_paciente
+        @recebimento3.valor                 = params[:valor_terceiro_paciente].gsub('.','').gsub(',','.')
         @recebimento3.observacao            = params[:observacao_paciente_3]
         @recebimento3.formas_recebimento_id = @recebimento.formas_recebimento_id
         @recebimento3.data                  = @recebimento.data
@@ -81,6 +81,8 @@ class RecebimentosController < ApplicationController
     debugger
     Recebimento.transaction do
       if (@recebimento.errors.size==0) && (((@recebimento.em_cheque? && @cheque.valid? && @cheque.save) || ((!@recebimento.em_cheque?)) && @recebimento.save))
+        @recebimento2.save if @recebimento2
+        @recebimento3.save if @recebimento3
         redirect_to(abre_paciente_path(:id=>@recebimento.paciente_id)) 
       else
         @paciente = Paciente.find(session[:paciente_id])
