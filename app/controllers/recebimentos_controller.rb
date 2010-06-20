@@ -32,20 +32,12 @@ class RecebimentosController < ApplicationController
   end
 
   def create
-    debugger
     @recebimento      = Recebimento.new(params[:recebimento])
     if @recebimento.em_cheque?
       if !Recebimento::FORMATO_VALIDO_BR.match(params[:valor_do_cheque])
         @recebimento.errors.add("Formato do cheque inválido!")
       else
-        @cheque                 = Cheque.new
-        @cheque.bom_para        = params[:datepicker2].to_date
-        @cheque.clinica_id      = session[:clinica_id]
-        @cheque.banco_id        = params[:banco_id]
-        @cheque.agencia         = params[:agencia]
-        @cheque.numero          = params[:numero]
-        @cheque.conta_corrente  = params[:conta_corrente]
-        @cheque.valor           = params[:valor_do_cheque].gsub('.','').gsub(',','.')
+        @cheque                 = monta_cheque
         @recebimento.cheque     = @cheque
         @recebimento.errors.add(:banco, 'não pode ser branco') if !@cheque.banco.present?
         @recebimento.errors.add(:numero, 'do cheque não pode ser branco') if !@cheque.numero.present?
@@ -53,7 +45,7 @@ class RecebimentosController < ApplicationController
       end
       if params[:segundo_paciente].present?
         if !Recebimento::FORMATO_VALIDO_BR.match(params[:valor_segundo_paciente])
-          @recebimento.errors.add("Formato do valor do segundo paciente inválido!")
+          @recebimento.errors.add("Formato do valor do segundo paciente ")
        else
          @recebimento2                       = Recebimento.new
          @recebimento2.paciente_id           = params[:id_segundo_paciente]
@@ -66,27 +58,32 @@ class RecebimentosController < ApplicationController
        end
      end
       if params[:terceiro_paciente].present?
-        @recebimento3                       = Recebimento.new
-        @recebimento3.paciente_id           = params[:id_terceiro_paciente]
-        @recebimento3.valor                 = params[:valor_terceiro_paciente].gsub('.','').gsub(',','.')
-        @recebimento3.observacao            = params[:observacao_paciente_3]
-        @recebimento3.formas_recebimento_id = @recebimento.formas_recebimento_id
-        @recebimento3.data                  = @recebimento.data
-        @recebimento3.clinica_id            = session[:clinica_id]
-        @recebimento3.cheque                = @cheque
+        if !Recebimento::FORMATO_VALIDO_BR.match(params[:valor_terceiro_paciente])
+          @recebimento.errors.add("Formato do valor do segundo paciente ")
+        else
+          @recebimento3                       = Recebimento.new
+          @recebimento3.paciente_id           = params[:id_terceiro_paciente]
+          @recebimento3.valor                 = params[:valor_terceiro_paciente].gsub('.','').gsub(',','.')
+          @recebimento3.observacao            = params[:observacao_paciente_3]
+          @recebimento3.formas_recebimento_id = @recebimento.formas_recebimento_id
+          @recebimento3.data                  = @recebimento.data
+          @recebimento3.clinica_id            = session[:clinica_id]
+          @recebimento3.cheque                = @cheque
+        end
       end
     else
       @cheque = nil
     end
-    debugger
     Recebimento.transaction do
-      if (@recebimento.errors.size==0) && (((@recebimento.em_cheque? && @cheque.valid? && @cheque.save) || ((!@recebimento.em_cheque?)) && @recebimento.save))
+      if (@recebimento.errors.size==0) && ((@recebimento.em_cheque? && @cheque.valid?) || (!@recebimento.em_cheque?))
+        @cheque.save if @cheque
+        @recebimento.save if @recebimento
         @recebimento2.save if @recebimento2
         @recebimento3.save if @recebimento3
         redirect_to(abre_paciente_path(:id=>@recebimento.paciente_id)) 
       else
         @paciente = Paciente.find(session[:paciente_id])
-        @bancos   = Banco.all(:order=>:nome).collect{|obj| [obj.numero + " - " + obj.nome,obj.id]}
+        @bancos   = Banco.all(:order=>:nome).collect{|obj| [obj.numero + " - " + obj.nome,obj.id.to_s]}
         @formas_recebimentos = FormasRecebimento.por_nome.collect{|obj| [obj.nome,obj.id]}
         render :action => "new" 
       end
@@ -225,6 +222,18 @@ class RecebimentosController < ApplicationController
   end
 
   protected
+  
+  def monta_cheque
+    @cheque                 = Cheque.new
+    @cheque.bom_para        = params[:datepicker2].to_date
+    @cheque.clinica_id      = session[:clinica_id]
+    @cheque.banco_id        = params[:banco_id]
+    @cheque.agencia         = params[:agencia]
+    @cheque.numero          = params[:numero]
+    @cheque.conta_corrente  = params[:conta_corrente]
+    @cheque.valor           = params[:valor_do_cheque].gsub('.','').gsub(',','.')
+    @cheque
+  end
   
   def busca_bancos_e_forma_de_recebimento
     @bancos              = Banco.por_nome.collect{|obj| [obj.nome,obj.id]}

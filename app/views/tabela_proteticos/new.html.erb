@@ -6,10 +6,7 @@
   <%= f.error_messages %>
   <%= @tabela_protetico.protetico.nome unless @tabela_protetico.protetico.nil? %>
   <%= f.hidden_field :protetico_id%>
-  <p>
-    <%= f.label :código %><br />
-    <%= f.text_field :codigo, :size=>10 %>
-  </p>
+
   <p>
     <%= f.label :descrição %><br />
     <%= f.text_field :descricao, :size=>50 %>

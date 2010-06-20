@@ -73,7 +73,7 @@ class ProteticosController < ApplicationController
   
   def busca_tabela
     @protetico = Protetico.find(params[:protetico_id])
-    render :json=>@protetico.tabela_proteticos.por_descricao.collect{|obj| [obj.descricao,obj.id]}.to_json
+    render :json=> @protetico.tabela_proteticos.por_descricao.collect{|obj| [obj.descricao + "   ( R$#{obj.valor.real})",obj.id]}.to_json
   end
   
   def relatorio
@@ -96,5 +96,17 @@ class ProteticosController < ApplicationController
   def busca_protetico
      @protetico = Protetico.find(params[:id])
   end  
+  
+  def trabalhos_por_clinica
+    @clinicas   = Clinica.todas.por_nome.collect{|obj| [obj.nome, obj.id.to_s]}.insert(0, '')
+    @clinica    = Clinica.find(params[:clinica_id])
+    @trabalhos  = TrabalhoProtetico.da_clinica(@clinica).entregues.nao_pagos.por_protetico
+    #TODO Só permitir pagar de um mesmo protético e fazer o pagamento ao protético
+  end
+  
+  def busca_proteticos_da_clinica
+    clinica = Clinica.find(params[:clinica_id])
+    render :json => clinica.proteticos.ativos.por_nome.map(&:nome).to_json
+  end
   
 end

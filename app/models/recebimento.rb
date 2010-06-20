@@ -57,6 +57,14 @@ class Recebimento < ActiveRecord::Base
       valor_do_cheque = '0,00'
     end
   end
+  
+  def observacao
+    if self[:observacao].blank? && self.em_cheque?
+      return self.cheque.nil? ? '' : self.cheque.observacao
+    else
+      return self[:observacao]
+    end
+  end
 
   def em_cheque?
     return false if self.formas_recebimento_id.nil?

@@ -36,7 +36,8 @@ ActionController::Routing::Routes.draw do |map|
   map.administracao "administracao", :controller=>"administracao", :action=>"index"
   map.resources :pagamentos, :collection=>{:relatorio=>:get}
   map.resources :precos
-  map.resources :proteticos, :member=>{:abre=>:get}, :collection=>{:busca_tabela=>:get, :relatorio=>:get}
+  map.resources :proteticos, :member=>{:abre=>:get}, 
+        :collection=>{:busca_tabela=>:get, :relatorio=>:get, :trabalhos_por_clinica => :get, :busca_proteticos_da_clinica => :get}
   map.resources :recebimentos, :collection=>{:relatorio=>:get, :das_clinicas=>:get, :entradas_no_mes=>:get}
   map.resources :tabelas, :collection=>{:print=>:get },
                   :member => {:reativar => :get}

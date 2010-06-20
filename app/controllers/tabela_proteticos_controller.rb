@@ -1,13 +1,13 @@
 class TabelaProteticosController < ApplicationController
   layout "adm"
   before_filter :require_user
+  before_filter :find_current, :only => [:show, :edit, :update, :destroy, :busca_valor]
 
   def index
     @tabela_proteticos = TabelaProtetico.tabela_base.por_descricao
   end
 
   def show
-    @tabela_protetico = TabelaProtetico.find(params[:id])
   end
 
   def new
@@ -19,7 +19,6 @@ class TabelaProteticosController < ApplicationController
   end
 
   def edit
-    @tabela_protetico = TabelaProtetico.find(params[:id])
   end
 
   def create
@@ -38,21 +37,25 @@ class TabelaProteticosController < ApplicationController
   end
 
   def update
-    @tabela_protetico = TabelaProtetico.find(params[:id])
-
-    if @tabela_protetico.update_attributes(params[:tabela_protetico])
-      redirect_to abre_protetico_path(@tabela_protetico.protetico) 
+    if @item.update_attributes(params[:tabela_protetico])
+      if administracao
+        redirect_to(tabela_proteticos_url) 
+      else
+        redirect_to abre_protetico_path(@item.protetico) 
+      end
     else
       render :action => "edit" 
     end
   end
 
   def destroy
-    @tabela_protetico = TabelaProtetico.find(params[:id])
-    protetico         = @tabela_protetico.protetico
-    @tabela_protetico.destroy
-
-    @administracao ? redirect_to(tabela_proteticos_url) : redirect_to(abre_protetico_path(protetico)) 
+    if administracao
+      @tabela_protetico.destroy
+      redirect_to(tabela_proteticos_url)
+    else
+      protetico = @tabela_protetico.protetico
+      redirect_to(abre_protetico_path(protetico)) 
+    end
   end
   
   def importa_tabela_base
@@ -69,7 +72,11 @@ class TabelaProteticosController < ApplicationController
   end
   
   def busca_valor
-    @item = TabelaProtetico.find(params[:item_id])
-    render :json=> @item.valor.to_json
+    render :json=> @item.valor.real.to_s.to_json
   end
+
+  def find_current
+    @item = TabelaProtetico.find(params[:id])
+  end
+  
 end

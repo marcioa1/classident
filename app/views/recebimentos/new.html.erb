@@ -37,19 +37,20 @@
   <table class='transparente'>
     <tr>
       <td align='right'><%= label_tag :banco %> : </td>
+      
       <td><%= select_tag :banco_id, options_for_select(@bancos.insert(0, ''), params[:banco_id])  %></td>
     </tr>
     <tr>
       <td align='right'><%= label_tag :agencia %> :</td>
-      <td>   <%= text_field_tag :agencia, '', :size=>8 %>
+      <td>   <%= text_field_tag :agencia, params[:agencia], :size=>8 %>
          <%= label_tag :conta_corrente %> : 
-         <%= text_field_tag :conta_corrente, '', :size=>7 %>
+         <%= text_field_tag :conta_corrente, params[:conta_corrente], :size=>7 %>
          <%= label_tag :número %> : 
          <%= text_field_tag :numero, params[:numero] ,:size=>7 %></td>
     </tr>
     <tr>
       <td align='right'><%= label_tag :valor_do_cheque %> : </td>
-      <td><%= text_field_tag :valor_do_cheque, '', :size=>8%></td>
+      <td><%= text_field_tag :valor_do_cheque, params[:valor_do_cheque], :size=>8%></td>
     </tr>
     <tr>
       <td align='right'><%= f.label :bom_para %> : </td>
@@ -60,8 +61,8 @@
     </tr>
     <tr>
       <td align='right'><%= label_tag :segundo_paciente %> : </td>
-      <td><%= text_field_tag :segundo_paciente,'', :size=>30 %>
-        <%= hidden_field_tag :id_segundo_paciente , 0 %> 
+      <td><%= text_field_tag :segundo_paciente,params[:segundo_paciente], :size=>30 %>
+        <%= hidden_field_tag :id_segundo_paciente , params[:id_segundo_paciente] %> 
         <%= link_to "pesquisar", "#" , :onclick=>"busca_pacientes_que_iniciam_com('segundo_paciente')"%>
       </td>
     </tr>
@@ -74,18 +75,18 @@
     </tr>
     <tr>
       <td align='right'><%= label_tag :valor %> : </td>
-      <td><%= text_field_tag :valor_segundo_paciente , '',:size=>10 %></td>
+      <td><%= text_field_tag :valor_segundo_paciente , params[:valor_segundo_paciente] ,:size=>10 %></td>
     </tr>
     <tr>
       <td align='right'><%= label_tag :observação %> : </td>
-      <td><%= text_field_tag :observacao_paciente_2 , '', :size=>30 %></td>
+      <td><%= text_field_tag :observacao_paciente_2 , params[:observacao_paciente_2], :size=>30 %></td>
     </tr>
     <tr>
       <td colspan="2"><hr></td>
     </tr>
     <tr>
       <td align='right'><%= label_tag :terceiro_paciente %> : </td>
-      <td><%= text_field_tag :terceiro_paciente,'', :size=>30 %>
+      <td><%= text_field_tag :terceiro_paciente, params[:terceiro_paciente], :size=>30 %>
         <%= hidden_field_tag :id_terceiro_paciente , 0 %>
         <%= link_to "pesquisar", "#" , :onclick=>"busca_pacientes_que_iniciam_com('terceiro_paciente')"%></td>
     </tr>

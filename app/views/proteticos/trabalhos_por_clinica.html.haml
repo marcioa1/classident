@@ -1,0 +1,29 @@
+- content_for :main do
+  %h3
+    Trabalhos devolvidos de protético por clínica
+  - form_tag :controlelr => :proteticos, :action=>:trabalhos_por_clinica do
+    Clinica :
+    = select_tag :clinica_id, options_for_select(@clinicas, params[:clinica_id]) # , :onchange => "busca_proteticos_da_clinica();"
+    =# select_tag :protetico_id, options_from_collection_for_select([], :id, :nome)
+    = submit_tag :pesquisar
+  %p
+  %table
+    %tr
+      %th{:width=>'160px'}='Protético'
+      %th{:width=>'160px'}='Paciente'
+      %th{:width=>'160px'}='Trabalho'
+      %th{:width=>'60px'}='Valor'
+      %th='Data de devolução'
+      %th
+        &nbsp;
+    - @trabalhos.each do |trab|
+      %tr
+        %td=trab.protetico.nome
+        %td=trab.paciente.nome
+        %td=trab.tabela_protetico.descricao
+        %td{:align=>"right"}=trab.valor.real
+        %td{:align=>"center"}=trab.data_de_devolucao_final.to_s_br
+        %td=check_box_tag "trabalho_id_#{trab.id}"
+    %tr
+      %td{:colspan=>6, :align=>'right'}
+        = link_to "Pagar selecionados"
