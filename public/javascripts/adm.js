@@ -76,7 +76,6 @@ function registra_confirmacao_de_entrada(){
 }
 
 function busca_proteticos_da_clinica(){
-  alert($('#clinica').val());
   $.ajax({
     url    : "/proteticos/busca_proteticos_da_clinica",
     type   : "GET",
@@ -88,6 +87,22 @@ function busca_proteticos_da_clinica(){
       }
     }
   });
+}
+
+function pagamento_protetico(){
+  var selecionados = $("input:checked");
+  id_str = '';
+  valor_str = '';
+  $.each(selecionados, function(index,value){
+    aux = ((value.id).split('_'));
+    id_str += aux[2] + ',';
+    valor_str += $('#valor_'+aux[2]).html() + ';';
+  });
+  var protetico_id = $("#protetico_id").val();
+  var url = "/pagamentos/registra_pagamento_a_protetico";
+  url    += "?ids=" + id_str + '&valores=' + valor_str + "&protetico_id=" + protetico_id;
+  alert(url);
+  //window.location(url);
 }
 
 function busca_saldo(){

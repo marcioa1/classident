@@ -5,6 +5,7 @@
     Clinica :
     = select_tag :clinica, options_for_select(@clinicas, params[:clinica]) , :onchange => "busca_proteticos_da_clinica();"
     = select_tag :protetico, options_for_select(@proteticos, params[:protetico])
+    = hidden_field_tag :protetico_id, @protetico.id
     = submit_tag :pesquisar
   %p
   %table
@@ -21,9 +22,10 @@
         %td=trab.protetico.nome
         %td=trab.paciente.nome
         %td=trab.tabela_protetico.descricao
-        %td{:align=>"right"}=trab.valor.real
+        %td{:align=>"right"}
+          %span{:id=>"valor_#{trab.id}"}=trab.valor.real
         %td{:align=>"center"}=trab.data_de_devolucao_final.to_s_br
         %td=check_box_tag "trabalho_id_#{trab.id}"
     %tr
       %td{:colspan=>6, :align=>'right'}
-        = link_to "Pagar selecionados"
+        = link_to_function "Pagar selecionados","pagamento_protetico();"

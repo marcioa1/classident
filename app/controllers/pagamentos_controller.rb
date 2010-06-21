@@ -132,4 +132,17 @@ class PagamentosController < ApplicationController
     end
   end
    
+  def registra_pagamento_a_protetico
+    valores = params[:valores].split(';')
+    total   = 0.0
+    valores.each do |v| 
+      total += v.gsub('.', '').sub(',','.').to_f
+    end
+    session[:protetico_id]          = params[:protetico_id]
+    session[:trabalho_protetico_id] = params[:ids]  
+    session[:valor]                 = total
+    debugger
+    redirect_to new_pagamento_path
+  end
+  
 end

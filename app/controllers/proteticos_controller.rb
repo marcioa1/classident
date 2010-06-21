@@ -100,7 +100,6 @@ class ProteticosController < ApplicationController
   def trabalhos_por_clinica
     @clinicas   = Clinica.todas.por_nome.collect{|obj| [obj.nome, obj.id.to_s]}.insert(0, '')
     @clinica    = Clinica.find(params[:clinica]) if params[:clinica]
-    debugger
     if params[:protetico]
       @protetico  = Protetico.find_by_nome(params[:protetico]) 
       @trabalhos  = TrabalhoProtetico.da_clinica(@clinica.id).entregues.nao_pagos.do_protetico(@protetico.id)
@@ -113,7 +112,6 @@ class ProteticosController < ApplicationController
   
   def busca_proteticos_da_clinica
     clinica = Clinica.find(params[:clinica_id])
-    debugger
     @proteticos = Protetico.da_clinica(clinica).ativos.com_trabalhos_entregues_e_nao_pagos#.collect{|obj| [obj.nome, obj.id.to_s]}
     render :json => @proteticos.map(&:nome).to_json
   end
