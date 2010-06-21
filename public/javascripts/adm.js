@@ -76,14 +76,15 @@ function registra_confirmacao_de_entrada(){
 }
 
 function busca_proteticos_da_clinica(){
+  alert($('#clinica').val());
   $.ajax({
     url    : "/proteticos/busca_proteticos_da_clinica",
     type   : "GET",
-    data   : { "clinica_id" : $('#clinica_id').val() },
+    data   : { "clinica_id" : $('#clinica').val() },
     success: function(result){
-      $("#protetico_id").html("");
+      $("#protetico").html("");
       for (var i = 0; i < result.length; i++){ 
-        $("#protetico_id").append(new Option(result[i]  ,result[i]));
+        $("#protetico").append(new Option(result[i]  ,result[i]));
       }
     }
   });
@@ -91,14 +92,14 @@ function busca_proteticos_da_clinica(){
 
 function busca_saldo(){
 	$("#data").replaceWith("<span id=data></span>");
-  $("#saldo_em_dinheiro").val('');
-  $("#saldo_em_cheque").val('');
+  $("#saldo_em_dinheiro").val("");
+  $("#saldo_em_cheque").val("");
 	$.ajax({
-    url    : '/busca_saldo',
-    type   : 'GET',
-    data   : { 'clinica' : $('#clinica').val() },
+    url    : "/busca_saldo",
+    type   : "GET",
+    data   : { "clinica" : $("#clinica").val() },
     success: function (result){
-	    var array = result.split(';');
+	    var array = result.split(";");
 	    $("#data").replaceWith(array[0]);
 	    $("#saldo_em_dinheiro").val(array[1]);
 	    $("#saldo_em_cheque").val(array[2]);
