@@ -89,7 +89,7 @@ function busca_proteticos_da_clinica(){
   });
 }
 
-function pagamento_protetico(){
+function pagamento_protetico(root){
   var selecionados = $("input:checked");
   id_str = '';
   valor_str = '';
@@ -99,12 +99,12 @@ function pagamento_protetico(){
     valor_str += $('#valor_'+aux[2]).html() + ';';
   });
   var protetico_id = $("#protetico_id").val();
-  var url = "/pagamentos/registra_pagamento_a_protetico";
+  var url = root + "/pagamentos/registra_pagamento_a_protetico";
   url    += "?ids=" + id_str + '&valores=' + valor_str + "&protetico_id=" + protetico_id;
   alert(url);
-  //window.location(url);
+  window.location(url);
 }
-
+// http://localhost:3000/pagamentos/registra_pagamento_a_protetico?ids=91815,91816,&valores=55,00;20,00;&protetico_id=372
 function busca_saldo(){
 	$("#data").replaceWith("<span id=data></span>");
   $("#saldo_em_dinheiro").val("");

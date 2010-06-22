@@ -1,0 +1,24 @@
+- if !@pagamento.trabalho_proteticos.empty?
+  %br
+  %hr
+  %p
+    Pago ao protético :
+    = @pagamento.protetico.nome
+    %table
+      %tr
+        %th{ :width => "260px" }
+          Trabalho
+        %th{ :width => "260px" }
+          Paciente
+        %th{ :width => "50px" }
+          Valor
+      - @pagamento.trabalho_proteticos.each do |trab|
+        %tr
+          %td
+            = trab.tabela_protetico.descricao
+          %td
+            = trab.paciente.nome
+          %td{ :align => "right" }
+            = trab.valor.real
+    %br
+    %hr

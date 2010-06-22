@@ -25,7 +25,7 @@
         %td{:align=>"right"}
           %span{:id=>"valor_#{trab.id}"}=trab.valor.real
         %td{:align=>"center"}=trab.data_de_devolucao_final.to_s_br
-        %td=check_box_tag "trabalho_id_#{trab.id}"
+        %td=check_box_tag "trabalho_id_#{trab.id}", '',:checked =>true
     %tr
       %td{:colspan=>6, :align=>'right'}
-        = link_to_function "Pagar selecionados","pagamento_protetico();"
+        = link_to_function "Pagar selecionados","pagamento_protetico('http://localhost:3000');"

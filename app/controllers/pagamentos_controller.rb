@@ -32,7 +32,7 @@ class PagamentosController < ApplicationController
     @tipos_pagamento = TipoPagamento.da_clinica(session[:clinica_id]).ativos.por_nome.collect{|obj| [obj.nome, obj.id]}
     @pagamento       = Pagamento.new
     if params[:valor]
-      @pagamento.valor = params[:valor]
+      @pagamento.valor_pago = params[:valor]
     end
     @contas_bancarias = ContaBancaria.all.collect{|obj| [obj.nome, obj.id]}
   end
@@ -142,7 +142,8 @@ class PagamentosController < ApplicationController
     session[:trabalho_protetico_id] = params[:ids]  
     session[:valor]                 = total
     debugger
-    redirect_to new_pagamento_path
+    redirect_to new_pagamento_path(:protetico_id=>params[:protetico_id], 
+         :trabalho_protetico_id=>params[:ids], :valor=>total )
   end
   
 end

@@ -10,6 +10,7 @@ class Pagamento < ActiveRecord::Base
   belongs_to :pagamento, :class_name => "Pagamento"
   
   named_scope :ao_protetico, lambda{|protetico_id| {:conditions=>["protetico_id = ?", protetico_id]}}
+  named_scope :aos_proteticos, :conditions => 'protetico_id IS NOT NULL'
   named_scope :da_clinica, lambda{|clinica_id| {:conditions=>["clinica_id = ?", clinica_id]}}
   named_scope :entre_datas, lambda{|inicio,fim| 
        {:conditions=>["data_de_pagamento between ? and ?", inicio,fim]}}
@@ -25,6 +26,16 @@ class Pagamento < ActiveRecord::Base
   named_scope :por_data, :order=>:data_de_pagamento
 #  named_scope :total,  :sum('valor_pago') #conditions=>['sum valor_pago where data between ? and ? ', '2009-01-01', '2009-01-31']
        
+  attr_accessor :valor_pago_real
+  
+  def valor_pago_real
+    self.valor_pago.real.to_s
+  end
+  
+  def valor_pago_real=(valor=0)
+    self.valor_pago = valor.gsub('.', '').sub(',', '.')
+  end
+  
   def descricao_opcao_restante
     return "Sem valor restante" if opcao_restante==0  
     return "Pago em cheque" if opcao_restante ==1

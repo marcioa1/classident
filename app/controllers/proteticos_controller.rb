@@ -105,6 +105,7 @@ class ProteticosController < ApplicationController
       @trabalhos  = TrabalhoProtetico.da_clinica(@clinica.id).entregues.nao_pagos.do_protetico(@protetico.id)
       @proteticos = Protetico.da_clinica(@clinica.id).ativos.com_trabalhos_entregues_e_nao_pagos.collect{|obj| [obj.nome, obj.nome]}
     else
+      @protetico  = Protetico.new
       @proteticos = []
       @trabalhos  = []
     end
@@ -114,6 +115,10 @@ class ProteticosController < ApplicationController
     clinica = Clinica.find(params[:clinica_id])
     @proteticos = Protetico.da_clinica(clinica).ativos.com_trabalhos_entregues_e_nao_pagos#.collect{|obj| [obj.nome, obj.id.to_s]}
     render :json => @proteticos.map(&:nome).to_json
+  end
+  
+  def pagamentos_feitos
+    @pagamentos = Pagamento.aos_proteticos
   end
   
 end

@@ -1,0 +1,23 @@
+- content_for :main do
+  %h3
+    Pagamentos feitos aos protéticos
+  %table
+    %tr
+      %th{:width=>'160px'}='Protético'
+      %th{:width=>'110px'}='Data'
+      %th{:width=>'80px'}='Valor'
+      %th
+        &nbsp;
+    - total = 0.0
+    -@pagamentos.each do  |pag|
+      %tr
+        %td=pag.protetico.nome
+        %td{:align=>'center'}=pag.data_de_pagamento.to_s_br
+        %td{:align=>'right'}=pag.valor_pago.real
+        %td=link_to 'detalhes', '#', :onclick=>"abre_pagamento(#{pag.id})"
+      -total += pag.valor_pago
+    %tr
+      %td{:colspan=>2, :align=>'center'}='Total'
+      %td{:align=>'right'}=total.real
+      %td
+        &nbsp;
