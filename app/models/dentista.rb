@@ -8,10 +8,10 @@ class Dentista < ActiveRecord::Base
   validates_presence_of :nome, :cro, :percentual, :message => "não pode ser vazio ( em branco )."
   validates_numericality_of :percentual
   
-  named_scope :por_nome, :order=>:nome
   named_scope :ativos, :conditions=>["ativo=?", true]
   named_scope :inativos, :conditions=>["ativo=?", false]
   named_scope :ortodontistas, :conditions=>["ortodontista=?", true]
+  named_scope :por_nome, :order=>:nome
   named_scope :que_iniciam_com, lambda{|iniciais| {:conditions=>['nome like ?', iniciais + '%']}}
   
   def producao_mensal(ano,mes)

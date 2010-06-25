@@ -9,13 +9,17 @@ class ApplicationController < ActionController::Base
   before_filter :busca_clinicas
 
   def quinze_dias
-    if params[:datepicker]
-       @data_inicial = params[:datepicker].to_date
-       @data_final = params[:datepicker2].to_date
-     else
-       @data_inicial = Date.today - 15.days
-       @data_final = Date.today
-     end
+    debugger
+    begin
+      @data_inicial = params[:datepicker].to_date
+    rescue 
+      @data_inicial = Date.today - 15.days
+    end
+    begin
+      @data_final = params[:datepicker2].to_date
+    else
+      @data_final = Date.today
+    end
   end
   
   # def @administracao

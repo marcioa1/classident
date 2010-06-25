@@ -89,20 +89,20 @@ function busca_proteticos_da_clinica(){
   });
 }
 
-function pagamento_protetico(root){
+function pagamento_protetico(){
   var selecionados = $("input:checked");
   id_str = '';
-  valor_str = '';
+  valor_a_pagar = 0;
   $.each(selecionados, function(index,value){
     aux = ((value.id).split('_'));
     id_str += aux[2] + ',';
-    valor_str += $('#valor_'+aux[2]).html() + ';';
+    valor_a_pagar += parseFloat($('#valor_'+aux[2]).html());
   });
   var protetico_id = $("#protetico_id").val();
-  var url = root + "/pagamentos/registra_pagamento_a_protetico";
-  url    += "?ids=" + id_str + '&valores=' + valor_str + "&protetico_id=" + protetico_id;
+  var url = "http://"+ window.location.host + "/pagamentos/registra_pagamento_a_protetico";
+  url    += "?ids='" + id_str + "'&valores='" + valor_str + "'&protetico_id=" + protetico_id;
   alert(url);
-  window.location(url);
+  window.location = url;
 }
 // http://localhost:3000/pagamentos/registra_pagamento_a_protetico?ids=91815,91816,&valores=55,00;20,00;&protetico_id=372
 function busca_saldo(){

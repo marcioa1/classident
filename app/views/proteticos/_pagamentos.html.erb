@@ -6,7 +6,7 @@
   </tr>
   <% @protetico.pagamentos.each do |pg| %>
     <tr>
-      <td><%= pg.data_de_pagamento %></td>
+      <td><%= pg.data_de_pagamento.to_s_br %></td>
       <td><%= pg.valor_pago.real %></td>
       <td>
 	      <% cheques = "" %>

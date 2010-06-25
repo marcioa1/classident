@@ -12,6 +12,7 @@ class PagamentosController < ApplicationController
   end
 
   def new
+    debugger
     if params[:trabalho_protetico_id].blank?
       session[:trabalho_protetico_id] = nil
     else

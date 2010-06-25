@@ -90,6 +90,7 @@ class DentistasController < ApplicationController
   end
   
   def producao
+    debugger
     dentista = Dentista.find(params[:id])
     inicio   = params[:datepicker].to_date if Date.valid?(params[:datepicker])
     fim      = params[:datepicker2].to_date if Date.valid?(params[:datepicker2])
@@ -207,7 +208,8 @@ class DentistasController < ApplicationController
   end
   
   def producao_geral
-    @todos = Dentista.ativos.por_nome
+    @todos = Tratamento.dentistas_entre_datas(@data_inicial,@data_final)
+    # Dentista.ativos.por_nome
   end
   
   def busca_dentista

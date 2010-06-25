@@ -17,7 +17,8 @@
       <th width='110'>Da clínica</th>
     </tr>
     <% total = Array.new(5, 0)%>
-    <% @todos.each do |dentista| %>
+    <% @todos.each do |um_dentista| %>
+      <% dentista = Dentista.find(um_dentista.dentista_id) %>
       <% val = dentista.producao_entre_datas(@data_inicial,@data_final).split("/")%>
 		  <% if val[1].to_f != 0.0 %>
 	      <tr>
