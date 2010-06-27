@@ -3,6 +3,7 @@
   %tr
     %th Dentista
     %th Clínica
+    %th Data
     %th Paciente
     %th Valor
     %th Status
@@ -12,11 +13,10 @@
         = orca.dentista.nome if orca.dentista.present? 
       %td
         = orca.paciente.clinica.nome 
+      %td=orca.data.to_s_br
       %td
         = orca.paciente.nome 
       %td{:align=>'right'} 
         = orca.valor.real 
       %td
         = orca.estado 
-      - @aberto_por_clinica[orca.paciente.clinica.id] += 1 if orca.em_aberto?                   
-      - @iniciado_por_clinica[orca.paciente.clinica.id] += 1 if orca.aprovado?
