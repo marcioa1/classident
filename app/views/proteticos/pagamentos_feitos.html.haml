@@ -1,6 +1,13 @@
 - content_for :main do
   %h3
     Pagamentos feitos aos protéticos
+  - form_tag do
+    Entre : 
+    = text_field_tag :datepicker, @data_inicial.to_s_br, :size=> 10
+    e : 
+    = text_field_tag :datepicker2, @data_final.to_s_br, :size=>10
+    = submit_tag 'Pesquisar'
+  %p
   %table
     %tr
       %th{:width=>'160px'}='Protético'

@@ -14,10 +14,6 @@
   <%=h @pagamento.dentista.nome %>
 </p>
 <% end %>
-<p>
-  <b>Valor:</b>
-  <%=h @pagamento.valor.real %>
-</p>
 
 <p>
   <b>Valor pago:</b>
@@ -40,10 +36,13 @@
 ão" : "sim" %>
 </p>
 
-<p>
-  <b>Data de exclusão:</b>
-  <%=h @pagamento.data_de_exclusao %>
-</p>
+<% if @pagamento.data_de_exclusao.present? %>
+  <p>
+    <b>Data de exclusão:</b>
+    <%=h @pagamento.data_de_exclusao %>
+  </p>
+<% end %>
+
 <%= render :partial=>"pagamentos/cheques_utilizados" %>
 <%= render :partial=>"trabalho_proteticos/trabalho_pagamento"%>
 

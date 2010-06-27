@@ -10,6 +10,7 @@ Valor dos trabalhos selecionados : R$ <span id="valor">0</span>
   <tr>
     <th><br/>Clínica</th>
     <th><br/>Paciente</th>
+    <th><br/>Dente</th>
     <th><br/>Data da envio</th>
     <th><br/>Descrição</th>
     <th><br/>Valor</th>
@@ -21,6 +22,7 @@ Valor dos trabalhos selecionados : R$ <span id="valor">0</span>
   <tr>
     <td><%= trab.clinica.nome %></td>
     <td><%= trab.paciente.nome%></td>
+    <td><%= trab.dente if trab.dente.present? %></td>
     <td align='center'><%= trab.data_de_envio.to_s_br%></td>
     <td><%= link_to trab.tabela_protetico.descricao, edit_trabalho_protetico_path(trab) %></td>
     <% id = "valor_#{trab.valor}"%>

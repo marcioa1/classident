@@ -10,15 +10,15 @@
           Trabalho
         %th{ :width => "260px" }
           Paciente
+        %th{ :width => "60px" }
+          Dente
         %th{ :width => "50px" }
           Valor
       - @pagamento.trabalho_proteticos.each do |trab|
         %tr
-          %td
-            = trab.tabela_protetico.descricao
-          %td
-            = trab.paciente.nome
-          %td{ :align => "right" }
-            = trab.valor.real
+          %td= trab.tabela_protetico.descricao
+          %td= trab.paciente.nome
+          %td= trab.dente
+          %td{ :align => "right" }= trab.valor.real
     %br
     %hr

@@ -9,7 +9,6 @@ class ApplicationController < ActionController::Base
   before_filter :busca_clinicas
 
   def quinze_dias
-    debugger
     begin
       @data_inicial = params[:datepicker].to_date
     rescue 
@@ -17,7 +16,7 @@ class ApplicationController < ActionController::Base
     end
     begin
       @data_final = params[:datepicker2].to_date
-    else
+    rescue
       @data_final = Date.today
     end
   end

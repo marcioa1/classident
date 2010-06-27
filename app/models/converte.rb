@@ -312,6 +312,10 @@ class Converte
         t.face           = registro[4]
         t.descricao      = registro[5]
         orcamento        = Orcamento.find_by_sequencial_and_clinica_id(registro[8].to_i, @clinica.id)
+        if orcamento.em_aberto? && t.data.present?
+          orcamento.data_de_inicio = t.data
+          orcamento.save
+        end
         t.orcamento_id   = orcamento.id if orcamento.present?
         t.custo          = le_valor(registro[12])
         t.excluido       = ['Verdadeiro', 'True'].include?(registro[16])
@@ -790,7 +794,7 @@ class Converte
   def inicia_pacientes_em_memoria
     @@pacientes = Array.new
     Paciente.all(:select=> ['id, sequencial, clinica_id']).each do |pa|
-      @@pacientes[pa.clinica_id * 100000 + pa.sequencial] = pa.id
+      pa.sequencial && @@pacientes[pa.clinica_id * 100000 + pa.sequencial] = pa.id
     end
   end  
 

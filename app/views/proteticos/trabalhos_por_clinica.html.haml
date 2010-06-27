@@ -12,6 +12,7 @@
     %tr
       %th{:width=>'160px'}='Protético'
       %th{:width=>'160px'}='Paciente'
+      %th{:width=>'60px'}='Dente'
       %th{:width=>'160px'}='Trabalho'
       %th{:width=>'60px'}='Valor'
       %th='Data de devolução'
@@ -21,6 +22,7 @@
       %tr
         %td=trab.protetico.nome
         %td=trab.paciente.nome
+        %td=trab.dente
         %td=trab.tabela_protetico.descricao
         %td{:align=>"right"}
           %span{:id=>"valor_#{trab.id}"}=trab.valor.real

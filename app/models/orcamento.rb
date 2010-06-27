@@ -16,13 +16,13 @@ class Orcamento < ActiveRecord::Base
 
   validates_numericality_of :valor, :greater_than => 0, :message=>'Valor deve ser numérico maior que zero.'
   validates_numericality_of :valor_da_parcela, :greater_than => 0, :message=>'Valor deve ser numérico maior que zero.'
-  validates_presence_of :data, :data_de_inicio, :vencimento_primeira_parcela, :valor_da_parcela
+  validates_presence_of :data,  :vencimento_primeira_parcela, :valor_da_parcela
 
   def estado
     nao_feito = Tratamento.first(:conditions=>['orcamento_id = ? and data IS NULL', self.id])
     feito     = Tratamento.first(:conditions=>['orcamento_id = ? and data IS NOT NULL', self.id])
-    return 'em aberto' if feito.nil?
-    return 'iniciado'  if !feito.nil?
+    return 'em aberto' if em_aberto?
+    return 'iniciado'  if iniciado?
     return 'terminado' if nao_feito.nil?
     return 'aceito'
   end

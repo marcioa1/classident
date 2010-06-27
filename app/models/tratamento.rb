@@ -63,6 +63,11 @@ class Tratamento < ActiveRecord::Base
       debito.valor = valor
       debito.data = data
       debito.save
+    else
+      if self.orcamento.em_aberto?
+        self.orcamento.data_de_inicio = self.data
+        self.orcamento.save
+      end
     end
     if paciente.em_alta?
       alta = paciente.altas.last(:order=>:id)
