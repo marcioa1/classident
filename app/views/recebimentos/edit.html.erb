@@ -37,7 +37,7 @@
     <tr>
       <td align='right'><%= label_tag :banco %> : </td>
       <td>
-        <%= select :cheque,:banco_id, @cheque.nil? ? options_for_select(@bancos) : options_for_select(@bancos,@cheque.banco.id) %>
+        <%= select_tag :banco_id, options_for_select(@bancos.insert(0, ''), @recebimento.cheque.banco_id) %>
       </td>
     </tr>
     <tr>
