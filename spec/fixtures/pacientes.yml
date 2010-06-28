@@ -1,6 +1,5 @@
 
 marcio:
-  id: 1
   nome: 'marcio aun migueis'
   codigo: '1'
   clinica_id: 5
@@ -8,7 +7,6 @@ marcio:
   ortodontia: false
   
 ana:
-  id: 2
   nome: Ana Paula
   codigo: 2
   clinica_id: 5

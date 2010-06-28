@@ -77,9 +77,36 @@ class RecebimentosController < ApplicationController
     Recebimento.transaction do
       if (@recebimento.errors.size==0) && ((@recebimento.em_cheque? && @cheque.valid?) || (!@recebimento.em_cheque?))
         @cheque.save if @cheque
-        @recebimento.save if @recebimento
+        @recebimento.save 
         @recebimento2.save if @recebimento2
         @recebimento3.save if @recebimento3
+        (2..params[:numero_de_cheques].to_i).each do |num|
+          outro_cheque             = @cheque.clone
+          outro_cheque.bom_para    = @cheque.bom_para + (num-1).month
+          outro_cheque.numero      = @cheque.numero
+          (1..num-1).each do |suc|
+            outro_cheque.numero    = outro_cheque.numero.succ
+          end
+          outro_cheque.save
+          debugger
+          outro_recebimento        = @recebimento.clone
+          outro_recebimento.cheque = outro_cheque
+          outro_recebimento.data   = @recebimento.data + (num-1).month
+          outro_recebimento.save
+          if @recebimento2
+            outro_recebimento        = @recebimento2.clone
+            outro_recebimento.data   = @recebimento2.data + (num-1).month
+            outro_recebimento.cheque = outro_cheque
+            outro_recebimento.save
+          end
+          if @recebimento3
+            outro_recebimento      = @recebimento3.clone
+            outro_recebimento.data = @recebimento3.data + (num-1).month
+            outro_recebimento.cheque = outro_cheque
+            outro_recebimento.save
+          end
+          
+        end
         redirect_to(abre_paciente_path(:id=>@recebimento.paciente_id)) 
       else
         @paciente = Paciente.find(session[:paciente_id])
@@ -93,9 +120,10 @@ class RecebimentosController < ApplicationController
   def update
     @recebimento = Recebimento.find(params[:id])
     if @recebimento.em_cheque?
-      @recebimento.cheque.bom_para = params[:datepicker2].to_date
-      @recebimento.cheque.clinica_id = session[:clinica_id]
-      @recebimento.cheque.paciente_id = @recebimento.paciente_id
+      # @recebimento.data_pr_br             = params[:datepicker].to_date
+      # @recebimento.valor_real             = params[:recebimento_valor_real]
+      # @recebimento.observacao             = params[:observacao]
+      @recebimento.cheque.bom_para        = params[:datepicker2].to_date
       @recebimento.cheque.banco_id        = params[:banco_id]
       @recebimento.cheque.agencia         = params[:agencia]
       @recebimento.cheque.numero          = params[:numero]
@@ -104,12 +132,14 @@ class RecebimentosController < ApplicationController
       @recebimento.errors.add(:banco, 'não pode ser branco') if !@recebimento.cheque.banco.present?
       @recebimento.errors.add(:numero, 'do cheque não pode ser branco') if !@recebimento.cheque.numero.present?
       @recebimento.errors.add(:valor, ' do cheque não pode ser branco') if !@recebimento.cheque.valor.present?
-      
     else
       @recebimento.cheque = nil
     end
 
-    if @recebimento.update_attributes(params[:recebimento])
+    if @recebimento.update_attributes(params[:recebimento]) 
+      if @recebimento.em_cheque?
+        @recebimento.cheque.save
+      end
       #TODO fazer redirect_to back votlar para a presquisa feita com dados
       # redirect_to :back
       redirect_to(abre_paciente_path(:id=>@recebimento.paciente_id)) 
@@ -120,11 +150,11 @@ class RecebimentosController < ApplicationController
 
   def destroy
     @recebimento = Recebimento.find(params[:id])
-    @recebimento.data_de_exclusao = Date.today
-    @recebimento.observacao_exclusao = "."
-    #TODO fazer exclusao de recebimento lembrando que é preciso excluir o respectivo cheque
+    @paciente    = @recebimento.paciente
+    @recebimento.exclui
+    
 
-    redirect_to(relatorio_recebimentos_path) 
+    redirect_to(abre_paciente_path(@paciente)) 
   end
   
   def relatorio

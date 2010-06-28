@@ -47,19 +47,23 @@ class Paciente < ActiveRecord::Base
     recebimentos.each do |recebimento|
       result << recebimento unless recebimento.excluido?
     end
-    result = (result + debitos).sort { |a,b| a.data<=>b.data }
+    result = (result + debitos_nao_excluidos).sort { |a,b| a.data<=>b.data }
   end
   
   
-  def debito
+  def total_de_debito
     total = 0
     debitos.each() do |debito|
-      total += debito.valor 
+      total += debito.valor unless debito.excluido?
     end
     return total
   end
   
-  def credito
+  def debitos_nao_excluidos
+    self.debitos.find_all{|d| d.data_de_exclusao.nil?}
+  end
+  
+  def total_de_credito
     total = 0
     recebimentos.each() do |recebimento|
       total += recebimento.valor unless recebimento.excluido?
@@ -68,7 +72,7 @@ class Paciente < ActiveRecord::Base
   end
   
   def saldo
-    credito-debito
+    total_de_credito-total_de_debito
   end
   
   def gera_codigo(clinica_id)

@@ -47,7 +47,7 @@ class Cheque < ActiveRecord::Base
       {:conditions=>["data_spc between ? and ?", data_inicial, data_final]}}
   named_scope :usados_para_pagamento, :conditions=>["pagamento_id IS NOT NULL"]
   
-  attr_accessor :valor_real, :bom_para
+  attr_accessor :valor_real
   
   def valor_real
     self.valor.real
@@ -137,7 +137,7 @@ class Cheque < ActiveRecord::Base
     result = ''
     
     self.recebimentos.each do |rec|
-      result += rec.paciente.nome + "," if rec.paciente
+      result += rec.paciente.nome + "," if rec.paciente.present?
     end
     if result.size>1
       result = result[0..(result.size-2)]
@@ -154,4 +154,3 @@ class Cheque < ActiveRecord::Base
     result
   end
 end
-#TODO Discutir qual cheque é disponivel

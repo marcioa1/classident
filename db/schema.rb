@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100620050625) do
+ActiveRecord::Schema.define(:version => 20100627232709) do
 
   create_table "altas", :force => true do |t|
     t.integer  "paciente_id"
@@ -40,13 +40,6 @@ ActiveRecord::Schema.define(:version => 20100620050625) do
     t.string   "conta_corrente"
     t.string   "numero"
     t.decimal  "valor",                              :precision => 9, :scale => 2
-    t.integer  "recebimento_id"
-    t.integer  "paciente_id"
-    t.integer  "segundo_paciente"
-    t.integer  "terceiro_paciente"
-    t.decimal  "valor_primeiro_paciente",            :precision => 9, :scale => 2
-    t.decimal  "valor_segundo_paciente",             :precision => 9, :scale => 2
-    t.decimal  "valor_terceiro_paciente",            :precision => 9, :scale => 2
     t.datetime "created_at"
     t.datetime "updated_at"
     t.date     "bom_para"
@@ -70,8 +63,6 @@ ActiveRecord::Schema.define(:version => 20100620050625) do
     t.integer  "destinacao_id"
     t.date     "data_destinacao"
     t.date     "data_de_exclusao"
-    t.integer  "recebimento_id_2"
-    t.integer  "recebimento_id_3"
     t.date     "data_caso_perdido"
   end
 
@@ -79,7 +70,6 @@ ActiveRecord::Schema.define(:version => 20100620050625) do
   add_index "cheques", ["clinica_id"], :name => "index_cheques_on_clinica_id"
   add_index "cheques", ["destinacao_id"], :name => "index_cheques_on_destinacao_id"
   add_index "cheques", ["pagamento_id"], :name => "index_cheques_on_pagamento_id"
-  add_index "cheques", ["recebimento_id"], :name => "index_cheques_on_recebimento_id"
   add_index "cheques", ["sequencial"], :name => "index_cheques_on_sequencial"
 
   create_table "clinicas", :force => true do |t|
@@ -126,11 +116,12 @@ ActiveRecord::Schema.define(:version => 20100620050625) do
   create_table "debitos", :force => true do |t|
     t.integer  "paciente_id"
     t.integer  "tratamento_id"
-    t.decimal  "valor",         :precision => 9, :scale => 2
+    t.decimal  "valor",            :precision => 9, :scale => 2
     t.string   "descricao"
     t.date     "data"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.date     "data_de_exclusao"
   end
 
   add_index "debitos", ["paciente_id"], :name => "index_debitos_on_paciente_id"

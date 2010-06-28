@@ -2,13 +2,13 @@ class DebitosController < ApplicationController
   layout "adm"
   
   before_filter :require_user
+  before_filter :busca_corrente, :olny=>[:show, :edit, :update, :destroy]
 
   def index
     @debitos = Debito.all
   end
 
   def show
-    @debito = Debito.find(params[:id])
   end
 
   def new
@@ -17,7 +17,6 @@ class DebitosController < ApplicationController
   end
 
   def edit
-    @debito = Debito.find(params[:id])
   end
 
   def create
@@ -31,8 +30,6 @@ class DebitosController < ApplicationController
   end
 
   def update
-    @debito = Debito.find(params[:id])
-
     if @debito.update_attributes(params[:debito])
        redirect_to(abre_paciente_path(:id=>@debito.paciente_id)) 
     else
@@ -41,8 +38,8 @@ class DebitosController < ApplicationController
   end
 
   def destroy
-    @debito = Debito.find(params[:id])
-    @debito.destroy
+    @debito.data_de_exclusao = Date.today
+    @debito.save
 
     redirect_to(abre_paciente_path(:id=>@debito.paciente_id)) 
   end
@@ -73,4 +70,11 @@ class DebitosController < ApplicationController
     end
     @pacientes = Paciente.fora_da_lista_de_debito_entre(@data_inicial, @data_final).da_clinica(session[:clinica_id])
   end
+  
+  private
+  
+  def busca_corrente
+    @debito = Debito.find(params[:id])
+  end
+  
 end

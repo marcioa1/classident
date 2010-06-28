@@ -11,7 +11,7 @@ describe Paciente do
   end
   
   it "should has a debt of 50" do
-    @paciente.debito.real.should == BigDecimal.new('50').real
+    @paciente.total_de_debito.real.should == BigDecimal.new('50').real
   end
   
   it "deve ter um recebimento de 30" do

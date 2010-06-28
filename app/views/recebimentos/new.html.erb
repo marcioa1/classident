@@ -57,6 +57,10 @@
       <td><%= text_field_tag :datepicker2, Date.today.to_s_br, :size=>10 %></td>
     </tr>
     <tr>
+      <td align='right'><%= f.label :número_de_cheques %> : </td>
+      <td><%= select_tag :numero_de_cheques, options_for_select((1..8).to_a) %></td>
+    </tr>
+    <tr>
       <td colspan="2"><hr></td>
     </tr>
     <tr>

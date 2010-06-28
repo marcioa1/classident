@@ -13,6 +13,7 @@
     <th width="70px">Saldo</th>
     <th>Bom para</th>
     <th>Detalhes</th>
+    <th>&nbsp;</th>
   </tr>
   <% saldo         = 0.0 %>
   <% total_debito  = 0.0 %>
@@ -36,19 +37,20 @@
     <% cor =  saldo > 0 ? "black" : "red" %>
     <td align="right" style="color: <%= cor %>"><%= saldo.real %></td>
       <% if lancamento.class == Recebimento %>
-        <td><%= lancamento.cheque.bom_para.to_s_br unless lancamento.cheque.nil? %></td>    
+        <td><%= lancamento.cheque.bom_para.to_s_br  %></td>    
        <td><%= lancamento.formas_recebimento.nome %></td> 
       <% else %>
         <td>&nbsp;</td>
         <td>&nbsp;</td>
     <% end %>
-  </td>
+    <td><%= link_to 'Excluir', lancamento, :confirm => 'Tem certeza?', :method => :delete %></td>
+  <!-- </td> -->
   </tr>
 <% end %>
 <tr>
 	<td align='center'colspan="2">Total</td>
 	<td align='right'><%= total_debito.real %></td>
 	<td align='right'><%= total_credito.real %></td>
-	<td colspan='3'>&nbsp;</td>
+	<td colspan='4'>&nbsp;</td>
 </tr>
 </table>

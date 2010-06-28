@@ -6,5 +6,10 @@
 # two:
 #   column: value
 first:
-  paciente_id: 1 #marcio
+  paciente: marcio
   valor: 50
+  
+excluido:
+  paciente: marcio
+  valor: 35
+  data_de_exclusao: <%= Time.current - 1.day %>

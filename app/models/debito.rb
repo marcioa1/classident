@@ -14,7 +14,9 @@ class Debito < ActiveRecord::Base
       deb.descricao = "ref orçamento " + orcamento.numero.to_s + " parcela " + par.to_s + " / " + orcamento.numero_de_parcelas.to_s
       deb.save
     end
-    
   end
-  
+
+  def excluido?
+    self.data_de_exclusao.present?
+  end 
 end
