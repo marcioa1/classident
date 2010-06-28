@@ -6,17 +6,22 @@
   <%= f.error_messages %>
   <%= f.hidden_field :paciente_id %>
   <%= f.hidden_field :clinica_id %>
+  <%= f.hidden_field :tratamento_id %>
   <p>
-    <%= f.label :protetico_id %><br />
-    <%= f.select :protetico_id, @proteticos, {:include_blank=>true}, :onchange=>"escolheu_protetico();" %>
+    Tratamento : <%= @tratamento.descricao %>
   </p>
   <p>
-    <%= f.label :dentista_id %><br />
+    <%= f.label :dentista_id %> :
     <%= f.select :dentista_id, @dentistas, :include_blank=>true %>
   </p>
   <p>
-    <%= f.label :dente %><br />
+    <%= f.label :dente %> :   
     <%= f.text_field :dente, :size=>10 %>
+  </p>
+  <hr>
+  <p>
+    <%= f.label :protetico_id %><br />
+    <%= f.select :protetico_id, @proteticos, {:include_blank=>true}, :onchange=>"escolheu_protetico();" %>
   </p>
   <p>
     <%= f.label :data_de_envio %><br />

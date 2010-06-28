@@ -74,3 +74,5 @@
   </p>
   <%= f.submit "salvar" if !@tratamento.data || (@tratamento.data + 15.days > Date.today )%>
 <% end %>
+<hr>
+  <%= render :partial=>'trabalhos_de_protetico_do_tratamento', :locals=>{:tratamento=>@tratamento} %>

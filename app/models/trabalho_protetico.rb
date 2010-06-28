@@ -5,6 +5,7 @@ class TrabalhoProtetico < ActiveRecord::Base
   belongs_to :protetico
   belongs_to :clinica
   belongs_to :cheque
+  belongs_to :tratamento
   
   named_scope :da_clinica, lambda {|clinica_id| 
             {:conditions=>["trabalho_proteticos.clinica_id = ? ", clinica_id]}}

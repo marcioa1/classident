@@ -4,6 +4,7 @@ class Tratamento < ActiveRecord::Base
   belongs_to :dentista
   belongs_to :clinica
   belongs_to :orcamento
+  has_many   :trabalho_proteticos
   
   named_scope :da_clinica, lambda{|clinicas| {:conditions=>["clinica_id in (?)",clinicas]}}
   named_scope :dentistas_entre_datas, 
@@ -83,6 +84,8 @@ class Tratamento < ActiveRecord::Base
       result += "M" if mesial
       result += "D" if distal
       result += "O" if oclusal
+      result += 'L' if lingual
+      result += 'V' if vestibular
     else
       result = estado
     end

@@ -12,12 +12,18 @@ class TrabalhoProteticosController < ApplicationController
   end
 
   def new
-    @paciente                      = Paciente.find(params[:paciente_id])
-    @trabalho_protetico            = TrabalhoProtetico.new
-    @trabalho_protetico.paciente   = @paciente
-    @trabalho_protetico.clinica_id = session[:clinica_id]
-    @dentistas                     = @clinica_atual.dentistas.ativos.collect{|obj| [obj.nome,obj.id]}.sort
-    @proteticos                    = @clinica_atual.proteticos.ativos.collect{|obj| [obj.nome,obj.id]}.sort
+    @paciente                          = Paciente.find(params[:paciente_id])
+    @trabalho_protetico                = TrabalhoProtetico.new
+    if params[:tratamento_id]
+      @trabalho_protetico.tratamento_id  = params[:tratamento_id] 
+      @tratamento                        = Tratamento.find(params[:tratamento_id])
+      @trabalho_protetico.dentista       = @tratamento.dentista
+      @trabalho_protetico.dente          = @tratamento.dente
+    end
+    @trabalho_protetico.paciente       = @paciente
+    @trabalho_protetico.clinica_id     = session[:clinica_id]
+    @dentistas                         = @clinica_atual.dentistas.ativos.collect{|obj| [obj.nome,obj.id]}.sort
+    @proteticos                        = @clinica_atual.proteticos.ativos.collect{|obj| [obj.nome,obj.id]}.sort
   end
 
   def edit

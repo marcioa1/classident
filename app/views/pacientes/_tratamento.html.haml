@@ -32,6 +32,10 @@
     %th
       %br
       Orçamento
+    %th
+      Trabalho de
+      %br
+      Protético
   - total = 0.0
   - @paciente.tratamentos.each() do |tratamento|
     %tr
@@ -60,11 +64,13 @@
           = tratamento.data.to_s_br
       %td{ :align => "center" }
         = tratamento.orcamento.numero unless tratamento.orcamento.nil?
+      %td
+        = link_to "novo trabalho de protético", new_trabalho_protetico_path(:tratamento_id=>tratamento.id, :paciente_id=>tratamento.paciente.id)
     - total += tratamento.valor
   %tr
     %td{ :align => "center", :colspan => "4" }
       Total
     %td{ :align => "right" }
       = total.real
-    %td{ :colspan => "4" }
+    %td{ :colspan => "5" }
 

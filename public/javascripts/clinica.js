@@ -93,6 +93,16 @@ function devolve_trabalho(id){
     $("#data_"+id).replaceWith(curr_date + "/" + curr_month + "/" + curr_year);
 }
 
+function registra_devolucao(id){
+   $.get("/registra_devolucao_de_trabalho?id=" + id);
+   var d = new Date();
+   var curr_date = d.getDate();
+   var curr_month = d.getMonth();
+   curr_month++;
+   var curr_year = d.getFullYear();
+   $("#data_devolucao_"+id).replaceWith(curr_date + "/" + curr_month + "/" + curr_year);
+}
+
 function selecionou_estado(){
     $(':checkbox').attr('checked', false);
 }
