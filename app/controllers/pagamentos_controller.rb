@@ -12,7 +12,6 @@ class PagamentosController < ApplicationController
   end
 
   def new
-    debugger
     if params[:trabalho_protetico_id].blank?
       session[:trabalho_protetico_id] = nil
     else
@@ -60,6 +59,7 @@ class PagamentosController < ApplicationController
         @pagamento.cheques << cheque unless cheque.nil?
       end
       if @pagamento.save
+        @pagamento.verifica_fluxo_de_caixa
         if !session[:trabalho_protetico_id].nil?
           ids = session[:trabalho_protetico_id].split(",")
           ids.each do |id|
@@ -88,6 +88,7 @@ class PagamentosController < ApplicationController
     @pagamento = Pagamento.find(params[:id])
 
     if @pagamento.update_attributes(params[:pagamento])
+      @pagamento.verifica_fluxo_de_caixa
       flash[:notice] = 'Pagamento alterado com sucesso.'
       redirect_to(relatorio_pagamentos_path) 
     else
@@ -98,6 +99,7 @@ class PagamentosController < ApplicationController
   def destroy
     @pagamento = Pagamento.find(params[:id])
     @pagamento.data_de_exclusao = Time.now
+    @pagamento.verifica_fluxo_de_caixa
     Pagamento.transaction do
       cheques = @pagamento.cheques
       cheques.each() do |cheque|

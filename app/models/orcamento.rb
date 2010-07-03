@@ -14,8 +14,8 @@ class Orcamento < ActiveRecord::Base
   named_scope :por_dentista, :order=>:dentista_id
   named_scope :ultimo_codigo, :order=>["numero DESC"]
 
-  validates_numericality_of :valor, :greater_than => 0, :message=>'Valor deve ser numérico maior que zero.'
-  validates_numericality_of :valor_da_parcela, :greater_than => 0, :message=>'Valor deve ser numérico maior que zero.'
+  validates_numericality_of :valor, :message=>'Valor deve ser numérico .'
+  validates_numericality_of :valor_da_parcela, :message=>'Valor deve ser numérico .'
   validates_presence_of :data,  :vencimento_primeira_parcela, :valor_da_parcela
 
   def estado

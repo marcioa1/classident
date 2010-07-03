@@ -5,16 +5,17 @@ class FluxoDeCaixaController < ApplicationController
   before_filter :require_user
   
   def index
-    @fluxo = FluxoDeCaixa.da_clinica(session[:clinica_id]).last
+    @fluxo          = FluxoDeCaixa.atual(session[:clinica_id])
+    @fluxo_de_ontem = FluxoDeCaixa.da_clinica(session[:clinica_id]).saldo_na_data(@fluxo.data - 1.day).first
     if @fluxo.nil?
       FluxoDeCaixa.create(:clinica_id=>session[:clinica_id], :data=>Date.today, :saldo_em_dinheiro=>0.0, :saldo_em_cheque=>0.0)
       @fluxo = FluxoDeCaixa.da_clinica(session[:clinica_id]).first
     end
     if params[:data]
       if @fluxo.data > params[:data].to_date
-        @fluxo = @fluxo.voltar_para_a_data(params[:data].to_date, session[:clinica_id])
+        @fluxo = FluxoDeCaixa.voltar_para_a_data(params[:data].to_date, session[:clinica_id])
       else
-        @fluxo = @fluxo.avancar_um_dia(session[:clinica_id],params[:data].to_date,
+        @fluxo = FluxoDeCaixa.avancar_um_dia(session[:clinica_id],
              params[:saldo_dinheiro], params[:saldo_cheque])
       end
     end
@@ -29,7 +30,7 @@ class FluxoDeCaixaController < ApplicationController
       @entradas_adm.each do |entrada| 
         entrada.valor *= -1
       end
-      @lancamentos += @entradas_adm if @administracao
+      @lancamentos += @entradas_adm 
     end
   end
   

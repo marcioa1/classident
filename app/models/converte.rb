@@ -311,12 +311,15 @@ class Converte
         t.dente          = registro[3]
         t.face           = registro[4]
         t.descricao      = registro[5]
-        orcamento        = Orcamento.find_by_sequencial_and_clinica_id(registro[8].to_i, @clinica.id)
-        if orcamento.em_aberto? && t.data.present?
-          orcamento.data_de_inicio = t.data
-          orcamento.save
+        if registro[8].to_i > 0
+          orcamento        = Orcamento.find_by_numero_and_paciente_id_and_clinica_id(registro[8].to_i, paciente, @clinica.id)
+          debugger
+          if orcamento && orcamento.em_aberto? && t.data.present?
+            orcamento.data_de_inicio = t.data
+            orcamento.save
+          end
+          t.orcamento_id   = orcamento.id if orcamento.present?
         end
-        t.orcamento_id   = orcamento.id if orcamento.present?
         t.custo          = le_valor(registro[12])
         t.excluido       = ['Verdadeiro', 'True'].include?(registro[16])
         t.clinica_id     = @clinica.id
@@ -485,16 +488,15 @@ class Converte
         t.agencia         = registro[2]
         t.conta_corrente  = registro[3]
         t.numero          = registro[4]
-        t.bom_para        = registro[5].to_date if Date.valid?(registro[5])
-        t.valor           = le_valor(registro[6])
-        paciente          = @@pacientes[clinica_index + registro[7].to_i]
-        if paciente.nil?
-          @arquivo.puts "Paciente não encontrado em cheque: id #{registro[7]}, clínica : #{@clinica.id}"
-          @arquivo.puts line
-        else
-          t.paciente_id   = paciente
-        end
         t.data            = registro[8].to_date if Date.valid?(registro[8])
+        
+        if Date.valid?(registro[5])
+          t.bom_para        = registro[5].to_date 
+        else
+          t.bom_para        = t.data
+        end
+        t.valor           = le_valor(registro[6])
+       
         if !registro[9].blank? && registro[9].to_i > 0
           d = @dest.find{|de| de.sequencial == registro[9].to_i && de.clinica_id == @clinica.id }
           if !d.nil?
@@ -509,11 +511,11 @@ class Converte
         end
         if registro[14].to_i > 0
           paciente2                 = @@pacientes[clinica_index + registro[14].to_i]
-          t.segundo_paciente        = paciente2 
+          # t.segundo_paciente        = paciente2 
         end
         if registro[15].to_i > 0
           paciente3                 = @@pacientes[clinica_index + registro[15].to_i]
-          t.terceiro_paciente       = paciente3 
+          # t.terceiro_paciente       = paciente3 
         end
         t.data_primeira_devolucao   = registro[17].to_date if Date.valid?(registro[17])
         t.motivo_primeira_devolucao = registro[18] 
@@ -524,18 +526,20 @@ class Converte
         t.data_solucao              = registro[23].to_date if Date.valid?(registro[23])
         t.descricao_solucao         = registro[24]
         t.data_caso_perdido         = registro[25]
-        recebimento                 = Recebimento.find_by_sequencial_and_clinica_id(registro[27].to_i, @clinica.id)
-        t.recebimento_id            = recebimento.id if recebimento.present?
+        # t.recebimento_id            = recebimento.id if recebimento.present?
         t.data_de_exclusao          = registro[28] if Date.valid?(registro[28])
         t.data_arquivo_morto        = registro[29].to_date if Date.valid?(registro[29])
         t.save
+        recebimento                 = Recebimento.find_by_sequencial_and_clinica_id(registro[27].to_i, @clinica.id)
+        if recebimento
+          recebimento.update_attribute(:cheque_id , t.id)
+        end
     
-        if t.segundo_paciente
+        if paciente2
           recebimentos = Recebimento.find_all_by_clinica_id_and_sequencial(@clinica.id, t.sequencial)
           recebimentos.each do |rec|
-            rec.cheque_id  = t.id
-            rec.observacao = t.banco.nome + " - " + t.numero if !recebimento.observacao.present?
-            rec.save
+            rec.update_attribute(:cheque_id,  t.id)
+            # rec.observacao = t.banco.nome + " - " + t.numero if !recebimento.observacao.present?
           end
         end
       rescue Exception => ex
@@ -577,6 +581,7 @@ class Converte
     puts "Convertendo orçamento ...."
     f = File.open("doc/convertidos/orcamento.txt" , "r")
     Orcamento.delete_all
+    ct_erros   = 1
     clinica    = ''
     while line = f.gets 
       begin
@@ -595,7 +600,7 @@ class Converte
           o.paciente_id               = paciente
           dentista                      = @@dentistas[clinica_index + registro[3].to_i]
           o.dentista_id                 = dentista if !dentista.nil?
-          o.numero                      = registro[4]
+          o.numero                      = registro[4].to_i
           o.numero_de_parcelas          = registro[6].to_i
           o.valor_da_parcela            = le_valor(registro[7])
           o.vencimento_primeira_parcela = registro[8].to_date if Date.valid?(registro[8])
@@ -607,10 +612,12 @@ class Converte
           o.valor_com_desconto          = le_valor(registro[12])
           o.desconto                    = registro[13].to_i
           o.valor                       = o.valor_com_desconto / (100 - (o.desconto / 100)) * 100
-          o.save
+          o.save!
         else
+          @arquivo.puts ct_erros
           @arquivo.puts "Orcamento #{registro[0]} sem paciente #{registro[2]} na clínica #{@clinica.id}"          
           @arquivo.puts line
+          ct_erros += 1 
         end
       rescue Exception => ex
         @arquivo.puts line + "\n"+ "      ->" + ex

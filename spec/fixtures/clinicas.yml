@@ -2,10 +2,8 @@
 
 recreio:
   nome: Recreio
-  id: 5
   sigla: RE
 
 adm:
   nome: Administração
-  id: 1
   sigla: AD

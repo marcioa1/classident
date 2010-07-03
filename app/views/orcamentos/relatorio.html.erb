@@ -23,7 +23,7 @@
 <% @orcamentos.each do |orca| %>
   <tr>
     <td align='center'><%= orca.data.to_s_br %></td>
-    <td><%= orca.paciente.nome %></td>
+    <td><%= link_to orca.paciente.nome, abre_paciente_path(orca.paciente) %></td>
     <td><%= orca.dentista.nome unless orca.dentista.nil?%></td>
     <td align='right'><%= orca.valor_com_desconto.real %></td>
     <td><%= orca.estado %></td>

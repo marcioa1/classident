@@ -32,14 +32,14 @@
     <td align="right"><%= @fluxo.saldo_em_cheque.real %></td>
   </tr>
 <% saldo_dinheiro = @fluxo.saldo_em_dinheiro %>
-<% saldo_dinheiro = 0 if saldo_dinheiro.nil? %>
+<% saldo_dinheiro = 0.0 if saldo_dinheiro.nil? %>
 <% saldo_cheque = @fluxo.saldo_em_cheque %>
 <% saldo_cheque = 0.0 if saldo_cheque.nil? %>
 <% @lancamentos.each() do |lancamento| %>
   <tr>
     <% if lancamento.class.name == "Recebimento"%>
       <td><%= lancamento.paciente.nome %></td>
-      <% if lancamento.formas_recebimento.nome.downcase =="dinheiro"%>
+      <% if lancamento.formas_recebimento.nome.downcase =="dinheiro" %>
         <td align="right"><%= lancamento.valor.real %></td>
         <td>&nbsp;</td>
         <% saldo_dinheiro += lancamento.valor %>
@@ -91,6 +91,6 @@
 </table>
 <p>
   <%= link_to "anterior", fluxo_de_caixa_path(:data=>@fluxo.data - 1.day)%>  | 
-  <%= link_to "próximo", fluxo_de_caixa_path(:data=>@fluxo.data + 1.day, :saldo_dinheiro=>saldo_dinheiro, :saldo_cheque => saldo_cheque)%>  
+  <%= link_to "próximo", fluxo_de_caixa_path(:data=>@fluxo.data + 1.day, :saldo_dinheiro=>saldo_dinheiro.real, :saldo_cheque => saldo_cheque.real)%>  
 </p>
 <% end %>

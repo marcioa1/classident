@@ -1,0 +1,13 @@
+one:
+  data: <%= Date.today - 2.days %>
+  clinica: recreio
+  saldo_em_dinheiro: 30
+  saldo_em_cheque: 110
+  
+  
+two:
+  data: <%= Date.today - 1.day %>
+  clinica: recreio
+  saldo_em_dinheiro: 10
+  saldo_em_cheque: 90
+  
