@@ -110,6 +110,12 @@ class Recebimento < ActiveRecord::Base
     
   end
     
+  def verifica_fluxo_de_caixa
+    if self.data < FluxoDeCaixa.data_atual(self.clinica_id)
+      FluxoDeCaixa.voltar_para_a_data(self.data, self.clinica_id)
+    end
+  end
+  
 # def cheque
 #    cheque = Cheque.find_by_recebimento_id(id)
 #  end

@@ -80,6 +80,7 @@ class RecebimentosController < ApplicationController
         @recebimento.save 
         @recebimento2.save if @recebimento2
         @recebimento3.save if @recebimento3
+        @recebimento.verifica_fluxo_de_caixa
         (2..params[:numero_de_cheques].to_i).each do |num|
           outro_cheque             = @cheque.clone
           outro_cheque.bom_para    = @cheque.bom_para + (num-1).month
@@ -137,6 +138,8 @@ class RecebimentosController < ApplicationController
     end
 
     if @recebimento.update_attributes(params[:recebimento]) 
+      @recebimento.verifica_fluxo_de_caixa
+      
       if @recebimento.em_cheque?
         debugger
         @recebimento.cheque.save
