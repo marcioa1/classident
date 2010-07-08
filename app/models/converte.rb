@@ -297,36 +297,38 @@ class Converte
         t                 = Tratamento.new
         t.sequencial      = registro[0].to_i
         paciente          = @@pacientes[clinica_index + registro[2].to_i]
-        t.paciente_id     = paciente
-        if registro[9].to_i > 0
-          item_tabela       = itens_das_tabelas[clinica_index + registro[9].to_i]
-          t.item_tabela_id  = item_tabela if item_tabela.present?
-        end
-        if !registro[1].blank?
-          dentista       = @@dentistas[clinica_index + registro[1].to_i]
-          t.dentista_id  = dentista 
-        end
-        t.valor          = le_valor(registro[6])
-        t.data           = registro[7].to_date if Date.valid?(registro[7])
-        t.dente          = registro[3]
-        t.face           = registro[4]
-        t.descricao      = registro[5]
-        if registro[8].to_i > 0
-          orcamento        = Orcamento.find_by_numero_and_paciente_id_and_clinica_id(registro[8].to_i, paciente, @clinica.id)
-          debugger
-          if orcamento && orcamento.em_aberto? && t.data.present?
-            orcamento.data_de_inicio = t.data
-            orcamento.save
+        if paciente
+          t.paciente_id     = paciente
+          if registro[9].to_i > 0
+            item_tabela       = itens_das_tabelas[clinica_index + registro[9].to_i]
+            t.item_tabela_id  = item_tabela if item_tabela.present?
           end
-          t.orcamento_id   = orcamento.id if orcamento.present?
+          if !registro[1].blank?
+            dentista       = @@dentistas[clinica_index + registro[1].to_i]
+            t.dentista_id  = dentista 
+          end
+          t.valor          = le_valor(registro[6])
+          t.data           = registro[7].to_date if Date.valid?(registro[7])
+          t.dente          = registro[3]
+          t.face           = registro[4]
+          t.descricao      = registro[5]
+          if registro[8].to_i > 0
+            orcamento        = Orcamento.find_by_numero_and_paciente_id_and_clinica_id(registro[8].to_i, paciente, @clinica.id)
+            debugger
+            if orcamento && orcamento.em_aberto? && t.data.present?
+              orcamento.data_de_inicio = t.data
+              orcamento.save
+            end
+            t.orcamento_id   = orcamento.id if orcamento.present?
+          end
+          t.custo          = le_valor(registro[12])
+          t.excluido       = ['Verdadeiro', 'True'].include?(registro[16])
+          t.clinica_id     = @clinica.id
+          t.created_at     = registro[14].to_date if Date.valid?(registro[14])
+          t.save
+        rescue Exception => ex
+          @arquivo.puts line + "\n"+ "      ->" + ex
         end
-        t.custo          = le_valor(registro[12])
-        t.excluido       = ['Verdadeiro', 'True'].include?(registro[16])
-        t.clinica_id     = @clinica.id
-        t.created_at     = registro[14].to_date if Date.valid?(registro[14])
-        t.save
-      rescue Exception => ex
-        @arquivo.puts line + "\n"+ "      ->" + ex
       end
     end
     f.close
@@ -789,6 +791,34 @@ class Converte
     fecha_arquivo_de_erros('Tabela de protético')
   end
   
+  def cheques_da_adm
+    
+  end
+  
+  
+  def adm_tipo_pagamento
+    abre_arquivo_de_erros('Tipo de Pagamentona Administação')
+    puts "Convertendo tipos de pagamentos na administração ...."
+    f = File.open("doc/convertidos/adm_tipo_pagamento.txt" , "r")
+    TipoPagamento.delete_all
+    @clinica = Clinica.administracao
+    while line = f.gets 
+      begin
+        registro = busca_registro(line)
+        t            = TipoPagamento.new
+        t.seq        = registro[0].to_i
+        t.nome       = registro[1].nome_proprio
+        t.ativo      = ['Verdadeiro','True', '1'].include?(registro[2]) 
+        t.clinica_id = @clinica.id
+        t.save
+      rescue Exception => ex
+        @arquivo.puts line + "\n"+ "      ->" + ex
+      end
+    end
+    f.close
+    fecha_arquivo_de_erros('Tipo de Pagamento Administração')
+  end
+  
   
   def inicia_arquivos_na_memoria
     # @@pacientes = Paciente.all(:select=> ['id, sequencial, clinica_id'])
@@ -811,6 +841,7 @@ class Converte
       @@dentistas[de.clinica_id * 100000 + de.sequencial] = de.id
     end
   end 
+  
   
   private
   

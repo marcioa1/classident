@@ -72,11 +72,16 @@ class ClinicasController < ApplicationController
   end
   
   def abandono_de_tratamento
-    #FIXME Falta fazer
-    if params[:dias].blank?
-      @abandonos = []
-    else
-      @abandonos = []  
+    pacientes    = Tratamento.pacientes_em_tratamento
+    @dias        = params[:dias] ? params[:dias].to_i : 90
+    @ultima_data = Date.today - @dias.days
+    @abandonos   = []  
+    pacientes.each do |pac|
+      ultimo_tratamento = Tratamento.do_paciente(pac.paciente_id).entre(@ultima_data - 60.days, @ultima_data).nao_excluido
+      if !ultimo_tratamento.empty?
+        debugger
+        @abandonos << {:nome => Paciente.find(pac.paciente_id).nome, :ultima_intervencao => ultimo_tratamento.first.data }
+      end
     end
   end
   

@@ -36,7 +36,7 @@ class Orcamento < ActiveRecord::Base
   end
   
   def iniciado?
-    result = Tratamento.do_paciente(self.paciente_id).feito.do_orcamento(self.id)
+    result = Tratamento.do_paciente(self.paciente_id).nao_excluido.feito.do_orcamento(self.id)
     result.present?
   end
   

@@ -14,9 +14,10 @@
     <th>Último registro</th>
   </tr>
 <% @abandonos.each do |abandono| %>
+<% debugger %>
   <tr>
-    <td><%= abandono.nome %></td>
-    <td><%= abandono.ultima_intervencao.to_s_br %></td>
+    <td><%= abandono[:nome] %></td>
+    <td><%= abandono[:ultima_intervencao].to_s_br %></td>
   </tr>
 <% end %>
 </table>

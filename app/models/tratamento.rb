@@ -10,15 +10,17 @@ class Tratamento < ActiveRecord::Base
   named_scope :dentistas_entre_datas, 
         lambda {|inicio,fim| {:group=>'dentista_id',:select=>'dentista_id', :conditions=>["data between ? and ? ", inicio,fim]}}
         
-  named_scope :do_paciente, lambda{|paciente_id| {:conditions=>["paciente_id = ? and excluido=?", paciente_id,false]}}
+  named_scope :do_paciente, lambda{|paciente_id| {:conditions=>["paciente_id = ?", paciente_id]}}
   named_scope :do_dentista, lambda{|dentista_id| {:conditions=>["dentista_id = ? ", dentista_id]}}
   named_scope :do_orcamento, lambda{|orcamento_id| {:conditions=>["orcamento_id = ? ", orcamento_id]}}
   named_scope :entre, lambda{|inicio,fim| {:conditions=>["data>=? and data <=?", inicio,fim]}}
   named_scope :feito, :conditions=>["data IS NOT NULL"]
   named_scope :nao_excluido, :conditions=>["excluido = ?",false]
   named_scope :nao_feito, :conditions=>["data IS NULL"]
+  named_scope :pacientes_em_tratamento, :conditions => ['data IS NULL'], :group=>'paciente_id', :select=> 'paciente_id'
   named_scope :por_data, :order=>:data
   named_scope :sem_orcamento, :conditions=>["orcamento_id IS NULL"]
+  named_scope :ultima_data, lambda{|data| {:conditions=>['data <= ?', data ], :limit=>1, :order=>'data DESC'}}
   
   validates_presence_of :descricao, :message => "não pode ser vazio."
   validates_presence_of :dentista,  :message => "não pode ser vazio."

@@ -115,7 +115,7 @@ class Paciente < ActiveRecord::Base
   
   def verifica_alta_automatica(user,clinica)
     if !em_alta?
-      if Tratamento.do_paciente(self.id).nao_feito.empty?
+      if Tratamento.do_paciente(self.id).nao_excluido.nao_feito.empty?
         alta = Alta.new
         alta.paciente_id = self.id
         alta.data_inicio = Date.today
