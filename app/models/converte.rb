@@ -219,9 +219,11 @@ class Converte
     Tabela.delete_all
     Tabela.create!(:nome => 'Inexistente', :ativa => false)
     clinica = '' 
+    # @ct     = 1
     while line = f.gets 
       begin
         registro = busca_registro(line)
+        # debugger
         if clinica != registro.last
           clinica = registro.last
           @clinica = Clinica.find_by_sigla(clinica)
@@ -326,10 +328,10 @@ class Converte
           t.clinica_id     = @clinica.id
           t.created_at     = registro[14].to_date if Date.valid?(registro[14])
           t.save
+        end
         rescue Exception => ex
           @arquivo.puts line + "\n"+ "      ->" + ex
         end
-      end
     end
     f.close
     fecha_arquivo_de_erros('odontograma')
@@ -364,7 +366,7 @@ class Converte
         @arquivo.puts line + "\n"+ "      ->" + ex
       end
     end
-    @clinica.save
+    @clinica.save if @clinica
     f.close
     fecha_arquivo_de_erros('Dentistas')
   end
@@ -614,7 +616,7 @@ class Converte
           o.valor_com_desconto          = le_valor(registro[12])
           o.desconto                    = registro[13].to_i
           o.valor                       = o.valor_com_desconto / (100 - (o.desconto / 100)) * 100
-          o.save!
+          o.save
         else
           @arquivo.puts ct_erros
           @arquivo.puts "Orcamento #{registro[0]} sem paciente #{registro[2]} na clínica #{@clinica.id}"          
@@ -791,8 +793,64 @@ class Converte
     fecha_arquivo_de_erros('Tabela de protético')
   end
   
-  def cheques_da_adm
-    
+  def adm_cheques
+    abre_arquivo_de_erros('Cheques na Administação')
+    puts "Convertendo cheques na administração ...."
+    f = File.open("doc/convertidos/adm_cheque.txt" , "r")
+    @as_clinicas = Clinica.all
+    @siglas      = @as_clinicas.map(&:sigla)
+    @clinica = Clinica.administracao
+    line     = f.gets
+    ct       = 0
+    while line = f.gets 
+      begin
+        registro                 = busca_registro(line)
+        ct += 1
+        if @siglas.include?(registro[1].downcase)
+          clinica                  = @as_clinicas.find{ |cl| cl.sigla == registro[1].downcase}
+          # debugger
+          seq                      = registro[2]
+          destinacao               = Destinacao.first #registro[11]
+          #FIXME tratar a destinacao e pagamento na adm
+          data_destinacao          = registro[12].to_date if Date.valid?(registro[12])
+          # pagamento                = registro[13]
+          devolvido                = registro[16]
+          data_devolucao           = registro[17]
+          motivo_devolucao         = registro[18]
+          data_reapresentacao      = registro[19].to_date if Date.valid?(registro[19])
+          data_segunda_devolucao   = registro[20].to_date if Date.valid?(registro[20])
+          motivo_segunda_devolucao = registro[21]
+          data_solucao             = registro[22].to_date if Date.valid?(registro[22])
+          solucao                  = registro[23]
+          data_caso_perdido        = registro[24].to_date if Date.valid?(registro[24])
+          historico                = registro[25]
+          adm                      = registro[26]
+          cheque                   = Cheque.find_by_clinica_id_and_sequencial(clinica.id, seq)
+          if cheque && cheque.entregue_a_administracao
+            puts ct
+            # debugger
+            cheque.destinacao               = destinacao
+            cheque.data_destinacao          = data_destinacao
+            # cheque.pagamento                = pagamento
+            # cheque.devolvido              = devolvido
+            cheque.data_primeira_devolucao   = data_devolucao
+            cheque.motivo_primeira_devolucao = motivo_devolucao
+            cheque.data_reapresentacao      = data_reapresentacao
+            cheque.motivo_segunda_devolucao = motivo_segunda_devolucao 
+            cheque.data_solucao             = data_solucao  
+            cheque.descricao_solucao        = solucao
+            cheque.data_caso_perdido        = data_caso_perdido
+            #FIXME verificar que campo historico é este
+            # cheque.historico                = historico
+            cheque.save  
+          end
+        end
+      rescue Exception => ex
+        @arquivo.puts ct.to_s + '->' + line + "\n"+ "      ->" + ex
+      end
+    end
+    f.close
+    fecha_arquivo_de_erros('Cheques Administração')   
   end
   
   
@@ -800,8 +858,8 @@ class Converte
     abre_arquivo_de_erros('Tipo de Pagamentona Administação')
     puts "Convertendo tipos de pagamentos na administração ...."
     f = File.open("doc/convertidos/adm_tipo_pagamento.txt" , "r")
-    TipoPagamento.delete_all
     @clinica = Clinica.administracao
+    line = f.gets
     while line = f.gets 
       begin
         registro = busca_registro(line)
@@ -862,7 +920,13 @@ class Converte
   end
   
   def busca_registro(line)
-    line.split('"')[1].split(";")
+    # @ct += 1
+    # debugger
+    if line[0..0]=='"'
+      line.split('"')[1].split(";")
+    else
+      line.split(";")
+    end
   end
 
   def abre_arquivo_de_erros(mensagem)

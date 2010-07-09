@@ -17,6 +17,9 @@
 
 <table>
   <tr>
+    <% if @administracao %>
+      <th>Clínica</th>
+    <% end %>
     <th>Bom para</th>
     <th width="170px">Paciente</th>
     <th width="60px">Valor</th>
@@ -31,6 +34,9 @@
   <% total = 0 %>
   <% for cheque in @cheques do %>
   <tr>
+    <% if @administracao %>
+      <td><%= cheque.id %>-<%= cheque.clinica.nome %></td>
+    <% end %>
     <td align="center"><%= link_to cheque.bom_para.to_s_br, edit_cheque_path(cheque) %></td>
     <td><%= cheque.nome_dos_pacientes%></td>
     <td align="right"><%= cheque.valor.real %></td>
@@ -38,14 +44,18 @@
     <td><%= cheque.agencia  %></td>
     <td><%= cheque.conta_corrente %></td>
     <td><%= cheque.numero %></td>
-    <td><% if cheque.entregue_a_administracao  %>
-          <%= image_tag "ok.png" %>
-          <%= cheque.data_entrega_administracao.to_s_br %>
-        <% else if cheque.disponivel? %>
-               <%= check_box_tag "adm_"+cheque.id.to_s %>
-        <% end %>
-        <% end %>
-    </td>
+    <% if @administracao %>
+      <td>x<%= cheque.data_recebimento_na_administracao.to_s_br %></td>
+    <% else %>
+      <td><% if cheque.entregue_a_administracao  %>
+            <%= image_tag "ok.png" %>
+            <%= cheque.data_entrega_administracao.to_s_br %>
+          <% else if cheque.disponivel? %>
+                 <%= check_box_tag "adm_"+cheque.id.to_s %>
+          <% end %>
+          <% end %>
+      </td>
+    <% end %>
     <td><%= status = case 
         when cheque.status == "usado pgto" then link_to cheque.status, '#', :onclick=>'javascript:abre_pagamento('+ cheque.pagamento_id.to_s + ')'
        else cheque.status
@@ -59,7 +69,7 @@
   <tr>
     <td colspan="2" align="center">Total</td>
     <td align="right"><%= total.real%></td>
-    <td colspan="6" align="right"><%= link_to "enviar cheques selecionados p/ administração" , "#", :onclick=>"enviar_administracao();"  if params[:status]=="disponíveis"%></td>
+    <td colspan="6" align="right"><%= link_to "enviar cheques selecionados p/ administração" , "#", :onclick=>"enviar_administracao();"  if params[:status]=="disponíveis" && !@administracao %></td>
 <td>&nbsp;</td>
   </tr>
 </table>

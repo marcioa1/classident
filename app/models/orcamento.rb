@@ -16,7 +16,7 @@ class Orcamento < ActiveRecord::Base
 
   validates_numericality_of :valor, :message=>'Valor deve ser numérico .'
   validates_numericality_of :valor_da_parcela, :message=>'Valor deve ser numérico .'
-  validates_presence_of :data,  :vencimento_primeira_parcela, :valor_da_parcela
+  validates_presence_of :data, :valor_da_parcela
 
   def estado
     nao_feito = Tratamento.first(:conditions=>['orcamento_id = ? and data IS NULL', self.id])
