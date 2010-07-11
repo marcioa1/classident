@@ -90,7 +90,6 @@ class DentistasController < ApplicationController
   end
   
   def producao
-    debugger
     dentista = Dentista.find(params[:id])
     inicio   = params[:datepicker].to_date if Date.valid?(params[:datepicker])
     fim      = params[:datepicker2].to_date if Date.valid?(params[:datepicker2])
@@ -119,6 +118,9 @@ class DentistasController < ApplicationController
       saida += "<td>" + tratamento.descricao + "</td>"
       saida += "<td align='right'>" + tratamento.valor.real.to_s + "</td>"
       saida += "<td align='right'>" + tratamento.custo.real.to_s + "</td>"
+      if tratamento.custo > 0
+        # debugger
+      end
       saida += "<td align='right'>" + tratamento.valor_dentista.real.to_s + "</td>"
       saida += "<td align='right'>" + tratamento.valor_clinica.real.to_s + "</td>"
       saida += "<td align='center'>" + "<input type='checkbox' id='pagar_dentista_" + tratamento.id.to_s + 

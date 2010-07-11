@@ -7,6 +7,7 @@ class ApplicationController < ActionController::Base
   filter_parameter_logging :password, :password_confirmation
   helper_method :current_user_session, :current_user
   before_filter :busca_clinicas
+  before_filter :administracao
 
   def quinze_dias
     begin
@@ -26,7 +27,7 @@ class ApplicationController < ActionController::Base
   #   end
   
   def administracao
-    @adminitracao = session[:clinica_id].to_i == 10
+    @administracao = session[:clinica_id].to_i == 10
   end
   
   def primeiro_dia_do_mes

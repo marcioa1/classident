@@ -68,8 +68,8 @@ class Cheque < ActiveRecord::Base
     return "usado pgto na clínica" if usado_para_pagamento? and !recebido_pela_administracao
     return "com destinação" if com_destinacao?
     return "recebido pela adm" if recebido_pela_administracao
-    return "entregue à adm" if entregue_a_administracao
     return "disponível" unless !sem_devolucao? 
+    return "entregue à adm" if entregue_a_administracao
   end
   
   def sem_devolucao?

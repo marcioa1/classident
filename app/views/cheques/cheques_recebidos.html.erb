@@ -37,7 +37,13 @@
     <% if @administracao %>
       <td><%= cheque.id %>-<%= cheque.clinica.nome %></td>
     <% end %>
-    <td align="center"><%= link_to cheque.bom_para.to_s_br, edit_cheque_path(cheque) %></td>
+    <td align="center">
+      <% if  @administracao %>
+        <%= cheque.bom_para.to_s_br %>
+      <% else %>
+        <%= link_to cheque.bom_para.to_s_br, edit_cheque_path(cheque) %>
+      <% end %>
+    </td>
     <td><%= cheque.nome_dos_pacientes%></td>
     <td align="right"><%= cheque.valor.real %></td>
     <td align="center"><%= cheque.banco.numero + "-"+ cheque.banco.nome unless cheque.banco.nil? %></td>
@@ -67,11 +73,11 @@
   <% total += cheque.valor %>
   <% end %>
   <tr>
-    <td colspan="2" align="center">Total</td>
+    <td colspan="3" align="center">Total</td>
     <td align="right"><%= total.real%></td>
-    <td colspan="6" align="right"><%= link_to "enviar cheques selecionados p/ administração" , "#", :onclick=>"enviar_administracao();"  if params[:status]=="disponíveis" && !@administracao %></td>
-<td>&nbsp;</td>
+    <td colspan="5" align="right"><%= link_to "enviar cheques selecionados p/ administração" , "#", :onclick=>"enviar_administracao();"  if params[:status]=="disponíveis" && !@administracao %></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
   </tr>
 </table>
 <% end %>
-# speedy 0800 12 15 20

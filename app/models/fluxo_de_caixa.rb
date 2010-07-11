@@ -22,7 +22,12 @@ class FluxoDeCaixa < ActiveRecord::Base
   end
   
   def self.data_atual(clinica_id)
-    FluxoDeCaixa.last(:conditions=>['clinica_id = ?', clinica_id]).data rescue nil
+    begin
+      FluxoDeCaixa.last(:conditions=>['clinica_id = ?', clinica_id]).data 
+    rescue 
+      FluxoDeCaixa.create(:data=>Date.today, :saldo_em_dinheiro =>0, :saldo_em_cheque=>0)
+      Date.today
+    end
   end
   
   def self.atual(clinica_id)

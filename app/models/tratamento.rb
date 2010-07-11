@@ -44,13 +44,14 @@ class Tratamento < ActiveRecord::Base
   end
   
   def valor_dentista
-    custo = 0 if custo.nil?
-    (valor - custo) * dentista.percentual / 100 
+    self.custo = 0 if self.custo.nil?
+    debugger
+    (self.valor - self.custo) * dentista.percentual / 100 
   end
   
   def valor_clinica
-    custo = 0 if custo.nil?
-    (valor - custo) * (100 - dentista.percentual) / 100 
+    self.custo = 0 if self.custo.nil?
+    (self.valor - self.custo) * (100 - dentista.percentual) / 100 
   end
   
   def nao_pode_alterar?

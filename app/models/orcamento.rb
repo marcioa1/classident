@@ -40,6 +40,10 @@ class Orcamento < ActiveRecord::Base
     result.present?
   end
   
+  def valor_final
+    
+  end
+  
   def self.proximo_numero(paciente_id)
     maior_codigo = Orcamento.do_paciente(paciente_id).ultimo_codigo.last
     if maior_codigo.nil?

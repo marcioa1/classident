@@ -203,6 +203,8 @@ class Converte
         r.clinica_id            = @clinica.id
         r.data_de_exclusao      = registro[12].to_date if Date.valid?(registro[12])
         r.observacao_exclusao   = registro[14]
+        #FIXME Verificar qual o campo de cheque_id
+        # r.cheque_id             = registro[0].to_i if !registro[0].blank?
         r.save
       rescue Exception => ex
         @arquivo.puts line + "\n"+ "      ->" + ex
@@ -316,7 +318,6 @@ class Converte
           t.descricao      = registro[5]
           if registro[8].to_i > 0
             orcamento        = Orcamento.find_by_numero_and_paciente_id_and_clinica_id(registro[8].to_i, paciente, @clinica.id)
-            debugger
             if orcamento && orcamento.em_aberto? && t.data.present?
               orcamento.data_de_inicio = t.data
               orcamento.save
@@ -467,15 +468,15 @@ class Converte
   
   def cheque
     # depende de destinacao, recebimento, pagamento
-    #TODO Os cheques das clíncas existem na administração. Preciso tratar isto
     abre_arquivo_de_erros("Cheques")
     puts "Convertendo cheques ...."
     f = File.open("doc/convertidos/cheque.txt" , "r")
-   # Banco.delete_all
     Cheque.delete_all
-    #TODO verificar se o cheque está disponível
     clinica = ''
     @dest   = Destinacao.all
+    um_paciente    = 0
+    dois_pacientes = 0
+    tres_pacientes = 0
     while line = f.gets 
       begin
         registro = busca_registro(line)
@@ -508,18 +509,21 @@ class Converte
             t.data_destinacao = registro[10].to_date if Date.valid?(registro[10])
           end
         end
-        pagamento                   = Pagamento.find_by_sequencial_and_clinica_id(registro[11].to_i, @clinica.id)
-        t.pagamento_id              = pagamento.id if pagamento.present?
-        if ['Verdadeiro', 'True'].include?(registro[12])
+        pagamento             = Pagamento.find_by_sequencial_and_clinica_id(registro[11].to_i, @clinica.id)
+        t.pagamento_id        = pagamento.id if pagamento.present?
+        if ['Verdadeiro', 'True', '1'].include?(registro[12])
           t.data_entrega_administracao = registro[13] if Date.valid?(registro[13])
         end
         if registro[14].to_i > 0
-          paciente2                 = @@pacientes[clinica_index + registro[14].to_i]
-          # t.segundo_paciente        = paciente2 
+          paciente2      = @@pacientes[clinica_index + registro[14].to_i]
+          dois_pacientes += 1
+        else
+          um_paciente += 1
         end
         if registro[15].to_i > 0
           paciente3                 = @@pacientes[clinica_index + registro[15].to_i]
-          # t.terceiro_paciente       = paciente3 
+          tres_pacientes += 1
+          dois_pacientes -= 1
         end
         t.data_primeira_devolucao   = registro[17].to_date if Date.valid?(registro[17])
         t.motivo_primeira_devolucao = registro[18] 
@@ -538,19 +542,22 @@ class Converte
         if recebimento
           recebimento.update_attribute(:cheque_id , t.id)
         end
-    
+       #FIXME Tratar o segundo paciente do cheque
         if paciente2
-          recebimentos = Recebimento.find_all_by_clinica_id_and_sequencial(@clinica.id, t.sequencial)
+          debugger
+          recebimentos = Recebimento.find_all_by_clinica_id_and_cheque_id(@clinica.id, t.cheque_id)
           recebimentos.each do |rec|
             rec.update_attribute(:cheque_id,  t.id)
             # rec.observacao = t.banco.nome + " - " + t.numero if !recebimento.observacao.present?
           end
-        end
+          end
       rescue Exception => ex
         @arquivo.puts line + "\n"+ "      ->" + ex
       end
     end
     f.close
+    @arquivo.puts "Cheques para um paciente : " + um_paciente.to_s
+    @arquivo.puts "Cheques para dois pacientes : " + dois_pacientes.to_s
     fecha_arquivo_de_erros("Cheques")
   end
   
@@ -799,7 +806,7 @@ class Converte
     f = File.open("doc/convertidos/adm_cheque.txt" , "r")
     @as_clinicas = Clinica.all
     @siglas      = @as_clinicas.map(&:sigla)
-    @clinica = Clinica.administracao
+    @clinica = Clinica.administracao.first
     line     = f.gets
     ct       = 0
     while line = f.gets 
@@ -808,12 +815,11 @@ class Converte
         ct += 1
         if @siglas.include?(registro[1].downcase)
           clinica                  = @as_clinicas.find{ |cl| cl.sigla == registro[1].downcase}
-          # debugger
           seq                      = registro[2]
           destinacao               = Destinacao.first #registro[11]
-          #FIXME tratar a destinacao e pagamento na adm
+          #FIXME tratar a destinacao na adm
           data_destinacao          = registro[12].to_date if Date.valid?(registro[12])
-          # pagamento                = registro[13]
+          pagamento                = registro[13].to_i 
           devolvido                = registro[16]
           data_devolucao           = registro[17]
           motivo_devolucao         = registro[18]
@@ -827,11 +833,13 @@ class Converte
           adm                      = registro[26]
           cheque                   = Cheque.find_by_clinica_id_and_sequencial(clinica.id, seq)
           if cheque && cheque.entregue_a_administracao
-            puts ct
             # debugger
             cheque.destinacao               = destinacao
             cheque.data_destinacao          = data_destinacao
-            # cheque.pagamento                = pagamento
+            if pagamento > 0
+              reg_pagamento = Pagamento.find_by_clinica_id_and_sequencial(clinica.id, pagamento)
+              cheque.pagamento = reg_pagamento.id if reg_pagamento.present?
+            end
             # cheque.devolvido              = devolvido
             cheque.data_primeira_devolucao   = data_devolucao
             cheque.motivo_primeira_devolucao = motivo_devolucao
@@ -842,6 +850,7 @@ class Converte
             cheque.data_caso_perdido        = data_caso_perdido
             #FIXME verificar que campo historico é este
             # cheque.historico                = historico
+            cheque.data_recebimento_na_administracao = cheque.data_entrega_administracao
             cheque.save  
           end
         end
@@ -853,20 +862,52 @@ class Converte
     fecha_arquivo_de_erros('Cheques Administração')   
   end
   
+  def adm_pagamento
+    abre_arquivo_de_erros('Pagamentos na administração')
+    puts 'Convertendo pagamentos ... '
+    f        = File.open("doc/convertidos/adm_pagamento.txt" , "r")
+    @clinica = Clinica.administracao.first
+    line     = f.gets
+    while line = f.gets 
+      begin
+        registro = busca_registro(line)
+        t                   = Pagamento.new
+        t.clinica_id        = @clinica.id
+        tipo_pagamento      = TipoPagamento.find_by_seq_and_clinica_id(registro[1].to_i,@clinica.id)
+        t.tipo_pagamento_id = tipo_pagamento.id if tipo_pagamento
+        t.data_de_pagamento = registro[3].to_date if Date.valid?(registro[3])
+        t.sequencial        = registro[6].to_i
+        t.valor_pago        = le_valor(registro[11])
+        t.observacao        = registro[4].gsub('"', '')
+        t.valor_restante    = le_valor(registro[13]) unless registro[13].blank?
+        t.valor_cheque      = le_valor(registro[11]) unless registro[11].blank?
+        t.valor_terceiros   = le_valor(registro[10]) unless registro[10].blank?
+        t.conta_bancaria_id = registro[14].to_i unless registro[14].to_i == -1 
+        t.numero_do_cheque  = registro[15]
+        t.nao_lancar_no_livro_caixa = (registro[16].to_i!= 0)
+        t.data_de_exclusao          = registro[17].to_date unless registro[17].blank?
+        t.save
+      rescue Exception => ex
+        @arquivo.puts "Erro ao processar a linha #{line}"
+      end
+    end
+    f.close
+    fecha_arquivo_de_erros('Pagamentos na administração')
+  end
   
   def adm_tipo_pagamento
     abre_arquivo_de_erros('Tipo de Pagamentona Administação')
     puts "Convertendo tipos de pagamentos na administração ...."
-    f = File.open("doc/convertidos/adm_tipo_pagamento.txt" , "r")
-    @clinica = Clinica.administracao
-    line = f.gets
+    f        = File.open("doc/convertidos/adm_tipo_pagamento.txt" , "r")
+    @clinica = Clinica.administracao.first
+    line     = f.gets
     while line = f.gets 
       begin
-        registro = busca_registro(line)
+        registro     = busca_registro(line)
         t            = TipoPagamento.new
         t.seq        = registro[0].to_i
         t.nome       = registro[1].nome_proprio
-        t.ativo      = ['Verdadeiro','True', '1'].include?(registro[2]) 
+        t.ativo      = ['Verdadeiro','True', '1'].include?(registro[2].at(0)) 
         t.clinica_id = @clinica.id
         t.save
       rescue Exception => ex
@@ -912,8 +953,9 @@ class Converte
   
   def le_valor(val)
     return 0 if val.nil? || val.blank?
-    #aux = val.split(" ")[1]
-    #return 0 if aux.nil?
+    if val.at(0) == 'R'
+      val = val.split(' ')[1]
+    end
     aux = val.sub(".","")
     aux = val.sub(",",".")
     return aux

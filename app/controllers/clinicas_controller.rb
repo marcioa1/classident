@@ -72,15 +72,18 @@ class ClinicasController < ApplicationController
   end
   
   def abandono_de_tratamento
-    pacientes    = Tratamento.pacientes_em_tratamento
-    @dias        = params[:dias] ? params[:dias].to_i : 90
-    @ultima_data = Date.today - @dias.days
-    @abandonos   = []  
+    params[:dias_sem_contato] = 90 if !params[:dias_sem_contato]
+    params[:dias_tratamento] = 120 if !params[:dias_tratamento]
+    pacientes               = Tratamento.pacientes_em_tratamento
+    @dias                   = params[:dias_sem_contato] ? params[:dias_sem_contato].to_i : 90
+    @dias_ultimo_tratamento = params[:dias_tratamento] ? params[:dias_tratamento].to_i : 120
+    @ultima_data            = Date.today - @dias.days
+    @primeira_data          = Date.today - @dias_ultimo_tratamento
+    @abandonos              = []  
     pacientes.each do |pac|
-      ultimo_tratamento = Tratamento.do_paciente(pac.paciente_id).entre(@ultima_data - 60.days, @ultima_data).nao_excluido
+      ultimo_tratamento = Tratamento.do_paciente(pac.paciente_id).entre(@primeira_data, @ultima_data).nao_excluido
       if !ultimo_tratamento.empty?
-        debugger
-        @abandonos << {:nome => Paciente.find(pac.paciente_id).nome, :ultima_intervencao => ultimo_tratamento.first.data }
+        @abandonos << {:id => pac.paciente_id, :nome => Paciente.find(pac.paciente_id).nome, :ultima_intervencao => ultimo_tratamento.first.data }
       end
     end
   end
