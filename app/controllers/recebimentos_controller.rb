@@ -162,31 +162,42 @@ class RecebimentosController < ApplicationController
   end
   
   def relatorio
+    debugger
     #TODO fazer exclusao de recebimento, com formulario
     @formas_recebimento = FormasRecebimento.por_nome
     #@tipos_recebimento  = FormasRecebimento.por_nome.collect{|obj| [obj.nome, obj.id]}
-     if params[:datepicker] && Date.valid?(params[:datepicker]) && Date.valid?(params[:datepicker2])
-       @data_inicial = params[:datepicker].to_date
-       @data_final = params[:datepicker2].to_date
-     else
-       @data_inicial = Date.today  - Date.today.day.days + 1.day
-       @data_final = Date.today
-     end
-     formas_selecionadas = ""
-     @formas_recebimento.each() do |forma|
-       if params["forma_#{forma.id.to_s}"]
-         formas_selecionadas += forma.id.to_s + ","
-       end
-     end
-     @recebimentos = Recebimento.da_clinica(session[:clinica_id]).
-               por_data.entre_datas(@data_inicial, @data_final).
-               nas_formas(formas_selecionadas.split(",").to_a).
-               nao_excluidos
-     @recebimentos_excluidos = Recebimento.da_clinica(session[:clinica_id]).
-                          por_data.entre_datas(@data_inicial, @data_final).
-                          nas_formas(formas_selecionadas.split(",").to_a).
-                          excluidos
-    forma_cheque_id = FormasRecebimento.find_by_nome('cheque').id
+    if !params[:datepicker]
+      params[:datepicker] = Date.today.to_s_br
+      params[:datepicker2] = (Date.today - 15.days).to_s_br
+    end
+    if Date.valid?(params[:datepicker]) && Date.valid?(params[:datepicker2])
+      @data_inicial = params[:datepicker].to_date
+      @data_final   = params[:datepicker2].to_date
+      @erros        = ''
+      formas_selecionadas = ""
+      @formas_recebimento.each() do |forma|
+        if params["forma_#{forma.id.to_s}"]
+          formas_selecionadas += forma.id.to_s + ","
+        end
+      end
+      @recebimentos = Recebimento.da_clinica(session[:clinica_id]).
+                por_data.entre_datas(@data_inicial, @data_final).
+                nas_formas(formas_selecionadas.split(",").to_a).
+                nao_excluidos
+      @recebimentos_excluidos = Recebimento.da_clinica(session[:clinica_id]).
+                           por_data.entre_datas(@data_inicial, @data_final).
+                           nas_formas(formas_selecionadas.split(",").to_a).
+                           excluidos
+     forma_cheque_id = FormasRecebimento.find_by_nome('cheque').id
+    else
+      @erros = ''
+      @erros = "Data inicial inválida." if !Date.valid?(params[:datepicker])
+      @erros += "Data final inválida." if !Date.valid?(params[:datepicker2])
+      @recebimentos           = []
+      @recebimentos_excluidos = []
+     # @data_inicial = Date.today  - Date.today.day.days + 1.day
+     # @data_final   = Date.today
+    end
     # if formas_selecionadas.include?(forma_cheque_id.to_s)
     #   @recebimentos_devolvidos = Recebimento.em_cheque.com_problema.entre_datas(@data_inicial,@data_final)
     #   @recebimentos = @recebimentos - @recebimentos_devolvidos 

@@ -2,8 +2,10 @@
 <fieldset class="fieldset_50">
     <legend>Relatório de recebimentos</legend>
 <% form_tag relatorio_recebimentos_path do %>
-   Início : <%= text_field_tag :datepicker ,@data_inicial.to_s_br, :size=>10  %> 
-    &nbsp;Fim : <%= text_field_tag :datepicker2, @data_final.to_s_br, :size=>10 %>
+  <p class='mensagem_de_erro'><%= @erros %>
+  </p>
+   Início : <%= text_field_tag :datepicker ,params[:datepicker], :size=>10  %> 
+    &nbsp;Fim : <%= text_field_tag :datepicker2, params[:datepicker2], :size=>10 %>
 	  <%= submit_tag "pesquisar"%>
 
 <p><%= render :partial => "formas_recebimentos/opcoes", :locals=>{:formas=>@formas_recebimento}%></p>

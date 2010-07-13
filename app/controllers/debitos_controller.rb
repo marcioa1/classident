@@ -2,7 +2,7 @@ class DebitosController < ApplicationController
   layout "adm"
   
   before_filter :require_user
-  before_filter :busca_corrente, :olny=>[:show, :edit, :update, :destroy]
+  before_filter :busca_corrente, :only=>[:show, :edit, :update, :destroy]
 
   def index
     @debitos = Debito.all
@@ -51,7 +51,7 @@ class DebitosController < ApplicationController
       @pacientes = Paciente.da_clinica(session[:clinica_id]).por_nome.de_clinica
     end
     @em_debito = []
-    @tabelas = Tabela.ativas.por_nome
+    @tabelas   = Tabela.ativas.por_nome
     @pacientes.each do |pac|
       if params['tabela_' + pac.tabela_id.to_s]
         puts pac.nome + " > " + pac.saldo.real.to_s

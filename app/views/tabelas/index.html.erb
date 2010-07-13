@@ -3,7 +3,7 @@
 
 <% form_tag tabelas_path, :method => :get do %>
 	<%= radio_button_tag :ativa, :sim, params[:ativa] == 'sim' %> Ativa
-	<%= radio_button_tag :ativa, :nao, params[:ativa] == 'nao' %> Excluida
+	<%= radio_button_tag :ativa, :nao, params[:ativa] == 'nao' %> Inativas
 	<%= submit_tag 'Pesquisar'%>
 <% end -%>	
 <p/>

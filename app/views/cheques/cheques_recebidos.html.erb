@@ -1,5 +1,5 @@
 <% content_for :main do %>
-
+  <h3>Cheques recebidos</h3>
   <%= @cheques.size %> Cheques recebidos
 <% form_tag cheques_recebidos_cheques_path do %>
   <p>
@@ -76,7 +76,6 @@
     <td colspan="3" align="center">Total</td>
     <td align="right"><%= total.real%></td>
     <td colspan="5" align="right"><%= link_to "enviar cheques selecionados p/ administração" , "#", :onclick=>"enviar_administracao();"  if params[:status]=="disponíveis" && !@administracao %></td>
-    <td>&nbsp;</td>
     <td>&nbsp;</td>
   </tr>
 </table>

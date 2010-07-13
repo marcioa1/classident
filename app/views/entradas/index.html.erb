@@ -1,8 +1,12 @@
 <% content_for :main do %>
-
-<%= link_to "anterior", entradas_path(:data => @data - 1.month)%> 
-<%= Date::MONTHNAMES[@data.month] + " / " + @data.year.to_s %>
-<%= link_to "próximo", entradas_path(:data => @data.next_month)%><br/><br/>
+<h3>Entrada / Remessa de dinheiro</h3>
+<div style="padding-left: 4em; font-size: 18px;">
+  <%= link_to "<", entradas_path(:data => @data - 1.month)%> 
+  &nbsp;&nbsp;&nbsp;
+  <%= Date::MONTHNAMES[@data.month] + " / " + @data.year.to_s %>
+  &nbsp;&nbsp;&nbsp;
+  <%= link_to ">", entradas_path(:data => @data.next_month)%><br/><br/>
+</div>
 
 <%= render :partial =>"movimentacao", :locals=>{:movimentacao=>@entradas, :titulo=>"Entrada"} %>
 <p/>

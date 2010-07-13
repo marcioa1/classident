@@ -1,11 +1,13 @@
 .DS_Store
 log/*.log
 tmp/**/*
+tmp/*
 db/development.sqlite3
 db/test.sqlite3
 db/production.sqlite3
 doc/*.old
 doc/*.txt
+doc/*.rb
 doc/anteriores/*.*
 doc/convertidos/*.*
 *.sql

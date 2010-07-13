@@ -151,3 +151,8 @@ fieldset{
    padding-right: 0.4em;
    background-color: #D6AD70;
 }
+.mensagem_de_erro{
+  background-color: red;
+  color: white;
+  padding-left: 1em;
+}

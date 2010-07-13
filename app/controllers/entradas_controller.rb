@@ -27,9 +27,10 @@ class EntradasController < ApplicationController
   end
 
   def create
-    tipo = params[:tipo]
+    tipo     = params[:tipo]
+    # params[:entrada][:valor] = params[:entrada][:valor].gsub('.', '').gsub(',', '.')
     @entrada = Entrada.new(params[:entrada])
-    @entrada.data = params[:datepicker].to_date
+    @entrada.data       = params[:datepicker].to_date
     @entrada.clinica_id = session[:clinica_id]
     if tipo=="Remessa"
       @entrada.valor = @entrada.valor * -1

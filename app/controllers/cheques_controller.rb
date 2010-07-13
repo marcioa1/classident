@@ -112,7 +112,7 @@ class ChequesController < ApplicationController
       @cheques = Cheque.por_bom_para.da_clinica(session[:clinica_id]).devolvidos(@data_inicial,@data_final)
     end
     if params[:status]=="reapresentado"
-      @cheques = Cheque.por_bom_para.da_clinica(session[:clinica_id]).reapresentado(@data_inicial,@data_final)
+      @cheques = Cheque.por_bom_para.da_clinica(session[:clinica_id]).reapresentados(@data_inicial,@data_final)
     end
     if params[:status]=="spc"
       @cheques = Cheque.por_bom_para.da_clinica(session[:clinica_id]).spc(@data_inicial,@data_final)
