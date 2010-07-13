@@ -165,7 +165,7 @@ class RecebimentosController < ApplicationController
     #TODO fazer exclusao de recebimento, com formulario
     @formas_recebimento = FormasRecebimento.por_nome
     #@tipos_recebimento  = FormasRecebimento.por_nome.collect{|obj| [obj.nome, obj.id]}
-     if params[:datepicker]
+     if params[:datepicker] && Date.valid?(params[:datepicker]) && Date.valid?(params[:datepicker2])
        @data_inicial = params[:datepicker].to_date
        @data_final = params[:datepicker2].to_date
      else

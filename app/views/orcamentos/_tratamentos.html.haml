@@ -1,0 +1,14 @@
+%table
+  %tr
+    %th= 'Dente'
+    %th= 'Faces'
+    %th= 'Descrição'
+    %th= 'Valor'
+    %th= 'Custos'
+  - tratamentos.each do |trat|
+    %tr
+      %td= trat.dente
+      %td= trat.faces
+      %td= trat.descricao
+      %td= trat.valor.real
+      %td= trat.custo.real
