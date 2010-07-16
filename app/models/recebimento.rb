@@ -97,8 +97,8 @@ class Recebimento < ActiveRecord::Base
   end
   
   def exclui
-    self.data_de_exclusao = Date.today
-    self.observacao_exclusao = "."
+    debugger
+    self.data_de_exclusao    = Date.today
     if self.cheque
       self.cheque.data_de_exclusao = Time.current
       todos = self.cheque.recebimentos
@@ -106,7 +106,7 @@ class Recebimento < ActiveRecord::Base
         chq.update_attribute(:data_de_exclusao,Time.current)
       end
     end
-    #TODO fazer exclusao de recebimento lembrando que é preciso excluir o respectivo cheque
+    self.save
     
   end
     

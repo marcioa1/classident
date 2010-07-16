@@ -1,0 +1,14 @@
+= content_for :main do
+  %p
+    Paciente : 
+    = @recebimento.paciente.nome
+  %p
+    Valor :   
+    = @recebimento.valor.real
+  - form_tag  exclui_recebimento_path(@recebimento) do
+    %p
+      Observação : 
+      = text_field_tag :observacao, '' ,:size => 50
+    %p
+      = submit_tag "Confirma exclusão"
+      

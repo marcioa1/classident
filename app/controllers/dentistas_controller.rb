@@ -91,52 +91,63 @@ class DentistasController < ApplicationController
   
   def producao
     dentista = Dentista.find(params[:id])
-    inicio   = params[:datepicker].to_date if Date.valid?(params[:datepicker])
-    fim      = params[:datepicker2].to_date if Date.valid?(params[:datepicker2])
+    if !params[:datepicker]
+      params[:datepicker]  = Date.today.to_s_br
+      params[:datepicker2] = (Date.today - 15.days).to_s_br
+    end
     if params[:clinicas]
       clinicas = params[:clinicas].split(",").to_a
     else
       clinicas = session[:clinica_id].to_a
     end
-    @producao = dentista.busca_producao(inicio,fim,clinicas) 
-    saida = "<div id='lista'><table><tr><th width='105px'>Data</th>
-         <th width='220px'><br/>Paciente</th>
-        <th width='220px'><br/>Procedimento</th>
-        <th width='90px'><br/>Valor</th>
-        <th width='90px'><br/>Custo</th>
-        <th width='90px'><br/>Dentista</th>
-        <th width='90px'><br/>Clínica</th>"
-    saida += "<th>Selecionar<br/>p/ pagto</th>" if @administracao
-    saida += "</tr>"
-    total = 0.0  
-    total_dentista = 0.0
-    total_custo = 0.0
-    total_clinica = 0.0
-    @producao.each() do |tratamento|
-      saida += "<tr><td align='center'>"+ tratamento.data.to_s_br + "</td>"
-      saida += "<td>" + tratamento.paciente.nome + "</td>"
-      saida += "<td>" + tratamento.descricao + "</td>"
-      saida += "<td align='right'>" + tratamento.valor.real.to_s + "</td>"
-      saida += "<td align='right'>" + tratamento.custo.real.to_s + "</td>"
-      if tratamento.custo > 0
-        # debugger
+    if Date.valid?(params[:datepicker]) && Date.valid?(params[:datepicker2])
+      inicio   = params[:datepicker].to_date if Date.valid?(params[:datepicker])
+      fim      = params[:datepicker2].to_date if Date.valid?(params[:datepicker2])
+      @producao = dentista.busca_producao(inicio,fim,clinicas) 
+      saida = "<div id='lista'><table><tr><th width='105px'>Data</th>
+           <th width='220px'><br/>Paciente</th>
+          <th width='220px'><br/>Procedimento</th>
+          <th width='90px'><br/>Valor</th>
+          <th width='90px'><br/>Custo</th>
+          <th width='90px'><br/>Dentista</th>
+          <th width='90px'><br/>Clínica</th>"
+      saida += "<th>Selecionar<br/>p/ pagto</th>" if @administracao
+      saida += "</tr>"
+      total = 0.0  
+      total_dentista = 0.0
+      total_custo = 0.0
+      total_clinica = 0.0
+      @producao.each() do |tratamento|
+        saida += "<tr><td align='center'>"+ tratamento.data.to_s_br + "</td>"
+        saida += "<td>" + tratamento.paciente.nome + "</td>"
+        saida += "<td>" + tratamento.descricao + "</td>"
+        saida += "<td align='right'>" + tratamento.valor.real.to_s + "</td>"
+        saida += "<td align='right'>" + tratamento.custo.real.to_s + "</td>"
+        if tratamento.custo > 0
+          # debugger
+        end
+        saida += "<td align='right'>" + tratamento.valor_dentista.real.to_s + "</td>"
+        saida += "<td align='right'>" + tratamento.valor_clinica.real.to_s + "</td>"
+        saida += "<td align='center'>" + "<input type='checkbox' id='pagar_dentista_" + tratamento.id.to_s + 
+            "' onclick='pagar_dentista(" + tratamento.valor_dentista.to_s + ',' + tratamento.id.to_s + 
+              ',' + tratamento.dentista.id.to_s +  ")'/></tr>" if @administracao
+        total_dentista += tratamento.valor_dentista
+        total_custo += tratamento.custo unless tratamento.custo.nil?
+        total_clinica += tratamento.valor_clinica
+        total += tratamento.valor
       end
-      saida += "<td align='right'>" + tratamento.valor_dentista.real.to_s + "</td>"
-      saida += "<td align='right'>" + tratamento.valor_clinica.real.to_s + "</td>"
-      saida += "<td align='center'>" + "<input type='checkbox' id='pagar_dentista_" + tratamento.id.to_s + 
-          "' onclick='pagar_dentista(" + tratamento.valor_dentista.to_s + ',' + tratamento.id.to_s + 
-            ',' + tratamento.dentista.id.to_s +  ")'/></tr>" if @administracao
-      total_dentista += tratamento.valor_dentista
-      total_custo += tratamento.custo unless tratamento.custo.nil?
-      total_clinica += tratamento.valor_clinica
-      total += tratamento.valor
-    end
-    saida += "<tr><td colspan='3' align='center'>Total</td><td align='right'>" + total.real.to_s + "</td>"
-    saida += "<td align='right'>"+total_custo.real.to_s + "</td>"
-    saida += "<td align='right'>"+ total_dentista.real.to_s + "</td><td align='right'>" + total_clinica.real.to_s + "</td></tr>"
+      saida += "<tr><td colspan='3' align='center'>Total</td><td align='right'>" + total.real.to_s + "</td>"
+      saida += "<td align='right'>"+total_custo.real.to_s + "</td>"
+      saida += "<td align='right'>"+ total_dentista.real.to_s + "</td><td align='right'>" + total_clinica.real.to_s + "</td></tr>"
     
-    saida += "</table></div>"
-    render :json => saida.to_json
+      saida += "</table></div>"
+      render :json => saida.to_json
+    else
+      @erros = ''
+      @erros = "Data inicial inválida." if !Date.valid?(params[:datepicker])
+      @erros += "Data final inválida." if !Date.valid?(params[:datepicker2])
+    end
+  
   end
   
   def pagamento
@@ -210,7 +221,18 @@ class DentistasController < ApplicationController
   end
   
   def producao_geral
-    @todos = Tratamento.dentistas_entre_datas(@data_inicial,@data_final)
+    if !params[:datepicker]
+      params[:datepicker]  = Date.today.to_s_br
+      params[:datepicker2] = (Date.today - 15.days).to_s_br
+    end
+    if Date.valid?(params[:datepicker]) && Date.valid?(params[:datepicker2])
+      @todos = Tratamento.dentistas_entre_datas(@data_inicial,@data_final)
+    else
+      @todos = []
+      @erros = ''
+      @erros = "Data inicial inválida." if !Date.valid?(params[:datepicker])
+      @erros += "Data final inválida." if !Date.valid?(params[:datepicker2])
+    end
     # Dentista.ativos.por_nome
   end
   

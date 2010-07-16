@@ -5,7 +5,7 @@ class BancosController < ApplicationController
   before_filter :require_user
 
   def index
-    @bancos = Banco.all
+    @bancos = Banco.por_nome
   end
 
   def show

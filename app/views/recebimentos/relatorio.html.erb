@@ -35,7 +35,7 @@
 <%= recebimento.formas_recebimento.nome %>
     <% end %></td>
     <td><%= link_to 'editar', edit_recebimento_path(recebimento) %></td>
-    <td><%= link_to 'excluir', recebimento, :confirm => 'Tem certeza ?', :method => :delete %></td>
+    <td><%= link_to 'excluir', exclui_recebimento_path(recebimento) %></td>
   </tr>
   <% total += recebimento.valor %>
 <% end %>
@@ -55,7 +55,7 @@
 	    <th>Data</th>
 	    <th width="180px">Paciente</th>
 	    <th width="70px">Valor</th>
-	    <th width="120px">Observação</th>
+	    <th width="120px">Forma</th>
 	    <th>Tipo</th>
 	    <th>Data exclusão</th>
 	    <th>Observação exclusão</th>

@@ -5,7 +5,7 @@ class RecebimentosController < ApplicationController
   before_filter :require_user
   before_filter :verifica_horario_de_trabalho
   before_filter :busca_bancos_e_forma_de_recebimento, :only=>[:new, :edit]
-  before_filter :busca_recebimento, :only => [:show, :edit]
+  before_filter :busca_recebimento, :only => [:show, :edit, :update, :exclui, :destroy]
   
   def index
     @recebimentos = Recebimento.all(:limit=> 50,:order => 'created_at desc')
@@ -119,7 +119,6 @@ class RecebimentosController < ApplicationController
   end
 
   def update
-    @recebimento = Recebimento.find(params[:id])
     if @recebimento.em_cheque?
       # @recebimento.data_pr_br             = params[:datepicker].to_date
       # @recebimento.valor_real             = params[:recebimento_valor_real]
@@ -141,7 +140,6 @@ class RecebimentosController < ApplicationController
       @recebimento.verifica_fluxo_de_caixa
       
       if @recebimento.em_cheque?
-        debugger
         @recebimento.cheque.save
       end
       #TODO fazer redirect_to back votlar para a presquisa feita com dados
@@ -153,22 +151,22 @@ class RecebimentosController < ApplicationController
   end
 
   def destroy
-    @recebimento = Recebimento.find(params[:id])
+  end
+  
+  def exclui
     @paciente    = @recebimento.paciente
+    @recebimento.observacao_exclusao = params[:observacao]
     @recebimento.exclui
-    
 
-    redirect_to(abre_paciente_path(@paciente)) 
+    redirect_to(abre_paciente_path(@paciente))
   end
   
   def relatorio
-    debugger
-    #TODO fazer exclusao de recebimento, com formulario
     @formas_recebimento = FormasRecebimento.por_nome
     #@tipos_recebimento  = FormasRecebimento.por_nome.collect{|obj| [obj.nome, obj.id]}
     if !params[:datepicker]
-      params[:datepicker] = Date.today.to_s_br
-      params[:datepicker2] = (Date.today - 15.days).to_s_br
+      params[:datepicker2]  = Date.today.to_s_br
+      params[:datepicker] = (Date.today - 15.days).to_s_br
     end
     if Date.valid?(params[:datepicker]) && Date.valid?(params[:datepicker2])
       @data_inicial = params[:datepicker].to_date
@@ -195,8 +193,6 @@ class RecebimentosController < ApplicationController
       @erros += "Data final inválida." if !Date.valid?(params[:datepicker2])
       @recebimentos           = []
       @recebimentos_excluidos = []
-     # @data_inicial = Date.today  - Date.today.day.days + 1.day
-     # @data_final   = Date.today
     end
     # if formas_selecionadas.include?(forma_cheque_id.to_s)
     #   @recebimentos_devolvidos = Recebimento.em_cheque.com_problema.entre_datas(@data_inicial,@data_final)

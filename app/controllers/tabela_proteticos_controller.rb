@@ -49,8 +49,8 @@ class TabelaProteticosController < ApplicationController
   end
 
   def destroy
-    if administracao
-      @tabela_protetico.destroy
+    if @administracao
+      @item.destroy
       redirect_to(tabela_proteticos_url)
     else
       protetico = @tabela_protetico.protetico

@@ -5,5 +5,17 @@ class TabelaProtetico < ActiveRecord::Base
   named_scope :por_descricao, :order=>:descricao
   named_scope :tabela_base , :conditions=>["protetico_id IS NULL"]
   
-  validates_numericality_of :valor, :only => [:create, :update], :message => "não numérico"
+  attr_accessor :valor_br
+
+  # validates_numericality_of :valor_br, :only => [:create, :update], :message => "não numérico"
+  
+  
+  def valor_br
+    self.valor_br = self.valor.real  
+  end
+  
+  def valor_br=(new_value='0')
+    valor_br = new_value
+    self.valor = valor_br.to_s.gsub('.','').sub(',','.')
+  end
 end
