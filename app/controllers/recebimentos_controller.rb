@@ -119,7 +119,7 @@ class RecebimentosController < ApplicationController
   end
 
   def update
-    if @recebimento.em_cheque?
+    if @recebimento.em_cheque? && @recebimento.cheque
       # @recebimento.data_pr_br             = params[:datepicker].to_date
       # @recebimento.valor_real             = params[:recebimento_valor_real]
       @recebimento.observacao             = params[:observacao]
@@ -139,7 +139,7 @@ class RecebimentosController < ApplicationController
     if @recebimento.update_attributes(params[:recebimento]) 
       @recebimento.verifica_fluxo_de_caixa
       
-      if @recebimento.em_cheque?
+      if @recebimento.em_cheque? && @recebimento.cheque
         @recebimento.cheque.save
       end
       #TODO fazer redirect_to back votlar para a presquisa feita com dados

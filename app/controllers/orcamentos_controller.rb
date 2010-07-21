@@ -51,7 +51,7 @@ class OrcamentosController < ApplicationController
   def update
     @orcamento = Orcamento.find(params[:id])
     @orcamento.data = params[:datepicker].to_date
-    @orcamento.vencimento_primeira_parcela = params[:datepicker2].to_date
+    @orcamento.vencimento_primeira_parcela = params[:datepicker2].to_date if params[:datepicker2] && Date.valid?(params[:datepicker2])
     @orcamento.data_de_inicio = params[:datepicker3].to_date unless params[:datepicker3].blank?
     
     if @orcamento.update_attributes(params[:orcamento])
