@@ -8,8 +8,14 @@
 first:
   paciente: marcio
   valor: 50
+  tratamento_id: nil
   
 excluido:
   paciente: marcio
   valor: 35
   data_de_exclusao: <%= Time.current - 1.day %>
+  
+tratamento:
+  paciente: marcio
+  valor: 45
+  tratamento_id: 1

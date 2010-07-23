@@ -80,6 +80,11 @@ class Recebimento < ActiveRecord::Base
     !data_de_exclusao.nil?
   end
   
+  def pode_excluir?
+    true
+    #TODO falta implementar isoto considerando 15 dias
+  end
+  
   def observacao_do_recebimento
     if self.observacao.nil? 
       if self.em_cheque?

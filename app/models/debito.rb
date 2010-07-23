@@ -19,4 +19,8 @@ class Debito < ActiveRecord::Base
   def excluido?
     self.data_de_exclusao.present?
   end 
+  
+  def pode_excluir?
+    self.tratamento_id.nil?
+  end
 end

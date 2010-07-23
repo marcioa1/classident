@@ -12,4 +12,12 @@ describe Debito do
     deb = debitos(:excluido)
     deb.should be_excluido
   end
+  
+  it "deve saber se o débito pode ser excluido ou não" do
+    debito = debitos(:tratamento)
+    debito.should_not be_pode_excluir
+    pode = debitos(:first)
+    pode.should be_pode_excluir
+  end
+  
 end

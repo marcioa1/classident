@@ -38,10 +38,12 @@ class DebitosController < ApplicationController
   end
 
   def destroy
-    @debito.data_de_exclusao = Date.today
-    @debito.save
+    if @debito.pode_excluir?
+      @debito.data_de_exclusao = Date.today
+      @debito.save
 
-    redirect_to(abre_paciente_path(:id=>@debito.paciente_id)) 
+      redirect_to(abre_paciente_path(:id=>@debito.paciente_id)) 
+    end
   end
   
   def pacientes_em_debito
