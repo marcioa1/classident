@@ -12,6 +12,7 @@ class Cheque < ActiveRecord::Base
   
   named_scope :por_bom_para, :order=>:bom_para
   named_scope :com_destinacao, :conditions=>["destinacao_id IS NOT NULL"]
+  named_scope :da_agencia, lambda{|agencia| {:conditions=>["agencia=?",agencia]}}
   named_scope :da_clinica, lambda{|clinica_id| {:conditions=>["clinica_id=?",clinica_id]}}
   named_scope :devolvidos, lambda{|data_inicial, data_final| 
       {:conditions=>["data_Reapresentacao IS NULL and data_primeira_devolucao between ? and ?", data_inicial, data_final]}}

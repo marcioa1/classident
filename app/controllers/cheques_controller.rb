@@ -181,9 +181,13 @@ class ChequesController < ApplicationController
     @bancos = Banco.por_nome.collect{|obj| [obj.nome, obj.id.to_s]}
     if @administracao
       @cheques = Cheque.na_administracao.do_banco(params[:banco])
-    else
+    else 
       @cheques = Cheque.da_clinica(session[:clinica_id]).do_banco(params[:banco])
     end
+    if params[:agencia] && !params[:agencia].blank?
+      @cheques = @cheques.da_agencia(params[:agencia])
+    end
     @cheques = @cheques.do_valor(params[:valor].gsub(",",".")) if !params[:valor].blank?
+    
   end
 end

@@ -4,12 +4,14 @@
     <table class='transparente'>
       <tr>
         <td>Banco</td>
+        <td>Agência</td>
         <td>Número</td>
         <td>Valor</td>
         <td>&nbsp;</td>
       </tr>
       <tr>
         <td><%= select_tag :banco, options_for_select(@bancos.insert(0, ''), params[:banco] )%></td>
+        <td><%= text_field_tag :agencia, params[:agencia], :size=>10 %></td>
         <td><%= text_field_tag :numero, params[:numero], :size=>10 %></td>
         <td><%= text_field_tag :valor, params[:valor], :size=>10 %></td>
         <td><%= submit_tag "Pesquisar"%></td>
@@ -35,8 +37,8 @@
       <tr>
         <td><%= cheque.id %></td>
         <td><%= cheque.banco.nome %></td>
-        <td><%=cheque.agencia%></td>
-        <td><%=cheque.numero%></td>
+        <td><%=cheque.agencia %></td>
+        <td><%=cheque.numero %></td>
         <td><%=cheque.bom_para.to_s_br%></td>
         <td align='right'><%=cheque.valor.real%></td>
         <td><%= cheque.nome_dos_pacientes  %></td>
