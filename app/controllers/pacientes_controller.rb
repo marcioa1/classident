@@ -99,7 +99,7 @@ class PacientesController < ApplicationController
     result = []
     nomes.each do |nome|
       if administracao
-        result << nome.nome + '-' + Clinica.find(nome.clinica_id).sigla
+        result << nome.nome + ', ' + Clinica.find(nome.clinica_id).sigla
       else
         result << nome.nome 
       end      
@@ -108,15 +108,13 @@ class PacientesController < ApplicationController
   end
   
   def abre
-    debugger
     if params[:nome]
-      nome_sem_clinica = params[:nome].split('-')[0].strip
+      nome_sem_clinica = params[:nome].split(',')[0].strip
       @paciente = Paciente.find_by_nome(nome_sem_clinica)
     else
       @paciente = Paciente.find(params[:id])
     end
     @indicacoes           = Indicacao.por_descricao.collect{|obj| [obj.descricao, obj.id]}
-debugger
     @pendentes_protetico  = TrabalhoProtetico.pendentes.do_paciente(@paciente.id)
     @devolvidos_protetico = TrabalhoProtetico.devolvidos.do_paciente(@paciente.id) 
     @orcamentos           = @paciente.orcamentos

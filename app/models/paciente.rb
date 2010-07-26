@@ -45,7 +45,7 @@ class Paciente < ActiveRecord::Base
   def extrato
     result = []
     recebimentos.each do |recebimento|
-      result << recebimento unless recebimento.excluido?
+      result << recebimento unless (recebimento.excluido? or (recebimento.em_cheque? && recebimento.cheque && recebimento.cheque.com_problema?))
     end
     result = (result + debitos_nao_excluidos).sort { |a,b| a.data<=>b.data }
   end
@@ -125,6 +125,13 @@ class Paciente < ActiveRecord::Base
         alta.save
         self.altas << alta
       end
+    end
+  end
+  
+  def cheques_devolvidos
+    devovidos = []
+    self.recebimento.each do |recebimento|
+      devolvidos << recebimento.cheque if recebimento.em_cheque? && recebimento.cheque.com_problema?
     end
   end
 

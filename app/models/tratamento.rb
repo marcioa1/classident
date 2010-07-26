@@ -70,7 +70,7 @@ class Tratamento < ActiveRecord::Base
     else
       if self.orcamento.em_aberto?
         self.orcamento.data_de_inicio = self.data
-        self.orcamento.save
+        Debito.cria_debitos_do_orcamento(@orcamento.id) unless @orcamento.data_de_inicio.nil?
       end
     end
     if paciente.em_alta?
