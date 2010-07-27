@@ -136,9 +136,17 @@ function abre_pagamento(id){
 }
 
 function pesquisa_disponiveis(){
-   $.getJSON("/cheques/busca_disponiveis?valor=" + $("#pagamento_valor_pago").val(), function(data){
-    $("#lista_de_cheques").replaceWith("<span id='lista_de_cheques'>" + data + "</span>");
-    });
+  jQuery.ajax({
+     url : "/cheques/busca_disponiveis",
+     type: 'GET',
+     data: {valor: $("#pagamento_valor_pago_real").val()},
+     success: function(data){
+       $("#lista_de_cheques").replaceWith("<span id='lista_de_cheques'>" + data + "</span>");
+     }
+  });
+   // $.getJSON("/cheques/busca_disponiveis?valor=" + $("#pagamento_valor_pago_real").val(), function(data){
+   //   $("#lista_de_cheques").replaceWith("<span id='lista_de_cheques'>" + data + "</span>");
+   //   });
 }
 
 function formata_valor(elemento){
@@ -151,9 +159,8 @@ function formata_valor(elemento){
 
 function seleciona_todas_as_formas_de_recebimento(){
 	if ($('#todas').is(':checked')){
-    $("input[name$='forma_recebimento']").attr('checked', true);
+    $("input[name*='forma']").attr('checked',true);
   } else{
-	  $("input[name$='forma_recebimento']").attr('checked', false);
-	
+    $("input[name*='forma']").attr('checked',false);
   }
 }

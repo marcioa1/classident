@@ -162,8 +162,9 @@ class ChequesController < ApplicationController
     if @administracao
       @cheques = Cheque.disponiveis_na_administracao.por_valor.menores_que(params[:valor]);
     else
-      @cheques = Cheque.da_clinica(session[:clinica_id]).disponiveis_na_clinica.por_valor.menores_que(params[:valor]);
+      @cheques = Cheque.da_clinica(session[:clinica_id]).disponiveis_na_clinica.por_valor.menores_ou_igual_a(params[:valor]);
     end
+    @cheques = @cheques.all(:limit => 50)
     result = "<table >"
     result += "<tr><th>Bom para</th><th>valor</th><th>Paciente</th><th>&nbsp;</th></tr>"
     @cheques.each() do |cheque|
@@ -174,6 +175,7 @@ class ChequesController < ApplicationController
       result += "</tr>"
     end
     result += "</table>"
+    debugger
     render :json =>result.to_json
   end
   

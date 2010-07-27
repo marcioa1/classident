@@ -43,12 +43,12 @@ class RecebimentosController < ApplicationController
         @recebimento.errors.add(:numero, 'do cheque não pode ser branco') if !@cheque.numero.present?
         @recebimento.errors.add(:valor, ' do cheque não pode ser branco') if !@cheque.valor.present?
       end
-      if params[:segundo_paciente].present?
+      if params[:paciente_id_2].present?
         if !Recebimento::FORMATO_VALIDO_BR.match(params[:valor_segundo_paciente])
           @recebimento.errors.add("Formato do valor do segundo paciente ")
        else
          @recebimento2                       = Recebimento.new
-         @recebimento2.paciente_id           = params[:id_segundo_paciente]
+         @recebimento2.paciente_id           = params[:paciente_id_2]
          @recebimento2.valor                 = params[:valor_segundo_paciente].gsub('.','').gsub(',','.')
          @recebimento2.observacao            = params[:observacao_paciente_2]
          @recebimento2.formas_recebimento_id = @recebimento.formas_recebimento_id
@@ -57,12 +57,12 @@ class RecebimentosController < ApplicationController
          @recebimento2.cheque                = @cheque
        end
      end
-      if params[:terceiro_paciente].present?
+      if params[:paciente_id_3].present?
         if !Recebimento::FORMATO_VALIDO_BR.match(params[:valor_terceiro_paciente])
           @recebimento.errors.add("Formato do valor do segundo paciente ")
         else
           @recebimento3                       = Recebimento.new
-          @recebimento3.paciente_id           = params[:id_terceiro_paciente]
+          @recebimento3.paciente_id           = params[:paciente_id_3]
           @recebimento3.valor                 = params[:valor_terceiro_paciente].gsub('.','').gsub(',','.')
           @recebimento3.observacao            = params[:observacao_paciente_3]
           @recebimento3.formas_recebimento_id = @recebimento.formas_recebimento_id
@@ -262,6 +262,15 @@ class RecebimentosController < ApplicationController
     end
   end
 
+  def pesquisa_nomes
+     nomes = Paciente.all(:select=>'id,nome', :conditions=>["nome like ? and clinica_id = ? ", "#{params[:term].nome_proprio}%", session[:clinica_id] ])  
+     result = []
+     nomes.each do |nome|
+       result << nome.nome
+     end
+     render :json => result.to_json
+   end
+
   protected
   
   def monta_cheque
@@ -284,4 +293,6 @@ class RecebimentosController < ApplicationController
   def busca_recebimento
     @recebimento = Recebimento.find(params[:id])
   end  
+  
+ 
 end

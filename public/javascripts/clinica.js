@@ -188,3 +188,15 @@ function finalizar_tratamento(tratamento_id){
            window.location.reload();
          }});
 }
+
+function busca_id(numero){
+  $.ajax({
+    url  : "/pacientes/busca_id_do_paciente",
+    type : 'GET',
+    data : {nome: $('#paciente_'+numero).val()},
+    success : function(data){
+      $('#paciente_id_' + numero).val(data);
+    }
+    }
+  )
+}

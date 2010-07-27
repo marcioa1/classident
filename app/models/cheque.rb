@@ -41,6 +41,7 @@ class Cheque < ActiveRecord::Base
   named_scope :recebidos_na_administracao, lambda{|data_inicial, data_final| 
           {:conditions=>["data_recebimento_na_administracao between ? and ?", data_inicial, data_final]}}
   named_scope :por_valor, :order=>"valor desc"
+  named_scope :menores_ou_igual_a, lambda{|valor| {:conditions=>["valor<=?", valor]}}
   named_scope :menores_que, lambda{|valor| {:conditions=>["valor<?", valor]}}
   named_scope :sem_segunda_devolucao, :conditions=>["data_segunda_devolucao IS NULL"]
   named_scope :sem_solucao, :conditions=>['data_solucao IS NULL']
@@ -82,7 +83,7 @@ class Cheque < ActiveRecord::Base
   #   end
   
   def com_problema?
-    self.limpo?
+    !self.limpo?
   end
   
   def devolvido_uma_vez?

@@ -1,4 +1,39 @@
 <% content_for :main do %>
+
+<script type="text/javascript">
+  $(function() {
+      $("#paciente_2").autocomplete({
+        source: "pesquisa_nomes",
+        minLength: 6,
+        maxRows: 5,
+        select: function(event,ui){
+          nome = ui.item.value;
+          $("#segundo_paciente").val(nome);
+          busca_id(2);
+          diferenca = parseFloat($('#valor_do_cheque').val()) - parseFloat($("#recebimento_valor_real").val());
+          $('#valor_segundo_paciente').val(diferenca);
+        }
+      });
+    });
+    
+    $(function() {
+        $("#paciente_3").autocomplete({
+          source: "pesquisa_nomes",
+          minLength: 6,
+          maxRows: 5,
+          select: function(event,ui){
+            nome = ui.item.value;
+            $("#segundo_paciente").val(nome);
+            busca_id(3);
+            diferenca = parseFloat($('#valor_do_cheque').val()) - parseFloat($("#recebimento_valor_real").val()) - parseFloat($('#valor_segundo_paciente').val());
+            $('#valor_terceiro_paciente').val(diferenca);
+          }
+        });
+      });
+    
+</script>
+
+
 <fieldset class="fieldset_40">
 <legend>Novo recebimento</legend>
 
@@ -65,9 +100,12 @@
     </tr>
     <tr>
       <td align='right'><%= label_tag :segundo_paciente %> : </td>
-      <td><%= text_field_tag :segundo_paciente,params[:segundo_paciente], :size=>30 %>
-        <%= hidden_field_tag :id_segundo_paciente , params[:id_segundo_paciente] %> 
-        <%= link_to "pesquisar", "#" , :onclick=>"busca_pacientes_que_iniciam_com('segundo_paciente')"%>
+      <td>
+        <div class="ui-widget">
+          <input id="paciente_2" size="40" class="ui-autocomplete-input" onblur="busca_id(2);">
+        </div>
+        <%= hidden_field_tag :paciente_id_2, params[:paciente_id_2] %> 
+        
       </td>
     </tr>
     <tr id='linha_segundo_paciente' style='display:none;'>
@@ -79,7 +117,8 @@
     </tr>
     <tr>
       <td align='right'><%= label_tag :valor %> : </td>
-      <td><%= text_field_tag :valor_segundo_paciente , params[:valor_segundo_paciente] ,:size=>10 %></td>
+      <td>
+      <%= text_field_tag :valor_segundo_paciente , params[:valor_segundo_paciente] ,:size=>10 %></td>
     </tr>
     <tr>
       <td align='right'><%= label_tag :observação %> : </td>
@@ -90,9 +129,11 @@
     </tr>
     <tr>
       <td align='right'><%= label_tag :terceiro_paciente %> : </td>
-      <td><%= text_field_tag :terceiro_paciente, params[:terceiro_paciente], :size=>30 %>
-        <%= hidden_field_tag :id_terceiro_paciente , 0 %>
-        <%= link_to "pesquisar", "#" , :onclick=>"busca_pacientes_que_iniciam_com('terceiro_paciente')"%></td>
+      <td><div class="ui-widget">
+        <input id="paciente_3" size="40" class="ui-autocomplete-input" onblur="busca_id(3);">
+      </div>
+      <%= hidden_field_tag :paciente_id_3, params[:paciente_id_3] %> 
+      </td>
     </tr>
      <tr id='linha_terceiro_paciente' style='display:none;'>
         <td>&nbsp;</td>
@@ -121,4 +162,6 @@
 
 <%= link_to 'voltar', abre_paciente_path(:id=>@recebimento.paciente_id) %>
 </fieldset >
+
 <% end %>
+

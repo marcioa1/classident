@@ -30,7 +30,8 @@ ActionController::Routing::Routes.draw do |map|
                   :collection=>{:relatorio=>:get, :aproveitamento=>:get, :monta_tabela_de_parcelas => :get}
   map.resources :pacientes, 
                   :collection=>{:pesquisa=>:get,:nomes_que_iniciam_com=>:get, 
-                                :pesquisa_nomes=> :get, :retorna_paciente_por_nome=>:get},
+                                :pesquisa_nomes=> :get, :retorna_paciente_por_nome=>:get,
+                                :busca_id_do_paciente=>:get},
                   :member => {:abre=>:get}
 
   map.administracao "administracao", :controller=>"administracao", :action=>"index"
@@ -40,7 +41,7 @@ ActionController::Routing::Routes.draw do |map|
         :collection=>{:busca_tabela=>:get, :relatorio=>:get, :trabalhos_por_clinica => :get, 
                       :busca_proteticos_da_clinica => :get, :pagamentos_feitos => :get}
   map.resources :recebimentos, 
-                   :collection=>{:relatorio=>:get, :das_clinicas=>:get, :entradas_no_mes=>:get},
+                   :collection=>{:relatorio=>:get, :das_clinicas=>:get, :entradas_no_mes=>:get, :pesquisa_nomes=> :get},
                    :member => {:exclui => :post}
   map.resources :tabelas, :collection=>{:print=>:get },
                   :member => {:reativar => :get}

@@ -129,10 +129,11 @@ class Paciente < ActiveRecord::Base
   end
   
   def cheques_devolvidos
-    devovidos = []
-    self.recebimento.each do |recebimento|
+    devolvidos = []
+    self.recebimentos.each do |recebimento|
       devolvidos << recebimento.cheque if recebimento.em_cheque? && recebimento.cheque.com_problema?
     end
+    devolvidos
   end
 
 end
