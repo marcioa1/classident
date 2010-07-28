@@ -1,3 +1,11 @@
+jQuery(function() {
+$.loading({
+   onAjax: true,
+   text: 'Carregando...',
+   mask: true
+ });
+});
+ 
 function confirma_recebimento_de_cheque(){
     var selecionados = "";
     var chk = $('input:checkbox');

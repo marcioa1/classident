@@ -114,13 +114,7 @@ class OrcamentosController < ApplicationController
     numero_de_parcelas = params[:numero_de_parcelas].to_i
     data               = params[:data_primeira_parcela].to_date if Date.valid?(params[:data_primeira_parcela])
     valor              = (params[:valor_da_parcela].to_f / numero_de_parcelas).real
-    result = "<div id='parcelas' style='padding-left: 14em; padding-top: 1em;'><table><tr><th>N. parcela</th><th>Data</th><th>Valor</th></tr>"
-    #TODO colocar esta motnagem num helper
-    (1..numero_de_parcelas).each do |parcela|
-      result += "<tr><td align='center'>#{parcela}</td><td>#{data.to_s_br}</td><td>#{valor}</td></tr>"
-      data   += 1.month
-    end
-    result += "</table></div>"
+    result = Orcamento.monta_tabela_de_parcelas(numero_de_parcelas,data,valor)
     render :json => result.to_json  
   end
   

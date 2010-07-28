@@ -11,7 +11,11 @@ jQuery(function() {
     $("#datepicker5").datepicker();
     $("#datepicker6").datepicker();
     $(".datepicker").datepicker();
+    
+ 
 })
+
+
 
 function outra_clinica(){
     $("#seleciona_clinica").show();
