@@ -27,6 +27,15 @@
 <% else %>
   <body style='background-color: #E6EDF8;'>
 <% end %>
+<script>
+$(document).ready(function() {
+  $.loading({
+    onAjax: true,
+    text: 'Carregando...',
+    mask: true
+  });
+});
+</script>
 <div id="container">
     <div id="cabecalho">
       <div id="logo"><%= image_tag "logo2.jpg"%>
