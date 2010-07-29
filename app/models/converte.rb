@@ -359,7 +359,7 @@ class Converte
         dentista.cro             = registro[2].strip
         dentista.cro             = '?' if dentista.cro.blank?
         dentista.ativo           = registro[5] == 'True'
-        dentista.percentual      = registro[4].sub(",",".") unless registro[4].blank?
+        dentista.percentual      = registro[4].sub(",",".") unless registro[4].blank? or registro[4].nil?
         dentista.especialidade   = registro[3]
         dentista.save
         @clinica.dentistas << dentista
@@ -496,9 +496,9 @@ class Converte
         t.data            = registro[8].to_date if Date.valid?(registro[8])
         
         if Date.valid?(registro[5])
-          t.bom_para        = registro[5].to_date 
+          t.bom_para      = registro[5].to_date 
         else
-          t.bom_para        = t.data
+          t.bom_para      = t.data
         end
         t.valor           = le_valor(registro[6])
        
@@ -542,15 +542,13 @@ class Converte
         if recebimento
           recebimento.update_attribute(:cheque_id , t.id)
         end
-       #FIXME Tratar o segundo paciente do cheque
         if paciente2
-          debugger
-          recebimentos = Recebimento.find_all_by_clinica_id_and_cheque_id(@clinica.id, t.cheque_id)
+          recebimentos = Recebimento.find_all_by_clinica_id_and_cheque_id(@clinica.id, t.id)
           recebimentos.each do |rec|
             rec.update_attribute(:cheque_id,  t.id)
             # rec.observacao = t.banco.nome + " - " + t.numero if !recebimento.observacao.present?
           end
-          end
+        end
       rescue Exception => ex
         @arquivo.puts line + "\n"+ "      ->" + ex
       end
@@ -878,7 +876,7 @@ class Converte
         t.data_de_pagamento = registro[3].to_date if Date.valid?(registro[3])
         t.sequencial        = registro[6].to_i
         t.valor_pago        = le_valor(registro[11])
-        t.observacao        = registro[4].gsub('"', '')
+        t.observacao        = registro[4].gsub('"', '') unless registro[4].blank?
         t.valor_restante    = le_valor(registro[13]) unless registro[13].blank?
         t.valor_cheque      = le_valor(registro[11]) unless registro[11].blank?
         t.valor_terceiros   = le_valor(registro[10]) unless registro[10].blank?
@@ -956,6 +954,7 @@ class Converte
     if val.at(0) == 'R'
       val = val.split(' ')[1]
     end
+    return 0 if val.nil? || val.blank?
     aux = val.sub(".","")
     aux = val.sub(",",".")
     return aux
