@@ -26,13 +26,17 @@ def index
   # converte.tabela_protetico
   # converte.trabalho_protetico
   # converte.alta
-  converte.adm_tipo_pagamento
-  converte.adm_pagamento
+  # converte.adm_tipo_pagamento
+  # converte.adm_pagamento
   converte.adm_cheques
   puts "Término da conversão."
 end
 
 def cheque_adm
+  @arquivo = File.open('doc/erros de conversao.txt', 'a')  
+  @arquivo.puts '                '
+  @arquivo.puts "Preparando arquivo de cheques adm em #{Time.current}"
+  
   puts "Convertendo cheques na administração ...."
   f = File.open("doc/convertidos/adm_cheque.txt" , "r")
   n = File.open("doc/convertidos/adm_cheque_bom.txt" , "w")
@@ -40,25 +44,31 @@ def cheque_adm
   end_of_file = false
   line        = f.gets
   while !end_of_file 
-    good       = line
-    next_line  = f.gets
-    has_number = "0123456789".include?(next_line[0])
-    if has_number
-      n.puts line
-      line = next_line
-    else
-      while !has_number
-        good = good[0..good.size-3] + '. ' + next_line
-        next_line  = f.gets
-        has_number = "0123456789".include?(next_line[0])
-      end    
-      n.puts good
-      line = next_line
-    end
-  end
-  puts good
+    begin
+      good       = line
+      end_of_file = !(next_line  = f.gets)
+      has_number = "0123456789".include?(next_line[0])
+      if has_number
+        n.puts line
+        line = next_line
+      else
+        while !has_number
+          good = good[0..good.size-3] + '. ' + next_line
+          end_of_file = !(next_line  = f.gets)
+          has_number = "0123456789".include?(next_line[0])
+        end    
+        n.puts good
+        puts good
+        line = next_line
+      end
+    rescue Exception => ex
+      @arquivo.puts line + "\n"+ "      ->" + ex
+    end # begin
+  end #while
+  n.puts line
   f.close
   n.close
+  @arquivo.close
 end
 
 private

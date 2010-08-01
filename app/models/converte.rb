@@ -836,7 +836,7 @@ class Converte
             cheque.data_destinacao          = data_destinacao
             if pagamento > 0
               reg_pagamento = Pagamento.find_by_clinica_id_and_sequencial(clinica.id, pagamento)
-              cheque.pagamento = reg_pagamento.id if reg_pagamento.present?
+              cheque.pagamento_id = reg_pagamento.id if reg_pagamento.present?
             end
             # cheque.devolvido              = devolvido
             cheque.data_primeira_devolucao   = data_devolucao
