@@ -1,4 +1,5 @@
 class Pagamento < ActiveRecord::Base
+  acts_as_audited
   belongs_to :clinica
   belongs_to :tipo_pagamento
   has_many :cheques

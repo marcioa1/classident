@@ -1,4 +1,5 @@
 class TrabalhoProtetico < ActiveRecord::Base
+  acts_as_audited
   belongs_to :paciente
   belongs_to :dentista
   belongs_to :tabela_protetico

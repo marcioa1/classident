@@ -1,5 +1,5 @@
 class TipoPagamento < ActiveRecord::Base
-  
+  acts_as_audited
   has_many :pagamentos
   
   validates_presence_of :nome

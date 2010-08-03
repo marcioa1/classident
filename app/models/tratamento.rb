@@ -1,4 +1,5 @@
 class Tratamento < ActiveRecord::Base
+  acts_as_audited
   belongs_to :paciente
   belongs_to :item_tabela
   belongs_to :dentista

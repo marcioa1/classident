@@ -1,4 +1,5 @@
 class Dentista < ActiveRecord::Base
+  acts_as_audited
   has_many :tratamentos
   has_and_belongs_to_many :clinicas
   has_many :trabalho_proteticos

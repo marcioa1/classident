@@ -1,6 +1,6 @@
 class User < ActiveRecord::Base
   acts_as_authentic
-  
+  acts_as_audited
   belongs_to :tipo_usuario
   has_and_belongs_to_many :clinicas
   belongs_to :alta

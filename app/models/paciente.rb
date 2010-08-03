@@ -1,4 +1,5 @@
 class Paciente < ActiveRecord::Base
+  acts_as_audited
   belongs_to :tabela
   has_many :altas
   has_many :tratamentos

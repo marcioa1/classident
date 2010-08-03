@@ -1,5 +1,6 @@
 class FluxoDeCaixa < ActiveRecord::Base
   
+  acts_as_audited
   named_scope :da_clinica, lambda{|clinica_id| {:conditions=>["clinica_id=?", clinica_id]}}
   named_scope :saldo_na_data, lambda{|data| {:conditions=>['data = ?', data]}}
   named_scope :por_data, :order => 'data desc'

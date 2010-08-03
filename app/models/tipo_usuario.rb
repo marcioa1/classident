@@ -1,4 +1,5 @@
 class TipoUsuario < ActiveRecord::Base
+  acts_as_audited
   has_many :users
 
   named_scope :master, :conditions=>["nivel==0"]

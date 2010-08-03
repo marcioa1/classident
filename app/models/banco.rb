@@ -1,4 +1,5 @@
 class Banco < ActiveRecord::Base
+  acts_as_audited
   has_many :cheques
   
   validates_presence_of :numero, :message => "não pode ser vazio"

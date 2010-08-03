@@ -1,4 +1,5 @@
 class Cheque < ActiveRecord::Base
+  acts_as_audited
   has_many   :recebimentos
   belongs_to :banco
   belongs_to :destinacao

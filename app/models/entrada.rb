@@ -1,5 +1,5 @@
 class Entrada < ActiveRecord::Base
-  
+  acts_as_audited  
   belongs_to :clinica
   
   named_scope :da_clinica, lambda{|clinica_id| {:conditions=>["clinica_id = ?", clinica_id]}}

@@ -1,4 +1,5 @@
 class Tabela < ActiveRecord::Base
+  acts_as_audited
   has_many   :item_tabelas
   has_many   :pacientes
   belongs_to :clinica

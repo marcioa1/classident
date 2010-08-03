@@ -1,4 +1,5 @@
 class Clinica < ActiveRecord::Base
+  acts_as_audited
   has_and_belongs_to_many :users
   has_many :pagamentos
   has_and_belongs_to_many :dentistas

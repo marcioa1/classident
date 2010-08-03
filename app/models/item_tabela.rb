@@ -1,4 +1,5 @@
 class ItemTabela < ActiveRecord::Base
+  acts_as_audited
   belongs_to    :tabela
   has_many      :precos
   has_many      :tratamentos

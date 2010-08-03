@@ -1,4 +1,5 @@
 class Orcamento < ActiveRecord::Base
+  acts_as_audited
   belongs_to :paciente
   belongs_to :dentista
   belongs_to :paciente

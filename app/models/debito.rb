@@ -1,4 +1,5 @@
 class Debito < ActiveRecord::Base
+  acts_as_audited
   belongs_to :paciente
   
   validates_presence_of :valor, :only => [:create, :update], :message => "campo obrigatório"

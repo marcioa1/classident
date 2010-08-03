@@ -1,10 +1,9 @@
 class Recebimento < ActiveRecord::Base
+  acts_as_audited
   belongs_to :paciente
   belongs_to :formas_recebimento
   belongs_to :clinica
   belongs_to :cheque
-  
-  acts_as_audited
    
   usar_como_dinheiro :valor
   FORMATO_VALIDO_BR  	=  	/^([R|r]\$\s*)?(([+-]?\d{1,3}(\.?\d{3})*))?(\,\d{0,2})?$/

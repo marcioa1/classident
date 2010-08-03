@@ -1,4 +1,5 @@
 class TabelaProtetico < ActiveRecord::Base
+  acts_as_audited
   belongs_to :protetico
   has_many   :trabalho_proteticos
   
