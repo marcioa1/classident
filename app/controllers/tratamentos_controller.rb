@@ -22,6 +22,7 @@ class TratamentosController < ApplicationController
       @tratamento.dente       = dente
       @tratamento.clinica_id  = session[:clinica_id]
       @tratamento.excluido    = false
+      @tratamento.data        = params[:data_de_termino].to_date if Date.valid?(params[:data_de_termino])
       if @tratamento.save 
         if !@tratamento.data.nil?
           @tratamento.finalizar_procedimento(current_user)

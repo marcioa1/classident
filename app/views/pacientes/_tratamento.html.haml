@@ -58,7 +58,7 @@
         = tratamento.dentista.nome unless tratamento.dentista.nil?
       %td{ :align => "center" }
         - if tratamento.data.to_s_br.blank?
-        %span{ :id => "finalizar_#{tratamento.id.to_s}" }
+          %span{ :id => "finalizar_#{tratamento.id.to_s}" }
           = link_to "finalizar", "#", :onclick=>'finalizar_tratamento(' + tratamento.id.to_s + ')'
         - else
           = tratamento.data.to_s_br

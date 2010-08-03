@@ -26,6 +26,18 @@ class Tratamento < ActiveRecord::Base
   validates_presence_of :dentista,  :message => "não pode ser vazio."
   validates_presence_of :dente,     :message => "can't be blank"
   
+  attr_accessor :data_termino_br
+  
+  def data_termino_br
+    self.data ? self.data.to_s_br : '' 
+  end
+  
+  def data_termino_br=(value)
+    if Date.valid?(value)
+      self.data = value.to_date
+    end
+  end
+  
   def self.valor_a_fazer(paciente_id)
     Tratamento.sum(:valor, :conditions=>["paciente_id = ? and data IS NULL and excluido  = ? and orcamento_id IS NULL", paciente_id, false])
   end
