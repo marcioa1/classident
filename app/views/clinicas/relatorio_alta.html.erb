@@ -21,7 +21,7 @@
 	  <% @altas.each do |alta| %>
 	    <tr>
 	      <td><%= alta.data_inicio.to_s_br %></td>
-	      <td><%= alta.paciente.nome if paciente.present?%></td>
+	      <td><%= alta.paciente.nome if alta.paciente.present? %></td>
 	      <td><%= alta.observacao %></td>
 	      <td><%= alta.data_termino.to_s_br %></td>
 	    </tr>

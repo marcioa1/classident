@@ -17,7 +17,7 @@
     <td><%= cheque.clinica.nome %></td>
     <td><%= cheque.nome_dos_pacientes %></td>
     <td align="center"><%= cheque.bom_para.to_s_br %></td>
-    <td><%= cheque.banco.nome %></td>
+    <td><%= cheque.banco && cheque.banco.nome %></td>
     <td align="right"><%= cheque.valor.real %></td>
     <td align="center"><%= check_box_tag cheque.id.to_s %></td>
   </tr>

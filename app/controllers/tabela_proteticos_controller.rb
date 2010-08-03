@@ -53,7 +53,7 @@ class TabelaProteticosController < ApplicationController
       @item.destroy
       redirect_to(tabela_proteticos_url)
     else
-      protetico = @tabela_protetico.protetico
+      protetico = @item.protetico
       redirect_to(abre_protetico_path(protetico)) 
     end
   end
