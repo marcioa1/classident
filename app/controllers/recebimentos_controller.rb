@@ -5,7 +5,7 @@ class RecebimentosController < ApplicationController
   before_filter :require_user
   before_filter :verifica_horario_de_trabalho
   before_filter :busca_bancos_e_forma_de_recebimento, :only=>[:new, :edit]
-  before_filter :busca_recebimento, :only => [:show, :edit, :update, :exclui, :destroy]
+  before_filter :busca_recebimento, :only => [:show,  :update, :exclui, :destroy]
   
   def index
     @recebimentos = Recebimento.all(:limit=> 50,:order => 'created_at desc')
@@ -24,11 +24,11 @@ class RecebimentosController < ApplicationController
   end
 
   def edit
-    @cheque    = @recebimento.cheque
-    @paciente  = @recebimento.paciente
-    if @recebimento.cheque.nil?
-      @recebimento.cheque = Cheque.new
-    end
+    # @cheque    = @recebimento.cheque
+    #   @paciente  = @recebimento.paciente
+    #   if @recebimento.cheque.nil?
+    #     @recebimento.cheque = Cheque.new
+    #   end
   end
 
   def create

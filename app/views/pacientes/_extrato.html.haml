@@ -44,7 +44,7 @@
         %td
           &nbsp;
         %td{ :align => "right" }
-          = link_to lancamento.valor.real, edit_recebimento_path(lancamento)
+          = lancamento.valor.real
         - saldo += lancamento.valor
         - cor =  saldo > 0 ? "black" : "red"
         %td{ :align => "right", :style => "color: #{cor}" }
