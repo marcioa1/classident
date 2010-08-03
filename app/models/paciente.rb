@@ -136,4 +136,11 @@ class Paciente < ActiveRecord::Base
     devolvidos
   end
 
+  def telefones
+    result = ''
+    result += self.telefone if self.telefone
+    result += ' / '
+    result += self.celulat if self.celular
+    result
+  end
 end
