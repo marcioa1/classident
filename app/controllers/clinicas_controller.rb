@@ -83,7 +83,9 @@ class ClinicasController < ApplicationController
     pacientes.each do |pac|
       ultimo_tratamento = Tratamento.do_paciente(pac.paciente_id).entre(@primeira_data, @ultima_data).nao_excluido
       if !ultimo_tratamento.empty?
-        @abandonos << {:id => pac.paciente_id, :nome => Paciente.find(pac.paciente_id).nome, :ultima_intervencao => ultimo_tratamento.first.data }
+        paciente = Paciente.find(pac.paciente_id)
+        @abandonos << {:id => pac.paciente_id, :nome => paciente.nome, 
+                       :ultima_intervencao => ultimo_tratamento.first.data, :telefone => paciente.telefones }
       end
     end
   end

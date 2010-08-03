@@ -14,12 +14,14 @@
 <table>
   <tr>
     <th>Nome</th>
+    <th>Telefones</th>
     <th>Último registro</th>
   </tr>
 <% @abandonos.each do |abandono| %>
 <% debugger %>
   <tr>
     <td><%= link_to abandono[:nome], abre_paciente_path(abandono[:id]) %></td>
+    <td><%= abandono[:telefone] %></td>
     <td align='center'><%= abandono[:ultima_intervencao].to_s_br %></td>
   </tr>
 <% end %>
