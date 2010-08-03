@@ -12,7 +12,7 @@
 <% end %>
 </fieldset>
 <br/>
-<table>
+<table id="tabela" class="tabela">
   <tr>
     <th>Data</th>
     <th width="330px">Paciente</th>
@@ -24,7 +24,7 @@
   </tr>
 <% total = 0 %>
 <% @recebimentos.each do |recebimento| %>
-  <tr>
+  <tr >
     <td align="center"><%=h recebimento.data.to_s_br %></td>
     <td><%=h recebimento.paciente.nome %></td>
     <td align="right"><%=h recebimento.valor.real %></td>
@@ -50,7 +50,7 @@
 <% if @recebimentos_excluidos.size>0 %>
   <% @total = 0%>
     <h3>Recebimentos excluidos</h3>
-	<table>
+	<table class="zebra">
 	  <tr>
 	    <th>Data</th>
 	    <th width="180px">Paciente</th>

@@ -156,3 +156,26 @@ fieldset{
   color: white;
   padding-left: 1em;
 }
+
+.tabelas{
+  color: red;
+  background-color: red;
+}
+.zebra { 
+  background-color: #12ee31;
+  color: #000000;
+}
+tr.even {
+	background-color: #F6F6F6;
+}
+
+tr.odd {
+	background-color: #ffffff;
+}
+tbody th{
+	background:#455A79;
+	color: white;
+}
+
+.zebraUm{background-color:#E0E0E0}
+.zebraDois{background-color:white}
