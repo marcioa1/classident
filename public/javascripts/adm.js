@@ -107,8 +107,8 @@ function pagamento_protetico(){
     valor_a_pagar += parseFloat($('#valor_'+aux[2]).html());
   });
   var protetico_id = $("#protetico_id").val();
-  var url = "http://"+ window.location.host + "/pagamentos/registra_pagamento_a_protetico";
-  url    += "?ids='" + id_str + "'&valores='" + valor_str + "'&protetico_id=" + protetico_id;
+  var url = "http://"+ window.location.host + "/pagamentos/registra_pagamento_a_protetico" +
+     "?ids='" + id_str + "'&valores='" + valor_a_pagar + "' &protetico_id=" + protetico_id;
   alert(url);
   window.location = url;
 }

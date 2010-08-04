@@ -8,7 +8,7 @@
   <%= f.hidden_field :clinica_id %>
   <%= f.hidden_field :tratamento_id %>
   <p>
-    Tratamento : <%= @tratamento.descricao %>
+    Tratamento : <%= @tratamento.descricao if @tratamento %>
   </p>
   <p>
     <%= f.label :dentista_id %> :
