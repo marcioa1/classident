@@ -512,7 +512,10 @@ class Converte
         pagamento             = Pagamento.find_by_sequencial_and_clinica_id(registro[11].to_i, @clinica.id)
         t.pagamento_id        = pagamento.id if pagamento.present?
         if ['Verdadeiro', 'True', '1'].include?(registro[12])
-          t.data_entrega_administracao = registro[13].to_date if Date.valid?(registro[13])
+          if Date.valid?(registro[13])
+            t.data_entrega_administracao        = registro[13].to_date 
+            t.data_recebimento_na_administracao = t.data_entrega_administracao
+          end
         end
         if registro[14].to_i > 0
           paciente2      = @@pacientes[clinica_index + registro[14].to_i]
@@ -801,7 +804,7 @@ class Converte
   def adm_cheques
     abre_arquivo_de_erros('Cheques na Administação')
     puts "Convertendo cheques na administração ...."
-    f = File.open("doc/convertidos/adm_cheque.txt" , "r")
+    f = File.open("doc/convertidos/adm_cheque_bom.txt" , "r")
     @as_clinicas = Clinica.all
     @siglas      = @as_clinicas.map(&:sigla)
     @clinica = Clinica.administracao.first
