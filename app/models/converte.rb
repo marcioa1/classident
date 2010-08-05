@@ -512,7 +512,7 @@ class Converte
         pagamento             = Pagamento.find_by_sequencial_and_clinica_id(registro[11].to_i, @clinica.id)
         t.pagamento_id        = pagamento.id if pagamento.present?
         if ['Verdadeiro', 'True', '1'].include?(registro[12])
-          t.data_entrega_administracao = registro[13] if Date.valid?(registro[13])
+          t.data_entrega_administracao = registro[13].to_date if Date.valid?(registro[13])
         end
         if registro[14].to_i > 0
           paciente2      = @@pacientes[clinica_index + registro[14].to_i]
@@ -916,6 +916,28 @@ class Converte
     fecha_arquivo_de_erros('Tipo de Pagamento Administração')
   end
   
+  def adm_fluxo
+    abre_arquivo_de_erros('Fluxo de Caixa Administação')
+    puts "Convertendo fluxo de caixa na administração ...."
+    f        = File.open("doc/convertidos/adm_saldos.txt" , "r")
+    @clinica = Clinica.administracao.first
+    line     = f.gets
+    while line = f.gets 
+      begin
+        registro            = busca_registro(line)
+        t                   = FluxoDeCaixa.new
+        t.clinica_id        = @clinica.id
+        t.data              = registro[0].to_date
+        t.saldo_em_dinheiro = le_valor(registro[1])
+        t.saldo_em_cheque   = le_valor(registro[2])
+        t.save
+      rescue Exception => ex
+        @arquivo.puts line + "\n"+ "      ->" + ex
+      end
+    end
+    f.close
+    fecha_arquivo_de_erros('Fluxo de Caixa Administração')
+  end
   
   def inicia_arquivos_na_memoria
     # @@pacientes = Paciente.all(:select=> ['id, sequencial, clinica_id'])

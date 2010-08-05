@@ -21,7 +21,7 @@ def index
   # converte.fluxo_de_caixa 
   # converte.formas_recebimento 
   # converte.recebimento 
-  # converte.cheque 
+  converte.cheque 
   # converte.protetico
   # converte.tabela_protetico
   # converte.trabalho_protetico
@@ -29,6 +29,7 @@ def index
   # converte.adm_tipo_pagamento
   # converte.adm_pagamento
   converte.adm_cheques
+  # converte.adm_fluxo
   puts "Término da conversão."
 end
 
