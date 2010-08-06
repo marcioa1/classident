@@ -20,15 +20,17 @@ class FluxoDeCaixaController < ApplicationController
       end
     end
     if @administracao
-      @recebimentos = Cheque.por_bom_para.na_administracao.
+      @recebimentos = []
+      @cheques      = Cheque.por_bom_para.na_administracao.
                entre_datas(@fluxo.data,@fluxo.data).nao_excluidos
     else
       @recebimentos = Recebimento.da_clinica(session[:clinica_id]).no_dia(@fluxo.data).nao_excluidos
+      @cheques      = []
     end
     @pagamentos   = Pagamento.da_clinica(session[:clinica_id]).no_dia(@fluxo.data).no_livro_caixa
     @entradas     = Entrada.entrada.da_clinica(session[:clinica_id]).do_dia(@fluxo.data)
     @remessas     = Entrada.remessa.da_clinica(session[:clinica_id]).do_dia(@fluxo.data)
-    @lancamentos  = @recebimentos + @pagamentos + @entradas + @remessas 
+    @lancamentos  = @recebimentos + @pagamentos + @entradas + @remessas + @cheques
     @entradas_adm = []
     if @administracao
       @entradas_adm = Entrada.confirmado.do_dia(@fluxo.data)

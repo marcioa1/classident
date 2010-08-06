@@ -207,3 +207,10 @@ tbody th{
 .zebraDois{
   background-color:white
 }
+
+.identifica_paciente{
+  padding-top: 0.3em;
+  padding-left: 1em;
+  background-color: #E6EDF8;
+  font-size: 18px;
+}

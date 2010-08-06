@@ -28,9 +28,12 @@ module ApplicationHelper
      image_tag("http://chart.apis.google.com/chart?chs=200x125&amp;chxt=y&cht=lc&chtt=Correct (%)&chco=0077CC&amp;chd=t:"+ data)
    end
 
-   def alternate_row_class(cycle_name = :outer)
-     { :class => cycle(:odd, :even, :name => cycle_name) }
+   # def alternate_row_class(cycle_name = :outer)
+   #    { :class => cycle(:odd, :even, :name => cycle_name) }
+   #  end
+   
+   def identifica_paciente(paciente)
+     return "<p class='identifica_paciente'>Ficha do paciente (#{paciente.sequencial}) : <b>#{paciente.nome}</b> &nbsp;&nbsp;&nbsp;&nbsp; ( Tel.: #{paciente.telefones} )</p> "
    end
-
   
 end

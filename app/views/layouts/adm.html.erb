@@ -65,6 +65,7 @@ $(document).ready(function() {
         <br/><br/>
         <%= flash[:notice] %>
         <br/>
+        <%= @paciente && identifica_paciente(@paciente) %>
         <%= yield :main %>
         <%= yield :detail %>
     </div>

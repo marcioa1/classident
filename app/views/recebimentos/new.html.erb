@@ -43,11 +43,7 @@
   <%= f.hidden_field :clinica_id %>
   <table class='transparente'>
     <tr>
-      <td align='right'><%= f.label :paciente %> :</td>
-      <td><%= @paciente.nome %></td>
-    </tr>
-    <tr>
-      <td align='right'><%= f.label :data %></td>
+      <td align='right'><%= f.label :data %> :</td>
       <td><%= f.text_field :data_pt_br, :size=>10 , :class=>'datepicker'%></td>
     </tr>
     <tr>
@@ -65,7 +61,7 @@
     
   </table>
 
-  <div id="cheque" style="display:nonee;">
+  <div id="cheque" style="display:none;">
     <fieldset class='fieldset_35'>
     <legend> dados do cheque</legend>
   

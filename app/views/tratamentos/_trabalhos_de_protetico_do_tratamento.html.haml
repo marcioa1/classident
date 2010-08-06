@@ -1,6 +1,7 @@
 %h3
   Trabalhos de protético
 = link_to "novo trabalho", new_trabalho_protetico_path(:tratamento_id=>tratamento.id, :paciente_id=>tratamento.paciente_id)
+%p
 %table
   %tr
     %th Protético
@@ -34,6 +35,6 @@
     %td{:colspan=>"3"}  
       Total de custo
     %td{:align=>'right'}
-      = total.real
-    %td{:colspan=>2}
-      &nbsp;
+      %span{:id=>'total'}= total.real
+    %td{:colspan=>2, :align=>'center'}
+      = link_to 'Atualiza custo', '#', :onclick=>"javascript:$('#tratamento_custo').val($('#total').html());"

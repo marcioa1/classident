@@ -1,0 +1,138 @@
+- content_for :main do
+  %h3{ :style => "padding-left: 10em;" }
+    Fluxo de caixa do dia :
+    = @fluxo.data.to_s_br
+  %table.transparente
+    %tr
+      %td
+        Saldo anterior em dinheiro :
+      %td{ :align => "right" }
+        = @fluxo.saldo_em_dinheiro.real
+    %tr
+      %td
+        Saldo anterior em cheque :
+      %td{ :align => "right" }
+        = @fluxo.saldo_em_cheque.real
+  %table
+    %tr
+      %th{ :width => "350px" }
+        %br
+        Observação
+      %th{ :width => "90px" }
+        Crédito Dinheiro
+      %th{ :width => "90px" }
+        Débito Dinheiro
+      %th{ :width => "90px" }
+        Saldo Dinheiro
+      %th{ :width => "90px" }
+        Crédito Cheque
+      %th{ :width => "90px" }
+        Débito Cheque
+      %th{ :width => "90px" }
+        Saldo
+        %br
+        Cheque
+    %tr
+      %td
+        Saldo de abertura
+      %td
+        \&nbsp;
+      %td
+        \&nbsp;
+      %td{ :align => "right" }
+        = @fluxo.saldo_em_dinheiro.real
+      %td
+        \&nbsp;
+      %td
+        \&nbsp;
+      %td{ :align => "right" }
+        = @fluxo.saldo_em_cheque.real
+    - saldo_dinheiro = @fluxo.saldo_em_dinheiro
+    - saldo_dinheiro = 0.0 if saldo_dinheiro.nil?
+    - saldo_cheque   = @fluxo.saldo_em_cheque
+    - saldo_cheque   = 0.0 if saldo_cheque.nil?
+    - @lancamentos.each() do |lancamento|
+      %tr
+        - if lancamento.class.name == "Cheque"
+          %td= lancamento.nome_dos_pacientes
+          %td &nbsp;
+          %td &nbsp;
+          %td &nbsp;
+          %td{ :align=> 'right'}= lancamento.valor.real
+          %td &nbsp;
+          -saldo_cheque += lancamento.valor
+          %td{ :align => "right" }
+            = #saldo_cheque.real
+        - elsif lancamento.class.name == "Recebimento"
+          %td = lancamento.paciente.nome
+          - if lancamento.formas_recebimento.nome.downcase =="dinheiro"
+            %td{ :align => "right" }
+              = lancamento.valor.real
+            %td &nbsp;
+            - saldo_dinheiro += lancamento.valor
+            %td{ :align => "right" }
+              = #saldo_dinheiro.real
+            %td &nbsp;
+            %td &nbsp;
+            %td{ :align => "right" }
+              = #saldo_cheque.real
+          - else
+            %td &nbsp;
+            %td &nbsp;
+            %td{ :align => "right" }
+              = #saldo_dinheiro.real
+            %td{ :align => "right" }
+              = lancamento.valor.real
+            %td &nbsp;
+            - saldo_cheque += lancamento.valor
+            %td{ :align => "right" }
+              =# saldo_cheque.real
+        - elsif lancamento.class.name == "Pagamento"
+          %td
+            = lancamento.tipo_pagamento.nome
+          %td &nbsp;
+          - if lancamento.opcao_restante == 2
+            %td{ :align => "right", :style => "color: red;" }
+              = lancamento.valor_restante.real
+            - saldo_dinheiro -= lancamento.valor_restante
+          - else
+            %td &nbsp;
+            %td{ :align => "right" }
+              =# saldo_dinheiro.real
+              %td &nbsp;
+            %td{ :align => "right", :style => "color: red;" }
+              = lancamento.valor_pago.real
+          - saldo_cheque -= lancamento.valor_pago
+          %td{ :align => "right" }
+            = #saldo_cheque.real
+        - else
+          %td= lancamento.observacao
+          - if lancamento.valor > 0
+            %td{ :align => "right" }
+              = lancamento.valor.real
+            - saldo_dinheiro += lancamento.valor
+            %td &nbsp;
+          - else
+            %td &nbsp;
+            %td{ :align => "right", :style => "color: red;" }
+              = lancamento.valor.abs.real
+            - saldo_dinheiro += lancamento.valor
+            %td{ :align => "right" }
+              =# saldo_dinheiro.real
+            %td &nbsp;
+            %td &nbsp;
+            %td{ :align => "right" }
+              =# saldo_cheque.real
+    %tr
+      %td= 'Saldo de fechamento'
+      %td &nbsp;
+      %td &nbsp;
+      %td{ :align=>'right' }= saldo_dinheiro.real
+      %td &nbsp;
+      %td &nbsp;
+      %td{ :align=>'right' }= saldo_cheque.real
+
+  %p
+    = link_to "anterior", fluxo_de_caixa_path(:data=>@fluxo.data - 1.day)
+    = "|"
+    = link_to "próximo", fluxo_de_caixa_path(:data=>@fluxo.data + 1.day, :saldo_dinheiro=>saldo_dinheiro.real, :saldo_cheque => saldo_cheque.real)
