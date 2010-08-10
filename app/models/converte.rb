@@ -804,7 +804,7 @@ class Converte
   def adm_cheques
     abre_arquivo_de_erros('Cheques na Administação')
     puts "Convertendo cheques na administração ...."
-    f = File.open("doc/convertidos/adm_cheque_bom.txt" , "r")
+    f = File.open("doc/convertidos/adm_cheque.txt" , "r")
     @as_clinicas = Clinica.all
     @siglas      = @as_clinicas.map(&:sigla)
     @clinica = Clinica.administracao.first
@@ -868,7 +868,7 @@ class Converte
     puts 'Convertendo pagamentos ... '
     f        = File.open("doc/convertidos/adm_pagamento.txt" , "r")
     @clinica = Clinica.administracao.first
-    line     = f.gets
+    # line     = f.gets
     while line = f.gets 
       begin
         registro = busca_registro(line)
@@ -901,7 +901,7 @@ class Converte
     puts "Convertendo tipos de pagamentos na administração ...."
     f        = File.open("doc/convertidos/adm_tipo_pagamento.txt" , "r")
     @clinica = Clinica.administracao.first
-    line     = f.gets
+    # line     = f.gets
     while line = f.gets 
       begin
         registro     = busca_registro(line)
@@ -924,7 +924,7 @@ class Converte
     puts "Convertendo fluxo de caixa na administração ...."
     f        = File.open("doc/convertidos/adm_saldos.txt" , "r")
     @clinica = Clinica.administracao.first
-    line     = f.gets
+    # line     = f.gets
     while line = f.gets 
       begin
         registro            = busca_registro(line)
