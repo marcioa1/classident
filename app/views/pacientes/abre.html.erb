@@ -1,8 +1,10 @@
+
 <% content_for :main do %>
+<span id="tab_index"><%= @tab_index %></span>
   <div id="tabs">
     <ul>
         <li><a href="#tratamento"><span>Tratamento</span></a></li>
-        <li><a href="#orcamento"><span>Orcamento</span></a></li>
+        <li><a href="#orcamento"><span>Orçamento</span></a></li>
         <li><a href="#cadastro"><span>Cadastro</span></a></li>
         <li><a href="#extrato"><span>Extrato</span></a></li>
         <li><a href="#alta"><span>Alta</span></a></li>
@@ -15,4 +17,20 @@
     <div id="alta">      <%= render :partial=>"alta" %>       </div>
     <div id="protetico"> <%= render :partial=>"protetico" %>  </div>
   </div>
+  <script type="text/javascript">
+    $(document).ready(function() {
+      $("#tabs").tabs({
+        select: function(event, ui){
+          $.ajax({
+            url    : "/salva_tab_do_paciente",
+            type   : "GET",
+            data   : { "tab_index" : ui.index }
+          });
+        }
+      });
+      $("#tabs").tabs("select", parseInt($("#tab_index").html()));
+    });
+  </script>
+  
 <% end %>
+

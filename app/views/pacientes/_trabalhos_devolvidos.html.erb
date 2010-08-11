@@ -9,7 +9,7 @@
     <th>Protético</th>
     <th>Dentista</th>
   </tr>
-<% @devolvidos_protetico.each do |trab| %>
+<% trabalhos_devolvidos.each do |trab| %>
   <tr>
     <td><%= trab.data_de_envio.to_s_br%></td>
     <td><%= link_to trab.tabela_protetico.descricao, edit_trabalho_protetico_path(trab) if trab.tabela_protetico %></td>

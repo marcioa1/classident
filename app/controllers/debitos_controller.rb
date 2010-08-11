@@ -12,8 +12,9 @@ class DebitosController < ApplicationController
   end
 
   def new
-    @debito = Debito.new
+    @debito             = Debito.new
     @debito.paciente_id = params[:paciente_id]
+    @paciente           = Paciente.find(params[:paciente_id])
   end
 
   def edit

@@ -35,6 +35,7 @@ ActionController::Routing::Routes.draw do |map|
                   :member => {:abre=>:get}
 
   map.administracao "administracao", :controller=>"administracao", :action=>"index"
+  map.salva_tab_do_paciente "salva_tab_do_paciente", :controller=>"administracao", :action=>"salva_tab_do_paciente"
   map.resources :pagamentos, :collection=>{:relatorio=>:get, :registra_pagamento_a_protetico=>:get}
   map.resources :precos
   map.resources :proteticos, :member=>{:abre=>:get}, 

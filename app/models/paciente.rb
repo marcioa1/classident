@@ -144,4 +144,14 @@ class Paciente < ActiveRecord::Base
     result += self.celulat if self.celular
     result
   end
+  
+  def pendentes_protetico
+    TrabalhoProtetico.pendentes.do_paciente(self.id)
+  end
+  
+  def devolvidos_protetico
+    TrabalhoProtetico.devolvidos.do_paciente(self.id) 
+  end
+  
+  
 end

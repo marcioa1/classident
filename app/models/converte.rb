@@ -865,7 +865,7 @@ class Converte
   
   def adm_pagamento
     abre_arquivo_de_erros('Pagamentos na administração')
-    puts 'Convertendo pagamentos ... '
+    puts 'Convertendo pagamentos na administração ... '
     f        = File.open("doc/convertidos/adm_pagamento.txt" , "r")
     @clinica = Clinica.administracao.first
     # line     = f.gets
