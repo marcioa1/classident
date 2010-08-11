@@ -1,7 +1,8 @@
 jQuery(function() {
 $.loading({
    onAjax: true,
-   text: 'Carregando...',
+   text: 'Carregando ...',
+   align: 'center',
    mask: true
  });
 });
