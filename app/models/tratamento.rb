@@ -71,6 +71,19 @@ class Tratamento < ActiveRecord::Base
     created_at < Date.today - 15.days
   end
   
+  def na_quinzena?
+    if self.data
+      return false if self.data < primeira
+      primeira = Date.new(Date.today.year,Date.today.month,1)
+      segunda  = Date.new(Date.today.year,Date.today.month,16)
+      return false if self.data < segunda && Date.today >= segunda
+      return true if self.data < segunda && Date.today < segunda
+      return true if self.data >= segunda && Date.today >= segunda
+    else
+      return true
+    end
+  end
+  
   def finalizar_procedimento(user)
     if self.orcamento.nil?
       debito = Debito.new

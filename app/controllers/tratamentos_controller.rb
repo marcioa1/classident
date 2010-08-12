@@ -14,19 +14,30 @@ class TratamentosController < ApplicationController
   end
   
   def create
-    dentes = params[:dentes].split(',')
-    erro = true
-    dentes.each do |dente|
-      @tratamento             = Tratamento.new(params[:tratamento])
-      @tratamento.paciente_id = session[:paciente_id]
-      @tratamento.dente       = dente
-      @tratamento.clinica_id  = session[:clinica_id]
-      @tratamento.excluido    = false
-      @tratamento.data        = params[:data_de_termino].to_date if Date.valid?(params[:data_de_termino])
-      if @tratamento.save 
-        if !@tratamento.data.nil?
-          @tratamento.finalizar_procedimento(current_user)
+    erro = false
+    if Date.valid?(params[:data_de_termino])
+      data = params[:data_de_termino].to_date
+      if data > Date.today
+        @tratamento.errors.add(:data_de_termino, "Não pode ser data futura.")
+        erro = true
+      end
+    end
+    if !erro    
+      dentes = params[:dentes].split(',')
+      dentes.each do |dente|
+        @tratamento             = Tratamento.new(params[:tratamento])
+        @tratamento.paciente_id = session[:paciente_id]
+        @tratamento.dente       = dente
+        @tratamento.clinica_id  = session[:clinica_id]
+        @tratamento.excluido    = false
+        @tratamento.data        = params[:data_de_termino].to_date 
+        if @tratamento.save 
+          if !@tratamento.data.nil?
+            @tratamento.finalizar_procedimento(current_user)
+          end
           erro = false
+        else
+          erro = true
         end
       end
     end
