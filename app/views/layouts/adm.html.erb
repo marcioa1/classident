@@ -58,7 +58,8 @@ $(document).ready(function() {
             <% end %>
         </div>
         <br/>
-        <%= flash[:notice] if flash[:notice]%>
+        <%= flash[:notice] if flash[:notice] %>
+        <br/>
         <%= @paciente && identifica_paciente(@paciente) %>
         <%= yield :main %>
         <%= yield :detail %>
