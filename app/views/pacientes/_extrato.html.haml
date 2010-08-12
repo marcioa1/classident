@@ -32,7 +32,10 @@
         - total_debito += lancamento.valor
         %td= lancamento.descricao
         %td{ :align => "right" }
-          = link_to lancamento.valor.real, edit_debito_path(lancamento)
+          - if lancamento.pode_alterar?
+            = link_to lancamento.valor.real, edit_debito_path(lancamento)
+          - else
+            = lancamento.valor.real
         %td
           &nbsp;
         - saldo -= lancamento.valor

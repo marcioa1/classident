@@ -103,7 +103,6 @@ class Recebimento < ActiveRecord::Base
   end
   
   def exclui
-    debugger
     self.data_de_exclusao    = Date.today
     if self.cheque
       self.cheque.data_de_exclusao = Time.current

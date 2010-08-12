@@ -33,7 +33,9 @@ class RecebimentosController < ApplicationController
 
   def create
     @recebimento      = Recebimento.new(params[:recebimento])
-    if @recebimento.em_cheque?
+    if !na_quinzena?(@recebimento.data)
+      @recebimento.errors.add(:data, " : não pode ser anterior à quinzena")
+    elsif @recebimento.em_cheque?
       if !Recebimento::FORMATO_VALIDO_BR.match(params[:valor_do_cheque])
         @recebimento.errors.add("Formato do cheque inválido!")
       else
@@ -119,7 +121,9 @@ class RecebimentosController < ApplicationController
   end
 
   def update
-    if @recebimento.em_cheque? && @recebimento.cheque
+    if !na_quinzena?(@recebimento.data)
+      @recebimento.errors.add(:data, " : não pode ser anterior à quinzena")
+    elsif @recebimento.em_cheque? && @recebimento.cheque
       # @recebimento.data_pr_br             = params[:datepicker].to_date
       # @recebimento.valor_real             = params[:recebimento_valor_real]
       @recebimento.observacao             = params[:observacao]

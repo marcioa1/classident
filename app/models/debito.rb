@@ -24,4 +24,20 @@ class Debito < ActiveRecord::Base
   def pode_excluir?
     self.tratamento_id.nil?
   end
+  
+  def pode_alterar?
+    self.na_quinzena? 
+  end
+  
+  def na_quinzena?
+    primeira = Date.new(Date.today.year,Date.today.month,1)
+    segunda  = Date.new(Date.today.year,Date.today.month,16)
+    return false if self.data < primeira
+    return false if self.data < segunda && Date.today >= segunda
+    return true if self.data < segunda && Date.today < segunda
+    return true if self.data >= segunda && Date.today >= segunda
+    return true
+  end
+  
+  
 end

@@ -34,6 +34,15 @@ class ApplicationController < ActionController::Base
     Date.new(Date.today.year, Date.today.month, 1)
   end
   
+  def na_quinzena?(data)
+    primeira = Date.new(Date.today.year,Date.today.month,1)
+    segunda  = Date.new(Date.today.year,Date.today.month,16)
+    return false if data < primeira
+    return false if data < segunda && Date.today >= segunda
+    return true if data < segunda && Date.today < segunda
+    return true if data >= segunda && Date.today >= segunda
+  end
+  
   private
   
     def require_user
