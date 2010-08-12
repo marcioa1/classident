@@ -67,15 +67,15 @@ class Tratamento < ActiveRecord::Base
     (self.valor - self.custo) * (100 - dentista.percentual) / 100 
   end
   
-  def nao_pode_alterar?
-    created_at < Date.today - 15.days
+  def pode_alterar?
+    na_quinzena?
   end
   
   def na_quinzena?
     if self.data
-      return false if self.data < primeira
       primeira = Date.new(Date.today.year,Date.today.month,1)
       segunda  = Date.new(Date.today.year,Date.today.month,16)
+      return false if self.data < primeira
       return false if self.data < segunda && Date.today >= segunda
       return true if self.data < segunda && Date.today < segunda
       return true if self.data >= segunda && Date.today >= segunda

@@ -30,8 +30,7 @@
         = lancamento.data.to_s_br
       - if lancamento.class == Debito
         - total_debito += lancamento.valor
-        %td
-          = lancamento.descricao
+        %td= lancamento.descricao
         %td{ :align => "right" }
           = link_to lancamento.valor.real, edit_debito_path(lancamento)
         %td
@@ -39,16 +38,15 @@
         - saldo -= lancamento.valor
       - else
         - total_credito += lancamento.valor
-        %td
-          = lancamento.observacao_do_recebimento
+        %td= lancamento.observacao_do_recebimento
         %td
           &nbsp;
         %td{ :align => "right" }
           = lancamento.valor.real
         - saldo += lancamento.valor
-        - cor =  saldo > 0 ? "black" : "red"
-        %td{ :align => "right", :style => "color: #{cor}" }
-          = saldo.real
+      - cor =  saldo >= 0 ? "black" : "red"
+      %td{ :align => "right", :style => "color: #{cor}" }
+        = saldo.real
       - if lancamento.class == Recebimento
         - if lancamento.formas_recebimento.nome.downcase == 'dinheiro'
           %td
@@ -59,8 +57,7 @@
         %td
           = lancamento.formas_recebimento.nome
       - else
-        %td
-          &nbsp;
+        
         %td
           &nbsp;
         %td
@@ -72,7 +69,10 @@
       = total_debito.real
     %td{ :align => "right" }
       = total_credito.real
-    %td{ :colspan => "3" }
+    - cor =  saldo >= 0 ? "black" : "red"
+    %td{ :align => "right", :style => "color: #{cor}" }
+      = saldo.real
+    %td{ :colspan => "2" }
       &nbsp;
 %p
 %table

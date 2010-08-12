@@ -40,16 +40,19 @@
   - @paciente.tratamentos.each() do |tratamento|
     %tr
       %td{ :align => "center" }
-        - if tratamento.nao_pode_alterar?
-          = tratamento.dente
-        - else
+        - if tratamento.pode_alterar?
           = link_to tratamento.dente, edit_tratamento_path(:id=>tratamento.id)
+        - else
+          = tratamento.dente
       %td
         = tratamento.faces
       %td
         = tratamento.item_tabela.codigo  unless tratamento.item_tabela.nil?
       %td
-        = link_to tratamento.descricao, edit_tratamento_path(tratamento)
+        - if tratamento.pode_alterar?
+          = link_to tratamento.descricao, edit_tratamento_path(tratamento)
+        - else
+          = tratamento.descricao
       %td{ :align => "right" }
         = tratamento.valor.real
       %td{ :align => "right" }
@@ -65,7 +68,7 @@
       %td{ :align => "center" }
         = tratamento.orcamento.numero unless tratamento.orcamento.nil?
       %td
-        = link_to "novo trabalho de protético", new_trabalho_protetico_path(:tratamento_id=>tratamento.id, :paciente_id=>tratamento.paciente.id)
+        = link_to "novo trabalho de protético", new_trabalho_protetico_path(:tratamento_id=>tratamento.id, :paciente_id=>tratamento.paciente.id) if tratamento.pode_alterar?
     - total += tratamento.valor
   %tr
     %td{ :align => "center", :colspan => "4" }
