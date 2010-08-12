@@ -141,7 +141,7 @@ class Paciente < ActiveRecord::Base
     result = ''
     result += self.telefone if self.telefone
     result += ' / '
-    result += self.celulat if self.celular
+    result += self.celular if self.celular
     result
   end
   

@@ -6,7 +6,8 @@
 <% form_for(@tratamento) do |f| %>
 
   <%= f.hidden_field :paciente_id %>
-  
+  <% debugger %>
+  <%= f.error_messages %>
   <p>
     <%= f.label :dente %> : 
     <%= text_field_tag :dentes, {}, :size=> 12 %>

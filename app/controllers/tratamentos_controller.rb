@@ -15,10 +15,12 @@ class TratamentosController < ApplicationController
   
   def create
     erro = false
-    if Date.valid?(params[:data_de_termino])
-      data = params[:data_de_termino].to_date
+    debugger
+    if Date.valid?(params[:tratamento][:data_termino_br])
+      data = params[:tratamento][:data_termino_br].to_date
       if data > Date.today
-        @tratamento.errors.add(:data_de_termino, "Não pode ser data futura.")
+        @tratamento = Tratamento.new
+        @tratamento.errors.add(:data_termino_br, "Não pode ser data futura.")
         erro = true
       end
     end
@@ -30,7 +32,7 @@ class TratamentosController < ApplicationController
         @tratamento.dente       = dente
         @tratamento.clinica_id  = session[:clinica_id]
         @tratamento.excluido    = false
-        @tratamento.data        = params[:data_de_termino].to_date 
+        @tratamento.data        = params[:tratamento][:data_termino_br].to_date 
         if @tratamento.save 
           if !@tratamento.data.nil?
             @tratamento.finalizar_procedimento(current_user)
@@ -43,8 +45,8 @@ class TratamentosController < ApplicationController
     end
     if erro
       @paciente = Paciente.find(session[:paciente_id])
-      @tratamento             = Tratamento.new
-      @tratamento.paciente_id = @paciente.id
+      # @tratamento             = Tratamento.new
+      # @tratamento.paciente_id = @paciente.id
       @items                  = @paciente.tabela.item_tabelas.
           collect{|obj| [obj.codigo + " - " + obj.descricao,obj.id]}.insert(0,"")
       @dentistas              = @clinica_atual.dentistas.ativos.collect{|obj| [obj.nome,obj.id]}.sort
