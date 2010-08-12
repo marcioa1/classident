@@ -117,7 +117,6 @@ class PacientesController < ApplicationController
     @indicacoes           = Indicacao.por_descricao.collect{|obj| [obj.descricao, obj.id]}
     session[:paciente_id]   = @paciente.id
     session[:paciente_nome] = @paciente.nome
-    debugger
     @tab_index = session[:tab_paciente]
   end
   

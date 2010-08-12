@@ -21,8 +21,7 @@ class DebitosController < ApplicationController
   end
 
   def create
-    @debito = Debito.new(params[:debito])
-    @debito.data = params[:datepicker].to_date
+    @debito      = Debito.new(params[:debito])
     if @debito.save
       redirect_to(abre_paciente_path(:id=>@debito.paciente_id)) 
     else
@@ -31,6 +30,7 @@ class DebitosController < ApplicationController
   end
 
   def update
+    
     if @debito.update_attributes(params[:debito])
        redirect_to(abre_paciente_path(:id=>@debito.paciente_id)) 
     else

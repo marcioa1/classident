@@ -4,6 +4,18 @@ class Debito < ActiveRecord::Base
   
   validates_presence_of :valor, :only => [:create, :update], :message => "campo obrigatório"
   validates_presence_of :descricao, :only => [:create, :update], :message => "campo obrigatório"
+  validate :verifica_quinzena
+  
+  attr_accessor :data_br
+  
+  def data_br
+    self.data = Date.today if self.data.nil?
+    self.data.to_s_br
+  end
+  
+  def data_br=(data)
+    self.data = data if Date.valid?(data)
+  end
   
   def self.cria_debitos_do_orcamento(orcamento_id)
     orcamento = Orcamento.find(orcamento_id)
@@ -39,5 +51,8 @@ class Debito < ActiveRecord::Base
     return true
   end
   
+  def verifica_quinzena
+    errors.add(:data, 'Fora da quinzena') if !na_quinzena?
+  end
   
 end

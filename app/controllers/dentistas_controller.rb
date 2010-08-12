@@ -123,7 +123,6 @@ class DentistasController < ApplicationController
         saida += "<td>" + tratamento.descricao + "</td>"
         saida += "<td align='right'>" + tratamento.valor.real.to_s + "</td>"
         saida += "<td align='right'>" + tratamento.custo.real.to_s + "</td>"
-        debugger
         saida += "<td align='right'>" + tratamento.valor_dentista.real.to_s + "</td>"
         saida += "<td align='right'>" + tratamento.valor_clinica.real.to_s + "</td>"
         saida += "<td align='center'>" + "<input type='checkbox' id='pagar_dentista_" + tratamento.id.to_s + 

@@ -175,7 +175,6 @@ class ChequesController < ApplicationController
       result += "</tr>"
     end
     result += "</table>"
-    debugger
     render :json =>result.to_json
   end
   

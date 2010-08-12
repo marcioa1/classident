@@ -60,6 +60,7 @@ $(document).ready(function() {
         <br/><br/>
         <%= flash[:notice] %>
         <br/>
+        <% debugger %>
         <%= @paciente && identifica_paciente(@paciente) %>
         <%= yield :main %>
         <%= yield :detail %>
