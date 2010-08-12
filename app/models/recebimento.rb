@@ -82,8 +82,17 @@ class Recebimento < ActiveRecord::Base
   end
   
   def pode_excluir?
-    true
-    #TODO falta implementar isoto considerando 15 dias
+    self.na_quinzena?
+  end
+  
+  def na_quinzena?
+    primeira = Date.new(Date.today.year,Date.today.month,1)
+    segunda  = Date.new(Date.today.year,Date.today.month,16)
+    return false if self.data < primeira
+    return false if self.data < segunda && Date.today >= segunda
+    return true if self.data < segunda && Date.today < segunda
+    return true if self.data >= segunda && Date.today >= segunda
+    return true
   end
   
   def observacao_do_recebimento
@@ -102,8 +111,9 @@ class Recebimento < ActiveRecord::Base
     end
   end
   
-  def exclui
+  def exclui(user)
     self.data_de_exclusao    = Date.today
+    self.usuario_exclusao    = user
     if self.cheque
       self.cheque.data_de_exclusao = Time.current
       todos = self.cheque.recebimentos

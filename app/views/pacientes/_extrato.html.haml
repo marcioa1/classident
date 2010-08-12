@@ -6,20 +6,14 @@
 %br
 %table
   %tr
-    %th
-      Data
-    %th{ :width => "200px" }
-      Descrição
-    %th{ :width => "70px" }
-      Débito
-    %th{ :width => "70px" }
-      Crédito
-    %th{ :width => "70px" }
-      Saldo
-    %th
-      Bom para
-    %th
-      Detalhes
+    %%th  Data
+    %th{ :width => "200px" } Descrição
+    %th{ :width => "70px" } Débito
+    %th{ :width => "70px" } Crédito
+    %th{ :width => "70px" } Saldo
+    %th Bom para
+    %th Detalhes
+    %th &nbsp;
     
   - saldo         = 0.0
   - total_debito  = 0.0
@@ -38,6 +32,11 @@
             = lancamento.valor.real
         %td
           &nbsp;
+        %td
+          - if lancamento.pode_excluir?
+            = link_to 'Excluir', lancamento, :confirm => 'Tem certeza?', :method => :delete 
+          - else
+            &nbsp;
         - saldo -= lancamento.valor
       - else
         - total_credito += lancamento.valor
@@ -63,8 +62,11 @@
         
         %td
           &nbsp;
-        %td
-          = link_to 'Excluir', lancamento, :confirm => 'Tem certeza?', :method => :delete if lancamento.pode_excluir?
+      %td
+        - if lancamento.pode_excluir?
+          = link_to 'Excluir', exclusao_recebimento_path(lancamento.id) #, :confirm => 'Tem certeza?', :method => :delete 
+        - else
+          &nbsp;
   %tr
     %td{ :align => "center", :colspan => "2" }
       Total
@@ -75,7 +77,7 @@
     - cor =  saldo >= 0 ? "black" : "red"
     %td{ :align => "right", :style => "color: #{cor}" }
       = saldo.real
-    %td{ :colspan => "2" }
+    %td{ :colspan => "3" }
       &nbsp;
 %p
 %table
@@ -94,3 +96,4 @@
         = cheque.motivo_primeira_devolucao
       %td
         = cheque.data_segunda_devolucao
+= render :partial=>"recebimentos/recebimentos_excluidos", :locals=>{:paciente=>@paciente}

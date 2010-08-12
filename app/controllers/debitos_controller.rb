@@ -18,6 +18,7 @@ class DebitosController < ApplicationController
   end
 
   def edit
+    @paciente           = @debito.paciente
   end
 
   def create
@@ -30,10 +31,10 @@ class DebitosController < ApplicationController
   end
 
   def update
-    
     if @debito.update_attributes(params[:debito])
        redirect_to(abre_paciente_path(:id=>@debito.paciente_id)) 
     else
+      @paciente = @debito.paciente
       render :action => "edit" 
     end
   end

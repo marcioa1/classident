@@ -5,7 +5,7 @@ class RecebimentosController < ApplicationController
   before_filter :require_user
   before_filter :verifica_horario_de_trabalho
   before_filter :busca_bancos_e_forma_de_recebimento, :only=>[:new, :edit]
-  before_filter :busca_recebimento, :only => [:show,  :update, :exclui, :destroy]
+  before_filter :busca_recebimento, :only => [:show,  :update, :exclui, :destroy, :exclusao]
   
   def index
     @recebimentos = Recebimento.all(:limit=> 50,:order => 'created_at desc')
@@ -159,10 +159,13 @@ class RecebimentosController < ApplicationController
   
   def exclui
     @paciente    = @recebimento.paciente
-    @recebimento.observacao_exclusao = params[:observacao]
-    @recebimento.exclui
-
+    @recebimento.observacao_exclusao = params[:observacao_exclusao]
+    @recebimento.exclui(current_user.id)
     redirect_to(abre_paciente_path(@paciente))
+  end
+  
+  def exclusao
+    @paciente = @recebimento.paciente
   end
   
   def relatorio

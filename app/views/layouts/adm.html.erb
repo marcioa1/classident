@@ -57,10 +57,8 @@ $(document).ready(function() {
               <%= render :partial=>"layouts/menu_clinica" %>
             <% end %>
         </div>
-        <br/><br/>
-        <%= flash[:notice] %>
         <br/>
-        <% debugger %>
+        <%= flash[:notice] if flash[:notice]%>
         <%= @paciente && identifica_paciente(@paciente) %>
         <%= yield :main %>
         <%= yield :detail %>

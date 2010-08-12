@@ -153,5 +153,8 @@ class Paciente < ActiveRecord::Base
     TrabalhoProtetico.devolvidos.do_paciente(self.id) 
   end
   
+  def recebimentos_excluidos
+    Recebimento.all(:conditions=>['data_de_exclusao IS NOT NULL and paciente_id=?', self.id])
+  end
   
 end

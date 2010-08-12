@@ -14,7 +14,7 @@ class Debito < ActiveRecord::Base
   end
   
   def data_br=(data)
-    self.data = data if Date.valid?(data)
+    self.data = data.to_date if Date.valid?(data)
   end
   
   def self.cria_debitos_do_orcamento(orcamento_id)

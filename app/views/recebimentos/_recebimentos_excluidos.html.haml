@@ -1,0 +1,17 @@
+%br
+%p
+  %h3 recebimentos excluidos
+%table
+  %tr
+    %th Data da exclusão
+    %th Valor
+    %th Forma
+    %th{ :width => "200" } Observação
+    %th Usuário
+  - paciente.recebimentos_excluidos.each do |rec|
+    %tr
+      %td= rec.data_de_exclusao.to_s_br
+      %td{ :align => 'right'}= rec.valor.real
+      %td= rec.formas_recebimento.nome
+      %td= rec.observacao_exclusao
+      %td= User.find(rec.usuario_exclusao).nome
