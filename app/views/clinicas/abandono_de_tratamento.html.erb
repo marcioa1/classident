@@ -18,7 +18,6 @@
     <th>Último registro</th>
   </tr>
 <% @abandonos.each do |abandono| %>
-<% debugger %>
   <tr>
     <td><%= link_to abandono[:nome], abre_paciente_path(abandono[:id]) %></td>
     <td><%= abandono[:telefone] %></td>

@@ -91,7 +91,6 @@ class RecebimentosController < ApplicationController
             outro_cheque.numero    = outro_cheque.numero.succ
           end
           outro_cheque.save
-          debugger
           outro_recebimento        = @recebimento.clone
           outro_recebimento.cheque = outro_cheque
           outro_recebimento.data   = @recebimento.data + (num-1).month

@@ -112,9 +112,9 @@ class PacientesController < ApplicationController
       nome_sem_clinica = params[:nome].split(',')[0].strip
       @paciente = Paciente.find_by_nome(nome_sem_clinica)
     else
-      @paciente = Paciente.find(params[:id])
+      @paciente =  Paciente.busca_paciente(params[:id])
     end
-    @indicacoes           = Indicacao.por_descricao.collect{|obj| [obj.descricao, obj.id]}
+    @indicacoes             = Indicacao.por_descricao.collect{|obj| [obj.descricao, obj.id]}
     session[:paciente_id]   = @paciente.id
     session[:paciente_nome] = @paciente.nome
     @tab_index = session[:tab_paciente]
@@ -150,7 +150,7 @@ class PacientesController < ApplicationController
   end
 
   def busca_paciente
-    @paciente = Paciente.find(params[:id])
+    @paciente = Paciente.busca_paciente(params[:id])
   end  
 
   def busca_tabelas

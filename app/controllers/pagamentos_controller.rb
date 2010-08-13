@@ -144,7 +144,6 @@ class PagamentosController < ApplicationController
     session[:protetico_id]          = params[:protetico_id]
     session[:trabalho_protetico_id] = params[:ids]  
     session[:valor]                 = total
-    debugger
     redirect_to new_pagamento_path(:protetico_id=>params[:protetico_id], 
          :trabalho_protetico_id=>params[:ids], :valor=>total )
   end

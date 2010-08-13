@@ -157,4 +157,13 @@ class Paciente < ActiveRecord::Base
     Recebimento.all(:conditions=>['data_de_exclusao IS NOT NULL and paciente_id=?', self.id])
   end
   
+  def self.busca_paciente(id)
+    @paciente = Rails.cache.read(id)
+    if !@paciente
+      @paciente = Paciente.find(id)
+      Rails.cache.write(@paciente.id.to_s, @paciente, :expires_in => 2.minutes) 
+    end
+    @paciente
+  end
+  
 end

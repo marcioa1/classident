@@ -58,7 +58,6 @@ class Tratamento < ActiveRecord::Base
   
   def valor_dentista
     self.custo = 0 if self.custo.nil?
-    debugger
     (self.valor - self.custo) * dentista.percentual / 100 
   end
   

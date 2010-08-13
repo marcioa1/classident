@@ -15,7 +15,6 @@ class TratamentosController < ApplicationController
   
   def create
     erro = false
-    debugger
     if Date.valid?(params[:tratamento][:data_termino_br])
       data = params[:tratamento][:data_termino_br].to_date
       if data > Date.today
