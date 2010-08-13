@@ -14,18 +14,8 @@
     <%= javascript_include_tag  src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js" %>
     <%= javascript_include_tag 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.3/jquery-ui.min.js'%>
   <% end %>
-  <%= javascript_include_tag 'jquery.price_format.1.0.js'%>
-  <%= javascript_include_tag 'jrails.js'%>
-  <%= javascript_include_tag 'select_boxes.js'%>
-  <%= javascript_include_tag 'application.min.js'%>
-  <%= javascript_include_tag 'ui.datepicker-pt-BR.js'%>
-  <%= javascript_include_tag 'jquery.loading.1.6.4.min.js' %>
-  
-  <%= stylesheet_link_tag 'jquery.ui.autocomplete.css'%>
-  <%= stylesheet_link_tag 'adm.css' %>
-  <%= stylesheet_link_tag 'jquery.css' %>
-  <%= stylesheet_link_tag 'plain_old_table.css'%>
-  <%= stylesheet_link_tag 'jquery.loading.1.6.css' %>
+
+  <%= stylesheet_link_tag 'jquery.ui.all.css', 'jquery.ui.autocomplete.css', 'adm.css', 'jquery.css', 'plain_old_table.css', 'jquery.loading.1.6.css' , :cache => 'allcss' %>
 </head>
 <% if session[:clinica_id].to_i == 10 %>
   <body style='background-color: #F6FDB8;'>
@@ -76,5 +66,6 @@ $(document).ready(function() {
   </div>
 </div>
 </body>
+<%= javascript_include_tag 'jquery.price_format.1.0.js', 'jrails.js', 'select_boxes.js', 'application.min.js',  'ui.datepicker-pt-BR.js', 'jquery.loading.1.6.4.min.js', :cache=>true %>
 
 </html>

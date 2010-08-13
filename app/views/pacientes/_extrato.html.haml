@@ -50,14 +50,14 @@
       %td{ :align => "right", :style => "color: #{cor}" }
         = saldo.real
       - if lancamento.class == Recebimento
-        - if lancamento.formas_recebimento.nome.downcase == 'dinheiro'
+        - if lancamento.formas_recebimento && lancamento.formas_recebimento.nome.downcase == 'dinheiro'
           %td
             &nbsp;
         - else
           %td
             = lancamento.cheque.bom_para.to_s_br  if lancamento.cheque.present? && lancamento.cheque.bom_para.present?
         %td
-          = lancamento.formas_recebimento.nome
+          = lancamento.formas_recebimento.nome if lancamento.formas_recebimento
       - else
         
         %td
