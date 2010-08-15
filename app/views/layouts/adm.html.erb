@@ -9,13 +9,15 @@
   <% if RAILS_ENV == "development"%>
     <%= javascript_include_tag 'jquery-1.4.js'%>
     <%= javascript_include_tag 'jquery-ui-1.8.custom.min.js'%>
+    <%= stylesheet_link_tag 'jquery.ui.all.css', 'jquery.ui.autocomplete.css', 'adm.css', 'jquery.css', 'plain_old_table.css', 'jquery.loading.1.6.css' , :cache => 'allcss.css' %>
   <% else %>
     <script src="http://www.google.com/jsapi?key=ABQIAAAAjvzs-ZogAGiunZQ8Jl21TBRtdQgZiUqLdjHUMTfxUCYUR5UWoxSFtbdXCKR_vOwS_kPEOepv5GrTDw" type="text/javascript"></script>
     <%= javascript_include_tag  src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js" %>
     <%= javascript_include_tag 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.3/jquery-ui.min.js'%>
+    <% stylesheet_link_tag "allcss.css" %> 
   <% end %>
 
-  <%= stylesheet_link_tag 'jquery.ui.all.css', 'jquery.ui.autocomplete.css', 'adm.css', 'jquery.css', 'plain_old_table.css', 'jquery.loading.1.6.css' , :cache => 'allcss' %>
+  
 </head>
 <% if session[:clinica_id].to_i == 10 %>
   <body style='background-color: #F6FDB8;'>
