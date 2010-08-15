@@ -111,6 +111,7 @@ class PacientesController < ApplicationController
     if params[:nome]
       nome_sem_clinica = params[:nome].split(',')[0].strip
       @paciente = Paciente.find_by_nome(nome_sem_clinica)
+      Rails.cache.write(@paciente.id.to_s, @paciente, :expires_in => 2.minutes) 
     else
       @paciente =  Paciente.busca_paciente(params[:id])
     end
