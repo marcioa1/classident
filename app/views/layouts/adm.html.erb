@@ -7,15 +7,12 @@
   <meta http-equiv="content-type" content="text/html;charset=utf-8" />
   <title>Classident</title>
   <% if RAILS_ENV == "development"%>
-    <%= javascript_include_tag 'jquery-1.4.js'%>
-    <%= javascript_include_tag 'jquery-ui-1.8.custom.min.js'%>
-    <%= stylesheet_link_tag 'jquery.ui.all.css', 'jquery.ui.autocomplete.css', 'adm.css', 'jquery.css', 'plain_old_table.css', 'jquery.loading.1.6.css' , :cache => 'allcss.css' %>
+    <%= jvascript_include_tag 'jquery-1.4.js' %>
   <% else %>
     <script src="http://www.google.com/jsapi?key=ABQIAAAAjvzs-ZogAGiunZQ8Jl21TBRtdQgZiUqLdjHUMTfxUCYUR5UWoxSFtbdXCKR_vOwS_kPEOepv5GrTDw" type="text/javascript"></script>
     <%= javascript_include_tag  src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js" %>
-    <%= javascript_include_tag 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.3/jquery-ui.min.js'%>
-    <% stylesheet_link_tag "allcss.css" %> 
   <% end %>
+  <%= javascript_link_merged :base %>
 
   
 </head>
@@ -68,6 +65,11 @@ $(document).ready(function() {
   </div>
 </div>
 </body>
-<%= javascript_include_tag 'jquery.price_format.1.0.js', 'jrails.js', 'select_boxes.js', 'application.min.js',  'ui.datepicker-pt-BR.js', 'jquery.loading.1.6.4.min.js', :cache=>true %>
+<%= javascript_include_merged :base %>
+<% if RAILS_ENV == 'development' %>
+  <%= javascript_include_tag 'jquery-ui-1.8.custom.min' %>
+<% else %>
+  <%= javascript_include_tag 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.3/jquery-ui.min.js'%>
 
+<% end %>
 </html>
