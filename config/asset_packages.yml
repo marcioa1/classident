@@ -10,13 +10,14 @@ javascripts:
 stylesheets: 
 - base: 
   - adm
+  - login
+  - plain_old_table
   - jquery
   - jquery.loading.1.6
+  - jquery.ui.all
   - jquery.ui.autocomplete
   - jquery.ui.base
   - jquery.ui.core
   - jquery.ui.datepicker
   - jquery.ui.tabs
   - jquery.ui.theme
-  - login
-  - plain_old_table

@@ -52,6 +52,25 @@ tbody th{ background:#455A79; color: white}
 .zebraUm{ background-color:#E0E0E0 }
 .zebraDois{ background-color:white }
 .identifica_paciente{ padding-top: 0.3em; padding-left: 1em; background-color: #E6EDF8; font-size: 18px}
+body{ background :#000000}
+#logo{ margin-left: 5em; margin-top: 2em}
+#principal{ margin-top:0em; margin-left:0em; margin-bottom:0em; padding-top: 5em; padding-left: 10em; padding-bottom: 10em; padding-right: 3em; background :white; width: 35.2em}
+#rodape{ background: #1C4EA3; margin-left:0em; width: 48.2em; text-align: center; color: #A92500}
+#rodape a{ color :#A92500}
+table,td,th{ border:1px solid #000; border-collapse:collapse; margin:0; padding:0}
+td,th{ padding:.2em .5em; vertical-align:top; font-weight:normal}
+thead th{ text-transform:uppercase; background:#92b724; color:#fff}
+tbody td{ background:#ddd}
+tbody th{ background:#455A79; color: white}
+tbody tr.odd td{ background:#eee}
+tbody tr.odd th{ background:#ccc}
+caption{ text-align:left; font-size:140%; text-transform:uppercase; letter-spacing:-1px}
+table th a:link{ color:#030}
+table th a:visited{ color:#003}
+table td a:link{ color:#369}
+table td a:visited{ color:#000}
+table a:hover{ text-decoration:none}
+table a:active{ color:#000}
   .ui-helper-hidden {display: none}
 .ui-helper-hidden-accessible {position: absolute; left: -99999999px}
 .ui-helper-reset {margin: 0; padding: 0; border: 0; outline: 0; line-height: 1.3; text-decoration: none; font-size: 100%; list-style: none}
@@ -379,7 +398,7 @@ tbody th{ background:#455A79; color: white}
 .loading.right {border-top-right-radius: 0px; border-bottom-right-radius: 0px; -moz-border-radius-topright: 0px; -moz-border-radius-bottomright: 0px; -webkit-border-top-right-radius: 0px; -webkit-border-bottom-right-radius: 0px}
 .loading-masked {overflow: hidden}
 .loading-error {color: #FFF; background: red}
- .ui-autocomplete {position: absolute; cursor: default}
+@import "jquery.ui.base.css"; @import "jquery.ui.theme.css";  .ui-autocomplete {position: absolute; cursor: default}
 .ui-autocomplete-loading {background: white url('images/ui-anim_basic_16x16.gif') right center no-repeat}
  * html .ui-autocomplete {width:1px}
   .ui-menu {list-style:none; padding: 2px; margin: 0; display:block}
@@ -664,22 +683,3 @@ tbody th{ background:#455A79; color: white}
 .ui-corner-all {-moz-border-radius: 4px; -webkit-border-radius: 4px; border-radius: 4px}
  .ui-widget-overlay {background: #aaaaaa url(images/ui-bg_flat_0_aaaaaa_40x100.png) 50% 50% repeat-x; opacity: .3;filter:Alpha(Opacity=30)}
 .ui-widget-shadow {margin: -8px 0 0 -8px; padding: 8px; background: #aaaaaa url(images/ui-bg_flat_0_aaaaaa_40x100.png) 50% 50% repeat-x; opacity: .3;filter:Alpha(Opacity=30); -moz-border-radius: 8px; -webkit-border-radius: 8px; border-radius: 8px}
-body{ background :#000000}
-#logo{ margin-left: 5em; margin-top: 2em}
-#principal{ margin-top:0em; margin-left:0em; margin-bottom:0em; padding-top: 5em; padding-left: 10em; padding-bottom: 10em; padding-right: 3em; background :white; width: 35.2em}
-#rodape{ background: #1C4EA3; margin-left:0em; width: 48.2em; text-align: center; color: #A92500}
-#rodape a{ color :#A92500}
-table,td,th{ border:1px solid #000; border-collapse:collapse; margin:0; padding:0}
-td,th{ padding:.2em .5em; vertical-align:top; font-weight:normal}
-thead th{ text-transform:uppercase; background:#92b724; color:#fff}
-tbody td{ background:#ddd}
-tbody th{ background:#455A79; color: white}
-tbody tr.odd td{ background:#eee}
-tbody tr.odd th{ background:#ccc}
-caption{ text-align:left; font-size:140%; text-transform:uppercase; letter-spacing:-1px}
-table th a:link{ color:#030}
-table th a:visited{ color:#003}
-table td a:link{ color:#369}
-table td a:visited{ color:#000}
-table a:hover{ text-decoration:none}
-table a:active{ color:#000}
