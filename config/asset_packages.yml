@@ -10,11 +10,6 @@ javascripts:
 stylesheets: 
 - base: 
   - adm
-  - login
-  - jquery
   - jquery.loading.1.6
-  - jquery.ui.autocomplete
+  - jquery
   - jquery.ui.base
-  - jquery.ui.core
-  - jquery.ui.datepicker
-  - jquery.ui.tabs

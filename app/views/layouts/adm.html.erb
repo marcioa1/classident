@@ -13,9 +13,8 @@
     <script src="http://www.google.com/jsapi?key=ABQIAAAAjvzs-ZogAGiunZQ8Jl21TBRtdQgZiUqLdjHUMTfxUCYUR5UWoxSFtbdXCKR_vOwS_kPEOepv5GrTDw" type="text/javascript"></script>
     <%= javascript_include_tag  src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js" %>
   <% end %>
-  <%= stylesheet_link_tag 'adm.css', 'jquery.loading.1.6' %>
-  <%= stylesheet_link_tag 'jquery', 'jquery.ui.base.css' %>
-
+  <%= javascript_include_merged :base %>
+  <%= stylesheet_link_merged :base %>
 </head>
 <% if session[:clinica_id].to_i == 10 %>
   <body style='background-color: #F6FDB8;'>
