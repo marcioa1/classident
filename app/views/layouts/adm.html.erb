@@ -55,7 +55,10 @@ $(document).ready(function() {
         <%= flash[:notice] if flash[:notice] %>
         <br/>
         <%= @paciente && identifica_paciente(@paciente) %>
+        <span id="controller" style='display: none;'><%= params[:controller] %></span> 
+        <span id="action" style='display: none;'><%= params[:action] %></span>
         <%= yield :main %>
+        
         <%= yield :detail %>
     </div>
 

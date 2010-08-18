@@ -8,6 +8,7 @@ class ApplicationController < ActionController::Base
   helper_method :current_user_session, :current_user
   before_filter :busca_clinicas
   before_filter :administracao
+  before_filter :verifica_se_tem_senha
 
   def quinze_dias
     begin
@@ -19,6 +20,14 @@ class ApplicationController < ActionController::Base
       @data_final = params[:datepicker2].to_date
     rescue
       @data_final = Date.today
+    end
+  end
+  
+  def verifica_se_tem_senha
+    if params[:action]
+      session[:senha] = Senha.senha(params[:controller], params[:action], session[:clinica_id])
+    else
+      session[:senha] = nil
     end
   end
   

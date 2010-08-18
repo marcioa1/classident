@@ -284,8 +284,8 @@ function pagamento_protetico(){
 }
 
 function busca_saldo(){
-	$("#data").replaceWith("<span id=data></span>");
-  $("#saldo_em_dinheiro").val("");
+	$("#data").replaceWith("<span id='data'></span>");
+	$("#saldo_em_dinheiro").val("");
   $("#saldo_em_cheque").val("");
 	$.ajax({
     url    : "/busca_saldo",
@@ -501,4 +501,24 @@ function busca_id(numero){
     }
     }
   );
+}
+
+function valida_senha(){
+  var senha_digitada = $('#senha').val();
+  var controller     = $('#controller').html();
+  var action         = $('#action').html();
+  $.ajax({
+    url : "/valida_senha",
+    type: 'GET', 
+    data: {controller_name: controller, action_name: action, senha_digitada: senha_digitada},
+    success :function(data){
+      if (data==true){
+        $("#corpo").toggle('slow');
+        $("#corpo_senha").hide();        
+      } else {
+        alert("senha inválida.");
+      }
+    }
+    
+  });
 }

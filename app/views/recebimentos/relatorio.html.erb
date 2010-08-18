@@ -1,4 +1,8 @@
 <% content_for :main do %>
+<% if @senha %>
+   <%= render :partial=>'/layouts/senha' %>
+  <div id='corpo' style='display :none;'>
+<% end %>
 <fieldset class="fieldset_50">
     <legend>Relatório de recebimentos</legend>
 <% form_tag relatorio_recebimentos_path do %>
@@ -68,5 +72,7 @@
   </tr>
   </table>
 <% end %>
-
+<% if @senha %>
+  </div>
+<% end %>
 <% end %>
