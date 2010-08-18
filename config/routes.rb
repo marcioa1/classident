@@ -45,6 +45,7 @@ ActionController::Routing::Routes.draw do |map|
                   :member => {:exclui => :post, :exclusao=>:get},
                   :collection=>{:relatorio=>:get, :das_clinicas=>:get, :entradas_no_mes=>:get, :pesquisa_nomes=> :get}
   map.valida_senha "valida_senha", :controller=> 'senhas', :action=>'valida_senha', :method=>:get
+  map.resources :senhas
   map.resources :tabelas, :collection=>{:print=>:get },
                   :member => {:reativar => :get}
 

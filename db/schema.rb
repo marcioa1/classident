@@ -410,8 +410,8 @@ ActiveRecord::Schema.define(:version => 20100818010657) do
   add_index "recebimentos", ["sequencial"], :name => "index_recebimentos_on_sequencial"
 
   create_table "senhas", :id => false, :force => true do |t|
-    t.string   "controller"
-    t.string   "action"
+    t.string   "controller_name"
+    t.string   "action_name"
     t.integer  "clinica_id"
     t.string   "senha"
     t.datetime "created_at"

@@ -225,7 +225,6 @@ class Converte
     while line = f.gets 
       begin
         registro = busca_registro(line)
-        # debugger
         if clinica != registro.last
           clinica = registro.last
           @clinica = Clinica.find_by_sigla(clinica)
@@ -834,7 +833,6 @@ class Converte
           adm                      = registro[26]
           cheque                   = Cheque.find_by_clinica_id_and_sequencial(clinica.id, seq)
           if cheque && cheque.entregue_a_administracao
-            # debugger
             cheque.destinacao               = destinacao
             cheque.data_destinacao          = data_destinacao
             if pagamento > 0
@@ -987,7 +985,6 @@ class Converte
   
   def busca_registro(line)
     # @ct += 1
-    # debugger
     if line[0..0]=='"'
       line.split('"')[1].split(";")
     else

@@ -14,4 +14,5 @@
       %td{ :align => 'right'}= rec.valor.real
       %td= rec.formas_recebimento.nome
       %td= rec.observacao_exclusao
-      %td= User.find(rec.usuario_exclusao).nome
+      - user = User.all(:conditions=>[:id => rec.usuario_exclusao]).first
+      %td= user && user.nome

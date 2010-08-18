@@ -1,0 +1,8 @@
+- content_for :main do
+  - form_for @senha do |f|
+    = f.text_field :controller_name
+    = f.text_field :action_name
+    = f.label :senha
+    = f.password_field :senha
+    %p
+    = f.submit "salvar"

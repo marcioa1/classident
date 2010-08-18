@@ -2,6 +2,8 @@
 <% if @senha %>
    <%= render :partial=>'/layouts/senha' %>
   <div id='corpo' style='display :none;'>
+<% else %>
+  <%= link_to "cadastra senha", new_senha_path({:controller_name=>params[:controller], :action_name=>params[:action]}) %>
 <% end %>
 <fieldset class="fieldset_50">
     <legend>Relatório de recebimentos</legend>
@@ -17,7 +19,7 @@
 </fieldset>
 <br/>
 <table id="tabela" class="tabela">
-  <tr>
+  <tr>
     <th>Data</th>
     <th width="330px">Paciente</th>
     <th width="70px">Valor</th>
