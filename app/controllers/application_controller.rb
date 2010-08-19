@@ -29,6 +29,7 @@ class ApplicationController < ActionController::Base
     else
       session[:senha] = nil
     end
+    @senha              = session[:senha]
   end
   
   # def @administracao

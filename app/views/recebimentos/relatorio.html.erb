@@ -1,10 +1,6 @@
 <% content_for :main do %>
-<% if @senha %>
-   <%= render :partial=>'/layouts/senha' %>
-  <div id='corpo' style='display :none;'>
-<% else %>
-  <%= link_to "cadastra senha", new_senha_path({:controller_name=>params[:controller], :action_name=>params[:action]}) %>
-<% end %>
+<div id="corpo" style= "display:none"%>
+<%= render :partial => "layouts/cadastra_senha" %>
 <fieldset class="fieldset_50">
     <legend>Relatório de recebimentos</legend>
 <% form_tag relatorio_recebimentos_path do %>
@@ -74,7 +70,5 @@
   </tr>
   </table>
 <% end %>
-<% if @senha %>
   </div>
-<% end %>
 <% end %>

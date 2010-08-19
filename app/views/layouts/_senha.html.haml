@@ -1,4 +1,5 @@
-#corpo_senha
-  Senha
-  = password_field_tag :senha, '', :size=> 5
-  = link_to "libera", "#", :onclick=>'valida_senha();'
+- if params[:controller] != 'senhas' || params[:action] !='new'
+  #corpo_senha
+    Senha
+    = password_field_tag :senha, '', :size=> 5
+    = link_to "libera", "#", :onclick=>'valida_senha();'

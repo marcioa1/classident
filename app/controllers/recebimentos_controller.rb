@@ -168,7 +168,6 @@ class RecebimentosController < ApplicationController
   end
   
   def relatorio
-    @senha              = session[:senha]
     @formas_recebimento = FormasRecebimento.por_nome
     #@tipos_recebimento  = FormasRecebimento.por_nome.collect{|obj| [obj.nome, obj.id]}
     if !params[:datepicker]

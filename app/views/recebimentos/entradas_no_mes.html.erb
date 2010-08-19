@@ -1,4 +1,12 @@
 <% content_for :main do %>
+<% if @senha %>
+  <div id="corpo" style= "display:none" >
+<% else %>
+  <div id="corpo" >
+<% end %>
+    
+<%= render :partial => "layouts/cadastra_senha" %>
+
   <h3>Entrada no mês</h3>
   <p>
   <% form_tag :url=>entradas_no_mes_recebimentos_path do %>
@@ -43,4 +51,5 @@
       <td align='right'><%= (total[0] - total[1] + total[2] - total[3]).real %></td>
     </tr>
   </table>
+</div>
 <% end %>

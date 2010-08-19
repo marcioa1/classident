@@ -7,6 +7,7 @@
   <meta http-equiv="content-type" content="text/html;charset=utf-8" />
   <title>Classident
     </title>
+    
   <% if RAILS_ENV == "development"%>
     <%= javascript_include_tag 'jquery-1.4.js' %>
   <% else %>
@@ -56,6 +57,8 @@ $(document).ready(function() {
         <%= @paciente && identifica_paciente(@paciente) %>
         <span id="controller" style='display: none;'><%= params[:controller] %></span> 
         <span id="action" style='display: none;'><%= params[:action] %></span>
+        <%= render :partial => 'layouts/senha', :locals => { :senha => @senha , :params => params } if @senha  %>
+        
         <%= yield :main %>
         
         <%= yield :detail %>
