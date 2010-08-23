@@ -1,2 +1,3 @@
-%span{ :style=>'margin-left : 50em; margin-top: -1em;'}
-  = link_to "cadastra a senha", new_senha_path({:controller_name=>params[:controller], :action_name=>params[:action]})
+#chave{ :style=>'padding-left: 50em; padding-top: -2em;'}
+  = link_to "cadastra a senha", new_senha_path({:controller_name=>params[:controller], :action_name=>params[:action]}), :class => "ui-icon ui-icon-key ", :title=> 'Senha'
+  

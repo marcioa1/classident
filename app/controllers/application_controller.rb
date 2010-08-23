@@ -29,7 +29,14 @@ class ApplicationController < ActionController::Base
     else
       session[:senha] = nil
     end
-    @senha              = session[:senha]
+    @senha = session[:senha]
+    debugger
+    if params[:action] && params[:controller]
+      @esta_dentro = (params[:controler] + ',' + params[:action] == session[:action_name])
+    else
+      @esta_dentro = false
+    end  
+    
   end
   
   # def @administracao
