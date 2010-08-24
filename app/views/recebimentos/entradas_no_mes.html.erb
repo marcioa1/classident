@@ -1,10 +1,10 @@
 <% content_for :main do %>
-<% if @senha %>
-  <div id="corpo" style= "display:none" >
+<% if @senha && (@action != params[:action] || @senha!=@senha_digitada) %>
+  <%= render :partial => 'layouts/senha', :locals => { :senha => @senha, :params => params} %>
+  <div id="corpo" style="display:none">
 <% else %>
-  <div id="corpo" >
+  <div id="corpo" style= "display:ok">
 <% end %>
-    
 <%= render :partial => "layouts/cadastra_senha" %>
 
   <h3>Entrada no mês</h3>

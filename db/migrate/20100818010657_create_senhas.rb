@@ -1,6 +1,6 @@
 class CreateSenhas < ActiveRecord::Migration
   def self.up
-    create_table :senhas , :id => false do |t|
+    create_table :senhas do |t|
       t.string     :controller_name
       t.string     :action_name
       t.references :clinica
@@ -12,7 +12,6 @@ class CreateSenhas < ActiveRecord::Migration
   end
 
   def self.down
-    remove_index :senhas, :column_name
     drop_table :senhas
   end
 end

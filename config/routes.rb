@@ -46,6 +46,8 @@ ActionController::Routing::Routes.draw do |map|
                   :collection=>{:relatorio=>:get, :das_clinicas=>:get, :entradas_no_mes=>:get, :pesquisa_nomes=> :get}
   map.valida_senha "valida_senha", :controller=> 'senhas', :action=>'valida_senha', :method=>:get
   map.resources :senhas
+  map.cadastra_senha '/cadastra_senha', :controller=>'senhas', :action=>'cadastra' 
+  map.salva_senha '/salva_senha', :controller => 'senhas', :action => 'salva'
   map.resources :tabelas, :collection=>{:print=>:get },
                   :member => {:reativar => :get}
 
