@@ -57,8 +57,7 @@ $(document).ready(function() {
         <%= @paciente && identifica_paciente(@paciente) %>
         <span id="controller" style='display: none;'><%= params[:controller] %></span> 
         <span id="action" style='display: none;'><%= params[:action] %></span>
-        <%= render :partial => 'layouts/senha', :locals => { :senha => @senha , :params => params } if @senha  %>
-        
+       
         <%= yield :main %>
         
         <%= yield :detail %>

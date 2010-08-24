@@ -135,7 +135,7 @@ ActiveRecord::Schema.define(:version => 20100818010657) do
   create_table "debitos", :force => true do |t|
     t.integer  "paciente_id"
     t.integer  "tratamento_id"
-    t.decimal  "valor",            :precision => 9, :scale => 2
+    t.integer  "valor",            :limit => 10, :precision => 10, :scale => 0
     t.string   "descricao"
     t.date     "data"
     t.datetime "created_at"
@@ -251,8 +251,10 @@ ActiveRecord::Schema.define(:version => 20100818010657) do
     t.decimal  "preco",                :precision => 9, :scale => 2
   end
 
+  add_index "item_tabelas", ["clinica_id"], :name => "clinica"
   add_index "item_tabelas", ["descricao_conduta_id"], :name => "index_item_tabelas_on_descricao_conduta_id"
   add_index "item_tabelas", ["id"], :name => "index_item_tabelas_on_id"
+  add_index "item_tabelas", ["sequencial"], :name => "sequencial"
   add_index "item_tabelas", ["tabela_id"], :name => "index_item_tabelas_on_tabela_id"
 
   create_table "orcamentos", :force => true do |t|
@@ -260,13 +262,13 @@ ActiveRecord::Schema.define(:version => 20100818010657) do
     t.integer  "numero"
     t.date     "data"
     t.integer  "dentista_id"
-    t.decimal  "desconto",                    :precision => 9, :scale => 2
-    t.decimal  "valor",                       :precision => 9, :scale => 2
-    t.decimal  "valor_com_desconto",          :precision => 9, :scale => 2
+    t.integer  "desconto",                    :limit => 10, :precision => 10, :scale => 0
+    t.integer  "valor",                       :limit => 10, :precision => 10, :scale => 0
+    t.integer  "valor_com_desconto",          :limit => 10, :precision => 10, :scale => 0
     t.string   "forma_de_pagamento"
     t.integer  "numero_de_parcelas"
     t.date     "vencimento_primeira_parcela"
-    t.decimal  "valor_da_parcela",            :precision => 9, :scale => 2
+    t.integer  "valor_da_parcela",            :limit => 10, :precision => 10, :scale => 0
     t.date     "data_de_inicio"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -383,7 +385,6 @@ ActiveRecord::Schema.define(:version => 20100818010657) do
     t.boolean  "ativo",       :default => true
   end
 
-  add_index "proteticos", ["clinica_id"], :name => "index_proteticos_on_clinica_id"
   add_index "proteticos", ["id"], :name => "index_proteticos_on_id"
   add_index "proteticos", ["nome"], :name => "index_proteticos_on_nome"
 
@@ -417,6 +418,8 @@ ActiveRecord::Schema.define(:version => 20100818010657) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "senhas", ["controller_name", "action_name"], :name => "index_senhas_on_controller_name_and_action_name", :unique => true
 
   create_table "tabela_proteticos", :force => true do |t|
     t.integer  "protetico_id"

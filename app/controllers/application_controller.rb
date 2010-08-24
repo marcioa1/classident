@@ -8,7 +8,7 @@ class ApplicationController < ActionController::Base
   helper_method :current_user_session, :current_user
   before_filter :busca_clinicas
   before_filter :administracao
-  before_filter :verifica_se_tem_senha
+  
 
   def quinze_dias
     begin
@@ -27,10 +27,18 @@ class ApplicationController < ActionController::Base
     if params[:action]
       session[:senha] = Senha.senha(params[:controller], params[:action], session[:clinica_id])
     else
-      session[:senha] = nil
+      session[:senha]          = nil
+      session[:senha_digitada] = nil
     end
-    @senha              = session[:senha]
+    @action         = session[:action]
+    @senha          = session[:senha]
+    @senha_digitada = session[:senha_digitada]
   end
+  
+  def salva_action_na_session
+    session[:action] = params[:controller]+','+params[:action]
+  end 
+  
   
   # def @administracao
   #     session[:clinica_id].to_i == 10

@@ -6,6 +6,9 @@ class RecebimentosController < ApplicationController
   before_filter :verifica_horario_de_trabalho
   before_filter :busca_bancos_e_forma_de_recebimento, :only=>[:new, :edit]
   before_filter :busca_recebimento, :only => [:show,  :update, :exclui, :destroy, :exclusao]
+  before_filter :salva_action_na_session
+  before_filter :verifica_se_tem_senha
+  
   
   def index
     @recebimentos = Recebimento.all(:limit=> 50,:order => 'created_at desc')
@@ -300,5 +303,4 @@ class RecebimentosController < ApplicationController
     @recebimento = Recebimento.find(params[:id])
   end  
   
- 
 end

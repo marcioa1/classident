@@ -8,9 +8,11 @@ class CreateSenhas < ActiveRecord::Migration
 
       t.timestamps
     end
+    add_index :senhas, [:controller_name, :action_name], :unique=>true
   end
 
   def self.down
+    remove_index :senhas, :column_name
     drop_table :senhas
   end
 end

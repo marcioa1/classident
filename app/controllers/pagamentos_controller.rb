@@ -2,6 +2,10 @@ class PagamentosController < ApplicationController
   
   layout "adm" , :except=> :show
   before_filter :require_user
+  before_filter :salva_action_na_session
+  before_filter :verifica_se_tem_senha
+  
+  
 
   def index
     @pagamentos = Pagamento.all
