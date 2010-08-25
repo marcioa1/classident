@@ -51,6 +51,7 @@ class ChequesController < ApplicationController
   end
   
   def cheques_recebidos
+    #TODO falta colocar fitro de clínica
     if params[:datepicker] && Date.valid?(params[:datepicker])
       @data_inicial = params[:datepicker].to_date
     else
