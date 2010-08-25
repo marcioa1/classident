@@ -190,8 +190,8 @@ td,th{
 	font-weight:normal;
 }
 thead th{
-	text-transform:uppercase;
-	background:#92b724;
+/*  text-transform:uppercase;*/
+	background:#455A79;
 	color:#fff;
 }
 

@@ -1,80 +1,79 @@
 <% content_for :main do %>
-<% debugger %>
-<% if @senha && (@action != params[:action] || @senha!=@senha_digitada) %>
-  <%= render :partial => 'layouts/senha', :locals => { :senha => @senha, :params => params} %>
-  <div id="corpo" style="display:none">
-<% else %>
-  <div id="corpo" style= "display:ok">
-<% end %>
-<%= render :partial => "layouts/cadastra_senha" %>
-<fieldset class="fieldset_50">
+
+  <%= render :partial => '/layouts/include_senha' %>
+
+  <fieldset class="fieldset_50">
     <legend>Relatório de recebimentos</legend>
-<% form_tag relatorio_recebimentos_path do %>
-  <p class='mensagem_de_erro'><%= @erros %>
-  </p>
-   Início : <%= text_field_tag :datepicker ,params[:datepicker], :size=>10  %> 
+    <% form_tag relatorio_recebimentos_path do %>
+    <p class='mensagem_de_erro'><%= @erros %>
+    </p>
+    Início : <%= text_field_tag :datepicker ,params[:datepicker], :size=>10  %> 
     &nbsp;Fim : <%= text_field_tag :datepicker2, params[:datepicker2], :size=>10 %>
-	  <%= submit_tag "pesquisar"%>
+    <%= submit_tag "pesquisar"%>
 
-<p><%= render :partial => "formas_recebimentos/opcoes", :locals=>{:formas=>@formas_recebimento}%></p>
-<% end %>
-</fieldset>
-<br/>
-<table id="tabela" class="tabela">
-  <tr>
-    <th>Data</th>
-    <th width="330px">Paciente</th>
-    <th width="70px">Valor</th>
-    <th width="120px">Observação</th>
-    <th>Tipo</th>
-    <th>&nbsp;</th>
-    <th>&nbsp;</th>
-  </tr>
-<% total = 0 %>
-<% @recebimentos.each do |recebimento| %>
-  <tr >
-    <td align="center"><%=h recebimento.data.to_s_br %></td>
-    <td><%=h recebimento.paciente.nome %></td>
-    <td align="right"><%=h recebimento.valor.real %></td>
-    <td><%=h recebimento.observacao %></td>
-    <td><%  if recebimento.em_cheque? %>
-           <%= link_to_function "cheque", "abre_cheque(#{recebimento.cheque.id})" if recebimento.cheque %>
-         <% else %> 
-<%= recebimento.formas_recebimento.nome %>
-    <% end %></td>
-    <td><%= link_to 'editar', edit_recebimento_path(recebimento) %></td>
-    <td><%= link_to 'excluir', exclui_recebimento_path(recebimento) %></td>
-  </tr>
-  <% total += recebimento.valor %>
-<% end %>
-  <tr>
-  	<td colspan="2" align="center">Total</td>
-    <td align="right"><%= total.real %></td>
-    <td colspan="4">&nbsp;</td>
-  </tr>
-</table>
+    <p><%= render :partial => "formas_recebimentos/opcoes", :locals=>{:formas=>@formas_recebimento}%></p>
+    <% end %>
+  </fieldset>
+  <br/>
+  <table id="tabela" class="tabela">
+    <thead>
+    <tr>
+      <th>Data</th>
+      <th width="330px">Paciente</th>
+      <th width="70px">Valor</th>
+      <th width="120px">Observação</th>
+      <th>Tipo</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+    </tr>
+    </thead>
+    <tbody>
+    <% total = 0 %>
+    <% @recebimentos.each do |recebimento| %>
+    <tr >
+      <td align="center"><%=h recebimento.data.to_s_br %></td>
+      <td><%=h recebimento.paciente.nome %></td>
+      <td align="right"><%=h recebimento.valor.real %></td>
+      <td><%=h recebimento.observacao %></td>
+      <td><%  if recebimento.em_cheque? %>
+        <%= link_to_function "cheque", "abre_cheque(#{recebimento.cheque.id})" if recebimento.cheque %>
+        <% else %> 
+        <%= recebimento.formas_recebimento.nome %>
+        <% end %></td>
+        <td><%= link_to 'editar', edit_recebimento_path(recebimento) %></td>
+        <td><%= link_to 'excluir', exclui_recebimento_path(recebimento) %></td>
+      </tr>
+      <% total += recebimento.valor %>
+      <% end %>
+      </tbody>
+      <tr>
+        <td colspan="2" align="center">Total</td>
+        <td align="right"><%= total.real %></td>
+        <td colspan="4">&nbsp;</td>
+      </tr>
+    </table>
 
-<br />
-<% if @recebimentos_excluidos.size>0 %>
-  <% @total = 0%>
+    <br />
+    <% if @recebimentos_excluidos.size>0 %>
+    <% @total = 0%>
     <h3>Recebimentos excluidos</h3>
-	<table class="zebra">
-	  <tr>
-	    <th>Data</th>
-	    <th width="180px">Paciente</th>
-	    <th width="70px">Valor</th>
-	    <th width="120px">Forma</th>
-	    <th>Tipo</th>
-	    <th>Data exclusão</th>
-	    <th>Observação exclusão</th>
-	  </tr>
-  <%= render :partial=>"recebimento" , :collection=>@recebimentos_excluidos %>
-  <tr>
-  	<td colspan="2" align="center">Total</td>
-    <td align="right"><%= @total.real %></td>
-    <td colspan="4">&nbsp;</td>
-  </tr>
-  </table>
-<% end %>
+    <table class="zebra">
+      <tr>
+        <th>Data</th>
+        <th width="180px">Paciente</th>
+        <th width="70px">Valor</th>
+        <th width="120px">Forma</th>
+        <th>Tipo</th>
+        <th>Data exclusão</th>
+        <th>Observação exclusão</th>
+      </tr>
+      <%= render :partial=>"recebimento" , :collection=>@recebimentos_excluidos %>
+      <tr>
+        <td colspan="2" align="center">Total</td>
+        <td align="right"><%= @total.real %></td>
+        <td colspan="4">&nbsp;</td>
+      </tr>
+    </table>
+    <% end %>
   </div>
-<% end %>
+  <% end %>

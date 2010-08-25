@@ -58,6 +58,8 @@ $(document).ready(function() {
         <span id="controller" style='display: none;'><%= params[:controller] %></span> 
         <span id="action" style='display: none;'><%= params[:action] %></span>
        
+       senha digitada : <%= @senha_digitada %><br/>
+       senha : <%= @senha %><br/>
         <%= yield :main %>
         
         <%= yield :detail %>

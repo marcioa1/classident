@@ -172,10 +172,9 @@ class RecebimentosController < ApplicationController
   
   def relatorio
     @formas_recebimento = FormasRecebimento.por_nome
-    #@tipos_recebimento  = FormasRecebimento.por_nome.collect{|obj| [obj.nome, obj.id]}
     if !params[:datepicker]
-      params[:datepicker2]  = Date.today.to_s_br
-      params[:datepicker] = (Date.today - 15.days).to_s_br
+      params[:datepicker2] = Date.today.to_s_br
+      params[:datepicker]  = (Date.today - 15.days).to_s_br
     end
     if Date.valid?(params[:datepicker]) && Date.valid?(params[:datepicker2])
       @data_inicial = params[:datepicker].to_date

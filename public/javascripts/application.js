@@ -504,7 +504,7 @@ function busca_id(numero){
 }
 
 function valida_senha(){
-  var senha_digitada = $('#senha').val();
+  var senha_digitada = $('#nova_senha').val();
   var controller     = $('#controller').html();
   var action         = $('#action').html();
   $.ajax({

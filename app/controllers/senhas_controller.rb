@@ -1,7 +1,9 @@
 class SenhasController < ApplicationController
   layout "adm"
+  
   def valida_senha
-    retorno =  (params[:senha_digitada] == Senha.senha(params[:controller_name], params[:action_name], session[:clinica_id])) ? true : false
+    senha_da_action = Senha.senha(params[:controller_name], params[:action_name], session[:clinica_id]) 
+    retorno =  (params[:senha_digitada] == senha_da_action) ? true : false
     session[:senha_digitada] = params[:senha_digitada] if retorno
     render :json=>retorno.to_json
   end
@@ -17,10 +19,9 @@ class SenhasController < ApplicationController
   end
   
   def salva
-    debugger
     if Senha.find_by_controller_name_and_action_name_and_clinica_id(params[:controller_name], params[:action_name],session[:clinica_id])
       @senha = Senha.find_by_controller_name_and_action_name_and_clinica_id(params[:controller_name], params[:action_name],session[:clinica_id])
-      @senha.senha = params[:senha]
+      @senha.senha = params[:nova_senha]
       if @senha.save
         redirect_to :back
       end

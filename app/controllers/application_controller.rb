@@ -24,8 +24,10 @@ class ApplicationController < ActionController::Base
   end
   
   def verifica_se_tem_senha
+    debugger
     if params[:action]
       session[:senha] = Senha.senha(params[:controller], params[:action], session[:clinica_id])
+      session[:senha_digitada] = nil if session[:senha].nil?
     else
       session[:senha]          = nil
       session[:senha_digitada] = nil

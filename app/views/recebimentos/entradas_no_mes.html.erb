@@ -1,11 +1,6 @@
 <% content_for :main do %>
-<% if @senha && (@action != params[:action] || @senha!=@senha_digitada) %>
-  <%= render :partial => 'layouts/senha', :locals => { :senha => @senha, :params => params} %>
-  <div id="corpo" style="display:none">
-<% else %>
-  <div id="corpo" style= "display:ok">
-<% end %>
-<%= render :partial => "layouts/cadastra_senha" %>
+
+  <%= render :partial => '/layouts/include_senha' %>
 
   <h3>Entrada no mês</h3>
   <p>
@@ -51,5 +46,6 @@
       <td align='right'><%= (total[0] - total[1] + total[2] - total[3]).real %></td>
     </tr>
   </table>
+</div>
 </div>
 <% end %>

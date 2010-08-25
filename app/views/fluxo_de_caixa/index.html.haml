@@ -1,4 +1,6 @@
 - content_for :main do
+  = render :partial => '/layouts/include_senha'
+
   %h3{ :style => "padding-left: 10em;" }
     Fluxo de caixa do dia :
     = @fluxo.data.to_s_br
