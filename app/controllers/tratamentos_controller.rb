@@ -14,43 +14,32 @@ class TratamentosController < ApplicationController
   end
   
   def create
-    erro = false
-    if Date.valid?(params[:tratamento][:data_termino_br])
-      data = params[:tratamento][:data_termino_br].to_date
-      if data > Date.today
-        @tratamento = Tratamento.new
-        @tratamento.errors.add(:data_termino_br, "Não pode ser data futura.")
+    @tratamento = Tratamento.new(params[:tratamento])
+    
+    dentes = params[:dentes].split(',')
+    erro   = ( dentes.empty? ? true : false )
+    if erro
+      @tratamento.errors.add(:dente, "campo obrigatório")
+    end
+    dentes.each do |dente|
+      @tratamento             = Tratamento.new(params[:tratamento])
+      @tratamento.paciente_id = session[:paciente_id]
+      @tratamento.dente       = dente
+      @tratamento.clinica_id  = session[:clinica_id]
+      @tratamento.excluido    = false
+      if @tratamento.save 
+        @tratamento.finalizar_procedimento(current_user) if @tratamento.data
+      else
         erro = true
       end
     end
-    if !erro    
-      dentes = params[:dentes].split(',')
-      dentes.each do |dente|
-        @tratamento             = Tratamento.new(params[:tratamento])
-        @tratamento.paciente_id = session[:paciente_id]
-        @tratamento.dente       = dente
-        @tratamento.clinica_id  = session[:clinica_id]
-        @tratamento.excluido    = false
-        @tratamento.data        = params[:tratamento][:data_termino_br].to_date 
-        if @tratamento.save 
-          if !@tratamento.data.nil?
-            @tratamento.finalizar_procedimento(current_user)
-          end
-          erro = false
-        else
-          erro = true
-        end
-      end
-    end
     if erro
-      @paciente = Paciente.find(session[:paciente_id])
-      # @tratamento             = Tratamento.new
-      # @tratamento.paciente_id = @paciente.id
-      @items                  = @paciente.tabela.item_tabelas.
+      @paciente   = Paciente.find(session[:paciente_id])
+      @items      = @paciente.tabela.item_tabelas.
           collect{|obj| [obj.codigo + " - " + obj.descricao,obj.id]}.insert(0,"")
-      @dentistas              = @clinica_atual.dentistas.ativos.collect{|obj| [obj.nome,obj.id]}.sort
-      
-      render :action => "new" 
+      @dentistas  = @clinica_atual.dentistas.ativos.collect{|obj| [obj.nome,obj.id]}.sort
+
+      render :action => "new"
     else
       redirect_to(abre_paciente_path(:id=>session[:paciente_id])) 
     end

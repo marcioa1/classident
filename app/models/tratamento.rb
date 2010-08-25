@@ -25,20 +25,28 @@ class Tratamento < ActiveRecord::Base
   
   validates_presence_of :descricao, :message => "não pode ser vazio."
   validates_presence_of :dentista,  :message => "não pode ser vazio."
-  validates_presence_of :dente,     :message => "can't be blank"
+  validates_presence_of :dente,     :message => "não pode ser vazio."
+  validate :data_nao_pode_ser_futura
   
   attr_accessor :data_termino_br
   
   def data_termino_br
-    self.data ? self.data.to_s_br : '' 
+    self.data ? self.data.to_s_br : nil 
   end
   
   def data_termino_br=(value)
     if Date.valid?(value)
       self.data = value.to_date
+    else
+      self.data = nil
     end
   end
   
+  def data_nao_pode_ser_futura
+    if self.data_termino_br && self.data_termino_br.to_date > Date.today
+      errors.add(:data_de_termino, " não pode ser futura")
+    end
+  end
   def self.valor_a_fazer(paciente_id)
     Tratamento.sum(:valor, :conditions=>["paciente_id = ? and data IS NULL and excluido  = ? and orcamento_id IS NULL", paciente_id, false])
   end

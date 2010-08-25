@@ -1,15 +1,13 @@
 <% content_for :main do %>
 <fieldset class='fieldset_60'>
 <legend>Novo tratamento</legend>
-<%= nome_paciente(@tratamento.paciente) %>
-<br/>
 <% form_for(@tratamento) do |f| %>
 
   <%= f.hidden_field :paciente_id %>
   <%= f.error_messages %>
   <p>
     <%= f.label :dente %> : 
-    <%= text_field_tag :dentes, {}, :size=> 12 %>
+    <%= text_field_tag :dentes, params[:dentes], :size=> 12 %>
   </p>
   <p>
    <Fieldset class='fieldset_20'>
