@@ -155,9 +155,9 @@ class PacientesController < ApplicationController
   end  
 
   def busca_tabelas
-    @tabelas    = Tabela.ativas.collect{|obj| [obj.nome,obj.id]}
-    @indicacoes = Indicacao.por_descricao.collect{|obj| [obj.descricao, obj.id]}
-    @ortodontistas        = Dentista.ortodontistas.por_nome.collect{|obj| [obj.nome,obj.id]}
+    @tabelas        = Tabela.ativas.collect{|obj| [obj.nome,obj.id]}
+    @indicacoes     = Indicacao.por_descricao.collect{|obj| [obj.descricao, obj.id]}
+    @ortodontistas  = Clinica.find(session[:clinica_id]).ortodontistas.collect{|obj| [obj.nome,obj.id]}
   end
 
 end

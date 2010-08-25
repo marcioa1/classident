@@ -18,5 +18,15 @@ class Clinica < ActiveRecord::Base
   named_scope :todas, :conditions=>["sigla <> 'ad'"]
 
   ADMINISTRACAO_ID = 10
+  
+  def ortodontistas
+    result = []
+    self.dentistas.each do |dentista|  
+      result << dentista if dentista.ortodontista
+    end
+    result.sort! {|a,b| a.nome <=> b.nome}
+  end  
+  
+  
 
 end

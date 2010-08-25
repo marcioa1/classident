@@ -11,7 +11,6 @@ class Dentista < ActiveRecord::Base
   
   named_scope :ativos, :conditions=>["ativo=?", true]
   named_scope :inativos, :conditions=>["ativo=?", false]
-  named_scope :ortodontistas, :conditions=>["ortodontista=?", true]
   named_scope :por_nome, :order=>:nome
   named_scope :que_iniciam_com, lambda{|iniciais| {:conditions=>['nome like ?', iniciais + '%']}}
   
@@ -45,5 +44,5 @@ class Dentista < ActiveRecord::Base
   def busca_producao(inicio,fim,clinicas)
     resultado = Tratamento.do_dentista(id).por_data.entre(inicio, fim).da_clinica(clinicas)
   end
-  
+
 end
