@@ -30,8 +30,7 @@
             = link_to lancamento.valor.real, edit_debito_path(lancamento)
           - else
             = lancamento.valor.real
-        %td
-          &nbsp;
+        
         %td
           - if lancamento.pode_excluir?
             = link_to 'Excluir', lancamento, :confirm => 'Tem certeza?', :method => :delete 

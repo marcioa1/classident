@@ -21,7 +21,7 @@
       <th>Data</th>
       <th width="330px">Paciente</th>
       <th width="70px">Valor</th>
-      <th width="120px">Observação</th>
+      <th width="160px">Observação</th>
       <th>Tipo</th>
       <th>&nbsp;</th>
       <th>&nbsp;</th>
@@ -33,15 +33,15 @@
     <tr >
       <td align="center"><%=h recebimento.data.to_s_br %></td>
       <td><%=h recebimento.paciente.nome %></td>
-      <td align="right"><%=h recebimento.valor.real %></td>
+      <td align="right"><%=h recebimento.valor.to_f %></td>
       <td><%=h recebimento.observacao %></td>
       <td><%  if recebimento.em_cheque? %>
         <%= link_to_function "cheque", "abre_cheque(#{recebimento.cheque.id})" if recebimento.cheque %>
         <% else %> 
         <%= recebimento.formas_recebimento.nome %>
         <% end %></td>
-        <td><%= link_to 'editar', edit_recebimento_path(recebimento) %></td>
-        <td><%= link_to 'excluir', exclui_recebimento_path(recebimento) %></td>
+        <td><%= link_to 'editar', edit_recebimento_path(recebimento), :class=>'ui-icon ui-icon-pencil', :title=>'editar' %></td>
+        <td><%= link_to 'excluir', exclui_recebimento_path(recebimento), :class=>'ui-icon ui-icon-trash', :title=>'excluir' %></td>
       </tr>
       <% total += recebimento.valor %>
       <% end %>
@@ -57,7 +57,7 @@
     <% if @recebimentos_excluidos.size>0 %>
     <% @total = 0%>
     <h3>Recebimentos excluidos</h3>
-    <table class="zebra">
+    <table >
       <tr>
         <th>Data</th>
         <th width="180px">Paciente</th>

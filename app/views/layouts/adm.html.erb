@@ -14,6 +14,7 @@
     <script src="http://www.google.com/jsapi?key=ABQIAAAAjvzs-ZogAGiunZQ8Jl21TBRtdQgZiUqLdjHUMTfxUCYUR5UWoxSFtbdXCKR_vOwS_kPEOepv5GrTDw" type="text/javascript"></script>
     <%= javascript_include_tag  src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js" %>
   <% end %>
+  <%= javascript_include_tag 'tablesorter/jquery.tablesorter.js'%>
   <%= javascript_include_merged :base %>
   <%= stylesheet_link_merged :base %>
 </head>
@@ -24,8 +25,7 @@
 <% end %>
 <script>
 $(document).ready(function() {
-  $('table tbody tr:odd').addClass('zebraUm');
-  $('table tbody tr:even').addClass('zebraDois');
+  $("#tabela").tablesorter();
 });
 </script>
 <div id="container">
@@ -57,12 +57,10 @@ $(document).ready(function() {
         <%= @paciente && identifica_paciente(@paciente) %>
         <span id="controller" style='display: none;'><%= params[:controller] %></span> 
         <span id="action" style='display: none;'><%= params[:action] %></span>
-       
-       senha digitada : <%= @senha_digitada %><br/>
-       senha : <%= @senha %><br/>
+
         <%= yield :main %>
-        
         <%= yield :detail %>
+
     </div>
 
 
