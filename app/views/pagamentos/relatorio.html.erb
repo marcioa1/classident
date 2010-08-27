@@ -1,5 +1,5 @@
 <% content_for :main do %>
-<%= link_to 'novo pagamento', new_pagamento_path %>
+<%= link_to 'novo pagamento', new_pagamento_path %> 
 
 <fieldset>
     <legend>Relatório de pagamentos</legend>
@@ -29,7 +29,8 @@
 <% end %>
 </fieldset>
 <br/>
-<table>
+<table id="tabela">
+  <thead>
   <tr>
     <th>Data de pagamento</th>
     <th>Valor pago</th>
@@ -39,8 +40,9 @@
     <th>&nbsp;</th>
     <th>&nbsp;</th>
     <th>&nbsp;</th>
-  </tr>
+  </tr></thead>
 <% total = 0 %>
+<tbody>
 <% @pagamentos.each do |pagamento| %>
   <tr>
     <td align="center"><%=h pagamento.data_de_pagamento.to_s_br %></td>
@@ -48,12 +50,13 @@
     <td><%=h pagamento.observacao %></td>
     <td><%=h pagamento.tipo_pagamento.nome %></td>
     <td align="center"><%=h pagamento.nao_lancar_no_livro_caixa ? "sim" : "não" %></td>
-    <td><%= link_to 'editar', edit_pagamento_path(pagamento) %></td>
-    <td><%= link_to 'excluir', pagamento, :confirm => 'Tem certeza ?', :method => :delete %></td>
-    <td><%= link_to 'mostrar', '#', :onclick=>'javascript:abre_pagamento('+ pagamento.id.to_s + ')'%></td>
+    <td><%= link_to 'editar', edit_pagamento_path(pagamento), :class=>'ui-icon ui-icon-pencil', :title=>'editar' %></td>
+    <td><%= link_to 'excluir', pagamento, :confirm => 'Tem certeza ?', :method => :delete, :class=>'ui-icon ui-icon-trash', :title=>'excluir' %></td>
+    <td><%= link_to 'mostrar', '#', :onclick=>'javascript:abre_pagamento('+ pagamento.id.to_s + ')' , :class=>'ui-icon ui-icon-info', :title=>'ver detalhes'%></td>
   </tr>
   <% total += pagamento.valor_pago  %>
 <% end %>
+  </tbody>
   <tr>
   	<td align="center">Total</td>
     <td align="right"><%= total.real %></td>
