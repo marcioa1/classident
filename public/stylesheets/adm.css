@@ -62,14 +62,15 @@ fieldset{
 }
 #rodape{
     background: #1C4EA3;
-    margin-left: 5em;
+    margin-top: 1em;
+/*    margin-left: 1em;*/
     margin-right: 5em;
-//  width: 48.2em;
+    width: 58.2em;
     text-align: center;
-    color: #DF7417;
+    color: white;
 }
 #rodape a{
-    color :#DF7427;
+    color :white;
 }
 .destaque{
   height: 1.5em;
@@ -165,6 +166,10 @@ fieldset{
   background-color: #12ee31;
   color: #000000;
 }
+
+.zebraHover { background-color: #87B6D9;
+}
+
 tr.even {
 	background-color: #F6F6F6;
 }
@@ -213,4 +218,28 @@ tbody th{
   padding-left: 1em;
   background-color: #E6EDF8;
   font-size: 18px;
+}
+
+.esquerda_20 {
+  padding-left: 20em;
+}
+.esquerda_10 {
+  padding-left: 10em;
+}
+.esquerda_3 {
+  padding-left: 3em;
+}
+
+input.txt {
+color: #00008B; background-color: white; border: 1px inset #00008B;
+}
+form div {
+clear: left; margin: 0; padding: 0; padding-top: 0.6em;
+}
+form div label {
+float: left;
+width: 100px; font: bold  ;
+}
+input.btn {
+color: #00008B; background-color: #ADD8E6; border: 1px outset #00008B;
 }

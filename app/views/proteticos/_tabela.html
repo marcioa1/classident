@@ -15,7 +15,7 @@
         <% end %>
     </td>
     <td align="right"><%= item.valor.real%></td>
-    <td><%= link_to 'apagar', item, :confirm => 'Tem certeza ?', :method => :delete  %></td>
+    <td><%= link_to 'apagar', item, :confirm => 'Tem certeza ?', :method => :delete, :class =>'ui-icon ui-icon-trash', :title=>'excluir'  %></td>
   </tr> 
 <% end %>
 </table>

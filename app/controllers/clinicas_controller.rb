@@ -23,6 +23,7 @@ class ClinicasController < ApplicationController
     end
     @dentistas = Clinica.find(session[:clinica_id]).dentistas.por_nome
     @dentistas.each do |den|
+      debugger
       mensal = den.producao_entre_datas(@data_inicial,@data_final)
       if mensal.split("/")[1].to_f > 0.0
         @valores << (mensal + "/" + den.nome)

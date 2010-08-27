@@ -1,4 +1,6 @@
 <% content_for :main do %>
+  <%= render :partial => '/layouts/include_senha' %>
+
 <div id="titulo">Produção Anual</div>
 <% form_tag :url=>producao_anual_clinicas_path, :method=>:get do %>
   <p>Ano : 

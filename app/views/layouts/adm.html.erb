@@ -65,7 +65,7 @@ $(document).ready(function() {
 
 
   <div id="rodape">
-    © 2009 - <a href="http://www.anadata.com.br/"><strong>Anadata Sistemas</strong></a>
+    © 2010 - <a href="http://www.anadata.com.br/"><strong>Anadata Sistemas</strong></a>
     - Todos os direitos reservados
   </div>
 </div>
@@ -76,4 +76,11 @@ $(document).ready(function() {
 <% else %>
   <%= javascript_include_tag 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.3/jquery-ui.min.js'%>
 <% end %>
+<script type='text/javascript'>
+  $('table tbody tr').hover(function() { 
+    $(this).addClass('zebraHover');
+   }, 
+     function() { $(this).removeClass('zebraHover');
+  });
+</script>
 </html>

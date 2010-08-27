@@ -47,33 +47,33 @@
   </div>
   </p>
   <br/>
-  <p>
+  <div>
   <%= f.label :codigo %> : 
-  <%= f.select :item_tabela_id, options_for_select(@items), {}, html_options={  :onchange=>"selecionou_item_tabela();"} %>
-  </p>
-  <p>
+  <%= f.select :item_tabela_id, options_for_select(@items), {}, html_options={  :onchange=>"selecionou_item_tabela();", :class=>'txt'} %>
+  </div>
+  <div>
     <%= f.label :descrição %> : 
-    <%= f.text_field :descricao, :size=>50 %>
-  </p>
-  <p>
+    <%= f.text_field :descricao, :size=>50, :class=>'txt' %>
+  </div>
+  <div>
     <%= f.label :valor %> :
-    <%= f.text_field :valor, :size=>10 %>
-  </p>
-  <p>
+    <%= f.text_field :valor, :size=>10, :class=>'txt'  %>
+  </div>
+  <div>
     <%= f.label :custo %> :
-    <%= f.text_field :custo, :size=>10 %>
-  </p>
-  <p>
-    <%= f.label :dentista %>
-    <%= f.select :dentista_id, @dentistas, :include_blank=>true %>
-  </p>
-  <p>
-    <%= f.label :data_de_término %>
+    <%= f.text_field :custo, :size=>10, :class=>'txt' %>
+  </div>
+  <div>
+    <%= f.label :dentista %> :
+    <%= f.select :dentista_id, @dentistas, :include_blank=>true, :class=>'txt' %>
+  </div>
+  <div>
+    <%= f.label :data_de_término %> :
     <%= f.text_field :data_termino_br, :class => 'datepicker', :size=>10     %>
-  </p>
-  <p>
-    <%= f.submit "salvar" if !@tratamento.data || (@tratamento.data + 15.days > Date.today )%>
-  </p>
+  </div>
+  <div>
+    <%= f.submit "salvar", :class=>'btn' if !@tratamento.data || (@tratamento.data + 15.days > Date.today )%>
+  </div>
 <% end %>
 <hr>
 <p>

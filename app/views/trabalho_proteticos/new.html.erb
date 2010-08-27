@@ -20,48 +20,48 @@
   </p>
   <hr>
   <p>
-    <%= f.label :protetico_id %><br />
+    <%= f.label :protetico_id %>
     <%= f.select :protetico_id, @proteticos, {:include_blank=>true}, :onchange=>"escolheu_protetico();" %>
   </p>
   <p>
-    <%= f.label :data_de_envio %><br />
+    <%= f.label :data_de_envio %>
     <%=text_field_tag :datepicker, Date.today.to_s_br, :size=>10 %>
 <% #TODO Colocar o dia da semana %>
   </p>
   <p>
-    <%= f.label :data_prevista_de_devolução %><br />
+    <%= f.label :data_prevista_de_devolução %>
     <%= text_field_tag :datepicker2, (Date.today + 5.days).to_s_br, :size=>10 %>
   </p>
   <p>
-    <%= f.label :data_de_devolução %><br />
+    <%= f.label :data_de_devolução %>
     <%= text_field_tag :datepicker3, @trabalho_protetico.data_de_devolucao.to_s_br, :size=>10 %>
   </p>
   <p>
-    <%= f.label :tabela_protetico_id %><br />
+    <%= f.label :tabela_protetico_id %>
     <%= f.select :tabela_protetico_id,[],{}, :onchange=>"escolheu_item_da_tabela();" %>
   </p>
   <p>
-    <%= f.label :valor %><br />
+    <%= f.label :valor %>
     <%= f.text_field :valor, :size=>8 %>
   </p>
   <p>
-    <%= f.label :cor %><br />
+    <%= f.label :cor %>
     <%= f.text_field :cor, :size=>8 %>
   </p>
   <p>
-    <%= f.label :observações %><br />
+    <%= f.label :observações %>
     <%= f.text_area :observacoes, :rows=>3, :columns=>50 %>
   </p>
   <p>
-    <%= f.label :data_de_repeticao %><br />
+    <%= f.label :data_de_repeticao %>
     <%= text_field_tag :datepicker4, @trabalho_protetico.data_de_repeticao.to_s_br, :size=>10 %>
   </p>
   <p>
-    <%= f.label :motivo_da_repeticao %><br />
+    <%= f.label :motivo_da_repeticao %>
     <%= f.text_field :motivo_da_repeticao %>
   </p>
   <p>
-    <%= f.label :data_prevista_da_devolucao_da_repeticao %><br />
+    <%= f.label :data_prevista_da_devolucao_da_repeticao %>
     <%= text_field_tag :datepicker5, @trabalho_protetico.data_prevista_da_devolucao_da_repeticao.to_s_br, :size=>10 %>
     
   </p>

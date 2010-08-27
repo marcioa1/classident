@@ -1,4 +1,6 @@
 <% content_for :main do %>
+  <%= render :partial => '/layouts/include_senha' %>
+
   <h3>Cheques recebidos</h3>
   <%= @cheques.size %> Cheques recebidos
 <% form_tag cheques_recebidos_cheques_path do %>
@@ -79,4 +81,5 @@
     <td>&nbsp;</td>
   </tr>
 </table>
+</div>
 <% end %>

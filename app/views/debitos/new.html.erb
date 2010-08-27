@@ -6,23 +6,23 @@
   <%= f.error_messages %>
 
     <%= f.hidden_field :paciente_id %>
-  <p>
+  <div>
     <%= f.label :data %> :
-  	<%= f.text_field :data_br, :size=>10, :class=>'datepicker' %>
-  </p>
-  <p>
+  	<%= f.text_field :data_br, :size=>10, :class=>'datepicker txt' %>
+  </div>
+  <div>
     <%= f.label :valor %> :
-    <%= f.text_field :valor, :size=>12 %>
-  </p>
-  <p>
+    <%= f.text_field :valor, :size=>12, :class=>'txt' %>
+  </div>
+  <div>
     <%= f.label :descrição %> :
-    <%= f.text_field :descricao, options={:size=>30} %>
-  </p>
-  <p>
-    <%= f.submit 'salvar' %>
-  </p>
+    <%= f.text_field :descricao, html_options={:size=>30, :class=>'txt' }%>
+  </div>
+  <div>
+    <%= f.submit 'salvar' %>&nbsp;&nbsp;<%= link_to 'voltar', :back %>
+  </div>
 <% end %>
 
-<%= link_to 'voltar', :back %>
+
 </fieldset>
 <% end %>

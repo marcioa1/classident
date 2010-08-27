@@ -21,8 +21,8 @@
     <% if titulo.downcase == 'remessa'%>
       <td align='center'><%=h mov.data_confirmacao_da_entrada.to_s_br if mov.data_confirmacao_da_entrada %></td>
     <% end %>
-    <td><%= link_to 'editar', edit_entrada_path(mov) if !mov.confirmada? %></td>
-    <td><%= link_to 'excluir', mov, :confirm => 'Tem certeza ?', :method => :delete if !mov.confirmada?%></td>
+    <td><%= link_to 'editar', edit_entrada_path(mov), :class=>'ui-icon ui-icon-pencil' , :title=>'editar' if !mov.confirmada? %></td>
+    <td><%= link_to 'excluir', mov, :confirm => 'Tem certeza ?', :method => :delete , :class=>'ui-icon ui-icon-trash' , :title=>'excluir'if !mov.confirmada?%></td>
   </tr>
 <% end %>
 </table>

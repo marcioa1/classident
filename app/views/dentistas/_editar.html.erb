@@ -41,7 +41,7 @@
     <% end %>
   </fieldset>
   <p>
-    <%= f.submit 'alterar'  %>
+    <%= f.submit 'alterar' if session[:clinica_id]== 10 %>
   </p>
 <% end %>
 </fieldset><br/>

@@ -1,4 +1,6 @@
 <% content_for :main do %>
+  <%= render :partial => '/layouts/include_senha' %>
+
   <h3>Fechamento de mês</h3>
   <% form_tag :url=>fechamento_mes_clinicas_path do %>
     Ano : 
