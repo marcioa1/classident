@@ -41,8 +41,7 @@ class DebitosController < ApplicationController
 
   def destroy
     if @debito.pode_excluir?
-      @debito.data_de_exclusao = Date.today
-      @debito.save
+      @debito.update_attribute(:data_de_exclusao, Date.today)
 
       redirect_to(abre_paciente_path(:id=>@debito.paciente_id)) 
     end

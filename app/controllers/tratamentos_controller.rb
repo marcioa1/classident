@@ -77,6 +77,7 @@ class TratamentosController < ApplicationController
     begin
       @tratamento.data = Date.today
       @tratamento.finalizar_procedimento(current_user)
+      debugger
       @tratamento.save
       @tratamento.paciente.verifica_alta_automatica(current_user, session[:clinica_id])
       head :ok

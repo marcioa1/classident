@@ -4,6 +4,7 @@ class Debito < ActiveRecord::Base
   
   validates_presence_of :valor, :only => [:create, :update], :message => "campo obrigatório"
   validates_presence_of :descricao, :only => [:create, :update], :message => "campo obrigatório"
+  validates_numericality_of :valor, :greater_or_equal_than => 0,  :message => " deve ser numérico e maior do que zero."
   validate :verifica_quinzena
   
   attr_accessor :data_br

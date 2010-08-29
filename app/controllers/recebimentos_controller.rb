@@ -35,6 +35,7 @@ class RecebimentosController < ApplicationController
   end
 
   def create
+    #FIXME reescrever, método muito grande
     @recebimento      = Recebimento.new(params[:recebimento])
     if !na_quinzena?(@recebimento.data)
       @recebimento.errors.add(:data, " : não pode ser anterior à quinzena")

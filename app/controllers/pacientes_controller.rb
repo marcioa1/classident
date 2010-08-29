@@ -20,7 +20,7 @@ class PacientesController < ApplicationController
   end
 
   def edit
-    @indicacoes = Indicacao.por_descricao.collect{|obj| [obj.descricao, obj.id]}
+    # @indicacoes = Indicacao.por_descricao.collect{|obj| [obj.descricao, obj.id]}
   end
 
   def create
@@ -38,6 +38,9 @@ class PacientesController < ApplicationController
 
   def update
     debugger
+    if @paciente.frozen?
+      @paciente = Paciente.find(params[:id])
+    end
     if @paciente.update_attributes(params[:paciente])
       redirect_to(abre_paciente_path(:id=>@paciente.id)) 
     else
