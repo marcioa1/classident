@@ -92,13 +92,13 @@ class Tratamento < ActiveRecord::Base
   end
   
   def finalizar_procedimento(user)
-    if self.orcamento.nil?
-      debito = Debito.new
-      debito.paciente_id = paciente_id
-      debito.tratamento_id = id
-      debito.descricao = item_tabela.descricao
-      debito.valor = valor
-      debito.data = data
+    if self.orcamento.nil? && self.valor > 0
+      debito               = Debito.new
+      debito.paciente_id   = self.paciente_id
+      debito.tratamento_id = self.id
+      debito.descricao     = self.descricao 
+      debito.valor         = self.valor
+      debito.data          = self.data
       debito.save
     else
       if self.orcamento.em_aberto?

@@ -68,7 +68,7 @@
       %td{ :align => "center" }
         = tratamento.orcamento.numero unless tratamento.orcamento.nil?
       %td
-        = link_to "novo trabalho de protético", new_trabalho_protetico_path(:tratamento_id=>tratamento.id, :paciente_id=>tratamento.paciente.id) if tratamento.pode_alterar?
+        = link_to "novo trabalho de protético", new_trabalho_protetico_path(:tratamento_id=>tratamento.id, :paciente_id=>tratamento.paciente.id) if tratamento.pode_alterar? && tratamento.data.nil?
     - total += tratamento.valor
   %tr
     %td{ :align => "center", :colspan => "4" }

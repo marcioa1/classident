@@ -1,5 +1,5 @@
 <% content_for :main do %>
-<fieldset>
+<fieldset class='fieldset_40'>
 <legend>Novo trabalho protetico :</legend>
 
 <% form_for(@trabalho_protetico) do |f| %>
@@ -7,69 +7,71 @@
   <%= f.hidden_field :paciente_id %>
   <%= f.hidden_field :clinica_id %>
   <%= f.hidden_field :tratamento_id %>
-  <p>
-    Tratamento : <%= @tratamento.descricao if @tratamento %>
-  </p>
-  <p>
-    <%= f.label :dentista_id %> :
-    <%= f.select :dentista_id, @dentistas, :include_blank=>true %>
-  </p>
-  <p>
-    <%= f.label :dente %> :   
-    <%= f.text_field :dente, :size=>10 %>
-  </p>
+  <% if @tratamento %>
+    <div>
+      Tratamento : <%= @tratamento.descricao if @tratamento %>
+    </div>
+  <% end %>
+  <div>
+    <%= f.label 'dentista :' %>
+    <%= f.select :dentista_id, @dentistas, :include_blank=>true, :class=>'txt' %>
+  </div>
+  <div>
+    <%= f.label 'dente : ' %>   
+    <%= f.text_field :dente, :size=>10, :class=>'txt' %>
+  </div>
   <hr>
-  <p>
-    <%= f.label :protetico_id %>
+  <div>
+    <%= f.label 'protetico :' %>
     <%= f.select :protetico_id, @proteticos, {:include_blank=>true}, :onchange=>"escolheu_protetico();" %>
-  </p>
-  <p>
-    <%= f.label :data_de_envio %>
-    <%=text_field_tag :datepicker, Date.today.to_s_br, :size=>10 %>
+  </div>
+  <div>
 <% #TODO Colocar o dia da semana %>
-  </p>
-  <p>
-    <%= f.label :data_prevista_de_devolução %>
-    <%= text_field_tag :datepicker2, (Date.today + 5.days).to_s_br, :size=>10 %>
-  </p>
-  <p>
-    <%= f.label :data_de_devolução %>
-    <%= text_field_tag :datepicker3, @trabalho_protetico.data_de_devolucao.to_s_br, :size=>10 %>
-  </p>
-  <p>
-    <%= f.label :tabela_protetico_id %>
+    <%= f.label 'data de envio :' %>
+    <%= f.text_field :data_envio_pt, :size=>10, :class=>'datepicker txt' %>
+  </div>
+  <div>
+    <%= f.label 'data prevista de devolução :'%> 
+    <%= f.text_field :data_prevista_de_devolucao_pt, :size=>10, :class=>'datepicker txt' %>
+  </div>
+  <div>
+    <%= f.label 'data de devolução :' %>
+    <%= f.text_field :data_de_devolucao_pt, :size=>10, :class=>'datepicker txt' %>
+  </div>
+  <div>
+    <%= f.label 'tabela protético : ' %>
     <%= f.select :tabela_protetico_id,[],{}, :onchange=>"escolheu_item_da_tabela();" %>
-  </p>
-  <p>
-    <%= f.label :valor %>
+  </div>
+  <div>
+    <%= f.label 'valor :' %>
     <%= f.text_field :valor, :size=>8 %>
-  </p>
-  <p>
-    <%= f.label :cor %>
+  </div>
+  <div>
+    <%= f.label 'cor :'%>
     <%= f.text_field :cor, :size=>8 %>
-  </p>
-  <p>
-    <%= f.label :observações %>
+  </div>
+  <div>
+    <%= f.label 'observações :' %> 
     <%= f.text_area :observacoes, :rows=>3, :columns=>50 %>
-  </p>
-  <p>
-    <%= f.label :data_de_repeticao %>
-    <%= text_field_tag :datepicker4, @trabalho_protetico.data_de_repeticao.to_s_br, :size=>10 %>
-  </p>
-  <p>
-    <%= f.label :motivo_da_repeticao %>
+  </div>
+  <div>
+    <%= f.label 'data de repetição : ' %>
+    <%= f.text_field :data_de_repeticao_pt, :size=>10, :class=>'datepicker' %>
+  </div>
+  <div>
+    <%= f.label 'motivo da repetição :'%>
     <%= f.text_field :motivo_da_repeticao %>
-  </p>
-  <p>
-    <%= f.label :data_prevista_da_devolucao_da_repeticao %>
+  </div>
+  <div>
+    <%= f.label 'data prevista da devolução da repetição :'%> 
     <%= text_field_tag :datepicker5, @trabalho_protetico.data_prevista_da_devolucao_da_repeticao.to_s_br, :size=>10 %>
     
-  </p>
-  <p>
+  </div>
+  <div>
     <%= f.submit 'salvar' %>
-  </p>
+    <%= link_to 'voltar', abre_paciente_path(@trabalho_protetico.paciente) %>
+  </div>
 <% end %>
 
-<%= link_to 'voltar', abre_paciente_path(@trabalho_protetico.paciente) %>
 <% end %>
 </fieldset>

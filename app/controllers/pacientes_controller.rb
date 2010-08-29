@@ -37,8 +37,7 @@ class PacientesController < ApplicationController
   end
 
   def update
-    @paciente.data_da_suspensao_da_cobranca_de_orto = params[:datepicker3].to_date if Date.valid?(params[:datepicker3])
-    @paciente.data_da_saida_da_lista_de_debitos     = params[:datepicker4].to_date if Date.valid?(params[:datepicker4])
+    debugger
     if @paciente.update_attributes(params[:paciente])
       redirect_to(abre_paciente_path(:id=>@paciente.id)) 
     else
