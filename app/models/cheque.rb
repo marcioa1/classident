@@ -49,6 +49,7 @@ class Cheque < ActiveRecord::Base
   named_scope :spc, lambda{|data_inicial, data_final| 
       {:conditions=>["data_spc between ? and ?", data_inicial, data_final]}}
   named_scope :usados_para_pagamento, :conditions=>["pagamento_id IS NOT NULL"]
+  named_scope :vindo_da_clinica, lambda{|clinicas| {:conditions=>["clinica_id in (?)", clinicas]}}
   
   attr_accessor :valor_real
   

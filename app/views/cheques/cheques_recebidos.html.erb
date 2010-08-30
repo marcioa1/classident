@@ -4,6 +4,9 @@
   <h3>Cheques recebidos</h3>
   <%= @cheques.size %> Cheques recebidos
 <% form_tag cheques_recebidos_cheques_path do %>
+  <% if @administracao %>
+    <p><%= render :partial =>'clinicas/opcoes', :locals => {:clinicas => @clinicas} %></p>
+  <% end %>
   <p>
   <%= label_tag :data_inicial %> : <%= text_field_tag :datepicker, @data_inicial.to_s_br, :size=>10 %>
 
@@ -37,7 +40,7 @@
   <% for cheque in @cheques do %>
   <tr>
     <% if @administracao %>
-      <td><%= cheque.id %>-<%= cheque.clinica.nome %></td>
+      <td><%= cheque.clinica.nome %></td>
     <% end %>
     <td align="center">
       <% if  @administracao %>

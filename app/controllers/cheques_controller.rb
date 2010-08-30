@@ -52,6 +52,7 @@ class ChequesController < ApplicationController
   
   def cheques_recebidos
     #TODO falta colocar fitro de clínica
+    @clinicas = Clinica.todas.por_nome if @administracao
     if params[:datepicker] && Date.valid?(params[:datepicker])
       @data_inicial = params[:datepicker].to_date
     else
@@ -117,6 +118,14 @@ class ChequesController < ApplicationController
     end
     if params[:status]=="spc"
       @cheques = Cheque.por_bom_para.da_clinica(session[:clinica_id]).spc(@data_inicial,@data_final)
+    end
+    if @administracao
+      clinicas_selecionadas = ""
+      @clinicas.each do |clinica|
+          clinicas_selecionadas += "\'" + clinica.id.to_s + "\'," if params["clinica_#{clinica.id}".to_sym]
+      end
+      debugger
+      @cheques = @cheques.vindo_da_clinica(clinicas_selecionadas[0..-2])
     end
      #TODO fazer parametros que faltam de situação de cheque
   end
