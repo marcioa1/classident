@@ -56,16 +56,16 @@ class TratamentosController < ApplicationController
     @tratamento.data   = params[:data_de_termino].to_date if Date.valid?(params[:data_de_termino])
     if @tratamento.update_attributes(params[:tratamento])
       if !@tratamento.data.nil?
-        @tratamento.paciente.verifica_alta_automatica
+        @tratamento.paciente.verifica_alta_automatica(current_user, session[:clinica_id])
         @debito = Debito.find_by_tratamento_id(@tratamento.id)
         if @debito.nil? && @tratamento.orcamento.nil?
           @debito = Debito.new
           @debito.paciente_id = @tratamento.paciente_id
           @debito.tratamento_id = @tratamento.id
         end
-        @debito.descricao = @tratamento.item_tabela.descricao
-        @debito.valor = @tratamento.valor
-        @debito.data = @tratamento.data
+        @debito.descricao = @tratamento.descricao
+        @debito.valor     = @tratamento.valor
+        @debito.data      = @tratamento.data
         @debito.save
       end
       redirect_to(abre_paciente_path(:id=>@tratamento.paciente_id)) 
