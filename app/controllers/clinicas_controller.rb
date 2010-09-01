@@ -26,7 +26,7 @@ class ClinicasController < ApplicationController
       debugger
       mensal = den.producao_entre_datas(@data_inicial,@data_final)
       if mensal.split("/")[1].to_f > 0.0
-        @valores << (mensal + "/" + den.nome)
+        @valores << (mensal + "/" + den.nome + '/' + den.id.to_s)
       end
     end
   end

@@ -25,7 +25,7 @@ Produção mensal
 <% @valores.each do |v| %>
 	<tr>
 		<% valores = v .split("/")%>
-		<td><%= valores[5]  %></td>
+		<td><%= link_to valores[5], abre_dentista_path(valores[6])  %></td>
 		<td align='right'><%= valores[0] %></td>
 		<td align='right'><%= valores[1].to_d.real %></td>
 		<td align='right'><%= valores[2].to_d.real %></td>
