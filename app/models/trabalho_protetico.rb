@@ -42,7 +42,7 @@ class TrabalhoProtetico < ActiveRecord::Base
   end
 
   def data_prevista_de_devolucao_pt=(data)
-    self.data_prevista_de_devoulcao = data.to_date if Date.valid?(data)
+    self.data_prevista_de_devolucao = data.to_date if Date.valid?(data)
   end  
 
   def data_de_devolucao_pt

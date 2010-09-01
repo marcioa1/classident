@@ -32,8 +32,8 @@ module ApplicationHelper
    #    { :class => cycle(:odd, :even, :name => cycle_name) }
    #  end
    
-   def identifica_paciente(paciente)
-     return "<p class='identifica_paciente'>Ficha do paciente (#{paciente.sequencial}) : <b>#{paciente.nome}</b> &nbsp;&nbsp;&nbsp;&nbsp; ( Tel.: #{paciente.telefones} )</p> "
-   end
+   # def identifica_paciente(paciente)
+   #     return "<p class='identifica_paciente'>Ficha do paciente (#{paciente.sequencial}) : <b>#{paciente.nome}</b> &nbsp;&nbsp;&nbsp;&nbsp; ( Tel.: #{paciente.telefones} )</p> "
+   #   end
   
 end

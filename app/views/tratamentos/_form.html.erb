@@ -5,7 +5,7 @@
   
   <p>
     <%= f.label :dente %> : 
-    <%= text_field_tag :dentes, @tratamento.dentes %>
+    <%= text_field_tag :dentes, @tratamento.dentes , :size=>8%>
   </p>
   <p>
    <Fieldset class='fieldset_20'>
@@ -72,7 +72,7 @@
     <%= f.text_field :data_termino_br, :class => 'datepicker', :size=>10     %>
   </div>
   <div>
-    <%= f.submit "salvar", :class=>'btn' if !@tratamento.data || (@tratamento.data + 15.days > Date.today )%>
+    <%= f.submit "salvar" if !@tratamento.data || (@tratamento.data + 15.days > Date.today )%>
   </div>
 <% end %>
 <hr>

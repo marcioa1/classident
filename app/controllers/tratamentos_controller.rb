@@ -45,7 +45,8 @@ class TratamentosController < ApplicationController
     end
   end
   
-  def edit  
+  def edit      
+    @paciente               = @tratamento.paciente
     @items = @tratamento.paciente.tabela.item_tabelas.
         collect{|obj| [obj.codigo + " - " + obj.descricao,obj.id]}
     @dentistas = @clinica_atual.dentistas.ativos.collect{|obj| [obj.nome,obj.id]}
