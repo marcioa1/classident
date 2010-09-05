@@ -522,3 +522,4 @@ function valida_senha(){
     
   });
 }
+
