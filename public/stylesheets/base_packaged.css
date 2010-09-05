@@ -12,7 +12,7 @@ fieldset{ width: 30em}
 #cabecalho{ margin-left: 5em; margin-top: 2em; background-color: red}
 #principal{ margin-top:0em; margin-left:5em; margin-bottom:0em; margin-right: 5em; padding-top: 9em; padding-left: 2em; padding-bottom: 10em; padding-right: 7em; background :white; // width: 45.2em}
 #titulo{ padding-left: 10em; padding-bottom: 0.5em; font-size: 19px}
-#rodape{ background: #1C4EA3; margin-top: 1em;  margin-right: 5em; width: 58.2em; text-align: center; color: white}
+#rodape{ background: #1C4EA3; margin-top: 1em; margin-left: 5em; margin-right: 5em; padding-right: 7em; text-align: center; color: white}
 #rodape a{ color :white}
 .destaque{ height: 1.5em; background-color: #FFF4BC; padding-top: .3em; padding-left: 3em; font-size: 18px}
 .borda_dupla{ border:solid 1px #455A79; clear:both; padding-top: 0.4em; padding-bottom: 0.4em; padding-left: 0.4em}
@@ -58,8 +58,9 @@ tbody th{ background:#455A79; color: white}
 .esquerda_3 {padding-left: 3em}
 input.txt {color: #00008B; background-color: white; border: 1px inset #00008B}
 form div {clear: left; margin: 0; padding: 0; padding-top: 0.6em}
-form div label {float: left; width: 100px; font: bold }
+form div label {float: left; width: 160px; font: bold }
 input.btn {color: #00008B; background-color: #ADD8E6; border: 1px outset #00008B}
+#canvas{ padding-top: 14em}
  .loading-text {background: #FFC129; color: black; font-weight: bold; padding: 3px; border-radius: 5px; -o-border-radius: 5px; -moz-border-radius: 5px; -webkit-border-radius: 5px; -khtml-border-radius: 5px}
 .loading-text .place-img-content {margin: 0 3px 0 1px}
 .loading.top {border-top-left-radius: 0px; border-top-right-radius: 0px; -moz-border-radius-topleft: 0px; -moz-border-radius-topright: 0px; -webkit-border-top-left-radius: 0px; -webkit-border-top-right-radius: 0px}
