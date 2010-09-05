@@ -63,9 +63,9 @@ fieldset{
 #rodape{
     background: #1C4EA3;
     margin-top: 1em;
-/*    margin-left: 1em;*/
+    margin-left: 5em;
     margin-right: 5em;
-    width: 58.2em;
+    padding-right: 7em;
     text-align: center;
     color: white;
 }
