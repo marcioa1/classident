@@ -10,6 +10,10 @@ class Pagamento < ActiveRecord::Base
       :foreign_key => "pagamento_id"
   belongs_to :pagamento, :class_name => "Pagamento"
   
+  validates_presence_of :data_de_pagamento, :message => "Data de pagamento obrigatória."
+  validate :data_nao_pode_ser_no_passado
+  validates_numericality_of :valor_pago, :message => " : deve ser numérico"
+  
   named_scope :ao_protetico, lambda{|protetico_id| {:conditions=>["protetico_id = ?", protetico_id]}}
   named_scope :aos_proteticos, :conditions => 'protetico_id IS NOT NULL'
   named_scope :da_clinica, lambda{|clinica_id| {:conditions=>["clinica_id = ?", clinica_id]}}
@@ -27,14 +31,27 @@ class Pagamento < ActiveRecord::Base
   named_scope :por_data, :order=>:data_de_pagamento
 #  named_scope :total,  :sum('valor_pago') #conditions=>['sum valor_pago where data between ? and ? ', '2009-01-01', '2009-01-31']
        
-  attr_accessor :valor_pago_real
+  include ApplicationHelper
+
+  attr_accessor :valor_pago_real, :data_de_pagamento_pt
   
   def valor_pago_real
     self.valor_pago.real.to_s
   end
-  
   def valor_pago_real=(valor=0)
     self.valor_pago = valor.gsub('.', '').sub(',', '.')
+  end
+
+  def data_de_pagamento_pt
+    data_de_pagamento_pt = data_de_pagamento.to_s_br if data_de_pagamento
+  end
+  def data_de_pagamento_pt=(nova_data)
+    self.data_de_pagamento = data_de_pagamento_pt.to_date if Date.valid?(data_de_pagamento_pt)
+  end
+  
+  def data_nao_pode_ser_no_passado
+    errors.add(:data_de_pagamento, "não pode ser fora da quinzena.") if
+      !na_quinzena?(data_de_pagamento)# < Date.today  
   end
   
   def descricao_opcao_restante
@@ -54,5 +71,9 @@ class Pagamento < ActiveRecord::Base
     if !self.nao_lancar_no_livro_caixa && self.data_de_pagamento && self.data_de_pagamento < FluxoDeCaixa.data_atual(self.clinica_id)
       FluxoDeCaixa.voltar_para_a_data(self.data_de_pagamento, self.clinica_id)
     end
+  end
+  
+  def pode_alterar?
+    na_quinzena?(self.data_de_pagamento)
   end
 end

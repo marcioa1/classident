@@ -23,6 +23,19 @@ class ApplicationController < ActionController::Base
     end
   end
   
+  def quinzena
+    ano = Date.today.year
+    mes = Date.today.month
+    dia = Date.today.day
+    if dia < 16
+      @data_inicial = Date.new(ano,mes,1)
+      @data_final   = Date.new(ano,mes,15)
+    else
+      @data_inicial = Date.new(ano,mes,16)
+      @data_final   = Date.new(ano,mes,1) + 1.month - 1.day
+    end
+  end
+  
   def verifica_se_tem_senha
     if params[:action]
       session[:senha] = Senha.senha(params[:controller], params[:action], session[:clinica_id])

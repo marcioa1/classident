@@ -123,4 +123,9 @@ class ClinicasController < ApplicationController
     end
   end
   
+  def relatorio_de_exclusao
+    quinzena
+    @clinicas = Clinica.todas
+  end
+  
 end

@@ -1,4 +1,5 @@
 function desenha_odontograma(){
+  $("#canvas").show();
   var gr = new jsGraphics(document.getElementById("canvas"));
   for (i = 1; i < 19; i = i + 1){
     desenha_dente(i,gr);

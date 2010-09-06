@@ -28,6 +28,20 @@ module ApplicationHelper
      image_tag("http://chart.apis.google.com/chart?chs=200x125&amp;chxt=y&cht=lc&chtt=Correct (%)&chco=0077CC&amp;chd=t:"+ data)
    end
 
+
+  def na_quinzena?(data)
+    if data
+      primeira = Date.new(Date.today.year,Date.today.month,1)
+      segunda  = Date.new(Date.today.year,Date.today.month,16)
+      return false if data < primeira
+      return false if data < segunda && Date.today >= segunda
+      return true if data < segunda && Date.today < segunda
+      return true if data >= segunda && Date.today >= segunda
+    else
+      return true
+    end
+  end
+  
    # def alternate_row_class(cycle_name = :outer)
    #    { :class => cycle(:odd, :even, :name => cycle_name) }
    #  end

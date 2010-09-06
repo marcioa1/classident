@@ -1,10 +1,12 @@
 = javascript_include_tag 'jsDraw2D.js','odontograma.js'
 
 - if !@administracao
-  = link_to "Novo procedimento" , new_tratamento_path(:paciente_id=>@paciente.id)
+  = link_to "Novo procedimento" , new_tratamento_path(:paciente_id=>@paciente.id) 
+  |
+  = link_to "Odontograma", '#', :onclick=>'desenha_odontograma();'
 %br
 %br
-#canvas
+#canvas{:style=> 'display :none;'}
 %table
   %tr
     %th
@@ -79,5 +81,3 @@
     %td{ :align => "right" }
       = total.real
     %td{ :colspan => "5" }
-:javascript
-  desenha_odontograma();

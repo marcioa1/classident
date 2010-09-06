@@ -8,7 +8,7 @@ ActionController::Routing::Routes.draw do |map|
                 
   map.resource :clinicas, :collection=>{:producao_entre_datas=>:get, :producao_anual=>:get,
        :relatorio_alta=>:get, :abandono_de_tratamento=>:get, :pacientes_de_ortodontia =>:get,
-       :fechamento_mes=>:get }
+       :fechamento_mes=>:get, :relatorio_de_exclusao=>:get }
   map.resources :conta_bancarias
   map.resources :conversao, :collection=>{:cheque_adm => :get}
   map.resources :debitos, :collection=>{:pacientes_em_debito=>:get, :pacientes_fora_da_lista=>:get}
@@ -36,7 +36,8 @@ ActionController::Routing::Routes.draw do |map|
 
   map.administracao "administracao", :controller=>"administracao", :action=>"index"
   map.salva_tab_do_paciente "salva_tab_do_paciente", :controller=>"administracao", :action=>"salva_tab_do_paciente"
-  map.resources :pagamentos, :collection=>{:relatorio=>:get, :registra_pagamento_a_protetico=>:get}
+  map.resources :pagamentos, :collection=>{:relatorio=>:get, :registra_pagamento_a_protetico=>:get},
+                    :member => {:exclusao=>:get, :exclui=>:post}
   map.resources :precos
   map.resources :proteticos, :member=>{:abre=>:get}, 
         :collection=>{:busca_tabela=>:get, :relatorio=>:get, :trabalhos_por_clinica => :get, 

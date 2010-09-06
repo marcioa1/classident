@@ -21,20 +21,15 @@
 	<%= f.select :tipo_pagamento_id, @tipos_pagamento %>
   </p>
   <p>
-    <%= f.label :data_de_pagamento %><br />
-     <%= text_field_tag :datepicker, @pagamento.data_de_pagamento.to_s_br, :size=>10 %>
+    <%= f.label :data_de_pagamento %> : 
+     <%= f.text_field :data_de_pagamento_pt , :class=>'datepicker',  :size=>10 %>
   </p>
   <p>
-    <%= f.label :valor %><br />
-    <%= f.text_field :valor, :size=>10 %>
-<% #TODO ao alterar valor, alterar valor restante via js %>
+    <%= f.label :valor_pago %> :
+    <%= f.text_field :valor_pago_real, :size=>10 %>
   </p>
   <p>
-    <%= f.label :valor_pago %><br />
-    <%= f.text_field :valor_pago, :size=>10 %>
-  </p>
-  <p>
-    <%= f.label :observação %><br />
+    <%= f.label :observação %> : 
     <%= f.text_field :observacao %>
   </p>
   <p>

@@ -1,2 +1,7 @@
 one:
   paciente: marcio
+  data: <%= Date.today - 20.days %>
+  
+two:
+  paciente: marcio
+  data: nil

@@ -92,7 +92,6 @@ class Tratamento < ActiveRecord::Base
   end
   
   def finalizar_procedimento(user)
-debugger
     if self.orcamento.nil? && self.valor > 0
       debito               = Debito.new
       debito.paciente_id   = self.paciente_id

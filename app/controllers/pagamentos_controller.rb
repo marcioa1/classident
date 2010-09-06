@@ -4,8 +4,6 @@ class PagamentosController < ApplicationController
   before_filter :require_user
   before_filter :salva_action_na_session
   before_filter :verifica_se_tem_senha
-  
-  
 
   def index
     @pagamentos = Pagamento.all
@@ -83,6 +81,9 @@ class PagamentosController < ApplicationController
         flash[:notice] = 'Pagamento criado com sucesso.'
         redirect_to(relatorio_pagamentos_path) #TODO retornar para tela anterio
       else
+        @tipos_pagamento = TipoPagamento.da_clinica(session[:clinica_id]).ativos.por_nome.collect{|obj| [obj.nome, obj.id]}
+        @contas_bancarias = ContaBancaria.all.collect{|obj| [obj.nome, obj.id]}
+
         render :action => "new" 
       end
     end
@@ -100,9 +101,12 @@ class PagamentosController < ApplicationController
     end
   end
 
-  def destroy
-    @pagamento = Pagamento.find(params[:id])
-    @pagamento.data_de_exclusao = Time.now
+  def exclui #destroy
+    #TODO excluir gravando observação da exlcusao
+    debugger
+    @pagamento                     = Pagamento.find(params[:id])
+    @pagamento.observacao_exclusao = params[:observacao_exclusao]
+    @pagamento.data_de_exclusao    = Time.now
     @pagamento.verifica_fluxo_de_caixa
     Pagamento.transaction do
       cheques = @pagamento.cheques
@@ -150,6 +154,10 @@ class PagamentosController < ApplicationController
     session[:valor]                 = total
     redirect_to new_pagamento_path(:protetico_id=>params[:protetico_id], 
          :trabalho_protetico_id=>params[:ids], :valor=>total )
+  end
+  
+  def exclusao
+    @pagamento = Pagamento.find(params[:id])
   end
   
 end

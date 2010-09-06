@@ -1,0 +1,17 @@
+- content_for :main do
+  %fieldset
+    %legend Exclusão de pagamento
+
+    %p
+      Valor : 
+      = @pagamento.valor_pago.real
+    %p
+    Forma :
+    = @pagamento.tipo_pagamento.nome
+    - form_tag exclui_pagamento_path do 
+      %p
+        = label_tag 'justificativa : '
+        = text_field_tag :observacao_exclusao, '', :size=>50
+      %div
+        = submit_tag "Excluir"
+        = link_to 'voltar', :back

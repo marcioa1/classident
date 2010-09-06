@@ -16,3 +16,8 @@ de_sc:
     valor: 600
     pagamento_id: 1
     
+nao_pode_alterar:
+  data_de_pagamento: #{Date.today - 30.days}
+  valor: 500
+  pagamento_id: 1
+    

@@ -29,7 +29,7 @@ fieldset{
 }
 #logo{
     margin-left: 2em;
-    margin-top: 2em;
+    margin-top: 1em;
     float: left;
 }
 #login{
@@ -40,15 +40,15 @@ fieldset{
 }
 #cabecalho{
     margin-left: 5em;
-    margin-top: 2em;
+    margin-top: 0.3em;
     background-color: red;
 }
 #principal{
-    margin-top:0em;
-    margin-left:5em;
+    margin-top: 0em;
+    margin-left: 5em;
     margin-bottom:0em;
     margin-right: 5em;
-    padding-top: 9em;
+    padding-top: 7.3em;
     padding-left: 2em;
     padding-bottom: 10em;
     padding-right: 7em;
@@ -62,7 +62,7 @@ fieldset{
 }
 #rodape{
     background: #1C4EA3;
-    margin-top: 1em;
+    margin-top: 0em;
     margin-left: 5em;
     margin-right: 5em;
     padding-right: 7em;

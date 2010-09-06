@@ -1,0 +1,11 @@
+= content_for :main do
+  Relatorio de exclusao
+  - form_tag do
+    %div
+      Clinicas :
+      = select_tag :clinica_id, options_from_collection(@clinicas)
+    %div
+      Entre : 
+      = text_field_tag :data_inicial, @data_inicial.to_s_br, :class=>'datepicker', :size => 11
+      e : 
+      = text_field_tag :data_final, @data_final.to_s_br, :class=>'datepicker', :size => 11
