@@ -124,8 +124,17 @@ class ClinicasController < ApplicationController
   end
   
   def relatorio_de_exclusao
-    quinzena
-    @clinicas = Clinica.todas
+    @clinicas    = Clinica.todas
+    if !params[:data_inicial]
+      quinzena
+    else 
+      @data_inicial = params[:data_inicial].to_date
+      @data_final   = params[:data_final].to_date
+    end
+    @recebimentos_excluidos = Recebimento.all(:conditions=>['data_de_exclusao between ? and ? ', @data_inicial, @data_final])
+    @pagamentos_excluidos   = Pagamento.all(:conditions=>['data_de_exclusao between ? and ? ', @data_inicial, @data_final])
+    debugger
+    i=0
   end
   
 end

@@ -340,6 +340,7 @@ ActiveRecord::Schema.define(:version => 20100906022323) do
     t.integer  "dentista_id"
     t.integer  "pagamento_id"
     t.string   "observacao_exclusao"
+    t.integer  "usuario_exclusao"
   end
 
   add_index "pagamentos", ["clinica_id"], :name => "index_pagamentos_on_clinica_id"
