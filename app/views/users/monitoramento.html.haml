@@ -1,11 +1,10 @@
 -content_for :main do
-  = params[:clinica_monitor_id]
   %h3 Monitoramento de usuários
   - form_tag monitoramento_users_path do
     Clínica : 
     = select_tag "clinica_monitor_id", options_for_select(@clinicas, params[:clinica_monitor_id]), :onChange=>"busca_usuarios();"
     Usuário :
-    = select_tag "user_monitor_id", params[:user_monitor_id]
+    = select_tag "user_monitor_id", options_for_select(@users, params[:user_monitor_id])
     %p
     Entre :
     = text_field_tag :datepicker, (Date.today - 1.day).to_s_br, :size=> 10

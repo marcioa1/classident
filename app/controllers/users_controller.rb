@@ -80,11 +80,16 @@ class UsersController < ApplicationController
   
   def monitoramento
     debugger
-    @clinicas = Clinica.all.collect{|obj| [ obj.nome, obj.id]}.insert(0, '')
+    @clinicas = Clinica.all.collect{|obj| [ obj.nome, obj.id.to_s]}.insert(0, '')
     if params[:datepicker]
-      @audits   = Audit.all(:conditions=>['created_at between ? and ?', params[:datepicker].to_date, params[:datepicker2].to_date])
+      @audits = Audit.all(:conditions=>['user_id = ? and created_at between ? and ?', params[:user_monitor_id], params[:datepicker].to_date, params[:datepicker2].to_date])
     else
       @audits = Array.new
+    end
+    if params[:clinica_monitor_id]
+      @users = Clinica.find(params[:clinica_monitor_id]).users.collect{|obj| [obj.nome, obj.id.to_s]}
+    else
+      @users = Array.new
     end
   end
   

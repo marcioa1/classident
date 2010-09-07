@@ -531,7 +531,7 @@ function busca_usuarios(){
     success :function(data){
       $("#user_monitor_id").html("");
       for (var i = 0; i < data.length; i++){ 
-        $("#user_monitor_id").append(new Option(data[i][1]  ,data[i][0]));
+        $("#user_monitor_id").append(new Option(data[i][1]   ,data[i][0]));
       }    
     }
   });

@@ -137,7 +137,7 @@ class ClinicasController < ApplicationController
   
   def usuarios_da_clinica
     clinica = Clinica.find(params[:clinica_id])
-    render :json => clinica.users.collect{|obj| [obj.id,obj.nome]}.to_json
+    render :json => clinica.users.collect{|obj| [obj.id.to_s,obj.nome]}.to_json
   end
   
 end
