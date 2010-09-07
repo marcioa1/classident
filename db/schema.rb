@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100906022323) do
+ActiveRecord::Schema.define(:version => 20100907021812) do
 
   create_table "altas", :force => true do |t|
     t.integer  "paciente_id"
@@ -38,9 +38,11 @@ ActiveRecord::Schema.define(:version => 20100906022323) do
     t.integer  "version",        :default => 0
     t.string   "comment"
     t.datetime "created_at"
+    t.integer  "clinica_id"
   end
 
   add_index "audits", ["auditable_id", "auditable_type"], :name => "auditable_index"
+  add_index "audits", ["clinica_id"], :name => "index_audits_on_clinica_id"
   add_index "audits", ["created_at"], :name => "index_audits_on_created_at"
   add_index "audits", ["user_id", "user_type"], :name => "user_index"
 

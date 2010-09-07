@@ -523,3 +523,16 @@ function valida_senha(){
   });
 }
 
+function busca_usuarios(){
+  $.ajax({
+    url  : "/clinicas/usuarios_da_clinica",
+    type : 'GET', 
+    data : {clinica_id: $("#clinica_monitor_id").val()},
+    success :function(data){
+      $("#user_monitor_id").html("");
+      for (var i = 0; i < data.length; i++){ 
+        $("#user_monitor_id").append(new Option(data[i][1]  ,data[i][0]));
+      }    
+    }
+  });
+}

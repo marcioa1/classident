@@ -77,5 +77,19 @@ class UsersController < ApplicationController
   def troca_senha
     @user = current_user
   end
+  
+  def monitoramento
+    debugger
+    @clinicas = Clinica.all.collect{|obj| [ obj.nome, obj.id]}.insert(0, '')
+    if params[:datepicker]
+      @audits   = Audit.all(:conditions=>['created_at between ? and ?', params[:datepicker].to_date, params[:datepicker2].to_date])
+    else
+      @audits = Array.new
+    end
+  end
+  
+  def users_de_uma_clinica
+    
+  end
 
 end

@@ -8,7 +8,7 @@ ActionController::Routing::Routes.draw do |map|
                 
   map.resource :clinicas, :collection=>{:producao_entre_datas=>:get, :producao_anual=>:get,
        :relatorio_alta=>:get, :abandono_de_tratamento=>:get, :pacientes_de_ortodontia =>:get,
-       :fechamento_mes=>:get, :relatorio_de_exclusao=>:get }
+       :fechamento_mes=>:get, :relatorio_de_exclusao=>:get, :usuarios_da_clinica => :get }
   map.resources :conta_bancarias
   map.resources :conversao, :collection=>{:cheque_adm => :get}
   map.resources :debitos, :collection=>{:pacientes_em_debito=>:get, :pacientes_fora_da_lista=>:get}
@@ -60,7 +60,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :tipo_pagamentos, :member=>{:reativar=>:get}
   map.resources :trabalho_proteticos
   map.resources :tratamentos, :member=>{:finalizar_procedimento=>:get}
-  map.resources :users, :member =>[:troca_senha=>:get]
+  map.resources :users, :member =>[:troca_senha=>:get], :collection=>{:monitoramento=>:get}
   map.resource :user_sessions
   
   

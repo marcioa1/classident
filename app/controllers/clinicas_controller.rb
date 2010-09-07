@@ -133,8 +133,11 @@ class ClinicasController < ApplicationController
     end
     @recebimentos_excluidos = Recebimento.all(:conditions=>['data_de_exclusao between ? and ? ', @data_inicial, @data_final])
     @pagamentos_excluidos   = Pagamento.all(:conditions=>['data_de_exclusao between ? and ? ', @data_inicial, @data_final])
-    debugger
-    i=0
+  end
+  
+  def usuarios_da_clinica
+    clinica = Clinica.find(params[:clinica_id])
+    render :json => clinica.users.collect{|obj| [obj.id,obj.nome]}.to_json
   end
   
 end

@@ -1,32 +1,42 @@
-<%= form.label :login %><br/>
-<%= form.text_field :login , :size=>10%><br/><br/>
-<%= form.label :senha, form.object.new_record? ? nil : "Nova senha" %><br />
-<%= form.password_field :password, :size=>8 %><br />
-<%= form.label :confirmação_da_senha %><br />
-<%= form.password_field :password_confirmation, :size=>8 %><br /><br />
-<%= form.label :nome %><br/>
-<%= form.text_field :nome%><br/>
-<br/>
-
-<%= form.label :email %><br/>
-<%= form.text_field :email%><br/>
-<br/>
-<%= form.label :tipo_usuario %><br/>
+<div>
+  <%= form.label :login %> : 
+  <%= form.text_field :login , :size=>10%>
+</div>
+<div>
+<%= form.label :senha, form.object.new_record? ? nil : "Nova senha" %> :
+<%= form.password_field :password, :size=>8 %>
+</div>
+<div>
+<%= form.label :confirmação_da_senha %> :
+<%= form.password_field :password_confirmation, :size=>8 %>
+</div>
+<div>
+<%= form.label :nome %> :
+<%= form.text_field :nome%>
+</div>
+<div>
+<%= form.label :email %> :
+<%= form.text_field :email%>
+</div>
+<div>
+<%= form.label :tipo_usuario %> :
 <%= form.select :tipo_usuario_id, @tipos_usuario %>
-<br/><br/>
-<%= form.label :clinicas %><br/>
+</div>
+<div>
+<%= form.label :clinicas %> : <br/>
 <% @as_clinicas.each do |clinica| %>
-  <%= check_box_tag "clinica_#{clinica[1]}", false, checked = current_user.clinicas.map(&:id).include?(clinica[1]) %>
-  <%= clinica[0] %>
+<%= check_box_tag "clinica_#{clinica[1]}", false, checked = current_user.clinicas.map(&:id).include?(clinica[1]) %>
+<%= clinica[0] %>
 <% end %>
+</div>
 
 <br/><br/>
 <%= form.check_box :ativo %>
 <%= form.label :ativo %>
 <p/>
-<fieldset class='fieldset_40'>
-<table class='transparente'>
-<% (0..6).each do |dia| %>
+<fieldset class = 'fieldset_40'>
+  <table class  = 'transparente'>
+  <% (0..6).each do |dia| %>
   <tr>
     <td><%= form.check_box "dia_da_semana_#{dia}"%></td>
     <td><%= form.label Date::DAYNAMES[dia] %>  </td>
@@ -35,6 +45,6 @@
     <td><%= form.label :Término %> : </td>
     <td><%= form.time_select "hora_de_termino_#{dia.to_s}" %></td>
   </tr>
-<% end %>
+  <% end %>
 </table>
 </fieldset>
