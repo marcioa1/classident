@@ -37,7 +37,6 @@ class PacientesController < ApplicationController
   end
 
   def update
-    debugger
     if @paciente.frozen?
       @paciente = Paciente.find(params[:id])
     end

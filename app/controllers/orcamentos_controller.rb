@@ -14,7 +14,7 @@ class OrcamentosController < ApplicationController
 
   def new
     params[:tratamento_ids] = Tratamento.ids_orcamento(params[:paciente_id]).join(",")
-    @paciente = Paciente.find(session[:paciente_id], :select=>'id,nome')
+    @paciente  = Paciente.find(session[:paciente_id], :select=>'id,nome,sequencial,telefone, celular')
     @orcamento = Orcamento.new(:vencimento_primeira_parcela => Date.today + 30.days, :data => Date.today, :forma_de_pagamento => 'cheque_pre')
     @orcamento.paciente = @paciente
     @orcamento.numero = Orcamento.proximo_numero(session[:paciente_id])
@@ -85,14 +85,14 @@ class OrcamentosController < ApplicationController
   end
 
   def aproveitamento
-    @orcamentos = Orcamento.por_dentista.entre_datas(@data_inicial, @data_final)
-    @aberto_por_clinica = Array.new(10,0)
-    @iniciado_por_clinica = Array.new(10,0)
-    @total_aberto_por_clinica = Array.new(10,0)
-    @total_iniciado_por_clinica = Array.new(10,0)
-    @aberto_por_dentista = Array.new(10,0)
-    @iniciado_por_dentista = Array.new(10,0)
-    @total_aberto_por_dentista = Array.new(10,0)
+    @orcamentos                  = Orcamento.por_dentista.entre_datas(@data_inicial, @data_final)
+    @aberto_por_clinica          = Array.new(10,0)
+    @iniciado_por_clinica        = Array.new(10,0)
+    @total_aberto_por_clinica    = Array.new(10,0)
+    @total_iniciado_por_clinica  = Array.new(10,0)
+    @aberto_por_dentista         = Array.new(10,0)
+    @iniciado_por_dentista       = Array.new(10,0)
+    @total_aberto_por_dentista   = Array.new(10,0)
     @total_iniciado_por_dentista = Array.new(10,0)
     @clinicas = Clinica.todas
     @clinicas.each do |clinica|
