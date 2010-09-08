@@ -435,8 +435,12 @@ function selecionou_tratamento(){
     var todos = $(":checked");
     var total = 0.0;
     for (i=0;i<todos.length;i++){
-        total = total + parseFloat(todos[i].value);
+      alert(todos[i].val());
+      // valor = todos[i].val().replace(".","");
+      // valor = parseFloat(valor.replace(",", "."));
+      // total = total + parseFloat(valor);
     }
+    alert(total);
     $('#orcamento_valor').val(total);
 }
 

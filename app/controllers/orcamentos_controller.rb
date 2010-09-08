@@ -31,12 +31,13 @@ class OrcamentosController < ApplicationController
   end
 
   def create
-    params[:orcamento][:valor_da_parcela] = params[:orcamento][:valor_da_parcela].gsub('.','').gsub(',','.')
-    @orcamento      = Orcamento.new(params[:orcamento])
-    @orcamento.data = params[:datepicker].to_date
+    debugger
+    params[:orcamento][:valor_da_parcela]  = params[:orcamento][:valor_da_parcela].gsub('.','').gsub(',','.')
+    @orcamento                             = Orcamento.new(params[:orcamento])
+    @orcamento.data                        = params[:datepicker].to_date
     @orcamento.vencimento_primeira_parcela = params[:orcamento][:vencimento_primeira_parcela].to_date if Date.valid?(params[:orcamento][:vencimento_primeira_parcela])
-    @orcamento.data_de_inicio = params[:orcamento][:data_de_inicio].to_date if Date.valid?(params[:orcamento][:data_de_inicio])
-    @orcamento.clinica_id     = session[:clinica_id]
+    @orcamento.data_de_inicio              = params[:orcamento][:data_de_inicio].to_date if Date.valid?(params[:orcamento][:data_de_inicio])
+    @orcamento.clinica_id                  = session[:clinica_id]
     if @orcamento.save
       Tratamento.associa_ao_orcamento(params[:tratamento_ids], @orcamento.id)
       Debito.cria_debitos_do_orcamento(@orcamento.id) unless @orcamento.data_de_inicio.nil?

@@ -18,7 +18,7 @@
     - unless (@aberto_por_dentista[dentista.id] + @iniciado_por_dentista[dentista.id] ) == 0
       %tr
         %td 
-          =dentista.nome + dentista.id.to_s
+          =dentista.nome 
         %td{:align=>'right'}  
           = @aberto_por_dentista[dentista.id]
         %td{:align=>'right'}  

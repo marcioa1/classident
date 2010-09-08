@@ -103,7 +103,6 @@ class PagamentosController < ApplicationController
 
   def exclui #destroy
     #TODO excluir gravando observação da exlcusao
-    debugger
     @pagamento                     = Pagamento.find(params[:id])
     @pagamento.observacao_exclusao = params[:observacao_exclusao]
     @pagamento.data_de_exclusao    = Time.now

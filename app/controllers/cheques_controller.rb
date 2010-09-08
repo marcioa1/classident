@@ -124,7 +124,6 @@ class ChequesController < ApplicationController
       @clinicas.each do |clinica|
           clinicas_selecionadas += "\'" + clinica.id.to_s + "\'," if params["clinica_#{clinica.id}".to_sym]
       end
-      debugger
       @cheques = @cheques.vindo_da_clinica(clinicas_selecionadas[0..-2])
     end
      #TODO fazer parametros que faltam de situação de cheque

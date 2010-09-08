@@ -138,3 +138,5 @@ end
 #TODO http://www.mouseoverstudio.com/blog/2010/05/14/adicionando-um-carregando-em-todas-as-requisicoes-ajax-com-uma-linha-de-codigo/
 #TODO ao editar um recebimento commais de um paciente está misturando os pacientes
 #FIXME AO salvar um dados d epaciente, atualizar o cache do memcached
+#TODO o link de orçamento no aproveitamento de orçamento na adm está errado.
+#FIXME calculo do total do orcamento com erro no js

@@ -79,7 +79,6 @@ class UsersController < ApplicationController
   end
   
   def monitoramento
-    debugger
     @clinicas = Clinica.all.collect{|obj| [ obj.nome, obj.id.to_s]}.insert(0, '')
     if params[:datepicker]
       @audits = Audit.all(:conditions=>['user_id = ? and created_at between ? and ?', params[:user_monitor_id], params[:datepicker].to_date, params[:datepicker2].to_date])
