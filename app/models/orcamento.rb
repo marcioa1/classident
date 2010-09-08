@@ -18,7 +18,23 @@ class Orcamento < ActiveRecord::Base
   validates_numericality_of :valor, :message=>'Valor deve ser numérico .'
   validates_numericality_of :valor_da_parcela, :message=>'Valor deve ser numérico .'
   validates_presence_of :data, :valor_da_parcela
-
+  
+  attr_accessor :valor_pt, :valor_com_desconto_pt
+  
+  def valor_pt
+    valor_pt = self.valor.real if self.valor
+  end
+  def valor_pt=(new_value)
+    self.valor = valor_pt.gsub('.', '').gsub(',', '.')
+  end
+  
+  def valor_com_desconto_pt
+    valor_com_desconto_pt = self.valor_com_desconto.real if self.valor_com_desconto
+  end
+  def valor_com_desconto_pt=(new_value)
+    self.valor_com_desconto = new_value.gsub('.', '').gsub(',', '.').to_f
+  end
+  
   def estado
     nao_feito = Tratamento.first(:conditions=>['orcamento_id = ? and data IS NULL', self.id])
     feito     = Tratamento.first(:conditions=>['orcamento_id = ? and data IS NOT NULL', self.id])

@@ -432,27 +432,24 @@ function todas_as_faces(){
     
 }
 function selecionou_tratamento(){
-    var todos = $(":checked");
+    var todos = $("td :checked");
     var total = 0.0;
-    for (i=0;i<todos.length;i++){
-      alert(todos[i].val());
-      // valor = todos[i].val().replace(".","");
-      // valor = parseFloat(valor.replace(",", "."));
-      // total = total + parseFloat(valor);
+    for (i=0;i<todos.length-1;i++){
+      total = total + parseFloat(todos[i].value);
     }
-    alert(total);
-    $('#orcamento_valor').val(total);
+    $('#orcamento_valor_pt').val(total * 100);
+    formata_valor($('#orcamento_valor_pt'));
 }
 
 function calcula_valor_orcamento(){
-    total = parseFloat($('#orcamento_valor').val());
-    desconto = parseFloat($('#orcamento_desconto').val());
+    total = parseFloat($('#orcamento_valor_pt').val());
+    desconto = parseFloat($('#orcamento_desconto_pt').val());
     $('#orcamento_valor_com_desconto').val(total - (total * desconto / 100 ));
     calcula_valor_da_parcela();
 }
 
 function calcula_valor_da_parcela(){
-	  valor_com_desconto = $('#orcamento_valor_com_desconto').val().replace(',','.');
+	  valor_com_desconto = $('#orcamento_valor_com_desconto_pt').val().replace(',','.');
     valor = parseFloat(valor_com_desconto);
     numero = $('#orcamento_numero_de_parcelas').val();
     $('#orcamento_valor_da_parcela').val(parseInt((valor / numero)*100));
