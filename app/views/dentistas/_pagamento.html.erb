@@ -1,6 +1,6 @@
 <fieldset class="fieldset_50">
-  Entre : <%= text_field_tag :datepicker3, @inicio.to_s_br, :size=>10 %>
-  &nbsp;&nbsp;&nbsp;e : <%= text_field_tag :datepicker4 , @fim.to_s_br, :size=>10 %>
+  Entre : <%= text_field_tag :datepicker3, @data_inicial.to_s_br, :size=>10 %>
+  &nbsp;&nbsp;&nbsp;e : <%= text_field_tag :datepicker4 , @data_final.to_s_br, :size=>10 %>
 
   <br/><br/>
   <%= button_to 'pesquisar', "javascript:pagamento_dentista(#{@dentista.id});" %>

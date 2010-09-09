@@ -82,18 +82,21 @@ class DentistasController < ApplicationController
   end
 
   def abre
-    @clinicas = Clinica.all(:order=>:nome)
+    @clinicas      = Clinica.all(:order=>:nome)
     @clinica_atual = Clinica.find(session[:clinica_id])
-    @inicio = Date.today - 15.days
-    @fim = Date.today
-    @orcamentos = Orcamento.do_dentista(@dentista.id)
+    quinzena
+    @orcamentos    = Orcamento.do_dentista(@dentista.id)
+#TODO fazer campo pagamenti0_id ao tratamento  
+
   end
   
   def producao
+    debugger
     dentista = Dentista.find(params[:id])
     if !params[:datepicker]
-      params[:datepicker]  = Date.today.to_s_br
-      params[:datepicker2] = (Date.today - 15.days).to_s_br
+      quinzena
+      params[:datepicker]  = @data_inicial.to_s_br
+      params[:datepicker2] = @data_final.to_s_br
     end
     if params[:clinicas]
       clinicas = params[:clinicas].split(",").to_a
@@ -219,16 +222,18 @@ class DentistasController < ApplicationController
   
   def producao_geral
     if !params[:datepicker]
-      params[:datepicker]  = Date.today.to_s_br
-      params[:datepicker2] = (Date.today - 15.days).to_s_br
+      quinzena
+    else
+      @data_inicial = params[:datepicker].to_date if Date.valid?(params[:datepicker])
+      @data_final   = params[:datepicker2].to_date if Date.valid?(params[:datepicker2])
     end
     if Date.valid?(params[:datepicker]) && Date.valid?(params[:datepicker2])
       @todos = Tratamento.dentistas_entre_datas(@data_inicial,@data_final)
     else
       @todos = []
       @erros = ''
-      @erros = "Data inicial inválida." if !Date.valid?(params[:datepicker])
-      @erros += "Data final inválida." if !Date.valid?(params[:datepicker2])
+      @erros = "Data inicial inválida." if params[:datepicker] && !Date.valid?(params[:datepicker])
+      @erros += "Data final inválida." if params[:datepicker2] && !Date.valid?(params[:datepicker2])
     end
     # Dentista.ativos.por_nome
   end
