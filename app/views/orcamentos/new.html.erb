@@ -1,20 +1,20 @@
 <% content_for :main do %>
 <fieldset class='fieldset_50'>
-<legend>Novo orçamento : <%= @orcamento.paciente.nome %></legend>
-<% @tratamentos = Tratamento.do_paciente(@paciente.id).nao_excluido.nao_feito.sem_orcamento %>
-<% if @tratamentos.empty? %>
-  <h3>Não há procedimentos a serem orçados</h3>
-  <p>
-    <%= link_to 'voltar', abre_paciente_path(:id=>@paciente.id) %>
-  </p>
+<legend>Novo orçamento : </legend>
+  <% if @tratamentos.empty? %>
+    <h3>Não há procedimentos a serem orçados</h3>
 <% else %>
   <%= render :partial => 'tratamentos_a_fazer', :locals=>{:tratamentos=>@tratamentos} %>
   <% form_for(@orcamento) do |f| %>
     <%= f.error_messages %>
     <%= render :partial=>'form', :locals=>{:f=>f} %>
   <% end %>
-
+<% end %>
+<p>
   <%= link_to 'voltar', abre_paciente_path(:id=>@paciente.id) %>
-  </fieldset>
-  <% end %>
+</p>
+</fieldset>
+<script type="text/javascript">
+  calcula_valor_da_parcela();
+</script>
 <% end %>

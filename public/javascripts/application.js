@@ -434,9 +434,12 @@ function todas_as_faces(){
 function selecionou_tratamento(){
     var todos = $("td :checked");
     var total = 0.0;
+    ids_selecionados = '';
     for (i=0;i<todos.length-1;i++){
       total = total + parseFloat(todos[i].value);
+      ids_selecionados += todos[i].id + ',';
     }
+    $("#tratamento_ids").val(ids_selecionados);
     $('#orcamento_valor_pt').val(total * 100);
     formata_valor($('#orcamento_valor_pt'));
 }
@@ -452,13 +455,24 @@ function calcula_valor_da_parcela(){
 	  valor_com_desconto = $('#orcamento_valor_com_desconto_pt').val().replace(',','.');
     valor = parseFloat(valor_com_desconto);
     numero = $('#orcamento_numero_de_parcelas').val();
-    $('#orcamento_valor_da_parcela').val(parseInt((valor / numero)*100));
-    
-    formata_valor($('#orcamento_valor_da_parcela'));
+    valor_da_parcela = parseInt((valor / numero) * 100) / 100;
+    alert(valor_da_parcela);
+    $('#orcamento_valor_da_parcela_pt').val(valor_da_parcela);
+    formata_valor($('#orcamento_valor_da_parcela_pt'));
 //# FIXME escrever este ajax de outra maneira
-  $.getJSON('monta_tabela_de_parcelas?numero_de_parcelas='+numero + '&valor_da_parcela=' + valor +
-        '&data_primeira_parcela=' + $('#orcamento_vencimento_primeira_parcela').val(),
-    function(data){$('#parcelas').replaceWith(data);});
+  $.ajax({
+    url  : '/orcamentos/monta_tabela_de_parcelas',
+    type :'GET', 
+    data : { numero_de_parcelas:numero, valor_da_parcela:valor, data_primeira_parcela:$('#orcamento_vencimento_primeira_parcela').val()},
+    success :function(data){
+      $('#parcelas').replaceWith(data);
+    }
+  });
+  // $.getJSON('monta_tabela_de_parcelas?numero_de_parcelas='+numero + '&valor_da_parcela=' + valor +
+  //        '&data_primeira_parcela=' + $('#orcamento_vencimento_primeira_parcela').val(),
+  //    function(data){
+  //      $('#parcelas').replaceWith(data);
+  //    });
 }
 
 function definir_valor(){

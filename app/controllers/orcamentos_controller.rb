@@ -14,14 +14,15 @@ class OrcamentosController < ApplicationController
 
   def new
     params[:tratamento_ids] = Tratamento.ids_orcamento(params[:paciente_id]).join(",")
-    @paciente  = Paciente.find(session[:paciente_id], :select=>'id,nome,sequencial,telefone, celular')
-    @orcamento = Orcamento.new(:vencimento_primeira_parcela => Date.today + 30.days, :data => Date.today, :forma_de_pagamento => 'cheque_pre')
+    @paciente           = Paciente.find(session[:paciente_id], :select=>'id,nome,sequencial,telefone, celular')
+    @orcamento          = Orcamento.new(:vencimento_primeira_parcela => Date.today + 30.days, :data => Date.today, :forma_de_pagamento => 'cheque_pre')
     @orcamento.paciente = @paciente
-    @orcamento.numero = Orcamento.proximo_numero(session[:paciente_id])
-    @orcamento.valor = Tratamento.valor_a_fazer(session[:paciente_id])
+    @orcamento.numero   = Orcamento.proximo_numero(session[:paciente_id])
+    @orcamento.valor    = Tratamento.valor_a_fazer(session[:paciente_id])
     @orcamento.desconto = 0
     @orcamento.valor_com_desconto = @orcamento.valor
-    @dentistas = Clinica.find(session[:clinica_id]).dentistas.ativos.por_nome.collect{|obj| [obj.nome,obj.id]}
+    @dentistas   = Clinica.find(session[:clinica_id]).dentistas.ativos.por_nome.collect{|obj| [obj.nome,obj.id]}
+    @tratamentos = Tratamento.do_paciente(@paciente.id).nao_excluido.nao_feito.sem_orcamento
   end
 
   def edit
@@ -50,14 +51,14 @@ class OrcamentosController < ApplicationController
   end
 
   def update
-    @orcamento = Orcamento.find(params[:id])
-    @orcamento.data = params[:datepicker].to_date
-    @orcamento.vencimento_primeira_parcela = params[:datepicker2].to_date if params[:datepicker2] && Date.valid?(params[:datepicker2])
-    @orcamento.data_de_inicio = params[:datepicker3].to_date unless params[:datepicker3].blank?
+    @orcamento  = Orcamento.find(params[:id])
     
     if @orcamento.update_attributes(params[:orcamento])
       redirect_to(abre_paciente_path(@orcamento.paciente_id)) 
     else
+      @paciente  = @orcamento.paciente
+      @dentistas = Clinica.find(session[:clinica_id]).dentistas.ativos.por_nome.collect{|obj| [obj.nome,obj.id]}
+
       render :action => "edit" 
     end
   end

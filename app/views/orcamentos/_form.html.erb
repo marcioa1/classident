@@ -1,55 +1,54 @@
-<p>
+<div>
   <%= f.hidden_field :paciente_id  %>
   <%= hidden_field_tag :tratamento_ids , params[:tratamento_ids]%>
-</p>
-<p>
+</div>
+<div>
   <%= f.label :numero %> :
   <%= f.text_field :numero,:disabled=>false, :size=>4 %>
-</p>
-<p>
+</div>
+<div>
   <%= f.label :data %> :
-  <%= text_field_tag :datepicker, Date.today.to_s_br, :size=>10 %>
-</p>
-<p>
+  <%= f.text_field :data_pt,  :size=>10 %>
+</div>
+<div>
   <%= f.label :dentista %> :
   <%= f.select :dentista_id, @dentistas %>
+</div>
+<div>
+  <%= f.label :valor %>:
+  <%= f.text_field :valor_pt, :size=>8 %>
+</div>
+<div>
+  <%= f.label :desconto %>:
+  <%= f.text_field :desconto, :size=>4, :onblur=>'calcula_valor_orcamento();' %> %
+</div>
+<div><%= f.label :valor_com_desconto %>:
+  <%= f.text_field :valor_com_desconto_pt, :size=>8 %>
+</div>
 </p>
-<p>
-  <table class='transparente'>
-    <tr>
-      <td><%= f.label :valor %>:</td>
-      <td><%= f.text_field :valor_pt, :size=>8 %></td>
-      <td><%= f.label :desconto %>:</td>
-      <td><%= f.text_field :desconto, :size=>4, :onblur=>'calcula_valor_orcamento();' %></td>
-      <td><%= f.label :valor_com_desconto %>:</td>
-      <td><%= f.text_field :valor_com_desconto_pt, :size=>8 %></td>
-    </tr>
-  </table>
-</p>
-<p>
+<div>
   <%= f.label :forma_de_pagamento %> : 
   <%= f.radio_button :forma_de_pagamento, :cheque_pre %> Cheque pré
   <%= f.radio_button :forma_de_pagamento, :a_vista %>À vista
   <%= f.radio_button :forma_de_pagamento, :cartao %> Cartão
-</p>
-<p>
+</div>
+<div>
   <%= f.label :data_de_inicio %>: 
   <%= text_field_tag "orcamento[data_de_inicio]", @orcamento.data_de_inicio.to_s_br, :class=> 'datepicker',  :size=>10 , :on_change => "alert('trocou');"%>
-</p>
-<p>
-  <table class='transparente' >
-    <tr>
-      <td><%= f.label :número_de_parcelas %> :</td>
-      <td><%= f.select :numero_de_parcelas, [['1',1],['2',2],['3',3],['4',4],['5',5],[ '6',6],['7',7],['8',8]],{}, html_options={ :onchange=>'calcula_valor_da_parcela();'} %></td>
-      <td><%= f.label :vencimento_primeira_parcela %> :</td>
-      <td><%= text_field_tag "orcamento[vencimento_primeira_parcela]", @orcamento.vencimento_primeira_parcela.to_s_br, options = {:size=>10, :class=>'datepicker', :onchange => 'calcula_valor_da_parcela();'} %></td>
-      <td><%= f.label :valor_da_parcela %> :</td>
-      <td><%= f.text_field :valor_da_parcela, :size=>8 %></td>
-    </tr>
-  </table>
-</p>
+</div>
+<div>
+  <%= f.label :número_de_parcelas %> :
+  <%= f.select :numero_de_parcelas, [['1',1],['2',2],['3',3],['4',4],['5',5],[ '6',6],['7',7],['8',8]],{}, html_options={ :onchange=>'calcula_valor_da_parcela();'} %>
+</div>
+<div>
+  <%= f.label :vencto_primeira_parcela %> :
+  <%= text_field_tag "orcamento[vencimento_primeira_parcela]", @orcamento.vencimento_primeira_parcela.to_s_br, options = {:size=>10, :class=>'datepicker', :onchange => 'calcula_valor_da_parcela();'} %>
+</div>  
+<div>
+  <%= f.label :valor_da_parcela %> :
+  <%= f.text_field :valor_da_parcela_pt, :size=>8 %>  
+</div>
 <div id='parcelas'></div>
-
-<p>
+<div>
   <%= f.submit 'salvar' %>
-</p>
+</div>
