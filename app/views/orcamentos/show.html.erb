@@ -12,7 +12,7 @@
 <p>
   <b>Data:</b>
   <%=h @orcamento.data.to_s_br %>
-</p>
+</dp>
 
 <p>
   <b>Dentista:</b>
@@ -20,13 +20,13 @@
 </p>
 
 <p>
-  <b>Desconto:</b>
-  <%=h @orcamento.desconto %>
+  <b>Valor:</b>
+  <%=h @orcamento.valor.real %>
 </p>
 
 <p>
-  <b>Valor:</b>
-  <%=h @orcamento.valor.real %>
+  <b>Desconto:</b>
+  <%=h @orcamento.desconto %> %
 </p>
 
 <p>
@@ -53,8 +53,8 @@
   <b>Valor da parcela:</b>
   <%=h @orcamento.valor_da_parcela.real %>
 </p>
-
 <%= render :partial => 'tratamentos', :locals=>{:tratamentos => @orcamento.tratamentos }%>
-<%= link_to 'Edit', edit_orcamento_path(@orcamento) %> |
-<%= link_to 'Back', orcamentos_path %>
+<p>
+<%= link_to 'voltar', :back %>
+</p>
 <% end %>

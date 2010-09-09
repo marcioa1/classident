@@ -32,7 +32,6 @@ class OrcamentosController < ApplicationController
   end
 
   def create
-    debugger
     params[:orcamento][:valor_da_parcela]  = params[:orcamento][:valor_da_parcela].gsub('.','').gsub(',','.')
     @orcamento                             = Orcamento.new(params[:orcamento])
     @orcamento.data                        = params[:datepicker].to_date
@@ -98,17 +97,21 @@ class OrcamentosController < ApplicationController
     @total_iniciado_por_dentista = Array.new(10,0)
     @clinicas = Clinica.todas
     @clinicas.each do |clinica|
-      @aberto_por_clinica[clinica.id] = Orcamento.em_aberto.entre_datas(@data_inicial, @data_final).da_clinica(clinica.id).size
-      @iniciado_por_clinica[clinica.id] = Orcamento.iniciado.entre_datas(@data_inicial, @data_final).da_clinica(clinica.id).size
-      @total_aberto_por_clinica[clinica.id] = Orcamento.em_aberto.entre_datas(@data_inicial, @data_final).da_clinica(clinica.id).sum(:valor_com_desconto)
-      @total_iniciado_por_clinica[clinica.id] = Orcamento.iniciado.entre_datas(@data_inicial, @data_final).da_clinica(clinica.id).sum(:valor_com_desconto)
+      em_aberto = Orcamento.em_aberto.entre_datas(@data_inicial, @data_final).da_clinica(clinica.id)
+      iniciado  = Orcamento.iniciado.entre_datas(@data_inicial, @data_final).da_clinica(clinica.id)
+      @aberto_por_clinica[clinica.id]         = em_aberto.size
+      @iniciado_por_clinica[clinica.id]       = iniciado.size
+      @total_aberto_por_clinica[clinica.id]   = em_aberto.sum(:valor_com_desconto)
+      @total_iniciado_por_clinica[clinica.id] = iniciado.sum(:valor_com_desconto)
     end
     @dentistas = Dentista.ativos.por_nome
     @dentistas.each do |dentista|
-      @aberto_por_dentista[dentista.id] = Orcamento.em_aberto.entre_datas(@data_inicial, @data_final).do_dentista(dentista.id).size
-      @iniciado_por_dentista[dentista.id] = Orcamento.iniciado.entre_datas(@data_inicial, @data_final).do_dentista(dentista.id).size
-      @total_aberto_por_dentista[dentista.id] = Orcamento.em_aberto.entre_datas(@data_inicial, @data_final).do_dentista(dentista.id).sum(:valor_com_desconto)
-      @total_iniciado_por_dentista[dentista.id] = Orcamento.iniciado.entre_datas(@data_inicial, @data_final).do_dentista(dentista.id).sum(:valor_com_desconto)
+      em_aberto = Orcamento.em_aberto.entre_datas(@data_inicial, @data_final).do_dentista(dentista.id)
+      iniciado  = Orcamento.iniciado.entre_datas(@data_inicial, @data_final).do_dentista(dentista.id)
+      @aberto_por_dentista[dentista.id]         = em_aberto.size
+      @iniciado_por_dentista[dentista.id]       = iniciado.size
+      @total_aberto_por_dentista[dentista.id]   = em_aberto.sum(:valor_com_desconto)
+      @total_iniciado_por_dentista[dentista.id] = iniciado.sum(:valor_com_desconto)
     end
   end
 
