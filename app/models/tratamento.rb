@@ -28,7 +28,22 @@ class Tratamento < ActiveRecord::Base
   validates_presence_of :dente,     :message => "não pode ser vazio."
   validate :data_nao_pode_ser_futura
   
-  attr_accessor :data_termino_br
+  attr_accessor :data_termino_br, :valor_pt, :custo_pt
+  
+  def valor_pt
+    self.valor.real rescue "0,00"
+  end
+  def valor_pt=(new_value)
+    self.valor = new_value.gsub(".","").gsub(",",".").to_f rescue 0.0
+  end
+  
+  def custo_pt
+    self.custo.real rescue "0,00"
+  end
+  def custo_pt=(new_value)
+    self.custo = new_value.gsub(".","").gsub(",",".").to_f rescue 0.0
+  end
+  
   
   def data_termino_br
     self.data ? self.data.to_s_br : nil 

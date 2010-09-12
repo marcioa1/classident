@@ -91,8 +91,8 @@ class TratamentosController < ApplicationController
   end
   
   def converte_valor_lido
-    params[:tratamento][:valor] = params[:tratamento][:valor].gsub(',', '.')
-    params[:tratamento][:custo] = params[:tratamento][:custo].gsub(',', '.')
+    # params[:tratamento][:valor] = params[:tratamento][:valor].gsub(',', '.')
+    # params[:tratamento][:custo] = params[:tratamento][:custo].gsub(',', '.')
   end
   
 end

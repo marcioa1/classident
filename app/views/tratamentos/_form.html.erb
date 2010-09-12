@@ -1,12 +1,14 @@
 <% form_for(@tratamento) do |f| %>
 
-  <%= f.error_messages %>
+
+  <%= hidden_field_tag :items, @paciente.tabela.item_tabelas.to_json, :size=>150 %>
+
   <%= f.hidden_field :paciente_id %>
-  
-  <p>
+  <%= f.error_messages %>
+  <div>
     <%= f.label :dente %> : 
-    <%= text_field_tag :dentes, @tratamento.dentes , :size=>8%>
-  </p>
+    <%= f.text_field :dente,  :size=> 12, :class=>'txt' %>
+  </div>
   <p>
    <Fieldset class='fieldset_20'>
     <legend>Faces</legend>
@@ -47,29 +49,26 @@
   </div>
   </p>
   <br/>
+    <%= f.hidden_field :item_tabela_id, :size=>4%>
   <div>
-  <%= f.label :codigo %> : 
-  <%= f.select :item_tabela_id, options_for_select(@items), {}, html_options={  :onchange=>"selecionou_item_tabela();", :class=>'txt'} %>
+    <%= f.label :Código %> :
+    <%= text_field_tag :codigo , @tratamento.item_tabela.codigo, :size => 12, :class=>'txt'%>
   </div>
-  <div>
-    <%= f.label :descrição %> : 
-    <%= f.text_field :descricao, :size=>50, :class=>'txt' %>
+    <div>
+    <%= f.label :procedimento %> : 
+    <%= f.text_field :descricao, :size=>"40", :class=>"txt ui-autocomplete-input" %>
   </div>
   <div>
     <%= f.label :valor %> :
-    <%= f.text_field :valor, :size=>10, :class=>'txt'  %>
+    <%= f.text_field :valor_pt, :size=>10, :class=>'txt'  %>
   </div>
   <div>
     <%= f.label :custo %> :
-    <%= f.text_field :custo, :size=>10, :class=>'txt' %>
+    <%= f.text_field :custo_pt, :size=>10, :class=>'txt' %>
   </div>
   <div>
     <%= f.label :dentista %> :
     <%= f.select :dentista_id, @dentistas, :include_blank=>true, :class=>'txt' %>
-  </div>
-  <div>
-    <%= f.label :orçamento %>
-    <%= f.label @tratamento.orcamento.numero %>
   </div>
   <div>
     <%= f.label :data_de_término %> :

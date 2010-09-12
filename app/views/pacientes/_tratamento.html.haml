@@ -43,7 +43,7 @@
       Protético
   - total = 0.0
   - @paciente.tratamentos.each() do |tratamento|
-    %tr
+    %tr{:style=>'height: 40px;'}
       %td{ :align => "center" }
         - if tratamento.pode_alterar?
           = link_to tratamento.dente, edit_tratamento_path(:id=>tratamento.id)

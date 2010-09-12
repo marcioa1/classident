@@ -26,14 +26,16 @@ function conta_caracteres(){
     }
 }
 
-function selecionou_item_tabela(clinica_id){
+function selecionou_item_tabela(item_id){
     $.getJSON('/item_tabelas/busca_descricao',{
-          'id': $("#tratamento_item_tabela_id").selectedValues()[0]
+          'id': item_id 
       },
       function(data){
        resultado = data.split(";");
-       $("#tratamento_descricao").val(resultado[0]);         
-       $("#tratamento_valor").val(resultado[1]);         
+       $("#tratamento_descricao").val(resultado[0]);
+       $("#iniciais").val(resultado[0]);
+       $("#tratamento_valor_pt").val(resultado[1]);  
+       $("#tratamento_dentista_id").focus();       
       }
     );
 }

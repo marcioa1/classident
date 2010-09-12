@@ -265,9 +265,9 @@ class Converte
           t.tabela_id  = tabela.id
           t.codigo     = registro[2]
           t.descricao  = registro[3]
+          t.preco      = le_valor(registro[4])
           t.save
-          valor        = le_valor(registro[4])
-          Preco.create(:item_tabela_id=> t.id, :clinica_id=>@clinica.id, :preco=> valor)
+          # Preco.create(:item_tabela_id=> t.id, :clinica_id=>@clinica.id, :preco=> valor)
         end
       rescue Exception => ex
         @arquivo.puts line + "\n"+ "      ->" + ex

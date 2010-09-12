@@ -3,6 +3,8 @@
 <legend>Novo tratamento</legend>
 <% form_for(@tratamento) do |f| %>
 
+  <%= hidden_field_tag :items, @paciente.tabela.item_tabelas.to_json, :size=>150 %>
+
   <%= f.hidden_field :paciente_id %>
   <%= f.error_messages %>
   <div>
@@ -49,21 +51,22 @@
   </div>
   </p>
   <br/>
+    <%= f.hidden_field :item_tabela_id, :size=>4%>
   <div>
-  <%= f.label :código %> : 
-  <%= f.select :item_tabela_id, options_for_select(@items), {}, html_options={  :onchange=>"selecionou_item_tabela();", :class=>'txt'} %>
+    <%= f.label :Código %> :
+    <%= text_field_tag :codigo , '', :size => 12, :class=>'txt'%>
   </div>
-   <div>
-    <%= f.label :descrição %> : 
-    <%= f.text_field :descricao, :size=>50, :class=>'txt' %>
+    <div>
+    <%= f.label :procedimento %> : 
+    <%= f.text_field :descricao, :size=>"40", :class=>"txt ui-autocomplete-input" %>
   </div>
   <div>
     <%= f.label :valor %> :
-    <%= f.text_field :valor, :size=>10, :class=>'txt'  %>
+    <%= f.text_field :valor_pt, :size=>10, :class=>'txt'  %>
   </div>
   <div>
     <%= f.label :custo %> :
-    <%= f.text_field :custo, :size=>10, :class=>'txt' %>
+    <%= f.text_field :custo_pt, :size=>10, :class=>'txt' %>
   </div>
   <div>
     <%= f.label :dentista %> :
@@ -79,4 +82,39 @@
 <% end %>
 </fieldset>
 <%= link_to "voltar", abre_paciente_path(:id=>@tratamento.paciente_id) %>
+<style type='text/css'>
+    .ui-autocomplete {
+      max-height: 180px;
+      overflow-y: auto;
+    }
+</style>
+<script type="text/javascript">
+  $(function() {
+    var source    = new Array();
+    var items = $("#items").val().split("},");
+    for (ind=0; ind< items.length; ind = ind + 1){
+      campos = items[ind].split(":");
+      descr  = campos[19].split('\"')[1];
+      codigo = campos[16].split(',')[0].split('\"')[1];
+      id     = campos[14].split(',')[0];
+      source[ind] = {label: codigo + " - " + descr, 
+                     value: id};
+    }
+      $("#tratamento_descricao").autocomplete({
+        source: source,
+        minLength: 2,
+        maxRows: 5,
+        select: function(event,ui){
+          $("#tratamento_item_tabela_id").val(ui.item.value);
+          $("#codigo").val(ui.item.label.split(" - ")[0]);
+          selecionou_item_tabela(ui.item.value);
+          return false;
+        },
+        focus: function(e,ui){
+          return false;
+        }
+      });
+    });
+    
+</script>
 <% end %>
