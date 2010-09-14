@@ -47,7 +47,6 @@ class PagamentosController < ApplicationController
 
   def create
     @pagamento                   = Pagamento.new(params[:pagamento])
-    @pagamento.data_de_pagamento = params[:datepicker].to_date if Date.valid?(params[:datepicker])
     @pagamento.clinica_id        = session[:clinica_id]
     if params[:opcao_restante]  !=" pago_em_cheque"
       @pagamento.conta_bancaria_id = nil
@@ -105,7 +104,8 @@ class PagamentosController < ApplicationController
     #TODO excluir gravando observação da exlcusao
     @pagamento                     = Pagamento.find(params[:id])
     @pagamento.observacao_exclusao = params[:observacao_exclusao]
-    @pagamento.data_de_exclusao    = Time.now
+    @pagamento.data_de_exclusao    = Time.current
+    @pagamento.usuario_exclusao    = current_user.id
     @pagamento.verifica_fluxo_de_caixa
     Pagamento.transaction do
       cheques = @pagamento.cheques

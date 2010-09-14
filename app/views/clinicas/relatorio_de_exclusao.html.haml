@@ -4,7 +4,7 @@
   - form_tag relatorio_de_exclusao_clinicas_path() do
     %div
       Clínicas :
-      = select_tag :clinica_id, options_from_collection_for_select(@clinicas, 'id','nome',params[:clinica_id])
+      = select_tag :clinica_id, options_for_select(@clinicas,params[:clinica_id])
     %div
       Entre : 
       = text_field_tag :data_inicial, @data_inicial.to_s_br, :class=>'datepicker', :size => 11
@@ -15,28 +15,33 @@
   %h4 Recebimentos
   %table
     %tr
-      %th Data
+      %th Data do lançamento
       %th{:width=>80} Valor
       %th Usuário
+      %th Data de exclusão
       %th Observação
     -@recebimentos_excluidos.each do |rec|
       %tr
         %td= rec.data.to_s_br
         %td{:align => 'right'}= rec.valor.real
-        %td= User.find(rec.usuario_exclusao).nome
+        - user = User.find(rec.usuario_exclusao) if rec.usuario_exclusao
+        %td= user && user.nome 
+        %td= rec.data_de_exclusao.to_s_br
         %td= rec.observacao_exclusao
         
   %p
   %h4 Pagamentos
   %table
     %tr
-      %th Data
+      %th Data do lançamento
       %th{:width=>80} Valor
       %th Usuário
+      %th Data de exclusão
       %th Observação
     -@pagamentos_excluidos.each do |pag|
       %tr
         %td= pag.data_de_pagamento.to_s_br
         %td{:align => 'right'}= pag.valor_pago.real
         %td= User.find(pag.usuario_exclusao).nome
+        %td= pag.data_de_exclusao.to_s_br
         %td= pag.observacao_exclusao

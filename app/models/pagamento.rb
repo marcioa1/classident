@@ -2,15 +2,14 @@ class Pagamento < ActiveRecord::Base
   acts_as_audited
   belongs_to :clinica
   belongs_to :tipo_pagamento
-  has_many :cheques
-  has_many :trabalho_proteticos
+  has_many   :cheques
+  has_many   :trabalho_proteticos
   belongs_to :protetico
   belongs_to :dentista
-  has_many :custos, :class_name => "Pagamento",
-      :foreign_key => "pagamento_id"
+  has_many   :custos, :class_name => "Pagamento", :foreign_key => "pagamento_id"
   belongs_to :pagamento, :class_name => "Pagamento"
   
-  validates_presence_of :data_de_pagamento, :message => "Data de pagamento obrigatória."
+  validates_presence_of :data_de_pagamento, :message => " : obrigatória."
   validate :data_nao_pode_ser_no_passado
   validates_numericality_of :valor_pago, :message => " : deve ser numérico"
   
@@ -46,7 +45,7 @@ class Pagamento < ActiveRecord::Base
     data_de_pagamento_pt = data_de_pagamento.to_s_br if data_de_pagamento
   end
   def data_de_pagamento_pt=(nova_data)
-    self.data_de_pagamento = data_de_pagamento_pt.to_date if Date.valid?(data_de_pagamento_pt)
+    self.data_de_pagamento = nova_data.to_date if Date.valid?(nova_data)
   end
   
   def data_nao_pode_ser_no_passado

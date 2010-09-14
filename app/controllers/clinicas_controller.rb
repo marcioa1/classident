@@ -123,15 +123,15 @@ class ClinicasController < ApplicationController
   end
   
   def relatorio_de_exclusao
-    @clinicas    = Clinica.todas
+    @clinicas    = Clinica.all.collect{|cl| [cl.nome, cl.id.to_s]}
     if !params[:data_inicial]
       quinzena
     else 
       @data_inicial = params[:data_inicial].to_date
       @data_final   = params[:data_final].to_date
     end
-    @recebimentos_excluidos = Recebimento.all(:conditions=>['data_de_exclusao between ? and ? ', @data_inicial, @data_final])
-    @pagamentos_excluidos   = Pagamento.all(:conditions=>['data_de_exclusao between ? and ? ', @data_inicial, @data_final])
+    @recebimentos_excluidos = Recebimento.all(:conditions=>['data_de_exclusao between ? and ? and clinica_id = ?', @data_inicial, @data_final, params[:clinica_id]])
+    @pagamentos_excluidos   = Pagamento.all(:conditions=>['data_de_exclusao between ? and ? and clinica_id = ?', @data_inicial, @data_final, params[:clinica_id]])
   end
   
   def usuarios_da_clinica

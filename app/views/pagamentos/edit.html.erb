@@ -1,5 +1,5 @@
 <% content_for :main do %>
-<fieldset class="fieldset_40">
+<fieldset class="fieldset_50">
 <legend>Editando pagamento</legend>
 
 <% form_for(@pagamento) do |f| %>
@@ -17,21 +17,22 @@
 	</p>
 </div>
 
- <p><%= f.label :tipo_de_pagamento %> : 
-	<%= f.select :tipo_pagamento_id, @tipos_pagamento %>
-  </p>
-  <p>
+  <div>
+    <%= f.label :tipo_de_pagamento %> : 
+	  <%= f.select :tipo_pagamento_id, @tipos_pagamento %>
+  </div>
+  <div>
     <%= f.label :data_de_pagamento %> : 
      <%= f.text_field :data_de_pagamento_pt , :class=>'datepicker',  :size=>10 %>
-  </p>
-  <p>
+  </div>
+  <div>
     <%= f.label :valor_pago %> :
     <%= f.text_field :valor_pago_real, :size=>10 %>
-  </p>
-  <p>
+  </div>
+  <div>
     <%= f.label :observação %> : 
     <%= f.text_field :observacao %>
-  </p>
+  </div>
   <p>
     <%= f.check_box :nao_lancar_no_livro_caixa %>
     <%= f.label :não_lançar_no_livro_caixa %>
