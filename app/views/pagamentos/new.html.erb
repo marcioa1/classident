@@ -1,6 +1,6 @@
 <% content_for :main do %>
 <div id="formulario">
-<fieldset class="fieldset_40">
+<fieldset class="fieldset_50">
 <legend>Novo pagamento 
   <%= " : protético " + @protetico.nome if @protetico %>
   <%= " : dentista " + @dentista.nome if @dentista %>
@@ -21,21 +21,22 @@
 </div>
 <%= hidden_field_tag :dentista_id , @dentista.id if @dentista %>
 
-  <p><%= f.label :tipo_de_pagamento %> : 
+  <div>
+    <%= f.label :tipo_de_pagamento %> : 
     <%= f.select :tipo_pagamento_id, @tipos_pagamento %>
-  </p>
-  <p>
+  </div>
+  <div>
     <%= f.label :data_de_pagamento %> : 
-    <%= text_field_tag :datepicker, Date.today.to_s_br, :size=>10 %>
- </p>
-  <p>
+    <%= f.text_field :data_de_pagamento_pt, :class=>'datepicker', :size=>10 %>
+ </div>
+  <div>
     <%= f.label :valor %> : <%= f.text_field :valor_pago_real, :size=>10 , :onblur=>'$("#disponiveis").show();'%>
-  </p>
+  </div>
   
-  <p>
+  <div>
     <%= f.label :observação %> : 
     <%= f.text_field :observacao, :size=>40 %>
-  </p>
+  </div>
   <p>
     <%= f.check_box :nao_lancar_no_livro_caixa %>
     <%= f.label :não_lançar_no_livro_caixa %>

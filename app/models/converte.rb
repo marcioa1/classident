@@ -900,7 +900,7 @@ class Converte
   end
   
   def adm_tipo_pagamento
-    abre_arquivo_de_erros('Tipo de Pagamentona Administação')
+    abre_arquivo_de_erros('Tipo de Pagamento na Administração')
     puts "Convertendo tipos de pagamentos na administração ...."
     f        = File.open("doc/convertidos/adm_tipo_pagamento.txt" , "r")
     @clinica = Clinica.administracao.first
@@ -911,7 +911,7 @@ class Converte
         t            = TipoPagamento.new
         t.seq        = registro[0].to_i
         t.nome       = registro[1].nome_proprio
-        t.ativo      = ['Verdadeiro','True', '1'].include?(registro[2].at(0)) 
+        t.ativo      = ['Verdadeiro','True', '1'].include?(registro[2]) 
         t.clinica_id = @clinica.id
         t.save
       rescue Exception => ex

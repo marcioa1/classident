@@ -17,7 +17,7 @@
   <%= javascript_include_merged :base %>
   <%= stylesheet_link_merged :base %>
 </head>
-<% if session[:clinica_id].to_i == 10 %>
+<% if @administracao %>
   <body style='background-color: #F6FDB8;'>
 <% else %>
   <body style='background-color: #E6EDF8;'>
@@ -44,7 +44,7 @@ $(document).ready(function() {
     
     <div id="principal">
         <div class="pd_menu_01">
-            <% if session[:clinica_id].to_i == 10 %>
+            <% if session[:clinica_id].to_i == Clinica.first(:conditions=>['e_administracao = ?', true]).id %>
               <%= render :partial=>"layouts/menu_adm" %>
             <% else %>
               <%= render :partial=>"layouts/menu_clinica" %>

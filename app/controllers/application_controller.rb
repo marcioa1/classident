@@ -59,7 +59,7 @@ class ApplicationController < ActionController::Base
   #   end
   
   def administracao
-    @administracao = session[:clinica_id].to_i == 10
+    @administracao = session[:clinica_id].to_i == Clinica.first(:conditions=>['e_administracao=?',true]).id
   end
   
   def primeiro_dia_do_mes
@@ -120,7 +120,7 @@ class ApplicationController < ActionController::Base
       if !session[:clinica_id].nil?
         @clinica_atual = Clinica.find(session[:clinica_id]) 
       end
-      @administracao = session[:clinica_id] == 10
+      @administracao = session[:clinica_id] == Clinica.first(:conditions=>['e_administracao=?',true]).id
     end
     
     def verifica_horario_de_trabalho

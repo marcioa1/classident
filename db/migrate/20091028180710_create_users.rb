@@ -20,7 +20,7 @@ class CreateUsers < ActiveRecord::Migration
    add_index :users, :tipo_usuario_id
    add_index :users, :id
    User.create!(:login => 'ricardo', :password=>'1234', :email=>'classident@ibest.com.br',
-    :password_confirmation =>'1234', :nome=>'Ricardo', :tipo_usuario_id => 1)
+    :password_confirmation =>'1234', :nome=>'Ricardo', :tipo_usuario_id => 1, :clinicas => Clinica.all)
    
   end
 
