@@ -47,7 +47,7 @@ class PagamentosController < ApplicationController
 
   def create
     @pagamento                   = Pagamento.new(params[:pagamento])
-    @pagamento.data_de_pagamento = params[:datepicker].to_date
+    @pagamento.data_de_pagamento = params[:datepicker].to_date if Date.valid?(params[:datepicker])
     @pagamento.clinica_id        = session[:clinica_id]
     if params[:opcao_restante]  !=" pago_em_cheque"
       @pagamento.conta_bancaria_id = nil
@@ -81,7 +81,7 @@ class PagamentosController < ApplicationController
         flash[:notice] = 'Pagamento criado com sucesso.'
         redirect_to(relatorio_pagamentos_path) #TODO retornar para tela anterio
       else
-        @tipos_pagamento = TipoPagamento.da_clinica(session[:clinica_id]).ativos.por_nome.collect{|obj| [obj.nome, obj.id]}
+        @tipos_pagamento  = TipoPagamento.da_clinica(session[:clinica_id]).ativos.por_nome.collect{|obj| [obj.nome, obj.id]}
         @contas_bancarias = ContaBancaria.all.collect{|obj| [obj.nome, obj.id]}
 
         render :action => "new" 

@@ -66,7 +66,6 @@ class Converte
   
   def mala_direta
     #FIXME considerar que pode haver outras pessoas que não sejam pacientes
-debugger
     abre_arquivo_de_erros('Mala-direta')
     puts "Convertendo mala direta ..."
     f = File.open("doc/convertidos/maladireta.txt" , "r")
@@ -84,8 +83,8 @@ debugger
         else
           nome                  = registro[0].nome_proprio
         end
-        
-        p = Paciente.find_by_nome_and_clinica_id(nome, @clinica.id)
+        p = Paciente.find_by_nome_and_clinica_id(nome, @clinica.id, 
+           :select=>'logradouro,bairro,cidade,nascimento,uf,cep,telefone,email,inicio_tratamento')
         if !p.nil?
           p.logradouro   = registro[3]
           p.bairro       = registro[4]
@@ -95,11 +94,9 @@ debugger
           p.cep          = registro[8][0..7]
           p.telefone     = registro[9]
           p.email        = registro[15]
-          debugger
           p.save
         end
       rescue Exception => ex
-        debugger
         @arquivo.puts line + "\n"+ "      ->" + ex
       end
     end
@@ -320,7 +317,8 @@ debugger
           t.face           = registro[4]
           t.descricao      = registro[5]
           if registro[8].to_i > 0
-            orcamento      = Orcamento.find_by_numero_and_paciente_id_and_clinica_id(registro[8].to_i, paciente, @clinica.id)
+            orcamento      = Orcamento.find_by_numero_and_paciente_id_and_clinica_id(registro[8].to_i, paciente, @clinica.id,
+               :select=>'data_de_inicio')
             if orcamento && orcamento.em_aberto? && t.data.present?
               orcamento.update_attribute(:data_de_inicio , t.data)
               # orcamento.data_de_inicio = t.data
@@ -335,7 +333,6 @@ debugger
           t.save
         end
         rescue Exception => ex
-          # debugger
           @arquivo.puts line + "\n"+ "      ->" + ex
         end
     end
@@ -514,7 +511,8 @@ debugger
             t.data_destinacao = registro[10].to_date if Date.valid?(registro[10])
           end
         end
-        pagamento             = Pagamento.find_by_sequencial_and_clinica_id(registro[11].to_i, @clinica.id)
+        pagamento             = Pagamento.find_by_sequencial_and_clinica_id(registro[11].to_i, @clinica.id,
+            :select=>'id')
         t.pagamento_id        = pagamento.id if pagamento.present?
         if ['Verdadeiro', 'True', '1'].include?(registro[12])
           if Date.valid?(registro[13])
@@ -546,12 +544,13 @@ debugger
         t.data_de_exclusao          = registro[28] if Date.valid?(registro[28])
         t.data_arquivo_morto        = registro[29].to_date if Date.valid?(registro[29])
         t.save
-        recebimento                 = Recebimento.find_by_sequencial_and_clinica_id(registro[27].to_i, @clinica.id)
+        recebimento                 = Recebimento.find_by_sequencial_and_clinica_id(registro[27].to_i, @clinica.id,
+           :select=>'cheque_id')
         if recebimento
           recebimento.update_attribute(:cheque_id , t.id)
         end
         if paciente2
-          recebimentos = Recebimento.find_all_by_clinica_id_and_cheque_id(@clinica.id, t.id)
+          recebimentos = Recebimento.find_all_by_clinica_id_and_cheque_id(@clinica.id, t.id, :select=>'cheque_id')
           recebimentos.each do |rec|
             rec.update_attribute(:cheque_id,  t.id)
             # rec.observacao = t.banco.nome + " - " + t.numero if !recebimento.observacao.present?
