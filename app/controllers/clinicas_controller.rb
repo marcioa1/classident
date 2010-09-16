@@ -15,8 +15,7 @@ class ClinicasController < ApplicationController
   def producao_entre_datas
     @valores = []
     if params[:datepicker].nil?
-      @data_inicial = Date.today - 15.days
-      @data_final   = Date.today
+      quinzena
     else
       @data_inicial = params[:datepicker].to_date if Date.valid?(params[:datepicker])
       @data_final   = params[:datepicker2].to_date if Date.valid?(params[:datepicker2])
