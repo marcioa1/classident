@@ -448,8 +448,10 @@ function selecionou_tratamento(){
 
 function calcula_valor_orcamento(){
     total = parseFloat($('#orcamento_valor_pt').val());
-    desconto = parseFloat($('#orcamento_desconto_pt').val());
-    $('#orcamento_valor_com_desconto').val(total - (total * desconto / 100 ));
+    desconto = parseFloat($('#orcamento_desconto').val());
+    valor_do_desconto = (total - (total * desconto / 100 ) )* 100;
+    $('#orcamento_valor_com_desconto_pt').val(valor_do_desconto);
+    formata_valor($('#orcamento_valor_com_desconto_pt'));
     calcula_valor_da_parcela();
 }
 
@@ -458,8 +460,7 @@ function calcula_valor_da_parcela(){
     valor = parseFloat(valor_com_desconto);
     numero = $('#orcamento_numero_de_parcelas').val();
     valor_da_parcela = parseInt((valor / numero) * 100) / 100;
-    alert(valor_da_parcela);
-    $('#orcamento_valor_da_parcela_pt').val(valor_da_parcela);
+    $('#orcamento_valor_da_parcela_pt').val(valor_da_parcela * 100);
     formata_valor($('#orcamento_valor_da_parcela_pt'));
 //# FIXME escrever este ajax de outra maneira
   $.ajax({

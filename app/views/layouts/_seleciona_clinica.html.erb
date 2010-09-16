@@ -1,5 +1,6 @@
-<% form_tag selecionou_clinica_path do  %>
-    Clínica : 
-    <%= select_tag :clinica_id, options_from_collection_for_select(current_user.clinicas, :id, :nome), :include_blank=>true %>
-    <%= submit_tag "entrar"%>
-<% end %>
+<% current_user.clinicas.each do |cli| %>
+  <%= link_to cli.nome, selecionou_clinica_path(:clinica_id=>cli.id)  %>
+  <br/>
+<% end %> 
+  
+ 

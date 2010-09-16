@@ -32,9 +32,7 @@ class OrcamentosController < ApplicationController
   end
 
   def create
-    params[:orcamento][:valor_da_parcela]  = params[:orcamento][:valor_da_parcela].gsub('.','').gsub(',','.')
     @orcamento                             = Orcamento.new(params[:orcamento])
-    @orcamento.data                        = params[:datepicker].to_date
     @orcamento.vencimento_primeira_parcela = params[:orcamento][:vencimento_primeira_parcela].to_date if Date.valid?(params[:orcamento][:vencimento_primeira_parcela])
     @orcamento.data_de_inicio              = params[:orcamento][:data_de_inicio].to_date if Date.valid?(params[:orcamento][:data_de_inicio])
     @orcamento.clinica_id                  = session[:clinica_id]

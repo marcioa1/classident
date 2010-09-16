@@ -30,16 +30,20 @@ $(document).ready(function() {
 <div id="container">
     <div id="cabecalho">
       <div id="logo"><%= image_tag "logo2.jpg"%>
-      <div id="login">Usuário : <%= current_user.nome %> ( <%= current_user.tipo_usuario.nome %> ) | <%= @clinica_atual.nome %>
-     <% if current_user.clinicas.size > 1 %>
-       | <a href="#" onClick='outra_clinica();'> outra clinica</a>
-      <div id="seleciona_clinica" style="display:none;">
-      <%= render :partial=>"layouts/seleciona_clinica" %>
-      </div>
-    <% end %>
+        <div id="login">
+          Usuário : <%= current_user.nome %> ( <%= current_user.tipo_usuario.nome %> ) | <%= @clinica_atual.nome %>
       | <%= link_to "trocar senha", troca_senha_path %>
-      | <%= link_to "logout", logout_path %></div>
+      | <%= link_to "logout", logout_path %>
+       <% if current_user.clinicas.size > 1 %>
+         <div id="link_de_clinicas">
+           <%= render :partial=>"layouts/seleciona_clinica" %>
+         </div>
+       <% end %>
+        </div>
       </div>
+
+
+
     </div>
     
     <div id="principal">
@@ -50,16 +54,16 @@ $(document).ready(function() {
               <%= render :partial=>"layouts/menu_clinica" %>
             <% end %>
         </div>
+      <div id="main">
+        
         <br/>
-        <%= flash[:notice] if flash[:notice] %>
+       
         <br/>
         <%= nome_paciente(@paciente) if @paciente && !@paciente.new_record?%>
         <span id="controller" style='display: none;'><%= params[:controller] %></span> 
         <span id="action" style='display: none;'><%= params[:action] %></span>
-
         <%= yield :main %>
-        <%= yield :detail %>
-
+      </div>
     </div>
   <div id="rodape">
     © 2010 - <a href="http://www.anadata.com.br/"><strong>Anadata Sistemas</strong></a>
