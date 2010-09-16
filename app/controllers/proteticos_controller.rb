@@ -79,12 +79,10 @@ class ProteticosController < ApplicationController
   
   def relatorio
     if params[:datepicker]
-      @inicio = params[:datepicker].to_date if Date.valid?(params[:datepicker])
-      @fim    = params[:datepicker2].to_date if Date.valid?(params[:datepicker2])
+      @data_inicial = params[:datepicker].to_date if Date.valid?(params[:datepicker])
+      @data_final   = params[:datepicker2].to_date if Date.valid?(params[:datepicker2])
     else
       quinzena
-      # @inicio = Date.today - 15.days
-      # @fim    = Date.today
     end
     @trabalhos_pendentes  = TrabalhoProtetico.pendentes.entre_datas(@inicio,@fim).da_clinica(session[:clinica_id])
     @trabalhos_devolvidos = TrabalhoProtetico.devolvidos.entre_datas(@inicio,@fim).da_clinica(session[:clinica_id])

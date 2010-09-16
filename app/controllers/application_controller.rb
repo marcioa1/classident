@@ -139,3 +139,11 @@ end
 #TODO o link de orçamento no aproveitamento de orçamento na adm está errado.
 #TODO a seleção de cheques a enviar para a clinica está trazendo até os não selecionados
 #TODO o saldo em cheque do fluxo de caixa está muito errado
+#TODO dentes para selecionar ao invez de escrever entre vírgulas
+#TODO aumentar velocidade do site
+#TODO Consertar layout do autocomplete ( bara de rolagem)
+#TODO Consertar Flash messages
+#TODO Número de dente não obrigatório
+#TODO definir tamanho dos campos na tabela senhas e demais tabelas
+#TODO usar cookies no lugar de session nas tabs de paciente
+#TODO Os dados de endereço não vieram. Verificar esta informação.
