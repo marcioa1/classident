@@ -122,9 +122,10 @@ class ChequesController < ApplicationController
     if @administracao
       clinicas_selecionadas = ""
       @clinicas.each do |clinica|
-          clinicas_selecionadas += "\'" + clinica.id.to_s + "\'," if params["clinica_#{clinica.id}".to_sym]
+        clinicas_selecionadas += clinica.id.to_s + "," if params["clinica_#{clinica.id}".to_sym]
       end
-      @cheques = @cheques.vindo_da_clinica(clinicas_selecionadas[0..-2])
+      debugger
+      @cheques = @cheques.vindo_da_clinica(clinicas_selecionadas[0..-2]) if clinicas_selecionadas.size>1
     end
      #TODO fazer parametros que faltam de situação de cheque
   end

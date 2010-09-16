@@ -137,3 +137,5 @@ end
 #TODO ao editar um recebimento commais de um paciente está misturando os pacientes
 #FIXME AO salvar um dados d epaciente, atualizar o cache do memcached
 #TODO o link de orçamento no aproveitamento de orçamento na adm está errado.
+#TODO a seleção de cheques a enviar para a clinica está trazendo até os não selecionados
+#TODO o saldo em cheque do fluxo de caixa está muito errado
