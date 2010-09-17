@@ -6,7 +6,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery # See ActionController::RequestForgeryProtection for details
   filter_parameter_logging :password, :password_confirmation
   helper_method :current_user_session, :current_user
-  before_filter :busca_clinicas
+  before_filter :busca_clinica_atual
   before_filter :administracao
   
 
@@ -59,7 +59,7 @@ class ApplicationController < ActionController::Base
   #   end
   
   def administracao
-    @administracao = session[:clinica_id].to_i == Clinica.first(:conditions=>['e_administracao=?',true]).id
+    @administracao = session[:clinica_id].to_i == Clinica::ADMINISTRACAO_ID
   end
   
   def primeiro_dia_do_mes
@@ -114,13 +114,12 @@ class ApplicationController < ActionController::Base
       session[:return_to] = nil
     end
     
-    
+    def busca_clinica_atual
+      @clinica_atual = Clinica.find(session[:clinica_id]) if session[:clinica_id].present?
+    end
+
     def busca_clinicas
-      @as_clinicas = Clinica.all(:order=>:nome).collect{|obj| [obj.nome,obj.id]}
-      if !session[:clinica_id].nil?
-        @clinica_atual = Clinica.find(session[:clinica_id]) 
-      end
-      @administracao = session[:clinica_id] == Clinica.first(:conditions=>['e_administracao=?',true]).id
+      Clinica.all(:order=>:nome).collect{|obj| [obj.nome,obj.id.to_s]}
     end
     
     def verifica_horario_de_trabalho
@@ -137,13 +136,15 @@ end
 #TODO ao editar um recebimento commais de um paciente está misturando os pacientes
 #FIXME AO salvar um dados d epaciente, atualizar o cache do memcached
 #TODO o link de orçamento no aproveitamento de orçamento na adm está errado.
+
+#TODO Consertar Flash messages
+#TODO definir tamanho dos campos na tabela senhas e demais tabelas
+#TODO Pensar em diminuir o numero de letras digitadas para busca, e até mesmo configurar por usuário.
+
 #TODO a seleção de cheques a enviar para a clinica está trazendo até os não selecionados
 #TODO o saldo em cheque do fluxo de caixa está muito errado
 #TODO dentes para selecionar ao invez de escrever entre vírgulas
 #TODO aumentar velocidade do site
-#TODO Consertar layout do autocomplete ( bara de rolagem)
-#TODO Consertar Flash messages
-#TODO definir tamanho dos campos na tabela senhas e demais tabelas
-#TODO usar jquery para cookies. Falta apagar . usar cookies no lugar de session nas tabs de paciente
+#TODO Consertar layout do autocomplete ( barra de rolagem)
+#TODO usar jquery para cookies. Falta apagar 
 #TODO Os dados de endereço não vieram. Verificar esta informação.
-#TODO Pensar em diminuir o numero de letras digitadas para busca, e até mesmo configurar por usuário.

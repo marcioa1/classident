@@ -1,6 +1,6 @@
 class AdicionaSeqEClinicaAProteticos < ActiveRecord::Migration
   def self.up
-    add_column :proteticos, :clinica, :references
+    add_column :proteticos, :clinica_id, :integer
     add_index :proteticos, :clinica_id
   end
 

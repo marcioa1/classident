@@ -14,11 +14,9 @@ class CreateUsers < ActiveRecord::Migration
      t.string    :current_login_ip                                   # optional, see Authlogic::Session::MagicColumns
      t.string    :last_login_ip                                      # optional, see Authlogic::Session::MagicColumns
      t.references :tipo_usuario
-     t.string    :nome
+     t.string    :nome, :limit => 60
      t.timestamps
    end
-   add_index :users, :tipo_usuario_id
-   add_index :users, :id
    User.create!(:login => 'ricardo', :password=>'1234', :email=>'classident@ibest.com.br',
     :password_confirmation =>'1234', :nome=>'Ricardo', :tipo_usuario_id => 1, :clinicas => Clinica.all)
    

@@ -49,21 +49,16 @@
           = link_to tratamento.dente, edit_tratamento_path(:id=>tratamento.id)
         - else
           = tratamento.dente
-      %td
-        = tratamento.faces
-      %td
-        = tratamento.item_tabela.codigo  unless tratamento.item_tabela.nil?
+      %td= tratamento.faces
+      %td= tratamento.item_tabela.codigo  unless tratamento.item_tabela.nil?
       %td
         - if tratamento.pode_alterar?
           = link_to tratamento.descricao, edit_tratamento_path(tratamento)
         - else
           = tratamento.descricao
-      %td{ :align => "right" }
-        = tratamento.valor.real
-      %td{ :align => "right" }
-        = tratamento.custo.real
-      %td
-        = tratamento.dentista.nome unless tratamento.dentista.nil?
+      %td{ :align => "right" }= tratamento.valor.real
+      %td{ :align => "right" }= tratamento.custo.real
+      %td= tratamento.dentista.nome unless tratamento.dentista.nil?
       %td{ :align => "center" }
         - if tratamento.data.to_s_br.blank?
           %span{ :id => "finalizar_#{tratamento.id.to_s}" }
@@ -72,8 +67,7 @@
           = tratamento.data.to_s_br
       %td{ :align => "center" }
         = tratamento.orcamento.numero unless tratamento.orcamento.nil?
-      %td
-        = link_to "novo trabalho de protético", new_trabalho_protetico_path(:tratamento_id=>tratamento.id, :paciente_id=>tratamento.paciente.id) if tratamento.pode_alterar? && tratamento.data.nil?
+      %td= link_to "novo trabalho de protético", new_trabalho_protetico_path(:tratamento_id=>tratamento.id, :paciente_id=>tratamento.paciente.id) if tratamento.pode_alterar? && tratamento.data.nil?
     - total += tratamento.valor
   %tr
     %td{ :align => "center", :colspan => "4" }

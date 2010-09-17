@@ -8,12 +8,12 @@ class CreateCheques < ActiveRecord::Migration
       t.decimal :valor, :precision=>9, :scale=>2
       t.references :recebimento
       #TODO decidir se este campo vai ficar. Acho que não, pois chegará pelo recebimento
-      # t.integer :paciente_id
-      # t.integer :segundo_paciente
-      # t.integer :terceiro_paciente
-      # t.decimal :valor_primeiro_paciente, :precision=>9, :scale=>2
-      # t.decimal :valor_segundo_paciente, :precision=>9, :scale=>2
-      # t.decimal :valor_terceiro_paciente, :precision=>9, :scale=>2
+      t.integer :paciente_id
+      t.integer :segundo_paciente
+      t.integer :terceiro_paciente
+      t.decimal :valor_primeiro_paciente, :precision=>9, :scale=>2
+      t.decimal :valor_segundo_paciente, :precision=>9, :scale=>2
+      t.decimal :valor_terceiro_paciente, :precision=>9, :scale=>2
       
       t.timestamps
     end

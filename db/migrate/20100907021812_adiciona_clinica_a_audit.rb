@@ -1,6 +1,6 @@
 class AdicionaClinicaAAudit < ActiveRecord::Migration
   def self.up
-    add_column :audits, :clinica, :references
+    add_column :audits, :clinica_id, :integer
     # add_index :audits, :clinica_id
   end
 

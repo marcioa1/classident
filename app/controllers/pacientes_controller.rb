@@ -92,7 +92,7 @@ class PacientesController < ApplicationController
   
   
   def pesquisa_nomes
-    if administracao
+    if @administracao
       nomes = Paciente.all(:select=>'nome,clinica_id', :conditions=>["nome like ?", "#{params[:term].nome_proprio}%" ])  
     else
       nomes = Paciente.all(:select=>'nome,clinica_id', :conditions=>["nome like ? and clinica_id = ? ", "#{params[:term].nome_proprio}%", session[:clinica_id] ])  
@@ -116,10 +116,9 @@ class PacientesController < ApplicationController
     else
       @paciente =  Paciente.busca_paciente(params[:id])
     end
-    @indicacoes             = Indicacao.por_descricao.collect{|obj| [obj.descricao, obj.id]}
+    # @indicacoes             = Indicacao.por_descricao.collect{|obj| [obj.descricao, obj.id]}
     session[:paciente_id]   = @paciente.id
     session[:paciente_nome] = @paciente.nome
-    # @tab_index = session[:tab_paciente]
   end
   
   def nova_alta

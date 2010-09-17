@@ -13,4 +13,7 @@ stylesheets:
   - adm
   - jquery.loading.1.6
   - jquery
-  - jquery.ui.base
+  - jquery.ui.core
+  - jquery.ui.autocomplete
+  - jquery.ui.tabs
+  - jquery.ui.datepicker

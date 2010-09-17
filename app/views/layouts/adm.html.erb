@@ -23,9 +23,9 @@
   <body style='background-color: #E6EDF8;'>
 <% end %>
 <script>
-$(document).ready(function() {
-  $("#tabela").tablesorter();
-});
+// $(document).ready(function() {
+//   $("#tabela").tablesorter();
+// });
 </script>
 <div id="container">
     <div id="cabecalho">
@@ -56,6 +56,7 @@ $(document).ready(function() {
         </div>
       <div id="main">
         <br/>
+        <%= flash[:notice] %>
         <br/>
         <%= nome_paciente(@paciente) if @paciente && !@paciente.new_record?%>
         <span id="controller" style='display: none;'><%= params[:controller] %></span> 

@@ -83,8 +83,7 @@ class Converte
         else
           nome                  = registro[0].nome_proprio
         end
-        p = Paciente.find_by_nome_and_clinica_id(nome, @clinica.id, 
-           :select=>'logradouro,bairro,cidade,nascimento,uf,cep,telefone,email,inicio_tratamento')
+        p = Paciente.find_by_nome_and_clinica_id(nome, @clinica.id)
         if !p.nil?
           p.logradouro   = registro[3]
           p.bairro       = registro[4]
@@ -94,7 +93,7 @@ class Converte
           p.cep          = registro[8][0..7]
           p.telefone     = registro[9]
           p.email        = registro[15]
-          p.save
+          p.save!
         end
       rescue Exception => ex
         @arquivo.puts line + "\n"+ "      ->" + ex
@@ -233,7 +232,7 @@ class Converte
         t              = Tabela.new
         t.sequencial   = registro[0].to_i
         t.nome         = registro[1].nome_proprio
-        t.ativa        = ['Verdadeiro', 'True'].include?(registro[5])
+        t.ativa        = ['Verdadeiro', 'True', 1].include?(registro[5])
         t.clinica_id   = @clinica.id
         t.save
       rescue Exception => ex

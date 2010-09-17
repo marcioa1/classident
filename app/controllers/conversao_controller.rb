@@ -1,36 +1,36 @@
 class ConversaoController < ApplicationController
 
 def index
-  # apaga_arquivo_de_erros_de_conversao
+  apaga_arquivo_de_erros_de_conversao
   converte = Converte.new
   # converte.inicia_arquivos_na_memoria
-  # converte.clinicas
-  # converte.tabela
-  # converte.inicia_tabelas_em_memoria
-  # converte.item_tabela
-  # converte.dentista 
-  # converte.inicia_dentistas_em_memoria
-  # converte.cadastro  
+  converte.clinicas
+  converte.tabela
+  converte.inicia_tabelas_em_memoria
+  converte.item_tabela
+  converte.dentista 
+  converte.inicia_dentistas_em_memoria
+  converte.cadastro  
   converte.mala_direta  
-  # converte.inicia_pacientes_em_memoria
-  # converte.orcamento
-  # converte.odontograma
-  # converte.debito 
-  # converte.tipo_pagamento 
-  # converte.destinacao 
-  # converte.pagamento 
-  # converte.fluxo_de_caixa 
-  # converte.formas_recebimento 
-  # converte.recebimento 
-  # converte.cheque 
-  # converte.protetico
-  # converte.tabela_protetico
-  # converte.trabalho_protetico
+  converte.inicia_pacientes_em_memoria
+  converte.orcamento
+  converte.odontograma
+  converte.debito 
+  converte.tipo_pagamento 
+  converte.destinacao 
+  converte.pagamento 
+  converte.fluxo_de_caixa 
+  converte.formas_recebimento 
+  converte.recebimento 
+  converte.cheque 
+  converte.protetico
+  converte.tabela_protetico
+  converte.trabalho_protetico
   # converte.alta
-  # converte.adm_tipo_pagamento
-  # converte.adm_pagamento
-  # converte.adm_cheques
-  # converte.adm_fluxo
+  converte.adm_tipo_pagamento
+  converte.adm_pagamento
+  converte.adm_cheques
+  converte.adm_fluxo
   puts "Término da conversão."
 end
 

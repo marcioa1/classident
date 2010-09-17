@@ -33,13 +33,13 @@ class DentistasController < ApplicationController
   end
 
   def edit
-    @clinicas = Clinica.all(:order=>:nome)
+    @clinicas = busca_clinicas #Clinica.all(:order=>:nome)
   end
 
   def create
     @dentista = Dentista.new(params[:dentista])
     @dentista.clinicas = []
-    clinicas = Clinica.all
+    clinicas = busca_clinicas #Clinica.all
     clinicas.each() do |clinica|
       if params["clinica_#{clinica.id.to_s}"]
         @dentista.clinicas << clinica
@@ -55,7 +55,7 @@ class DentistasController < ApplicationController
 
   def update
     @dentista.clinicas = []
-    clinicas = Clinica.all
+    clinicas = busca_clinicas #Clinica.all
     clinicas.each() do |clinica|
       if params["clinica_#{clinica.id.to_s}"]
         @dentista.clinicas << clinica
@@ -82,7 +82,7 @@ class DentistasController < ApplicationController
   end
 
   def abre
-    @clinicas      = Clinica.all(:order=>:nome)
+    @clinicas      = busca_clinica #Clinica.all(:order=>:nome)
     @clinica_atual = Clinica.find(session[:clinica_id])
     quinzena
     @orcamentos    = Orcamento.do_dentista(@dentista.id)

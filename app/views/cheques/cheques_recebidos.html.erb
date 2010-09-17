@@ -61,7 +61,7 @@
       <td><% if cheque.entregue_a_administracao  %>
             <%= image_tag "ok.png" %>
             <%= cheque.data_entrega_administracao.to_s_br %>
-          <% else if cheque.disponivel? %>
+          <% elsif cheque.disponivel? %>
                  <%= check_box_tag "adm_"+cheque.id.to_s %>
           <% end %>
           <% end %>

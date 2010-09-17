@@ -4,11 +4,11 @@ class CriaTabelaClinicaUser < ActiveRecord::Migration
       t.integer :clinica_id
       t.integer :user_id
     end
-    remove_column :users, :clinica_id
+    # remove_column :users, :clinica_id
   end
 
   def self.down
-    add_column :users, :clinica_id, :integer
+    # add_column :users, :clinica_id, :integer
     drop_table :clinicas_users
   end
 end

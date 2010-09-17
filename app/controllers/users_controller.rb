@@ -11,7 +11,7 @@ class UsersController < ApplicationController
 
   def new
     redirect_to users_path unless current_user.pode_incluir_user
-    @clinicas      = Clinica.all
+    @clinicas      = busca_clinicas #Clinica.all
     @user          = User.new
     @tipos_usuario = TipoUsuario.all(:order=>:nome).collect{|obj| [obj.nome,obj.id]}
     if !current_user.master?
@@ -45,7 +45,7 @@ class UsersController < ApplicationController
 
   def edit
     @user     = User.find(params[:id])
-    @clinicas = Clinica.all
+    @clinicas = busca_clinicas #Clinica.all
     @tipos_usuario = TipoUsuario.all(:order=>:nome).collect{|obj| [obj.nome,obj.id]}
     if !current_user.master?
        master = TipoUsuario.master.collect{|obj| [obj.nome,obj.id]}
@@ -79,7 +79,7 @@ class UsersController < ApplicationController
   end
   
   def monitoramento
-    @clinicas = Clinica.all.collect{|obj| [ obj.nome, obj.id.to_s]}.insert(0, '')
+    @clinicas = busca_clinicas.insert(0, '') #Clinica.all.collect{|obj| [ obj.nome, obj.id.to_s]}.insert(0, '')
     if params[:datepicker]
       @audits = Audit.all(:conditions=>['user_id = ? and created_at between ? and ?', params[:user_monitor_id], params[:datepicker].to_date, params[:datepicker2].to_date])
     else

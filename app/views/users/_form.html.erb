@@ -24,7 +24,7 @@
 </div>
 <div>
 <%= form.label :clinicas %> : <br/>
-<% @as_clinicas.each do |clinica| %>
+<% @clinicas.each do |clinica| %>
 <%= check_box_tag "clinica_#{clinica[1]}", false, checked = current_user.clinicas.map(&:id).include?(clinica[1]) %>
 <%= clinica[0] %>
 <% end %>
