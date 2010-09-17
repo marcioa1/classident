@@ -3,7 +3,7 @@ class CreateFormaRecebimentoTemps < ActiveRecord::Migration
     create_table :forma_recebimento_temps do |t|
       t.integer     :seq  
       t.integer     :clinica_id
-      t.string      :nome
+      t.string      :nome, :limit => 40
       t.integer     :id_adm
       t.timestamps
     end

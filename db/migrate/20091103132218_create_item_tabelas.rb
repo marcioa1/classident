@@ -2,10 +2,10 @@ class CreateItemTabelas < ActiveRecord::Migration
   def self.up
     create_table :item_tabelas do |t|
       t.integer :tabela_id
-      t.string  :codigo
-      t.string  :descricao
-      t.boolean :ativo, :default=>true
-      t.integer :clinica_id
+      t.string  :codigo,     :limit => 12
+      t.string  :descricao,  :limit => 120
+      t.boolean :ativo,      :default=>true
+      t.references :clinica
 
       t.timestamps
     end

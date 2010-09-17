@@ -1,17 +1,15 @@
 class CreateAltas < ActiveRecord::Migration
   def self.up
     create_table :altas do |t|
-      t.integer :paciente_id
-      t.date :data_inicio
-      t.string :observacao
-      t.integer :user_id
-      t.date :data_termino
-      t.integer :user_termino_id
+      t.references :paciente
+      t.date       :data_inicio
+      t.string     :observacao, :limit => 50
+      t.references :user
+      t.date       :data_termino
+      t.references :user_termino_id
       
       t.timestamps
     end
-    add_index :altas, :paciente_id
-    add_index :altas, :user_termino_id
   end
 
   def self.down

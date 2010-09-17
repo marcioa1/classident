@@ -546,14 +546,11 @@ class Converte
         t.save
         recebimento                 = Recebimento.find_by_sequencial_and_clinica_id(registro[27].to_i, @clinica.id,
            :select=>'cheque_id')
-        if recebimento
-          recebimento.update_attribute(:cheque_id , t.id)
-        end
+        recebimento.update_attribute(:cheque_id , t.id) if recebimento
         if paciente2
           recebimentos = Recebimento.find_all_by_clinica_id_and_cheque_id(@clinica.id, t.id, :select=>'cheque_id')
           recebimentos.each do |rec|
             rec.update_attribute(:cheque_id,  t.id)
-            # rec.observacao = t.banco.nome + " - " + t.numero if !recebimento.observacao.present?
           end
         end
       rescue Exception => ex

@@ -1,8 +1,8 @@
 class CreateBancos < ActiveRecord::Migration
   def self.up
     create_table :bancos do |t|
-      t.string :numero
-      t.string :nome
+      t.string :numero,  :limit => 5
+      t.string :nome,    :limit => 25
 
       t.timestamps
     end

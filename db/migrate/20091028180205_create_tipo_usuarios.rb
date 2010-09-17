@@ -1,9 +1,9 @@
 class CreateTipoUsuarios < ActiveRecord::Migration
   def self.up
     create_table :tipo_usuarios do |t|
-      t.string :nome
-      t.string :descricao
-      t.integer :nivel
+      t.string  :nome,      :limit => 12 
+      t.string  :descricao, :limit => 40
+      t.integer :nivel,     :default => 4
 
       t.timestamps
     end

@@ -1,8 +1,8 @@
 class CreateTabelas < ActiveRecord::Migration
   def self.up
     create_table :tabelas do |t|
-      t.string :nome
-      t.boolean :ativa
+      t.string :nome,   :limit=>30
+      t.boolean :ativa, :default => true
       t.timestamps
     end
     add_index :tabelas, :id

@@ -143,7 +143,7 @@ end
 #TODO aumentar velocidade do site
 #TODO Consertar layout do autocomplete ( bara de rolagem)
 #TODO Consertar Flash messages
-#TODO Número de dente não obrigatório
 #TODO definir tamanho dos campos na tabela senhas e demais tabelas
-#TODO usar cookies no lugar de session nas tabs de paciente
+#TODO usar jquery para cookies. Falta apagar . usar cookies no lugar de session nas tabs de paciente
 #TODO Os dados de endereço não vieram. Verificar esta informação.
+#TODO Pensar em diminuir o numero de letras digitadas para busca, e até mesmo configurar por usuário.

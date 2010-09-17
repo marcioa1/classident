@@ -1,8 +1,8 @@
 class CreateClinicas < ActiveRecord::Migration
   def self.up
     create_table :clinicas do |t|
-      t.string :nome
-      t.string :sigla
+      t.string :nome,  :limit=>20
+      t.string :sigla, :limit=>8
       t.boolean :e_administracao
 
       t.timestamps

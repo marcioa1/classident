@@ -1,8 +1,8 @@
 class CreateSenhas < ActiveRecord::Migration
   def self.up
     create_table :senhas do |t|
-      t.string     :controller_name
-      t.string     :action_name
+      t.string     :controller_name, :limit => 45
+      t.string     :action_name, :limit => 45
       t.references :clinica
       t.string     :senha, :maxlength => 5, :allow_blank => false
 

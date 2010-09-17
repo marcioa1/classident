@@ -1,12 +1,12 @@
 class CreateRecebimentos < ActiveRecord::Migration
   def self.up
     create_table :recebimentos do |t|
-      t.integer :paciente_id
-      t.integer :clinica_id
-      t.date :data
-      t.integer :formas_recebimento_id
-      t.decimal :valor, :precision=>9, :scale=>2
-      t.string :observacao
+      t.references   :paciente
+      t.references   :clinica
+      t.date         :data
+      t.references   :formas_recebimento
+      t.decimal      :valor, :precision=>9, :scale=>2
+      t.string       :observacao , :limit => 50
 
       t.timestamps
     end

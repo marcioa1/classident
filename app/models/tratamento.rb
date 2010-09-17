@@ -25,7 +25,6 @@ class Tratamento < ActiveRecord::Base
   
   validates_presence_of :descricao, :message => "não pode ser vazio."
   validates_presence_of :dentista,  :message => "não pode ser vazio."
-  validates_presence_of :dente,     :message => "não pode ser vazio."
   validate :data_nao_pode_ser_futura
   
   attr_accessor :data_termino_br, :valor_pt, :custo_pt

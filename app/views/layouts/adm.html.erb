@@ -55,9 +55,7 @@ $(document).ready(function() {
             <% end %>
         </div>
       <div id="main">
-        
         <br/>
-       
         <br/>
         <%= nome_paciente(@paciente) if @paciente && !@paciente.new_record?%>
         <span id="controller" style='display: none;'><%= params[:controller] %></span> 

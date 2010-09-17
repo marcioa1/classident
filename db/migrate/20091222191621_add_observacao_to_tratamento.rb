@@ -1,7 +1,7 @@
 class AddObservacaoToTratamento < ActiveRecord::Migration
   def self.up
     add_column :tratamentos, :custo, :decimal, :precision=>9, :scale=>2
-    add_column :tratamentos, :face, :string
+    add_column :tratamentos, :face, :string, :limit => 10
     add_column :tratamentos, :descricao, :string, :limit=>60
     add_column :tratamentos, :sequencial, :integer
     add_index :tratamentos, :sequencial
