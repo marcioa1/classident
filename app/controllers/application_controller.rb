@@ -148,3 +148,4 @@ end
 #TODO Consertar layout do autocomplete ( barra de rolagem)
 #TODO usar jquery para cookies. Falta apagar 
 #TODO Os dados de endereço não vieram. Verificar esta informação.
+#TODO Refazer clinicas em cadastro de usuário
