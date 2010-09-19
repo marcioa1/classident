@@ -66,10 +66,7 @@ class UsersController < ApplicationController
       redirect_to users_path
     else
        @tipos_usuario = TipoUsuario.all(:order=>:nome).collect{|obj| [obj.nome,obj.id]}
-          if !current_user.master
-             master = TipoUsuario.master
-             @tipos_usuario = @tipos_usuario - master
-          end
+       @tipos_usuario = @tipos_usuario - TipoUsuario.master if !current_user.master?
       render :action => :edit
     end
   end
@@ -90,10 +87,6 @@ class UsersController < ApplicationController
     else
       @users = Array.new
     end
-  end
-  
-  def users_de_uma_clinica
-    
   end
 
 end

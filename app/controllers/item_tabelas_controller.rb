@@ -98,7 +98,7 @@ class ItemTabelasController < ApplicationController
   
   def busca_descricao
     item_tabela  = ItemTabela.find(params[:id])
-    result = item_tabela.descricao + ";" + item_tabela.preco_na_clinica().real.to_s
+    result = item_tabela.descricao + ";" + item_tabela.preco.real
     render :json => result.to_json
   end
 end

@@ -7,15 +7,6 @@
 </style>
 <script type="text/javascript">
   $(function() {
-    function deleteCookie(nome){
-    var exdate = new Date();
-    exdate.setTime(exdate.getTime() + (-1 * 24 * 3600 
-       * 1000));
-    document.cookie = nome + "=''"
-     // + escape("")+ ((-1 
-     //       == null) ? "" : "; expires=" + exdate);
-  } 
-
       function busca_por_nome(nome){
         window.location = "/pacientes/0/abre?nome=" + nome
       }
@@ -27,7 +18,7 @@
         select: function(event,ui){
           nome = ui.item.value;
           busca_por_nome(nome);
-          deleteCookie('tab_paciente=null'); 
+          $.cookies.del('tab_paciente');
           return false;
         },
         focus: function(e,ui){

@@ -25,8 +25,8 @@
 <div>
 <%= form.label :clinicas %> : <br/>
 <% @clinicas.each do |clinica| %>
-<%= check_box_tag "clinica_#{clinica[1]}", false, checked = current_user.clinicas.map(&:id).include?(clinica[1]) %>
-<%= clinica[0] %>
+  <%= check_box_tag "clinica_#{clinica.id}", false, checked = @user.clinicas.map(&:id).include?(clinica.id) %>
+  <%= clinica.nome %>
 <% end %>
 </div>
 
@@ -35,6 +35,7 @@
 <%= form.label :ativo %>
 <p/>
 <fieldset class = 'fieldset_40'>
+  <legend>Horários :</legend>
   <table class  = 'transparente'>
   <% (0..6).each do |dia| %>
   <tr>

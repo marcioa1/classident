@@ -2,7 +2,7 @@ class OrcamentosController < ApplicationController
   layout "adm"
   before_filter :require_user
   
-  before_filter :quinze_dias, :only=>:aproveitamento
+  before_filter :quinzena, :only=>:aproveitamento
   
   def index
     @orcamentos = Orcamento.all

@@ -1,10 +1,11 @@
+<%= javascript_include_tag 'odontograma.js' %>
 <% form_for(@tratamento) do |f| %>
-
 
   <%= hidden_field_tag :items, @paciente.tabela.item_tabelas.to_json, :size=>150 %>
 
   <%= f.hidden_field :paciente_id %>
   <%= f.error_messages %>
+  <div id="numero_dos_dentes">numero dos dentes  </div>
   <div>
     <%= f.label :dente %> : 
     <%= f.text_field :dente,  :size=> 12, :class=>'txt' %>
@@ -50,10 +51,12 @@
   </p>
   <br/>
     <%= f.hidden_field :item_tabela_id, :size=>4%>
-  <div>
-    <%= f.label :Código %> :
-    <%= text_field_tag :codigo , @tratamento.item_tabela.codigo, :size => 12, :class=>'txt'%>
-  </div>
+  <% if !@tratamento.new_record? %>
+    <div>
+      <%= f.label :Código %> :
+      <%= text_field_tag :codigo , @tratamento.item_tabela.codigo, :size => 12, :class=>'txt'%>
+    </div>
+  <% end %>
     <div>
     <%= f.label :procedimento %> : 
     <%= f.text_field :descricao, :size=>"40", :class=>"txt ui-autocomplete-input" %>
@@ -82,3 +85,6 @@
 <p>
   <%= render :partial=>'trabalhos_de_protetico_do_tratamento', :locals=>{:tratamento=>@tratamento} %>
 </p>
+<script type="text/javascript">
+  desenha_numero_dos_dentes();
+</script>

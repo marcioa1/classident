@@ -10,19 +10,6 @@ class ApplicationController < ActionController::Base
   before_filter :administracao
   
 
-  def quinze_dias
-    begin
-      @data_inicial = params[:datepicker].to_date
-    rescue 
-      @data_inicial = Date.today - 15.days
-    end
-    begin
-      @data_final = params[:datepicker2].to_date
-    rescue
-      @data_final = Date.today
-    end
-  end
-  
   def quinzena
     ano = Date.today.year
     mes = Date.today.month
@@ -119,7 +106,16 @@ class ApplicationController < ActionController::Base
     end
 
     def busca_clinicas
-      Clinica.all(:order=>:nome).collect{|obj| [obj.nome,obj.id.to_s]}
+      clinicas = []
+      if !Rails.cache.read(Clinica::ADMINISTRACAO_ID.to_s)
+        Clinica.all.each do |clinica|
+          clinicas << clinica
+          Rails.cache.write("clinica_#{clinica.id}",clinica, :expires_in => 14.hours) 
+        end
+      else
+        (1..Clinica::NUMERO_DE_CLINICAS).each { |ind| clinicas << Rails.cache.read("clinica_#{ind}") }
+      end
+      clinicas
     end
     
     def verifica_horario_de_trabalho
@@ -140,12 +136,14 @@ end
 #TODO Consertar Flash messages
 #TODO definir tamanho dos campos na tabela senhas e demais tabelas
 #TODO Pensar em diminuir o numero de letras digitadas para busca, e até mesmo configurar por usuário.
+#TODO Colocar as clinicas no memcached
+#TODO dentes para selecionar ao invez de escrever entre vírgulas
+#TODO Os dados de endereço não vieram. Verificar esta informação.
+#TODO Refazer clinicas em cadastro de usuário
 
 #TODO a seleção de cheques a enviar para a clinica está trazendo até os não selecionados
 #TODO o saldo em cheque do fluxo de caixa está muito errado
-#TODO dentes para selecionar ao invez de escrever entre vírgulas
 #TODO aumentar velocidade do site
 #TODO Consertar layout do autocomplete ( barra de rolagem)
-#TODO usar jquery para cookies. Falta apagar 
-#TODO Os dados de endereço não vieram. Verificar esta informação.
-#TODO Refazer clinicas em cadastro de usuário
+#TODO colocar plugin de cookies no yml
+

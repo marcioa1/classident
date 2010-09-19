@@ -1,4 +1,3 @@
-
 <% content_for :main do %>
   <div id="tabs">
     <ul>
@@ -20,27 +19,12 @@
     $(document).ready(function() {
       $("#tabs").tabs({
         select: function(event, ui){
-          document.cookie =  'tab_paciente=' + ui.index; 
+          $.cookies.set('tab_paciente', ui.index);
         }
       });
-      $("#tabs").tabs("select", parseInt(getCookie('tab_paciente')));
+      $("#tabs").tabs("select", parseInt($.cookies.get('tab_paciente')));
     });
     
-    function getCookie(c_name)
-    {
-    if (document.cookie.length>0)
-    {
-    c_start=document.cookie.indexOf(c_name + "=");
-    if (c_start!=-1)
-    {
-    c_start=c_start + c_name.length+1;
-    c_end=document.cookie.indexOf(";",c_start);
-    if (c_end==-1) c_end=document.cookie.length;
-    return unescape(document.cookie.substring(c_start,c_end));
-    }
-    }
-    return "";
-    }
-  </script>
+    </script>
 <% end %>
 

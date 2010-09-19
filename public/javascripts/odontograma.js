@@ -25,7 +25,7 @@ function desenha_dente(dente, gr){
 }
 
 function face_top(gr,pen,col,dente){
-  x = qual_coluna(dente)
+  x = qual_coluna(dente);
   y = qual_linha(dente);
   var p1 = new jsPoint(x, y);
   var p2 = new jsPoint(x+30, y);
@@ -34,7 +34,7 @@ function face_top(gr,pen,col,dente){
   gr.drawPolygon(pen,[p1,p2,p3,p4]);
 }
 function face_left(gr,pen,col,dente){
-  x = qual_coluna(dente)
+  x = qual_coluna(dente);
   y = qual_linha(dente);
   var p1 = new jsPoint(x, y);
   var p2 = new jsPoint(x+10, y + 10);
@@ -43,7 +43,7 @@ function face_left(gr,pen,col,dente){
   gr.drawPolygon(pen,[p1,p2,p3,p4]);
 }
 function face_bottom(gr,pen,col,dente){
-  x = qual_coluna(dente)
+  x = qual_coluna(dente);
   y = qual_linha(dente);
   var p1 = new jsPoint(x, y + 30);
   var p2 = new jsPoint(x+10, y + 20);
@@ -52,7 +52,7 @@ function face_bottom(gr,pen,col,dente){
   gr.drawPolygon(pen,[p1,p2,p3,p4]);
 }
 function face_right(gr,pen,col,dente){
-  x = qual_coluna(dente)
+  x = qual_coluna(dente);
   y = qual_linha(dente);
   var p1 = new jsPoint(x+30, y + 30);
   var p2 = new jsPoint(x+30, y);
@@ -71,8 +71,39 @@ function qual_linha(dente){
 
 function qual_coluna(dente){
   if (dente <= 18){
-    return 40 + (dente * 40)
+    return 40 + (dente * 40);
   }else {
-    return 40 + ((dente - 18) * 40)
+    return 40 + ((dente - 18) * 40);
+  }
+}
+
+function desenha_numero_dos_dentes(){
+  saida = "<table class='transparente'><tr>";
+  for (ind=18; ind > 10; ind = ind - 1){
+    saida = saida + "<td><a href='#' onClick='escolheu_dente(" + ind + ");' class='botao_dente'>" + ind + "</a>";
+  }
+  saida = saida + "<td> &nbsp; </td>";
+  for (ind=21; ind < 29; ind = ind + 1){
+    saida = saida + "<td><a href='#' onClick='escolheu_dente(" + ind + ");' class='botao_dente'>" + ind + "</a>";
+  }
+  saida = saida + "</tr><tr>";
+  for (ind=38; ind > 30; ind = ind - 1){
+    saida = saida + "<td><a href='#' onClick='escolheu_dente(" + ind + ");' class='botao_dente'>" + ind + "</a>";
+  }
+  saida = saida + "<td> &nbsp; </td>";
+  for (ind=41; ind < 49; ind = ind + 1){
+    saida = saida + "<td><a href='#' onClick='escolheu_dente(" + ind + ");' class='botao_dente'>" + ind + "</a>";
+  }
+  
+  saida = saida + "</tr></table>";
+  $("#numero_dos_dentes").html(saida);
+}
+
+function escolheu_dente(dente){
+  anterior = $("#tratamento_dente").val();
+  if (anterior == ''){
+    $("#tratamento_dente").val(dente + ",");
+  }else {
+    $("#tratamento_dente").val(anterior + dente + ',');
   }
 }

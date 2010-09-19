@@ -83,7 +83,8 @@ class Converte
         else
           nome                  = registro[0].nome_proprio
         end
-        p = Paciente.find_by_nome_and_clinica_id(nome, @clinica.id)
+        p = Paciente.find_by_nome_and_clinica_id(nome, @clinica.id, 
+                :select => 'id, logradouro, bairro, cidade, nascimento, uf, cep, telefone, email, inicio_tratamento')
         if !p.nil?
           p.logradouro   = registro[3]
           p.bairro       = registro[4]

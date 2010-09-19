@@ -17,7 +17,8 @@ class Clinica < ActiveRecord::Base
   named_scope :administracao, :conditions=>["sigla = 'ad'"]
   named_scope :todas, :conditions=>["sigla <> 'ad'"]
 
-  ADMINISTRACAO_ID = Clinica.administracao.first.id 
+  ADMINISTRACAO_ID   = Clinica.administracao.first.id 
+  NUMERO_DE_CLINICAS = Clinica.count
   
   def ortodontistas
     result = []

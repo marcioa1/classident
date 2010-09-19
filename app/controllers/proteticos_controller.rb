@@ -2,7 +2,7 @@ class ProteticosController < ApplicationController
   layout "adm"
   before_filter :require_user
   before_filter :busca_protetico, :only => [:edit, :abre, :show, :update, :destroy]
-  before_filter :quinze_dias, :only => [:pagamentos_feitos]
+  before_filter :quinzena, :only => [:pagamentos_feitos]
   
   def index
     params[:ativo] = 'true' if params[:ativo].nil?

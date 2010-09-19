@@ -1,7 +1,7 @@
 class DentistasController < ApplicationController
   layout "adm"
   before_filter :require_user
-  before_filter :quinze_dias, :on=>:producao_geral
+  before_filter :quinzena, :on=>:producao_geral
   before_filter :busca_dentista, :only=>[:abre, :desativar, :update, :destroy, :show, :edit]
 
   def index
@@ -91,7 +91,6 @@ class DentistasController < ApplicationController
   end
   
   def producao
-    debugger
     dentista = Dentista.find(params[:id])
     if !params[:datepicker]
       quinzena
