@@ -16,7 +16,7 @@ class TratamentosController < ApplicationController
   def create
     @tratamento = Tratamento.new(params[:tratamento])
     
-    dentes = params[:dentes].split(',')
+    dentes = params[:dentes].nil? ? [' '] : params[:dentes].split(',') 
     erro   = ( dentes.empty? ? true : false )
     if erro
       @tratamento.errors.add(:dente, "campo obrigatório")
