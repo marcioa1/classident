@@ -126,7 +126,7 @@ class Converte
         d.valor         = le_valor(registro[2])
         d.descricao     = registro[3]
         d.tratamento_id = registro[10].to_i
-        d.save
+        d.save!
       rescue Exception => ex
         @arquivo.puts line + "\n"+ "      ->" + ex
       end

@@ -147,7 +147,7 @@ class Cheque < ActiveRecord::Base
   
   def nome_dos_pacientes
     result = ''
-    
+    debugger
     self.recebimentos.each do |rec|
       result += rec.paciente.nome + "," if rec.paciente.present?
     end

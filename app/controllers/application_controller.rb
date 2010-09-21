@@ -146,4 +146,5 @@ end
 #TODO aumentar velocidade do site
 #TODO Consertar layout do autocomplete ( barra de rolagem)
 #TODO colocar plugin de cookies no yml
+#TODO link para exclusão de tratamento
 

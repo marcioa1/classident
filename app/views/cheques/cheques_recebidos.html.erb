@@ -8,15 +8,13 @@
     <p><%= render :partial =>'clinicas/opcoes', :locals => {:clinicas => @clinicas} %></p>
   <% end %>
   <p>
-  <%= label_tag :data_inicial %> : <%= text_field_tag :datepicker, @data_inicial.to_s_br, :size=>10 %>
+    <%= label_tag :data_inicial %> : <%= text_field_tag :datepicker, @data_inicial.to_s_br, :size=>10 %>
 
-  <%= label_tag :data_final %> : <%= text_field_tag :datepicker2, @data_final.to_s_br, :size=>10  %>
-  <%= label_tag :situação %> : 
- <%= select_tag :status, options_for_select(@status, params[:status]) %>
-<%= submit_tag "pesquisar"%>  
-</p>
-
-  
+    <%= label_tag :data_final %> : <%= text_field_tag :datepicker2, @data_final.to_s_br, :size=>10  %>
+    <%= label_tag :situação %> : 
+    <%= select_tag :status, options_for_select(@status, params[:status]) %>
+    <%= submit_tag "pesquisar"%>  
+  </p>
 <% end %>
 <br/>
 
@@ -38,7 +36,7 @@
   </tr>
   <% total = 0 %>
   <% for cheque in @cheques do %>
-  <tr>
+    <tr>
     <% if @administracao %>
       <td><%= cheque.clinica.nome %></td>
     <% end %>
@@ -49,22 +47,22 @@
         <%= link_to cheque.bom_para.to_s_br, edit_cheque_path(cheque) %>
       <% end %>
     </td>
-    <td><%= cheque.nome_dos_pacientes%></td>
+    <td><%= cheque.nome_dos_pacientes %></td>
     <td align="right"><%= cheque.valor.real %></td>
     <td align="center"><%= cheque.banco.numero + "-"+ cheque.banco.nome unless cheque.banco.nil? %></td>
     <td><%= cheque.agencia  %></td>
     <td><%= cheque.conta_corrente %></td>
     <td><%= cheque.numero %></td>
     <% if @administracao %>
-      <td>x<%= cheque.data_recebimento_na_administracao.to_s_br %></td>
+      <td><%= cheque.data_recebimento_na_administracao.to_s_br %></td>
     <% else %>
-      <td><% if cheque.entregue_a_administracao  %>
-            <%= image_tag "ok.png" %>
-            <%= cheque.data_entrega_administracao.to_s_br %>
-          <% elsif cheque.disponivel? %>
-                 <%= check_box_tag "adm_"+cheque.id.to_s %>
-          <% end %>
-          <% end %>
+      <td>
+        <% if cheque.entregue_a_administracao  %>
+          <%= image_tag "ok.png" %>
+          <%= cheque.data_entrega_administracao.to_s_br %>
+        <% elsif cheque.disponivel? %>
+           <%= check_box_tag "adm_"+cheque.id.to_s %>
+        <% end %>
       </td>
     <% end %>
     <td><%= status = case 

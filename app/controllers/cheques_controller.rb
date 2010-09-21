@@ -133,8 +133,8 @@ class ChequesController < ApplicationController
     lista = params[:cheques].split(",")
     lista.each() do |numero|
       id      = numero.split("_")
-      cheque = Cheque.find(id[1].to_i)
-      cheque.data_entrega_administracao = Date.today
+      cheque  = Cheque.find(id[1].to_i)
+      cheque.data_entrega_administracao =  Date.today
       cheque.save
     end
     render :json => (lista.size.to_s  + " cheques recebidos.").to_json
