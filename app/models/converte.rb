@@ -545,13 +545,17 @@ class Converte
         t.data_arquivo_morto        = registro[29].to_date if Date.valid?(registro[29])
         t.save
         recebimento                 = Recebimento.find_by_sequencial_and_clinica_id(registro[27].to_i, @clinica.id,
-           :select=>'cheque_id')
+                                      :select=>'cheque_id')
         recebimento.update_attribute(:cheque_id , t.id) if recebimento
         if paciente2
-          recebimentos = Recebimento.find_all_by_clinica_id_and_cheque_id(@clinica.id, t.id, :select=>'cheque_id')
-          recebimentos.each do |rec|
-            rec.update_attribute(:cheque_id,  t.id)
-          end
+          recebimento = Recebimento.find_by_sequencial_and_clinica_id(paciente2.to_i, @clinica.id,           
+                        :select=>'cheque_id')
+          recebimento.update_attribute(:cheque_id,  t.id) if recebimento
+        end
+        if paciente3
+          recebimento = Recebimento.find_by_sequencial_and_clinica_id(paciente3.to_i, @clinica.id,           
+                        :select=>'cheque_id')
+          recebimento.update_attribute(:cheque_id,  t.id) if recebimento
         end
       rescue Exception => ex
         @arquivo.puts line + "\n"+ "      ->" + ex

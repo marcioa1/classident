@@ -148,7 +148,9 @@ class Cheque < ActiveRecord::Base
   def nome_dos_pacientes
     result = ''
     debugger
-    self.recebimentos.each do |rec|
+    recebimentos = Recebimento.all(:conditions=>['cheque_id = ?',self.id])
+    debugger
+    recebimentos.each do |rec|
       result += rec.paciente.nome + "," if rec.paciente.present?
     end
     if result.size>1

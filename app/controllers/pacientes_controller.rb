@@ -56,7 +56,6 @@ class PacientesController < ApplicationController
   end
   
   def pesquisa
-    debugger
     session[:paciente_id] = nil
     @pacientes = []
     if !params[:codigo].blank?

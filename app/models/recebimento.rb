@@ -1,5 +1,5 @@
 class Recebimento < ActiveRecord::Base
-  acts_as_audited
+  # acts_as_audited
   belongs_to :paciente
   belongs_to :formas_recebimento
   belongs_to :clinica
@@ -31,9 +31,17 @@ class Recebimento < ActiveRecord::Base
   
   validates_presence_of :valor, :message => "Não pode ser em branco."
   validates_numericality_of :valor, :greater_than => 0, :message => " tem que ser numérico maior que zero."
+  validate :verifica_quinzena
+  # FIXME Retirar em producao
+  
   # validates_numericality_of :valor_segundo_paciente, :only => [:create, :update] , :message => "não é numérico"
   #   validates_numericality_of :valor_terceiro_paciente, :only => [:create, :update] , :message => "não é numérico"
   #   validates_numericality_of :valor_do_cheque, :only => [:create, :update] , :message => "não é numérico"
+  
+  def verifica_quinzena
+    quinzena
+    errors.add(:data, "Fora da quinzena : anterior ao dia #{@data_inicial.to_s_br}") if self.data < @data_inicial
+  end
   
   def valor_real
     self.valor.real

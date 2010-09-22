@@ -140,11 +140,11 @@ end
 #TODO dentes para selecionar ao invez de escrever entre vírgulas
 #TODO Os dados de endereço não vieram. Verificar esta informação.
 #TODO Refazer clinicas em cadastro de usuário
-
 #TODO a seleção de cheques a enviar para a clinica está trazendo até os não selecionados
-#TODO o saldo em cheque do fluxo de caixa está muito errado
+
 #TODO aumentar velocidade do site
 #TODO Consertar layout do autocomplete ( barra de rolagem)
 #TODO colocar plugin de cookies no yml
 #TODO link para exclusão de tratamento
-
+#TODO Consertar conversão de cheque que não está com ligação com recebimento
+#TODO Falta campos no cadastro : Profissao, indicado por , observacao, nome recibo, apelido, destaque, tabela de convenio, matricula de convenio
