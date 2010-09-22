@@ -147,7 +147,7 @@ end
 #   Consertos pendentes
 #TODO ao editar um recebimento commais de um paciente está misturando os pacientes
 #TODO o link de orçamento no aproveitamento de orçamento na adm está errado.
-
+#TODO Relatórios
 #TODO aumentar velocidade do site. Imagem pesada . Uso de eTags
 #TODO colocar plugin de cookies no yml
 #TODO link para exclusão de tratamento
