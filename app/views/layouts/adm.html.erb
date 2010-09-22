@@ -10,12 +10,12 @@
     
   <% if RAILS_ENV == "development"%>
     <%= javascript_include_tag 'jquery-1.4.js' %>
+    <%= javascript_include_tag 'jquery-ui-1.8.custom.min' %>
   <% else %>
     <script src="http://www.google.com/jsapi?key=ABQIAAAAjvzs-ZogAGiunZQ8Jl21TBRtdQgZiUqLdjHUMTfxUCYUR5UWoxSFtbdXCKR_vOwS_kPEOepv5GrTDw" type="text/javascript"></script>
-    <%= javascript_include_tag  src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js" %>
+    <%= javascript_include_tag  'http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js' %>
+    <%= javascript_include_tag 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.3/jquery-ui.min.js'%>
   <% end %>
-  <%= javascript_include_merged :base %>
-  <%= javascript_include_tag 'jquery.cookies.2.2.0'%>
   <%= stylesheet_link_merged :base %>
 </head>
 <% if @administracao %>
@@ -30,7 +30,7 @@
 </script>
 <div id="container">
     <div id="cabecalho">
-      <div id="logo"><%= image_tag "logo2.jpg"%>
+      <div id="logo"><%= image_tag "logo2.jpg" %>
         <div id="login">
           Usuário : <%= current_user.nome %> ( <%= current_user.tipo_usuario.nome %> ) | <%= @clinica_atual.nome %>
       | <%= link_to "trocar senha", troca_senha_path %>
@@ -71,11 +71,7 @@
     - Todos os direitos reservados
   </div>
 </body>
-<%= javascript_include_merged :base %>
-<% if RAILS_ENV == 'development' %>
-  <%= javascript_include_tag 'jquery-ui-1.8.custom.min' %>
-<% else %>
-  <%= javascript_include_tag 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.3/jquery-ui.min.js'%>
-<% end %>
+  <%= javascript_include_merged :base %>
+  <%= javascript_include_tag 'jquery.cookies.2.2.0'%>
 
 </html>

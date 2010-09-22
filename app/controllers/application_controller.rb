@@ -129,10 +129,8 @@ class ApplicationController < ActionController::Base
     
     
 end
-#TODO ao editar um recebimento commais de um paciente está misturando os pacientes
-#FIXME AO salvar um dados d epaciente, atualizar o cache do memcached
-#TODO o link de orçamento no aproveitamento de orçamento na adm está errado.
 
+#  Consertos realizados
 #TODO Consertar Flash messages
 #TODO definir tamanho dos campos na tabela senhas e demais tabelas
 #TODO Pensar em diminuir o numero de letras digitadas para busca, e até mesmo configurar por usuário.
@@ -141,10 +139,22 @@ end
 #TODO Os dados de endereço não vieram. Verificar esta informação.
 #TODO Refazer clinicas em cadastro de usuário
 #TODO a seleção de cheques a enviar para a clinica está trazendo até os não selecionados
-
-#TODO aumentar velocidade do site
 #TODO Consertar layout do autocomplete ( barra de rolagem)
+#TODO Tabs demorando a sreem montadas
+#TODO Consertar conversão de cheque que não está com ligação com recebimento
+#FIXME AO salvar um dados de paciente, atualizar o cache do memcached
+
+#   Consertos pendentes
+#TODO ao editar um recebimento commais de um paciente está misturando os pacientes
+#TODO o link de orçamento no aproveitamento de orçamento na adm está errado.
+
+#TODO aumentar velocidade do site. Imagem pesada . Uso de eTags
 #TODO colocar plugin de cookies no yml
 #TODO link para exclusão de tratamento
-#TODO Consertar conversão de cheque que não está com ligação com recebimento
 #TODO Falta campos no cadastro : Profissao, indicado por , observacao, nome recibo, apelido, destaque, tabela de convenio, matricula de convenio
+#TODO Fazer rotina que monta tabela de parcelas de orçamento toda em js
+#TODO Revisar o finalisar do odontograma. Está demorando muito.
+#TODO Perguntar se o número da conta é uma informação importante no cadastro de cheque
+#TODO Refatorar geração de tables para partials quando chamado por ajax
+#TODO Colocar tabela de procedimentos no memcached
+#TODO Colocar mapa de dentistas no memcached

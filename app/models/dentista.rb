@@ -45,4 +45,15 @@ class Dentista < ActiveRecord::Base
     resultado = Tratamento.do_dentista(id).por_data.entre(inicio, fim).da_clinica(clinicas)
   end
 
+  def self.busca_dentistas(clinica_id)
+    key       = 'dentistas_' + clinica_id
+    dentistas = Rails.cache.read(key)
+    if !dentistas
+      clinica   = Clinica.find(clinica_id)
+      dentistas = clinica.dentistas.ativos.collect{|obj| [obj.nome,obj.id]}.sort
+      Rails.cache.write(key, dentistas, :expires_in => 2.hours) 
+    end
+    dentistas
+  end
+
 end

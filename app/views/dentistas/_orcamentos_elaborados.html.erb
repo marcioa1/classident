@@ -1,4 +1,3 @@
-<fieldset class="fieldset_50">
   Entre : <%= text_field_tag :datepicker5, @data_inicial.to_s_br, :size=>10 %>
   &nbsp;&nbsp;&nbsp;e : <%= text_field_tag :datepicker6 , @data_final.to_s_br, :size=>10 %>
   <% if @administracao %>
@@ -15,7 +14,6 @@
   <% end %>
   <br/><br/>
   <%= button_to 'pesquisar', "javascript:orcamento_dentista();" %>
-</fieldset>
 <br/>
 
 <div id="lista_orcamento"></div>

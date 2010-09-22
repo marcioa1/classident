@@ -30,6 +30,7 @@ class PacientesController < ApplicationController
     @paciente.data_da_suspensao_da_cobranca_de_orto = parasm[:datepicker3].to_date unless params[:datepicker3].blank?
     @paciente.data_da_saida_da_lista_de_debitos     = params[:datepicker4].to_date unless params[:datepicker4].blank?
     if @paciente.save
+      Rails.cache.write(@paciente.id.to_s, @paciente, :expires_in => 2.minutes) 
       redirect_to(abre_paciente_path(@paciente)) 
     else
       render :action => "new" 
@@ -41,6 +42,7 @@ class PacientesController < ApplicationController
       @paciente = Paciente.find(params[:id])
     end
     if @paciente.update_attributes(params[:paciente])
+      Rails.cache.write(@paciente.id.to_s, @paciente, :expires_in => 2.minutes) 
       redirect_to(abre_paciente_path(:id=>@paciente.id)) 
     else
       # render :edit

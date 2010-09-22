@@ -1,8 +1,6 @@
-<fieldset class="fieldset_50">
 <%= render :partial=>'datas' %>
 <%= render :partial=>'escolhe_clinica' %>    
 <br/><br/><%= button_to "pesquisar" , "javascript:producao();"%>
-</fieldset>
 <% if @administracao %>
   <div style='padding-left :60em;'>
   Valor dos trabalhos selecionados : R$ <span id="valor">0</span>

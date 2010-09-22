@@ -10,12 +10,12 @@ class TratamentosController < ApplicationController
     @tratamento.paciente_id = @paciente.id
     @items                  = @paciente.tabela.item_tabelas.
         collect{|obj| [obj.codigo + " - " + obj.descricao,obj.id]}.insert(0,"")
-    @dentistas              = @clinica_atual.dentistas.ativos.collect{|obj| [obj.nome,obj.id]}.sort
+    # @dentistas              = @clinica_atual.dentistas.ativos.collect{|obj| [obj.nome,obj.id]}.sort
+    @dentistas = Dentista.busca_dentistas(session[:clinica_id])
   end
   
   def create
     @tratamento = Tratamento.new(params[:tratamento])
-    # debugger
     dentes = params[:tratamento][:dente].nil? ? [' '] : params[:tratamento][:dente].split(',') 
     erro   = false
     dentes.each do |dente|

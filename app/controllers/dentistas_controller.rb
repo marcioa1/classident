@@ -82,7 +82,7 @@ class DentistasController < ApplicationController
   end
 
   def abre
-    @clinicas      = busca_clinica #Clinica.all(:order=>:nome)
+    @clinicas      = busca_clinicas #Clinica.all(:order=>:nome)
     @clinica_atual = Clinica.find(session[:clinica_id])
     quinzena
     @orcamentos    = Orcamento.do_dentista(@dentista.id)
