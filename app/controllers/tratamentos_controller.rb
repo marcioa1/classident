@@ -86,7 +86,6 @@ class TratamentosController < ApplicationController
       @tratamento.paciente.verifica_alta_automatica(current_user, session[:clinica_id])
       Rails.cache.write(@paciente.id.to_s, @paciente, :expires_in => 2.minutes) 
       render :json => Date.today.to_s_br.to_json
-      # render :partial => 'extrato'
     rescue
       debugger
       head :bad_request

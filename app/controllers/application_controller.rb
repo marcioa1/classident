@@ -153,7 +153,7 @@ end
 #TODO o link de orçamento no aproveitamento de orçamento na adm está errado.
 #TODO Relatórios
 #TODO aumentar velocidade do site. Imagem pesada . Uso de eTags
-#TODO Revisar se ao finalizar trabalho está atualizando a grade de extrato
+#TODO Melhorar a recarga do extrato ao finalizar tratamento
 
 
 # menos importante
