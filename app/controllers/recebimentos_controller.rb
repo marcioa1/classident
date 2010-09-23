@@ -20,6 +20,7 @@ class RecebimentosController < ApplicationController
   def new
     @recebimento             = Recebimento.new
     @recebimento.cheque      = Cheque.new
+    @recebimento.formas_recebimento_id = FormasRecebimento.cheque_id
     @paciente                = Paciente.find(params[:paciente_id])
     @recebimento.paciente    = @paciente
     @recebimento.clinica_id  = @paciente.clinica_id

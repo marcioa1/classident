@@ -39,12 +39,6 @@ function selecionou_item_tabela(item_id){
       }
     );
 }
-//TODO acho que nao  é mais necessario
-function coloca_data_de_hoje(dia,mes,ano){
-    $("#tratamento_data_3i").selectOptions(dia + "");
-    $("#tratamento_data_2i").selectOptions(mes + "");
-    $("#tratamento_data_1i").selectOptions(ano + "");
-}
 
 function selecionou_forma(element){
     if ($("#" + element).selectedOptions().text().toLowerCase()=="cheque") {
@@ -87,7 +81,7 @@ function alterou_data_cadastro(){
 }
 
 function copia_valor(){
-    $("#recebimento_cheque_attributes_valor").val($("#recebimento_valor").val());
+    $("#valor_do_cheque").val($("#recebimento_valor_real").val());
 }
 
 function abre_uma_devolucao(){
@@ -504,8 +498,11 @@ function orcamento_dentista(){
 
 function finalizar_tratamento(tratamento_id){
   $.ajax({url : '/tratamentos/' + tratamento_id + '/finalizar_procedimento',
-         success: function(){
-           window.location.reload();
+         success: function(data){
+           // $("#extrato").replaceWith(data);
+           $("#finalizar_"+tratamento_id + " a" ).replaceWith(data);
+           $("#recarregar").show();
+           // window.location.reload();
          }});
 }
 

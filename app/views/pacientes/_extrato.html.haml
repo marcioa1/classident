@@ -2,9 +2,12 @@
   = link_to "Novo recebimento", new_recebimento_path(:paciente_id=>@paciente.id)
   | 
   = link_to "Novo débito", new_debito_path(:paciente_id=>@paciente.id)
+%span{:id=>'recarregar', :style=>'display:none;'}
+  |
+  = link_to "recarregar", "#", :onclick=>'window.location.reload();'
 %br
 %br
-%table
+%table{:id => 'tabela_extrato'}
   %tr
     %th Data
     %th{ :width => "200px" } Descrição
@@ -19,7 +22,7 @@
   - total_debito  = 0.0
   - total_credito = 0.0
   - @paciente.extrato.each do |lancamento|
-    %tr
+    %tr{ :class=>"#{lancamento.is_a?(Debito) ? 'debito' : ''}"}
       %td{ :align => "center" }
         = lancamento.data.to_s_br
       - if lancamento.class == Debito

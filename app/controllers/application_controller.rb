@@ -143,18 +143,23 @@ end
 #TODO Tabs demorando a sreem montadas
 #TODO Consertar conversão de cheque que não está com ligação com recebimento
 #FIXME AO salvar um dados de paciente, atualizar o cache do memcached
+#TODO Revisar o finalisar do odontograma. Está demorando muito.
+#TODO Colocar débitos em vermelho
+#TODO link para exclusão de tratamento
 
 #   Consertos pendentes
+#FIXME  link de finalizar está gerando o debito mas nã está gravando data de termino no tratamento
 #TODO ao editar um recebimento commais de um paciente está misturando os pacientes
 #TODO o link de orçamento no aproveitamento de orçamento na adm está errado.
 #TODO Relatórios
 #TODO aumentar velocidade do site. Imagem pesada . Uso de eTags
+#TODO Revisar se ao finalizar trabalho está atualizando a grade de extrato
+
+
+# menos importante
 #TODO colocar plugin de cookies no yml
-#TODO link para exclusão de tratamento
 #TODO Falta campos no cadastro : Profissao, indicado por , observacao, nome recibo, apelido, destaque, tabela de convenio, matricula de convenio
 #TODO Fazer rotina que monta tabela de parcelas de orçamento toda em js
-#TODO Revisar o finalisar do odontograma. Está demorando muito.
 #TODO Perguntar se o número da conta é uma informação importante no cadastro de cheque
 #TODO Refatorar geração de tables para partials quando chamado por ajax
-#TODO Colocar tabela de procedimentos no memcached
 #TODO Colocar mapa de dentistas no memcached

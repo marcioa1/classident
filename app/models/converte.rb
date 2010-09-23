@@ -547,7 +547,6 @@ class Converte
         recebimento                 = Recebimento.find_by_sequencial_and_clinica_id(registro[27].to_i, @clinica.id,
                                       :select=>'id,cheque_id')
         recebimento.update_attribute(:cheque_id , t.id) if recebimento
-        debugger
         if paciente2
           recebimento = Recebimento.find_by_sequencial_and_clinica_id(paciente2.to_i, @clinica.id,           
                         :select=>'id,cheque_id')

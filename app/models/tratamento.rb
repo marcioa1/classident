@@ -88,6 +88,10 @@ class Tratamento < ActiveRecord::Base
     (self.valor - self.custo) * (100 - dentista.percentual) / 100 
   end
   
+  def pode_excluir?
+    pode_alterar? && self.data.nil?
+  end
+  
   def pode_alterar?
     na_quinzena?
   end
@@ -110,7 +114,7 @@ class Tratamento < ActiveRecord::Base
       debito               = Debito.new
       debito.paciente_id   = self.paciente_id
       debito.tratamento_id = self.id
-      debito.descricao     = self.descricao 
+      debito.descricao     = self.descricao + " (dente :" + self.dente + ")"
       debito.valor         = self.valor
       debito.data          = self.data
       debito.save

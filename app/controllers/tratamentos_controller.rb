@@ -1,7 +1,7 @@
 class TratamentosController < ApplicationController
   layout "adm"
   before_filter :require_user
-  before_filter :busca_registro, :only => [:finalizar_procedimento, :update, :edit]
+  before_filter :busca_registro, :only => [:finalizar_procedimento, :update, :edit, :destroy]
   before_filter :converte_valor_lido, :only => [:create, :update]
   
   def new
@@ -71,14 +71,24 @@ class TratamentosController < ApplicationController
     end
   end
   
+  def destroy
+    paciente  = @tratamento.paciente
+    redirect_to(abre_paciente_path(paciente) )
+  end
+  
   def finalizar_procedimento
     begin
+      debugger
       @tratamento.data = Date.today
+      @paciente        = @tratamento.paciente
       @tratamento.finalizar_procedimento(current_user)
       @tratamento.save
       @tratamento.paciente.verifica_alta_automatica(current_user, session[:clinica_id])
-      head :ok
+      Rails.cache.write(@paciente.id.to_s, @paciente, :expires_in => 2.minutes) 
+      render :json => Date.today.to_s_br.to_json
+      # render :partial => 'extrato'
     rescue
+      debugger
       head :bad_request
     end
   end

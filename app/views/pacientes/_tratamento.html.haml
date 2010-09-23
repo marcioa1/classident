@@ -36,11 +36,13 @@
       realização
     %th
       %br
-      Orçamento
+      Orç.
     %th
       Trabalho de
-      %br
       Protético
+    %th
+      %br
+      Excluir
   - total = 0.0
   - @paciente.tratamentos.each() do |tratamento|
     %tr{:style=>'height: 40px;'}
@@ -62,12 +64,14 @@
       %td{ :align => "center" }
         - if tratamento.data.to_s_br.blank?
           %span{ :id => "finalizar_#{tratamento.id.to_s}" }
-          = link_to "finalizar", "#", :onclick=>'finalizar_tratamento(' + tratamento.id.to_s + ')'
+            = link_to "finalizar", "#", :onclick=>'finalizar_tratamento(' + tratamento.id.to_s + ')'
         - else
           = tratamento.data.to_s_br
       %td{ :align => "center" }
         = tratamento.orcamento.numero unless tratamento.orcamento.nil?
-      %td= link_to "novo trabalho de protético", new_trabalho_protetico_path(:tratamento_id=>tratamento.id, :paciente_id=>tratamento.paciente.id) if tratamento.pode_alterar? && tratamento.data.nil?
+      %td{:align=>'center'}= link_to "trab. protético", new_trabalho_protetico_path(:tratamento_id=>tratamento.id, :paciente_id=>tratamento.paciente.id), :class=>'ui-icon ui-icon-plus' , :title => 'Novo tratalho de protético' if tratamento.pode_alterar? && tratamento.data.nil?
+      %td{ :align => "center" }
+        = link_to "excluir",  tratamento, :confirm => 'Tem certeza ?', :method=>:delete , :class => "ui-icon ui-icon-trash", :title => 'excluir'  if tratamento.pode_excluir?
     - total += tratamento.valor
   %tr
     %td{ :align => "center", :colspan => "4" }
