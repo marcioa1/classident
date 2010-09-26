@@ -102,6 +102,9 @@ class ApplicationController < ActionController::Base
     end
     
     def busca_clinica_atual
+      if !session[:clinica_id]
+        session[:clinica_id] = current_user.clinicas.first.id
+      end
       @clinica_atual = Clinica.busca_clinica(session[:clinica_id])
     end
 
