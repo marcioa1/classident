@@ -11,7 +11,11 @@
     <div id="tratamento"><%= render :partial=>"tratamento"  %></div>
     <div id="orcamento"> <%= render :partial=>'orcamento' %>   </div>
     <div id="cadastro">  <%= render :partial=>"edit"  %>      </div>
-    <div id="extrato">   <%= render :partial=>"extrato" %>    </div>
+    <div id="extrato">
+      <span id="table_extrato">
+        <%= render :partial=>"extrato" %>
+      </span>
+    </div>
     <div id="alta">      <%= render :partial=>"alta" %>       </div>
     <div id="protetico"> <%= render :partial=>"protetico" %>  </div>
   </div>

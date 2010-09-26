@@ -172,10 +172,14 @@ class Paciente < ActiveRecord::Base
   end
   
   def self.busca_paciente(id)
-    @paciente = Rails.cache.read(id)
-    if !@paciente
+    begin
+      @paciente = Rails.cache.read(id)
+      if !@paciente
+        @paciente = Paciente.find(id)
+        Rails.cache.write(@paciente.id.to_s, @paciente, :expires_in => 2.minutes) 
+      end
+    rescue
       @paciente = Paciente.find(id)
-      Rails.cache.write(@paciente.id.to_s, @paciente, :expires_in => 2.minutes) 
     end
     @paciente
   end

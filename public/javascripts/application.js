@@ -497,13 +497,11 @@ function orcamento_dentista(){
 }
 
 function finalizar_tratamento(tratamento_id){
+  alert("vai entrar");
   $.ajax({url : '/tratamentos/' + tratamento_id + '/finalizar_procedimento',
          success: function(data){
-           $("#extrato").replaceWith(data);
-           hoje = new Date().toLocaleString().split(" ")[0] ;
            $("#finalizar_"+tratamento_id + " a" ).replaceWith(hoje);
-           // $("#recarregar").show();
-           // window.location.reload();
+           $("#extrato_table").replaceWith(data);
          },
          error: function(objRequest, textStatus){
            alert(textStatus);
@@ -512,17 +510,18 @@ function finalizar_tratamento(tratamento_id){
 }
 
 function hoje(){
-  hoje = new Date()
-  dia = hoje.getDate()
-  mes = hoje.getMonth()
-  ano = hoje.getFullYear()
+  hoje = new Date();
+  dia  = hoje.getDate();
+  mes  = hoje.getMonth();
+  ano  = hoje.getFullYear();
   if (dia < 10)
-  dia = "0" + dia
+    dia = "0" + dia;
+  mes = mes + 1;
+  if (mes < 9)
+    mes = "0"+ mes;
   if (ano < 2000)
-  ano = "19" + ano
-  return dia+"/"+(mes+1)+"/"+ano;
-  //O mes começa em Zero, então soma-se 1
-  // alert(dia+"/"+(mes+1)+"/"+ano)
+    ano = "19" + ano;
+  return dia+"/"+(mes)+"/"+ano;
 }
 
 function busca_id(numero){
