@@ -499,11 +499,30 @@ function orcamento_dentista(){
 function finalizar_tratamento(tratamento_id){
   $.ajax({url : '/tratamentos/' + tratamento_id + '/finalizar_procedimento',
          success: function(data){
-           // $("#extrato").replaceWith(data);
-           $("#finalizar_"+tratamento_id + " a" ).replaceWith(data);
-           $("#recarregar").show();
+           $("#extrato").replaceWith(data);
+           hoje = new Date().toLocaleString().split(" ")[0] ;
+           $("#finalizar_"+tratamento_id + " a" ).replaceWith(hoje);
+           // $("#recarregar").show();
            // window.location.reload();
-         }});
+         },
+         error: function(objRequest, textStatus){
+           alert(textStatus);
+         }
+         });
+}
+
+function hoje(){
+  hoje = new Date()
+  dia = hoje.getDate()
+  mes = hoje.getMonth()
+  ano = hoje.getFullYear()
+  if (dia < 10)
+  dia = "0" + dia
+  if (ano < 2000)
+  ano = "19" + ano
+  return dia+"/"+(mes+1)+"/"+ano;
+  //O mes começa em Zero, então soma-se 1
+  // alert(dia+"/"+(mes+1)+"/"+ano)
 }
 
 function busca_id(numero){

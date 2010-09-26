@@ -102,7 +102,14 @@ class ApplicationController < ActionController::Base
     end
     
     def busca_clinica_atual
-      @clinica_atual = Clinica.find(session[:clinica_id]) if session[:clinica_id].present?
+      if session[:clinica_id].present?
+        if !Rails.cache.read("clinica_#{session[:clinica_id]}")
+          @clinica_atual = Clinica.find(session[:clinica_id]) 
+          Rails.cache.write("clinica_#{session[:clinica_id]}", @clinica_atual)
+        else
+          @clinica_atual = Rails.cache.read(session[:clinica_id].to_s)
+        end
+      end
     end
 
     def busca_clinicas
@@ -148,18 +155,20 @@ end
 #TODO link para exclusão de tratamento
 
 #   Consertos pendentes
-#FIXME  link de finalizar está gerando o debito mas nã está gravando data de termino no tratamento
-#TODO ao editar um recebimento commais de um paciente está misturando os pacientes
+#FIXME  link de finalizar Colocar a partial e a data de hoje na tabela de tratamentos
+#TODO ao editar um recebimento com mais de um paciente está misturando os pacientes
 #TODO o link de orçamento no aproveitamento de orçamento na adm está errado.
 #TODO Relatórios
 #TODO aumentar velocidade do site. Imagem pesada . Uso de eTags
 #TODO Melhorar a recarga do extrato ao finalizar tratamento
+#TODO Uso de autocomplete no tipos de pagamento e recebimento.
 
 
 # menos importante
 #TODO colocar plugin de cookies no yml
 #TODO Falta campos no cadastro : Profissao, indicado por , observacao, nome recibo, apelido, destaque, tabela de convenio, matricula de convenio
 #TODO Fazer rotina que monta tabela de parcelas de orçamento toda em js
-#TODO Perguntar se o número da conta é uma informação importante no cadastro de cheque
 #TODO Refatorar geração de tables para partials quando chamado por ajax
-#TODO Colocar mapa de dentistas no memcached
+#TODO Colocar mapa de dentistas no memcached e expirar ao alterar dentista na adminitração
+#TODO Perguntar se o número da conta é uma informação importante no cadastro de cheque = NAO
+#

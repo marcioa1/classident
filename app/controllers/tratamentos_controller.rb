@@ -78,16 +78,15 @@ class TratamentosController < ApplicationController
   
   def finalizar_procedimento
     begin
-      debugger
       @tratamento.data = Date.today
       @paciente        = @tratamento.paciente
       @tratamento.finalizar_procedimento(current_user)
-      @tratamento.save
+      @tratamento.save!
       @tratamento.paciente.verifica_alta_automatica(current_user, session[:clinica_id])
       Rails.cache.write(@paciente.id.to_s, @paciente, :expires_in => 2.minutes) 
-      render :json => Date.today.to_s_br.to_json
-    rescue
-      debugger
+      # render :json => Date.today.to_s_br.to_json
+      render :partial => 'pacientes/extrato', :locals => {:paciente => @paciente}
+    rescue  Exception => ex
       head :bad_request
     end
   end

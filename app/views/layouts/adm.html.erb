@@ -30,26 +30,12 @@
 </script>
 <div id="container">
     <div id="cabecalho">
-      <div id="logo"><%= image_tag "logo2.jpg" %>
-        <div id="login">
-          Usuário : <%= current_user.nome %> ( <%= current_user.tipo_usuario.nome %> ) | <%= @clinica_atual.nome %>
-      | <%= link_to "trocar senha", troca_senha_path %>
-      | <%= link_to "logout", logout_path %>
-       <% if current_user.clinicas.size > 1 %>
-         <div id="link_de_clinicas">
-           <%= render :partial=>"layouts/seleciona_clinica" %>
-         </div>
-       <% end %>
-        </div>
-      </div>
-
-
-
+      <%= render :partial=>'layouts/cabecalho', :locals=>{:clinica_atual => @clinica_atual} %>
     </div>
     
     <div id="principal">
         <div class="pd_menu_01">
-            <% if session[:clinica_id].to_i == Clinica.first(:conditions=>['e_administracao = ?', true]).id %>
+            <% if @administracao %>
               <%= render :partial=>"layouts/menu_adm" %>
             <% else %>
               <%= render :partial=>"layouts/menu_clinica" %>

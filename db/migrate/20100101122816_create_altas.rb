@@ -6,7 +6,7 @@ class CreateAltas < ActiveRecord::Migration
       t.string     :observacao, :limit => 50
       t.references :user
       t.date       :data_termino
-      t.references :user_termino_id
+      t.references :user_termino
       
       t.timestamps
     end
