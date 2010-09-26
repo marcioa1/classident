@@ -8,19 +8,17 @@ class UserSessionsController < ApplicationController
     end
     
     def create
-      reset_session
+      # reset_session
       @user_session = UserSession.new(params[:user_session])
       if @user_session.save
-        # if current_user.password == "1234"
-        #         redirect_to troca_senha_user_path
-        # else
-          if current_user.clinicas.map(&:id).include?(Clinica::ADMINISTRACAO_ID)
-            session[:clinica_id] = Clinica::ADMINISTRACAO_ID
-          else
-            session[:clinica_id] = current_user.clinicas.first.id
-          end
-          redirect_to pesquisa_pacientes_path
-        # end
+        user         = User.find_by_login(@user_session.login)
+        current_user = user
+        if current_user.clinicas.map(&:id).include?(Clinica::ADMINISTRACAO_ID)
+          session[:clinica_id] = Clinica::ADMINISTRACAO_ID
+        else
+          session[:clinica_id] = current_user.clinicas.first.id
+        end
+        redirect_to pesquisa_pacientes_path
       else
         flash[:error] = " Usuário não encontrado. Por favor verifique usuário, senha e dias e horários permitidos."
         redirect_to new_user_sessions_path 

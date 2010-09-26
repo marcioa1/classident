@@ -6,8 +6,8 @@ class ApplicationController < ActionController::Base
   protect_from_forgery # See ActionController::RequestForgeryProtection for details
   filter_parameter_logging :password, :password_confirmation
   helper_method :current_user_session, :current_user
-  before_filter :busca_clinica_atual
   before_filter :administracao
+  before_filter :busca_clinica_atual
   
 
   def quinzena
@@ -102,10 +102,12 @@ class ApplicationController < ActionController::Base
     end
     
     def busca_clinica_atual
-      if !session[:clinica_id]
-        session[:clinica_id] = current_user.clinicas.first.id
+      if current_user && session[:clinica_id]
+        if !session[:clinica_id]
+          session[:clinica_id] = current_user.clinicas.first.id
+        end
+        @clinica_atual = Clinica.busca_clinica(session[:clinica_id])
       end
-      @clinica_atual = Clinica.busca_clinica(session[:clinica_id])
     end
 
     def busca_clinicas
