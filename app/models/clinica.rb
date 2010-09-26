@@ -28,6 +28,14 @@ class Clinica < ActiveRecord::Base
     result.sort! {|a,b| a.nome <=> b.nome}
   end  
   
+  def self.busca_clinica(id)
+    @clinica = Rails.cache.read("clinica_#{id}")
+    if !@clinica
+      @clinica = Clinica.find(id)
+      Rails.cache.write("clinica_#{id}", @clinica, :expires_in => 12.hours) 
+    end
+    @clinica
+  end
   
 
 end

@@ -102,14 +102,7 @@ class ApplicationController < ActionController::Base
     end
     
     def busca_clinica_atual
-      if session[:clinica_id].present?
-        if !Rails.cache.read("clinica_#{session[:clinica_id]}")
-          @clinica_atual = Clinica.find(session[:clinica_id]) 
-          Rails.cache.write("clinica_#{session[:clinica_id]}", @clinica_atual)
-        else
-          @clinica_atual = Rails.cache.read(session[:clinica_id].to_s)
-        end
-      end
+      @clinica_atual = Clinica.busca_clinica(session[:clinica_id])
     end
 
     def busca_clinicas
