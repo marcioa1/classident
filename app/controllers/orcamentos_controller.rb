@@ -21,7 +21,7 @@ class OrcamentosController < ApplicationController
     @orcamento.valor    = Tratamento.valor_a_fazer(session[:paciente_id])
     @orcamento.desconto = 0
     @orcamento.valor_com_desconto = @orcamento.valor
-    @dentistas   = Clinica.find(session[:clinica_id]).dentistas.ativos.por_nome.collect{|obj| [obj.nome,obj.id]}
+    @dentistas   = Dentista.busca_dentistas(session[:clinica_id])
     @tratamentos = Tratamento.do_paciente(@paciente.id).nao_excluido.nao_feito.sem_orcamento
   end
 

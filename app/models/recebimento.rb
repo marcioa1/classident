@@ -1,5 +1,5 @@
 class Recebimento < ActiveRecord::Base
-  # acts_as_audited
+  acts_as_audited
   belongs_to :paciente
   belongs_to :formas_recebimento
   belongs_to :clinica
@@ -31,7 +31,7 @@ class Recebimento < ActiveRecord::Base
   
   validates_presence_of :valor, :message => "Não pode ser em branco."
   validates_numericality_of :valor, :greater_than => 0, :message => " tem que ser numérico maior que zero."
- # validate :verifica_quinzena
+ validate :verifica_quinzena
   # FIXME Retirar em producao
   
   # validates_numericality_of :valor_segundo_paciente, :only => [:create, :update] , :message => "não é numérico"

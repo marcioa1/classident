@@ -105,42 +105,9 @@ class DentistasController < ApplicationController
     if Date.valid?(params[:datepicker]) && Date.valid?(params[:datepicker2])
       inicio   = params[:datepicker].to_date if Date.valid?(params[:datepicker])
       fim      = params[:datepicker2].to_date if Date.valid?(params[:datepicker2])
-      @producao = dentista.busca_producao(inicio,fim,clinicas) 
-      saida = "<div id='lista'><table><tr><th width='105px'>Data</th>
-           <th width='220px'><br/>Paciente</th>
-          <th width='220px'><br/>Procedimento</th>
-          <th width='90px'><br/>Valor</th>
-          <th width='90px'><br/>Custo</th>
-          <th width='90px'><br/>Dentista</th>
-          <th width='90px'><br/>Clínica</th>"
-      saida += "<th>Selecionar<br/>p/ pagto</th>" if @administracao
-      saida += "</tr>"
-      total = 0.0  
-      total_dentista = 0.0
-      total_custo = 0.0
-      total_clinica = 0.0
-      @producao.each() do |tratamento|
-        saida += "<tr><td align='center'>"+ tratamento.data.to_s_br + "</td>"
-        saida += "<td>" + tratamento.paciente.nome + "</td>"
-        saida += "<td>" + tratamento.descricao + "</td>"
-        saida += "<td align='right'>" + tratamento.valor.real.to_s + "</td>"
-        saida += "<td align='right'>" + tratamento.custo.real.to_s + "</td>"
-        saida += "<td align='right'>" + tratamento.valor_dentista.real.to_s + "</td>"
-        saida += "<td align='right'>" + tratamento.valor_clinica.real.to_s + "</td>"
-        saida += "<td align='center'>" + "<input type='checkbox' id='pagar_dentista_" + tratamento.id.to_s + 
-            "' onclick='pagar_dentista(" + tratamento.valor_dentista.to_s + ',' + tratamento.id.to_s + 
-              ',' + tratamento.dentista.id.to_s +  ")'/></tr>" if @administracao
-        total_dentista += tratamento.valor_dentista
-        total_custo += tratamento.custo unless tratamento.custo.nil?
-        total_clinica += tratamento.valor_clinica
-        total += tratamento.valor
-      end
-      saida += "<tr><td colspan='3' align='center'>Total</td><td align='right'>" + total.real.to_s + "</td>"
-      saida += "<td align='right'>"+total_custo.real.to_s + "</td>"
-      saida += "<td align='right'>"+ total_dentista.real.to_s + "</td><td align='right'>" + total_clinica.real.to_s + "</td></tr>"
-    
-      saida += "</table></div>"
-      render :json => saida.to_json
+      @producao = dentista.busca_producao(inicio,fim,clinicas)
+      debugger
+      render :partial=>'dentistas/producao_do_dentista', :locals=>{:producao=>@producao} 
     else
       @erros = ''
       @erros = "Data inicial inválida." if !Date.valid?(params[:datepicker])
@@ -150,26 +117,11 @@ class DentistasController < ApplicationController
   end
   
   def pagamento
-    saida = "<div id='lista'><table><tr><th width='105px'>Data</th>
-        <th width='90px'>Valor</th>
-        <th width='200px'>Observação</th>
-        </tr>"
-        
     inicio      = params[:inicio].to_date
     fim         = params[:fim].to_date
     @dentista   = Dentista.find(params[:dentista_id])
     @pagamentos = @dentista.pagamentos.entre_datas(inicio,fim).nao_excluidos
-    total = 0.0
-    @pagamentos.each do |pag|
-      saida += "<tr><td>" + pag.data_de_pagamento.to_s_br + "</td>" + 
-          "<td align='right'>" + pag.valor_pago.real.to_s + "</td>" + 
-          "<td>" + pag.observacao + "</td>" +
-         "</tr>"
-      total += pag.valor_pago
-    end
-    saida += "<tr><td align='center'>Total</td><td align='right'>" + total.real.to_s + "</td><td>&nbsp;</td></tr>"
-    saida += "</table></div>"
-    render :json => saida.to_json
+    render :partial => 'dentistas/pagamento_dentista', :locals=>{:pagamentos=>@pagamentos}
   end
   
   def pesquisar
@@ -195,28 +147,9 @@ class DentistasController < ApplicationController
     else
       clinicas = session[:clinica_id].to_a
     end
-    result = "<div id='lista_orcamento'><table><tr>
-        <th><br/>Data</th>
-        <th><br/>Paciente</th>
-        <th width='100px'><br/>Valor</th>
-        <th><br/>Desconto</th>
-        <th width='100px'>Valor c/ desconto</th>
-        <th>Núm. de<br/> parcelas</th>
-        <th width='100px'><br/>Valor parcela</th>
-        <th><br/>Estado</th>
-      </tr>"
     @orcamentos = Orcamento.do_dentista(dentista.id).entre_datas(inicio,fim)
-    @orcamentos.each do |orca|
-      result += "<tr><td>" + orca.data.to_s_br + "</td><td>" + orca.paciente.nome + "</td><td align='right'>" 
-      result += orca.valor.real.to_s + "</td>" +
-      "<td align='right'>" + orca.desconto.to_s + "</td><td align='right'>" + orca.valor_com_desconto.real.to_s + 
-      "<td align='right'>" + orca.numero_de_parcelas.to_s + "</td><td align='right'>" + orca.valor_da_parcela.real.to_s + "</td>"+
-      "<td>" + orca.estado + "</td>" +
-      "</tr>" 
-      
-    end
-    result += "</table></div>"
-    render :json => result.to_json
+    debugger
+    render :partial => 'dentistas/orcamentos', :locals=>{:orcamentos => @orcamentos}
   end
   
   def producao_geral

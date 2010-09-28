@@ -224,11 +224,14 @@ function pagar_dentista(valor,tratamento_id,dentista_id){
 
 function pagamento_dentista(dentista_id){
     var clinicas = $("#fragment-3 input:checkbox");
-    url = "pagamento?inicio='" + $("#datepicker3").val() + 
-           "'&fim='" + $("#datepicker4").val() +
-           "'&dentista_id=" + dentista_id;
-    $.getJSON( url, function(data){
+    $.ajax({
+      url: 'pagamento',
+      data: {inicio: $("#datepicker3").val(),
+             fim: $("#datepicker4").val(),
+             dentista_id: dentista_id},
+      success: function(data){
         $("#lista_pagamento").replaceWith(data);
+      }
     });
 }
 
@@ -275,7 +278,6 @@ function pagamento_protetico(){
   var protetico_id = $("#protetico_id").val();
   var url = "http://"+ window.location.host + "/pagamentos/registra_pagamento_a_protetico" +
      "?ids='" + id_str + "'&valores='" + valor_a_pagar + "' &protetico_id=" + protetico_id;
-  alert(url);
   window.location = url;
 }
 
@@ -333,11 +335,14 @@ function producao(){
         selecionadas += $("#"+ clinicas[i].id).val() + ",";
       } 
     }
-    url = "producao?datepicker='" + $("#datepicker").val() + 
-           "'&datepicker2='" + $("#datepicker2").val() +
-           "'&clinicas=" + selecionadas;
-    $.getJSON( url, function(data){
+    $.ajax({
+      url: "producao",
+      data: {datepicker: $("#datepicker").val(),
+             datepicker2: $("#datepicker2").val(),
+             clinicas: selecionadas},
+      success: function(data){
         $("#lista").replaceWith(data);
+      }
     });
 }
 
@@ -488,12 +493,16 @@ function orcamento_dentista(){
       selecionadas += $("#"+ clinicas[i].id).val() + ",";
     } 
   }
-  url = "orcamentos?inicio='" + $("#datepicker5").val() + 
-         "'&fim='" + $("#datepicker6").val() +
-         "'&clinicas=" + selecionadas;
-  $.getJSON( url, function(data){
-      $("#lista_orcamento").replaceWith(data);
-  }); 
+  $.ajax({
+    url: "orcamentos",
+    data: {inicio:  $("#datepicker5").val(),
+          fim: $("#datepicker6").val(),
+          clinicas: selecionadas},
+    success: function(data){
+      // alert(data);    
+      $("#lista_orcamento").replaceWith(data);  
+    }
+    });
 }
 
 function finalizar_tratamento(tratamento_id){

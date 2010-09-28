@@ -1,171 +1,164 @@
-<% content_for :main do %>
+  <% content_for :main do %>
 
-<script type="text/javascript">
-  $(function() {
-      $("#paciente_2").autocomplete({
-        source: "pesquisa_nomes",
-        minLength: 6,
-        maxRows: 5,
-        select: function(event,ui){
-          nome = ui.item.value;
-          $("#segundo_paciente").val(nome);
-          busca_id(2);
-          diferenca = parseFloat($('#valor_do_cheque').val()) - parseFloat($("#recebimento_valor_real").val());
-          $('#valor_segundo_paciente').val(diferenca);
-        }
-      });
-    });
-    
+  <script type="text/javascript">
     $(function() {
-        $("#paciente_3").autocomplete({
+        $("#paciente_2").autocomplete({
           source: "pesquisa_nomes",
           minLength: 6,
           maxRows: 5,
           select: function(event,ui){
             nome = ui.item.value;
             $("#segundo_paciente").val(nome);
-            busca_id(3);
-            diferenca = parseFloat($('#valor_do_cheque').val()) - parseFloat($("#recebimento_valor_real").val()) - parseFloat($('#valor_segundo_paciente').val());
-            $('#valor_terceiro_paciente').val(diferenca);
+            busca_id(2);
+            diferenca = parseFloat($('#valor_do_cheque').val()) - parseFloat($("#recebimento_valor_real").val());
+            $('#valor_segundo_paciente').val(diferenca);
           }
         });
       });
     
-</script>
-
-
-<fieldset class="fieldset_40">
-<legend>Novo recebimento</legend>
-
-<% form_for(@recebimento, @cheque) do |f| %>
-  <%= f.error_messages %>
-  <%= f.hidden_field :paciente_id %>
-  <%= f.hidden_field :clinica_id %>
-  <table class='transparente'>
-    <tr>
-      <td align='right'><%= f.label :data %> :</td>
-      <td><%= f.text_field :data_pt_br, :size=>10 , :class=>'datepicker'%></td>
-    </tr>
-    <tr>
-      <td align='right'><%= f.label :forma_recebimento_id %> :</td>
-      <td><%= f.select :formas_recebimento_id, @formas_recebimentos, {}, html_options={  :onchange=>"selecionou_forma('recebimento_formas_recebimento_id');"} %></td>
-    </tr>
-    <tr>
-      <td align='right'><%= f.label :valor %> :</td>
-      <td><%= f.text_field :valor_real, :size=>10, :onblur=>"copia_valor();"  %></td>
-    </tr>
-    <tr>
-      <td align='right'><%= f.label :observação %> :</td>
-      <td><%= f.text_field :observacao %></td>
-    </tr>
+      $(function() {
+          $("#paciente_3").autocomplete({
+            source: "pesquisa_nomes",
+            minLength: 6,
+            maxRows: 5,
+            select: function(event,ui){
+              nome = ui.item.value;
+              $("#segundo_paciente").val(nome);
+              busca_id(3);
+              diferenca = parseFloat($('#valor_do_cheque').val()) - parseFloat($("#recebimento_valor_real").val()) - parseFloat($('#valor_segundo_paciente').val());
+              $('#valor_terceiro_paciente').val(diferenca);
+            }
+          });
+        });
     
-  </table>
+  </script>
 
-  <div id="cheque" >
-    <fieldset class='fieldset_35'>
-    <legend> dados do cheque</legend>
+
+  <fieldset class="fieldset_40">
+  <legend>Novo recebimento</legend>
+
+  <% form_for(@recebimento, @cheque) do |f| %>
+    <%= f.error_messages %>
+    <%= f.hidden_field :paciente_id %>
+    <%= f.hidden_field :clinica_id %>
+    <table class='transparente'>
+      <tr>
+        <td align='right'><%= f.label :data %> :</td>
+        <td><%= f.text_field :data_pt_br, :size=>10 , :class=>'datepicker'%></td>
+      </tr>
+      <tr>
+        <td align='right'><%= f.label :forma_recebimento_id %> :</td>
+        <td><%= f.select :formas_recebimento_id, @formas_recebimentos, {}, html_options={  :onchange=>"selecionou_forma('recebimento_formas_recebimento_id');"} %></td>
+      </tr>
+      <tr>
+        <td align='right'><%= f.label :valor %> :</td>
+        <td><%= f.text_field :valor_real, :size=>10, :onblur=>"copia_valor();"  %></td>
+      </tr>
+      <tr>
+        <td align='right'><%= f.label :observação %> :</td>
+        <td><%= f.text_field :observacao %></td>
+      </tr>
+    
+    </table>
+
+    <div id="cheque" >
+      <fieldset class='fieldset_35'>
+      <legend> dados do cheque</legend>
   
-  <table class='transparente'>
-    <tr>
-      <td align='right'><%= label_tag :banco %> : </td>
+    <table class='transparente'>
+      <tr>
+        <td align='right'><%= label_tag :banco %> : </td>
       
-      <td><%= select_tag :banco_id, options_for_select(@bancos.insert(0, ''), params[:banco_id])  %></td>
-    </tr>
-    <tr>
-      <td align='right'><%= label_tag :agencia %> :</td>
-      <td>   <%= text_field_tag :agencia, params[:agencia], :size=>8 %></td>
-    <tr>
-      <td align='right'>
-         <%= label_tag :conta_corrente %> : </td>
+        <td><%= select_tag :banco_id, options_for_select(@bancos.insert(0, ''), params[:banco_id])  %></td>
+      </tr>
+      <tr>
+        <td align='right'><%= label_tag :agencia %> :</td>
+        <td>   <%= text_field_tag :agencia, params[:agencia], :size=>8 %></td>
+       <tr>
+         <td align='right'>
+           <%= label_tag :número %> : </td>
          <td>
-         <%= text_field_tag :conta_corrente, params[:conta_corrente], :size=>7 %>
-         </td>
-         </tr>
-         <tr>
-           <td align='right'>
-         <%= label_tag :número %> : </td>
-         <td>
-         <%= text_field_tag :numero, params[:numero] ,:size=>7 %></td>
-    </tr>
-    <tr>
-      <td align='right'><%= label_tag :valor_do_cheque %> : </td>
-      <td><%= text_field_tag :valor_do_cheque, params[:valor_do_cheque], :size=>8%></td>
-    </tr>
-    <tr>
-      <td align='right'><%= f.label :bom_para %> : </td>
-      <td><%= text_field_tag :datepicker2, Date.today.to_s_br, :size=>10 %></td>
-    </tr>
-    <tr>
-      <td align='right'><%= f.label :número_de_cheques %> : </td>
-      <td><%= select_tag :numero_de_cheques, options_for_select((1..8).to_a) %></td>
-    </tr>
-    <tr>
-      <td colspan="2"><hr></td>
-    </tr>
-    <tr>
-      <td align='right'><%= label_tag :segundo_paciente %> : </td>
-      <td>
-        <div class="ui-widget">
-          <input id="paciente_2" size="40" class="ui-autocomplete-input" onblur="busca_id(2);">
-        </div>
-        <%= hidden_field_tag :paciente_id_2, params[:paciente_id_2] %> 
+       <%= text_field_tag :numero, params[:numero] ,:size=>7 %></td>
+      </tr>
+      <tr>
+        <td align='right'><%= label_tag :valor_do_cheque %> : </td>
+        <td><%= text_field_tag :valor_do_cheque, params[:valor_do_cheque], :size=>8%></td>
+      </tr>
+      <tr>
+        <td align='right'><%= f.label :bom_para %> : </td>
+        <td><%= text_field_tag :datepicker2, Date.today.to_s_br, :size=>10 %></td>
+      </tr>
+      <tr>
+        <td align='right'><%= f.label :número_de_cheques %> : </td>
+        <td><%= select_tag :numero_de_cheques, options_for_select((1..8).to_a) %></td>
+      </tr>
+      <tr>
+        <td colspan="2"><hr></td>
+      </tr>
+      <tr>
+        <td align='right'><%= label_tag :segundo_paciente %> : </td>
+        <td>
+          <div class="ui-widget">
+            <input id="paciente_2" size="40" class="ui-autocomplete-input" onblur="busca_id(2);">
+          </div>
+          <%= hidden_field_tag :paciente_id_2, params[:paciente_id_2] %> 
         
-      </td>
-    </tr>
-    <tr id='linha_segundo_paciente' style='display:none;'>
-      <td>&nbsp;</td>
-      <td>
-        <div id="nomes_segundo_paciente" class='lista'>
-        </div>
-      </td>
-    </tr>
-    <tr>
-      <td align='right'><%= label_tag :valor %> : </td>
-      <td>
-      <%= text_field_tag :valor_segundo_paciente , params[:valor_segundo_paciente] ,:size=>10 %></td>
-    </tr>
-    <tr>
-      <td align='right'><%= label_tag :observação %> : </td>
-      <td><%= text_field_tag :observacao_paciente_2 , params[:observacao_paciente_2], :size=>30 %></td>
-    </tr>
-    <tr>
-      <td colspan="2"><hr></td>
-    </tr>
-    <tr>
-      <td align='right'><%= label_tag :terceiro_paciente %> : </td>
-      <td><div class="ui-widget">
-        <input id="paciente_3" size="40" class="ui-autocomplete-input" onblur="busca_id(3);">
-      </div>
-      <%= hidden_field_tag :paciente_id_3, params[:paciente_id_3] %> 
-      </td>
-    </tr>
-     <tr id='linha_terceiro_paciente' style='display:none;'>
+        </td>
+      </tr>
+      <tr id='linha_segundo_paciente' style='display:none;'>
         <td>&nbsp;</td>
         <td>
-          <div id="nomes_terceiro_paciente" class='lista'>
-            
+          <div id="nomes_segundo_paciente" class='lista'>
           </div>
         </td>
       </tr>
-    <tr>
-      <td align='right'><%= label_tag :valor %> : </td>
-      <td><%= text_field_tag :valor_terceiro_paciente, '', :size=>10 %></td>
-    </tr>
-    <tr>
-      <td align='right'><%= label_tag :observação %> : </td>
-      <td><%= text_field_tag :observacao_paciente_3 , '', :size=>30 %></td>
-    </tr>
-  </table>
+      <tr>
+        <td align='right'><%= label_tag :valor %> : </td>
+        <td>
+        <%= text_field_tag :valor_segundo_paciente , params[:valor_segundo_paciente] ,:size=>10 %></td>
+      </tr>
+      <tr>
+        <td align='right'><%= label_tag :observação %> : </td>
+        <td><%= text_field_tag :observacao_paciente_2 , params[:observacao_paciente_2], :size=>30 %></td>
+      </tr>
+      <tr>
+        <td colspan="2"><hr></td>
+      </tr>
+      <tr>
+        <td align='right'><%= label_tag :terceiro_paciente %> : </td>
+        <td><div class="ui-widget">
+          <input id="paciente_3" size="40" class="ui-autocomplete-input" onblur="busca_id(3);">
+        </div>
+        <%= hidden_field_tag :paciente_id_3, params[:paciente_id_3] %> 
+        </td>
+      </tr>
+       <tr id='linha_terceiro_paciente' style='display:none;'>
+          <td>&nbsp;</td>
+          <td>
+            <div id="nomes_terceiro_paciente" class='lista'>
+            
+            </div>
+          </td>
+        </tr>
+      <tr>
+        <td align='right'><%= label_tag :valor %> : </td>
+        <td><%= text_field_tag :valor_terceiro_paciente, '', :size=>10 %></td>
+      </tr>
+      <tr>
+        <td align='right'><%= label_tag :observação %> : </td>
+        <td><%= text_field_tag :observacao_paciente_3 , '', :size=>30 %></td>
+      </tr>
+    </table>
  
-  </fieldset>
-  </div>
-  <p>
-    <%= f.submit 'salvar' %>
-  </p>
-<% end %>
+    </fieldset>
+    </div>
+    <p>
+      <%= f.submit 'salvar' %>
+    </p>
+  <% end %>
 
-<%= link_to 'voltar', abre_paciente_path(:id=>@recebimento.paciente_id) %>
-</fieldset >
+  <%= link_to 'voltar', abre_paciente_path(:id=>@recebimento.paciente_id) %>
+  </fieldset >
 
-<% end %>
+  <% end %>
 

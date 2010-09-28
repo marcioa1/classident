@@ -151,13 +151,14 @@ end
 #TODO Revisar o finalisar do odontograma. Está demorando muito.
 #TODO Colocar débitos em vermelho
 #TODO link para exclusão de tratamento
+#TODO aumentar velocidade do site. Imagem pesada . Uso de eTags
+#TODO Perguntar se o número da conta é uma informação importante no cadastro de cheque = NAO
 
 #   Consertos pendentes
 #FIXME  link de finalizar Colocar a partial e a data de hoje na tabela de tratamentos
 #TODO ao editar um recebimento com mais de um paciente está misturando os pacientes
 #TODO o link de orçamento no aproveitamento de orçamento na adm está errado.
 #TODO Relatórios
-#TODO aumentar velocidade do site. Imagem pesada . Uso de eTags
 #TODO Melhorar a recarga do extrato ao finalizar tratamento
 #TODO Uso de autocomplete no tipos de pagamento e recebimento.
 
@@ -168,5 +169,4 @@ end
 #TODO Fazer rotina que monta tabela de parcelas de orçamento toda em js
 #TODO Refatorar geração de tables para partials quando chamado por ajax
 #TODO Colocar mapa de dentistas no memcached e expirar ao alterar dentista na adminitração
-#TODO Perguntar se o número da conta é uma informação importante no cadastro de cheque = NAO
-#
+#TODO Verificar o uso de @controller que está disponível, ao invez de passar como parâmetros
