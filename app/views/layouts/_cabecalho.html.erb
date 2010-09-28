@@ -1,4 +1,4 @@
-<% cache(:cabecalho) do%>
+<% cache "cabecalho_#{current_user.id}" do%>
   <div id="logo"><%= image_tag "logo2.jpg" %>
     <div id="login">
       Usuário : <%= current_user.nome %> ( <%= current_user.tipo_usuario.nome %> ) | <%= @clinica_atual.nome %>

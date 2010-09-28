@@ -11,9 +11,9 @@ class UserSessionsController < ApplicationController
       # reset_session
       @user_session = UserSession.new(params[:user_session])
       if @user_session.save
-        expire_fragment :cabecalho
         user         = User.find_by_login(@user_session.login)
         current_user = user
+        expire_fragment "cabecalho_#{current_user.id}"
         if current_user.clinicas.map(&:id).include?(Clinica::ADMINISTRACAO_ID)
           session[:clinica_id] = Clinica::ADMINISTRACAO_ID
         else

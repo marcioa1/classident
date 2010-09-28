@@ -5,7 +5,7 @@ class ClinicasController < ApplicationController
   def selecionou_clinica
     session[:clinica_id] = params[:clinica_id]
     @clinica_atual       = Clinica.busca_clinica(params[:clinica_id])
-    expire_fragment :cabecalho
+    expire_fragment "cabecalho_#{current_user.id}"
     if @clinica_atual.e_administracao
       redirect_to administracao_path
     else  
