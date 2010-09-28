@@ -43,6 +43,8 @@ class DentistasController < ApplicationController
     clinicas.each() do |clinica|
       if params["clinica_#{clinica.id.to_s}"]
         @dentista.clinicas << clinica
+        #FIXME Apagar o cache de dentistas da clinica
+        # Rails.cache.clear
       end      
     end
 
@@ -59,6 +61,8 @@ class DentistasController < ApplicationController
     clinicas.each() do |clinica|
       if params["clinica_#{clinica.id.to_s}"]
         @dentista.clinicas << clinica
+        #FIXME Apagar o cache de dentistas da clinica
+        # Rails.cache.clear
       end      
     end
       if @dentista.update_attributes(params[:dentista])
@@ -86,7 +90,7 @@ class DentistasController < ApplicationController
     @clinica_atual = Clinica.find(session[:clinica_id])
     quinzena
     @orcamentos    = Orcamento.do_dentista(@dentista.id)
-#TODO fazer campo pagamenti0_id ao tratamento  
+#TODO fazer campo pagamento_id ao tratamento  
 
   end
   

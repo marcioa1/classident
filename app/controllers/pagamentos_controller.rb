@@ -71,6 +71,7 @@ class PagamentosController < ApplicationController
         end
         if params[:dentista_id]
           dentista = Dentista.find(params[:dentista_id])
+          #FIXME Verificar se em cada clinica paga o valor correto
           dentista.clinicas.each do |cli|
             Pagamento.create(:clinica_id=>cli.id, :data_de_pagamento=>@pagamento.data_de_pagamento,
                :pagamento_id=>@pagamento.id, :valor_pago=>params['valor_'+ cli.id.to_s ], :tipo_pagamento_id=>@pagamento.tipo_pagamento_id,

@@ -136,23 +136,24 @@ class ApplicationController < ActionController::Base
 end
 
 #  Consertos realizados
-#TODO Consertar Flash messages
-#TODO definir tamanho dos campos na tabela senhas e demais tabelas
-#TODO Pensar em diminuir o numero de letras digitadas para busca, e até mesmo configurar por usuário.
-#TODO Colocar as clinicas no memcached
-#TODO dentes para selecionar ao invez de escrever entre vírgulas
-#TODO Os dados de endereço não vieram. Verificar esta informação.
-#TODO Refazer clinicas em cadastro de usuário
-#TODO a seleção de cheques a enviar para a clinica está trazendo até os não selecionados
-#TODO Consertar layout do autocomplete ( barra de rolagem)
-#TODO Tabs demorando a sreem montadas
-#TODO Consertar conversão de cheque que não está com ligação com recebimento
-#FIXME AO salvar um dados de paciente, atualizar o cache do memcached
-#TODO Revisar o finalisar do odontograma. Está demorando muito.
-#TODO Colocar débitos em vermelho
-#TODO link para exclusão de tratamento
-#TODO aumentar velocidade do site. Imagem pesada . Uso de eTags
-#TODO Perguntar se o número da conta é uma informação importante no cadastro de cheque = NAO
+# Consertar Flash messages
+# definir tamanho dos campos na tabela senhas e demais tabelas
+# Pensar em diminuir o numero de letras digitadas para busca, e até mesmo configurar por usuário.
+# Colocar as clinicas no memcached
+# dentes para selecionar ao invez de escrever entre vírgulas
+# Os dados de endereço não vieram. Verificar esta informação.
+# Refazer clinicas em cadastro de usuário
+# a seleção de cheques a enviar para a clinica está trazendo até os não selecionados
+# Consertar layout do autocomplete ( barra de rolagem)
+# Tabs demorando a sreem montadas
+# Consertar conversão de cheque que não está com ligação com recebimento
+# AO salvar um dados de paciente, atualizar o cache do memcached
+# Revisar o finalisar do odontograma. Está demorando muito.
+# Colocar débitos em vermelho
+# link para exclusão de tratamento
+# aumentar velocidade do site. Imagem pesada . Uso de eTags
+# Perguntar se o número da conta é uma informação importante no cadastro de cheque = NAO
+# Refatorar geração de tables para partials quando chamado por ajax
 
 #   Consertos pendentes
 #FIXME  link de finalizar Colocar a partial e a data de hoje na tabela de tratamentos
@@ -161,12 +162,11 @@ end
 #TODO Relatórios
 #TODO Melhorar a recarga do extrato ao finalizar tratamento
 #TODO Uso de autocomplete no tipos de pagamento e recebimento.
-
+#TODO fazer campo pagamento_id ao tratamento  
 
 # menos importante
 #TODO colocar plugin de cookies no yml
 #TODO Falta campos no cadastro : Profissao, indicado por , observacao, nome recibo, apelido, destaque, tabela de convenio, matricula de convenio
 #TODO Fazer rotina que monta tabela de parcelas de orçamento toda em js
-#TODO Refatorar geração de tables para partials quando chamado por ajax
 #TODO Colocar mapa de dentistas no memcached e expirar ao alterar dentista na adminitração
 #TODO Verificar o uso de @controller que está disponível, ao invez de passar como parâmetros
