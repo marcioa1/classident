@@ -46,7 +46,7 @@ class Dentista < ActiveRecord::Base
   end
 
   def self.busca_dentistas(clinica_id)
-    key       = 'dentistas_' + clinica_id
+    key       = 'dentistas_' + clinica_id.to_s
     dentistas = Rails.cache.read(key)
     if !dentistas
       clinica   = Clinica.find(clinica_id)
