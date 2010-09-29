@@ -32,7 +32,7 @@ ActionController::Routing::Routes.draw do |map|
                   :collection=>{:pesquisa=>:get,:nomes_que_iniciam_com=>:get, 
                                 :pesquisa_nomes=> :get, :retorna_paciente_por_nome=>:get,
                                 :busca_id_do_paciente=>:get},
-                  :member => {:abre=>:get}
+                  :member => {:abre=>:get, :extrato_pdf => :get}
 
   map.administracao "administracao", :controller=>"administracao", :action=>"index"
   map.salva_tab_do_paciente "salva_tab_do_paciente", :controller=>"administracao", :action=>"salva_tab_do_paciente"

@@ -146,5 +146,29 @@ class PacientesController < ApplicationController
     @indicacoes     = Indicacao.por_descricao.collect{|obj| [obj.descricao, obj.id]}
     @ortodontistas  = Clinica.find(session[:clinica_id]).ortodontistas.collect{|obj| [obj.nome,obj.id]}
   end
+  
+  def extrato_pdf
+    pdf = Prawn::Document.new
+    pdf.text( "Imprimindo o extrato")
+    # pdf.table([["foo", "bar " * 15, "baz"],
+    #      ["baz", "bar", "foo " * 15]], :cell_style => { :padding => 12 }) do
+    # cells.borders = []
+    # 
+    # # Use the row() and style() methods to select and style a row.
+    # style row(0), :border_width => 2, :borders => [:bottom]
+    # 
+    # # The style method can take a block, allowing you to customize properties
+    # # per-cell.
+    # style(columns(0..1)) { |cell| cell.borders |= [:right] }
 
+  # pdf.move_down 12
+  # 
+  # pdf.table([%w[foo bar bazbaz], %w[baz bar foofoo]],
+  #       :cell_style => { :padding => 12 }, :width => bounds.width)
+  pdf.render_file('prawn.pdf')
+
+  render :nothing=>true
+  
+
+  end
 end
