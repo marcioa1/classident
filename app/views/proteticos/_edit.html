@@ -4,48 +4,48 @@
   <p>
     Clínica : <%= @protetico.clinica.nome %>
   </p>
- <p>
-    <%= f.label :nome %><br />
-    <%= f.text_field :nome, :size=>40 %>
-  </p>
-  <p>
-    <%= f.label :logradouro %><br />
-    <%= f.text_field :logradouro, :size=>50 %>
-  </p>
-  <p>
-    <%= f.label :numero %><br />
-    <%= f.text_field :numero, :size=>10 %>
-  </p>
-  <p>
-    <%= f.label :complemento %><br />
-    <%= f.text_field :complemento, :size=>10 %>
-  </p>
-  <p>
-    <%= f.label :telefone %><br />
-    <%= f.text_field :telefone, :size=>15 %>
-  </p>
-  <p>
-    <%= f.label :celular %><br />
-    <%= f.text_field :celular, :size=>15 %>
-  </p>
-  <p>
-    <%= f.label :email %><br />
-    <%= f.text_field :email, :size=>40 %>
-  </p>
-  <p>
-    <%= f.label :bairro %><br />
-    <%= f.text_field :bairro %>
-  </p>
-  <p>
-    <%= f.label :observação %><br />
-    <%= f.text_field :observacao, :size=>35 %>
-  </p>
-  <p>
+ <div>
+    <%= f.label :nome %>
+    <%= f.text_field :nome, :size=>40, :class=>'txt' %>
+  </div>
+  <div>
+    <%= f.label :logradouro %>
+    <%= f.text_field :logradouro, :size=>50, :class=>'txt' %>
+  </div>
+  <div>
+    <%= f.label :numero %>
+    <%= f.text_field :numero, :size=>10, :class=>'txt' %>
+  </div>
+  <div>
+    <%= f.label :complemento %>
+    <%= f.text_field :complemento, :size=>10, :class=>'txt' %>
+  </div>
+  <div>
+    <%= f.label :telefone %>
+    <%= f.text_field :telefone, :size=>25, :class=>'txt' %>
+  </div>
+  <div>
+    <%= f.label :celular %>
+    <%= f.text_field :celular, :size=>25, :class=>'txt' %>
+  </div>
+  <div>
+    <%= f.label :email %>
+    <%= f.text_field :email, :size=>40, :class=>'txt' %>
+  </div>
+  <div>
+    <%= f.label :bairro %>
+    <%= f.text_field :bairro, :class=>'txt' %>
+  </div>
+  <div>
+    <%= f.label :observação %>
+    <%= f.text_field :observacao, :size=>35, :class=>'txt' %>
+  </div>
+  <div>
     <%= f.check_box :ativo %>
     <%= f.label :ativo %>
-  </p>
-  <p>
+  </div>
+  <div>
     <%= f.submit 'salvar' %>
-  </p>
+  </div>
 <% end %>
 

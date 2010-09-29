@@ -1,6 +1,4 @@
-
 <% content_for :main do %>
-<span id="tab_index" style="display: none;"><%= @tab_index %></span>
   <div id="tabs">
     <ul>
         <li><a href="#tratamento"><span>Tratamento</span></a></li>
@@ -13,7 +11,11 @@
     <div id="tratamento"><%= render :partial=>"tratamento"  %></div>
     <div id="orcamento"> <%= render :partial=>'orcamento' %>   </div>
     <div id="cadastro">  <%= render :partial=>"edit"  %>      </div>
-    <div id="extrato">   <%= render :partial=>"extrato" %>    </div>
+    <div id="extrato">
+      <span id="table_extrato">
+        <%= render :partial=>"extrato" %>
+      </span>
+    </div>
     <div id="alta">      <%= render :partial=>"alta" %>       </div>
     <div id="protetico"> <%= render :partial=>"protetico" %>  </div>
   </div>
@@ -21,15 +23,12 @@
     $(document).ready(function() {
       $("#tabs").tabs({
         select: function(event, ui){
-          $.ajax({
-            url    : "/salva_tab_do_paciente",
-            type   : "GET",
-            data   : { "tab_index" : ui.index }
-          });
+          $.cookies.set('tab_paciente', ui.index);
         }
       });
-      $("#tabs").tabs("select", parseInt($("#tab_index").html()));
+      $("#tabs").tabs("select", parseInt($.cookies.get('tab_paciente')));
     });
-  </script>
+    
+    </script>
 <% end %>
 

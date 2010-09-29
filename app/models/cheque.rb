@@ -9,7 +9,7 @@ class Cheque < ActiveRecord::Base
   validates_presence_of :banco, :on => :create, :message => "Não pode ser vazio"
   validates_presence_of :numero, :on => :create, :message => "Não pode ser vazio"
   validates_presence_of :valor, :message => "can't be blank"
-  validates_numericality_of :valor, :message => "is not a number"
+  validates_numericality_of :valor, :greater_then => 0, :message => "valor tem que ser maior que zero."
   
   named_scope :por_bom_para, :order=>:bom_para
   named_scope :com_destinacao, :conditions=>["destinacao_id IS NOT NULL"]
@@ -49,6 +49,7 @@ class Cheque < ActiveRecord::Base
   named_scope :spc, lambda{|data_inicial, data_final| 
       {:conditions=>["data_spc between ? and ?", data_inicial, data_final]}}
   named_scope :usados_para_pagamento, :conditions=>["pagamento_id IS NOT NULL"]
+  named_scope :vindo_da_clinica, lambda{|clinicas| {:conditions=>["clinica_id in (?)", clinicas]}}
   
   attr_accessor :valor_real
   
@@ -146,8 +147,8 @@ class Cheque < ActiveRecord::Base
   
   def nome_dos_pacientes
     result = ''
-    
-    self.recebimentos.each do |rec|
+    recebimentos = Recebimento.all(:conditions=>['cheque_id = ?',self.id])
+    recebimentos.each do |rec|
       result += rec.paciente.nome + "," if rec.paciente.present?
     end
     if result.size>1

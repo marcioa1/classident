@@ -1,16 +1,17 @@
 - content_for :main do
-  %h3 Exclusão de recebimento
-  
-  %p
-  Valor : 
-  = @recebimento.valor.real
-  %p
-  Forma :
-  = @recebimento.formas_recebimento.nome
-  - form_tag exclui_recebimento_path do 
+  %fieldset
+    %legend Exclusão de recebimento
+
     %p
-      = label_tag :justificativa
-      = ":"
-      = text_field_tag :observacao_exclusao
+      Valor : 
+      = @recebimento.valor.real
     %p
-      = submit_tag "Excluir"
+    Forma :
+    = @recebimento.formas_recebimento.nome
+    - form_tag exclui_recebimento_path do 
+      %div
+        = label_tag 'justificativa : '
+        = text_field_tag :observacao_exclusao
+      %div
+        = submit_tag "Excluir"
+        = link_to 'voltar', :back

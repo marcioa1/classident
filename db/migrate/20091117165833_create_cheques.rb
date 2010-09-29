@@ -1,13 +1,13 @@
 class CreateCheques < ActiveRecord::Migration
   def self.up
     create_table :cheques do |t|
-      t.integer :banco_id
-      t.string :agencia
-      t.string :conta_corrente
-      t.string :numero
+      t.references :banco
+      t.string :agencia, :limit => 10
+      t.string :conta_corrente, :limit => 10
+      t.string :numero, :limit => 12
       t.decimal :valor, :precision=>9, :scale=>2
-      t.integer :recebimento_id
-      #TODO decidir se este campo vai ficar
+      t.references :recebimento
+      #TODO decidir se este campo vai ficar. Acho que não, pois chegará pelo recebimento
       t.integer :paciente_id
       t.integer :segundo_paciente
       t.integer :terceiro_paciente

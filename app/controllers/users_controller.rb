@@ -11,7 +11,7 @@ class UsersController < ApplicationController
 
   def new
     redirect_to users_path unless current_user.pode_incluir_user
-    @clinicas      = Clinica.all
+    @clinicas      = busca_clinicas #Clinica.all
     @user          = User.new
     @tipos_usuario = TipoUsuario.all(:order=>:nome).collect{|obj| [obj.nome,obj.id]}
     if !current_user.master?
@@ -45,7 +45,7 @@ class UsersController < ApplicationController
 
   def edit
     @user     = User.find(params[:id])
-    @clinicas = Clinica.all
+    @clinicas = busca_clinicas #Clinica.all
     @tipos_usuario = TipoUsuario.all(:order=>:nome).collect{|obj| [obj.nome,obj.id]}
     if !current_user.master?
        master = TipoUsuario.master.collect{|obj| [obj.nome,obj.id]}
@@ -66,16 +66,27 @@ class UsersController < ApplicationController
       redirect_to users_path
     else
        @tipos_usuario = TipoUsuario.all(:order=>:nome).collect{|obj| [obj.nome,obj.id]}
-          if !current_user.master
-             master = TipoUsuario.master
-             @tipos_usuario = @tipos_usuario - master
-          end
+       @tipos_usuario = @tipos_usuario - TipoUsuario.master if !current_user.master?
       render :action => :edit
     end
   end
   
   def troca_senha
     @user = current_user
+  end
+  
+  def monitoramento
+    @clinicas = busca_clinicas.insert(0, '') #Clinica.all.collect{|obj| [ obj.nome, obj.id.to_s]}.insert(0, '')
+    if params[:datepicker]
+      @audits = Audit.all(:conditions=>['user_id = ? and created_at between ? and ?', params[:user_monitor_id], params[:datepicker].to_date, params[:datepicker2].to_date])
+    else
+      @audits = Array.new
+    end
+    if params[:clinica_monitor_id]
+      @users = Clinica.find(params[:clinica_monitor_id]).users.collect{|obj| [obj.nome, obj.id.to_s]}
+    else
+      @users = Array.new
+    end
   end
 
 end

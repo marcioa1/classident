@@ -2,6 +2,9 @@ class Entrada < ActiveRecord::Base
   acts_as_audited  
   belongs_to :clinica
   
+  validates_numericality_of :valor, :message => "is not a number"
+  validates_presence_of :observacao, :message => "não pode ser vazio"
+  
   named_scope :da_clinica, lambda{|clinica_id| {:conditions=>["clinica_id = ?", clinica_id]}}
   named_scope :do_mes, lambda{|data| {:conditions=>["data between ? and ? ", 
     data.strftime("%Y-%m-01"),data.strftime("%Y-%m-31")], :order=>:data}}

@@ -1,7 +1,7 @@
 class EntradasController < ApplicationController
   layout "adm"
   before_filter :require_user
-  before_filter :quinze_dias, :only=>:administracao
+  before_filter :quinzena, :only=>:administracao
 
   def index
     if params[:data]

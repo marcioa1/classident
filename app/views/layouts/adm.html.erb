@@ -10,71 +10,55 @@
     
   <% if RAILS_ENV == "development"%>
     <%= javascript_include_tag 'jquery-1.4.js' %>
+    <%= javascript_include_tag 'jquery-ui-1.8.custom.min' %>
   <% else %>
     <script src="http://www.google.com/jsapi?key=ABQIAAAAjvzs-ZogAGiunZQ8Jl21TBRtdQgZiUqLdjHUMTfxUCYUR5UWoxSFtbdXCKR_vOwS_kPEOepv5GrTDw" type="text/javascript"></script>
-    <%= javascript_include_tag  src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js" %>
+    <%= javascript_include_tag  'http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js' %>
+    <%= javascript_include_tag 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.3/jquery-ui.min.js'%>
   <% end %>
-  <%= javascript_include_merged :base %>
   <%= stylesheet_link_merged :base %>
 </head>
-<% if session[:clinica_id].to_i == 10 %>
+<% if @administracao %>
   <body style='background-color: #F6FDB8;'>
 <% else %>
   <body style='background-color: #E6EDF8;'>
 <% end %>
 <script>
-$(document).ready(function() {
-  $('table tbody tr:odd').addClass('zebraUm');
-  $('table tbody tr:even').addClass('zebraDois');
-});
+// $(document).ready(function() {
+//   $("#tabela").tablesorter();
+// });
 </script>
 <div id="container">
     <div id="cabecalho">
-      <div id="logo"><%= image_tag "logo2.jpg"%>
-      <div id="login">Usuário : <%= current_user.nome %> ( <%= current_user.tipo_usuario.nome %> ) | <%= @clinica_atual.nome %>
-     <% if current_user.clinicas.size > 1 %>
-       | <a href="#" onClick='outra_clinica();'> outra clinica</a>
-      <div id="seleciona_clinica" style="display:none;">
-      <%= render :partial=>"layouts/seleciona_clinica" %>
-      </div>
-    <% end %>
-      | <%= link_to "trocar senha", troca_senha_path %>
-      | <%= link_to "logout", logout_path %></div>
-      </div>
+      <%= render :partial=>'layouts/cabecalho', :locals=>{:clinica_atual => @clinica_atual, :current_user => current_user} %>
     </div>
     
     <div id="principal">
         <div class="pd_menu_01">
-            <% if session[:clinica_id].to_i == 10 %>
+            <% if @administracao %>
               <%= render :partial=>"layouts/menu_adm" %>
             <% else %>
               <%= render :partial=>"layouts/menu_clinica" %>
             <% end %>
         </div>
+      <div id="main">
         <br/>
-        <%= flash[:notice] if flash[:notice] %>
+        <%= flash[:notice] %>
         <br/>
-        <%= @paciente && identifica_paciente(@paciente) %>
+        <%= nome_paciente(@paciente) if @paciente && !@paciente.new_record?%>
         <span id="controller" style='display: none;'><%= params[:controller] %></span> 
         <span id="action" style='display: none;'><%= params[:action] %></span>
-        <%= render :partial => 'layouts/senha', :locals => { :senha => @senha , :params => params } if @senha && !esta_dentro  %>
-        
+
         <%= yield :main %>
-        
-        <%= yield :detail %>
+      </div>
     </div>
-
-
+    </div>
   <div id="rodape">
     © 2010 - <a href="http://www.anadata.com.br/"><strong>Anadata Sistemas</strong></a>
     - Todos os direitos reservados
   </div>
-</div>
 </body>
-<%= javascript_include_merged :base %>
-<% if RAILS_ENV == 'development' %>
-  <%= javascript_include_tag 'jquery-ui-1.8.custom.min' %>
-<% else %>
-  <%= javascript_include_tag 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.3/jquery-ui.min.js'%>
-<% end %>
+  <%= javascript_include_merged :base %>
+  <%= javascript_include_tag 'jquery.cookies.2.2.0'%>
+
 </html>

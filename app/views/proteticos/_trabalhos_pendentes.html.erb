@@ -25,7 +25,7 @@
       <%= link_to 'registra devolução', '#', :onclick=>'javascript:devolve_trabalho('+ trab.id.to_s + ')' %>
        </span></td>
     <td><%= trab.dentista.nome unless trab.dentista.nil? %></td>
-    <td><%= trab.protetico.nome unless trab.protetico.nil? %></td>
+    <td><%= link_to trab.protetico.nome, abre_protetico_path(trab.protetico) unless trab.protetico.nil? %></td>
   </tr>
 
 <% end %>

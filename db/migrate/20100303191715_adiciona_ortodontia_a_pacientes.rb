@@ -4,10 +4,10 @@ class AdicionaOrtodontiaAPacientes < ActiveRecord::Migration
     add_column :pacientes, :ortodontista_id, :integer
     add_column :pacientes, :mensalidade_de_ortodontia, :decimal, :precision=>9, :scale=>2
     add_column :pacientes, :sair_da_lista_de_debitos, :boolean
-    add_column :pacientes, :motivo_sair_da_lista_de_debitos, :string
+    add_column :pacientes, :motivo_sair_da_lista_de_debitos, :string, :limit => 30
     add_column :pacientes, :data_da_saida_da_lista_de_debitos, :date
     add_column :pacientes, :data_da_suspensao_da_cobranca_de_orto, :date
-    add_column :pacientes, :motivo_suspensao_cobranca_orto, :string
+    add_column :pacientes, :motivo_suspensao_cobranca_orto, :string, :limit => 30
     add_column :dentistas, :ortodontista, :boolean, :default=>false
   end
 

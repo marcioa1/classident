@@ -2,7 +2,7 @@
 <p><%= link_to "importa tabela base", importa_tabela_base_tabela_proteticos_path(:protetico_id=>@protetico.id) %> </p>
 <table>
   <tr>
-    <th width="220px">Descrição</th>
+    <th width="290px">Descrição</th>
     <th width="100px">Valor</th>
     <th>&nbsp</th>
   </tr> 
@@ -15,7 +15,7 @@
         <% end %>
     </td>
     <td align="right"><%= item.valor.real%></td>
-    <td><%= link_to 'apagar', item, :confirm => 'Tem certeza ?', :method => :delete  %></td>
+    <td><%= link_to 'apagar', item, :confirm => 'Tem certeza ?', :method => :delete, :class =>'ui-icon ui-icon-trash', :title=>'excluir'  %></td>
   </tr> 
 <% end %>
 </table>

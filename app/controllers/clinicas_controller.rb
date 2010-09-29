@@ -4,7 +4,8 @@ class ClinicasController < ApplicationController
   
   def selecionou_clinica
     session[:clinica_id] = params[:clinica_id]
-    @clinica_atual = Clinica.find(params[:clinica_id])
+    @clinica_atual       = Clinica.busca_clinica(params[:clinica_id])
+    expire_fragment "cabecalho_#{current_user.id}"
     if @clinica_atual.e_administracao
       redirect_to administracao_path
     else  
@@ -15,8 +16,7 @@ class ClinicasController < ApplicationController
   def producao_entre_datas
     @valores = []
     if params[:datepicker].nil?
-      @data_inicial = Date.today - 15.days
-      @data_final   = Date.today
+      quinzena
     else
       @data_inicial = params[:datepicker].to_date if Date.valid?(params[:datepicker])
       @data_final   = params[:datepicker2].to_date if Date.valid?(params[:datepicker2])
@@ -25,7 +25,7 @@ class ClinicasController < ApplicationController
     @dentistas.each do |den|
       mensal = den.producao_entre_datas(@data_inicial,@data_final)
       if mensal.split("/")[1].to_f > 0.0
-        @valores << (mensal + "/" + den.nome)
+        @valores << (mensal + "/" + den.nome + '/' + den.id.to_s)
       end
     end
   end
@@ -120,6 +120,23 @@ class ClinicasController < ApplicationController
     else
       @data = Date.today
     end
+  end
+  
+  def relatorio_de_exclusao
+    @clinicas    = busca_clinicas #Clinica.all.collect{|cl| [cl.nome, cl.id.to_s]}
+    if !params[:data_inicial]
+      quinzena
+    else 
+      @data_inicial = params[:data_inicial].to_date
+      @data_final   = params[:data_final].to_date
+    end
+    @recebimentos_excluidos = Recebimento.all(:conditions=>['data_de_exclusao between ? and ? and clinica_id = ?', @data_inicial, @data_final, params[:clinica_id]])
+    @pagamentos_excluidos   = Pagamento.all(:conditions=>['data_de_exclusao between ? and ? and clinica_id = ?', @data_inicial, @data_final, params[:clinica_id]])
+  end
+  
+  def usuarios_da_clinica
+    clinica = Clinica.find(params[:clinica_id])
+    render :json => clinica.users.collect{|obj| [obj.id.to_s,obj.nome]}.to_json
   end
   
 end

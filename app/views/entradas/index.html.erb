@@ -1,11 +1,13 @@
 <% content_for :main do %>
+  <%= render :partial => '/layouts/include_senha' %>
+
 <h3>Entrada / Remessa de dinheiro</h3>
 <div style="padding-left: 4em; font-size: 18px;">
-  <%= link_to "<", entradas_path(:data => @data - 1.month)%> 
+  <%= link_to "<--", entradas_path(:data => @data - 1.month) %> 
   &nbsp;&nbsp;&nbsp;
   <%= Date::MONTHNAMES[@data.month] + " / " + @data.year.to_s %>
   &nbsp;&nbsp;&nbsp;
-  <%= link_to ">", entradas_path(:data => @data.next_month)%><br/><br/>
+  <%= link_to "-->", entradas_path(:data => @data.next_month) %><br/><br/>
 </div>
 
 <%= render :partial =>"movimentacao", :locals=>{:movimentacao=>@entradas, :titulo=>"Entrada"} %>

@@ -1,6 +1,5 @@
 class AdiocionaIndicesAsTabelas < ActiveRecord::Migration
     def self.up
-      add_index :tratamentos, :clinica_id
       add_index :tratamentos, :orcamento_id
       add_index :tratamentos, :dentista_id
       add_index :tratamentos, :item_tabela_id
@@ -9,7 +8,7 @@ class AdiocionaIndicesAsTabelas < ActiveRecord::Migration
       add_index :item_tabelas, :descricao_conduta_id
       add_index :pacientes, :tabela_id
       add_index :pacientes, :clinica_id
-    add_index :pacientes, :sequencial
+      add_index :pacientes, :sequencial
      # add_index :pacientes, :ortodontista_id
     #  add_index :pacientes, :dentista_id
       add_index :pacientes, :indicacao_id
@@ -25,13 +24,10 @@ class AdiocionaIndicesAsTabelas < ActiveRecord::Migration
       add_index :pagamentos, :protetico_id
       add_index :pagamentos, :dentista_id
       add_index :pagamentos, :pagamento_id
-      add_index :cheques, :clinica_id
       add_index :cheques, :destinacao_id
       add_index :cheques, :banco_id
-      add_index :cheques, :pagamento_id
       add_index :orcamentos, :dentista_id
       add_index :orcamentos, :paciente_id
-      add_index :users, :clinica_id
    #   add_index :users, :alta_id
       add_index :altas, :user_id
       add_index :clinicas_dentistas, [:dentista_id, :clinica_id]

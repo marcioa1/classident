@@ -26,22 +26,18 @@ function conta_caracteres(){
     }
 }
 
-function selecionou_item_tabela(clinica_id){
+function selecionou_item_tabela(item_id){
     $.getJSON('/item_tabelas/busca_descricao',{
-          'id': $("#tratamento_item_tabela_id").selectedValues()[0]
+          'id': item_id 
       },
       function(data){
        resultado = data.split(";");
-       $("#tratamento_descricao").val(resultado[0]);         
-       $("#tratamento_valor").val(resultado[1]);         
+       $("#tratamento_descricao").val(resultado[0]);
+       $("#iniciais").val(resultado[0]);
+       $("#tratamento_valor_pt").val(resultado[1]);  
+       $("#tratamento_dentista_id").focus();       
       }
     );
-}
-//TODO acho que nao  é mais necessario
-function coloca_data_de_hoje(dia,mes,ano){
-    $("#tratamento_data_3i").selectOptions(dia + "");
-    $("#tratamento_data_2i").selectOptions(mes + "");
-    $("#tratamento_data_1i").selectOptions(ano + "");
 }
 
 function selecionou_forma(element){
@@ -85,7 +81,7 @@ function alterou_data_cadastro(){
 }
 
 function copia_valor(){
-    $("#recebimento_cheque_attributes_valor").val($("#recebimento_valor").val());
+    $("#valor_do_cheque").val($("#recebimento_valor_real").val());
 }
 
 function abre_uma_devolucao(){
@@ -228,11 +224,14 @@ function pagar_dentista(valor,tratamento_id,dentista_id){
 
 function pagamento_dentista(dentista_id){
     var clinicas = $("#fragment-3 input:checkbox");
-    url = "pagamento?inicio='" + $("#datepicker3").val() + 
-           "'&fim='" + $("#datepicker4").val() +
-           "'&dentista_id=" + dentista_id;
-    $.getJSON( url, function(data){
+    $.ajax({
+      url: 'pagamento',
+      data: {inicio: $("#datepicker3").val(),
+             fim: $("#datepicker4").val(),
+             dentista_id: dentista_id},
+      success: function(data){
         $("#lista_pagamento").replaceWith(data);
+      }
     });
 }
 
@@ -279,7 +278,6 @@ function pagamento_protetico(){
   var protetico_id = $("#protetico_id").val();
   var url = "http://"+ window.location.host + "/pagamentos/registra_pagamento_a_protetico" +
      "?ids='" + id_str + "'&valores='" + valor_a_pagar + "' &protetico_id=" + protetico_id;
-  alert(url);
   window.location = url;
 }
 
@@ -337,11 +335,14 @@ function producao(){
         selecionadas += $("#"+ clinicas[i].id).val() + ",";
       } 
     }
-    url = "producao?datepicker='" + $("#datepicker").val() + 
-           "'&datepicker2='" + $("#datepicker2").val() +
-           "'&clinicas=" + selecionadas;
-    $.getJSON( url, function(data){
+    $.ajax({
+      url: "producao",
+      data: {datepicker: $("#datepicker").val(),
+             datepicker2: $("#datepicker2").val(),
+             clinicas: selecionadas},
+      success: function(data){
         $("#lista").replaceWith(data);
+      }
     });
 }
 
@@ -432,32 +433,48 @@ function todas_as_faces(){
     
 }
 function selecionou_tratamento(){
-    var todos = $(":checked");
+    var todos = $("td :checked");
     var total = 0.0;
-    for (i=0;i<todos.length;i++){
-        total = total + parseFloat(todos[i].value);
+    ids_selecionados = '';
+    for (i=0;i<todos.length-1;i++){
+      total = total + parseFloat(todos[i].value);
+      ids_selecionados += todos[i].id + ',';
     }
-    $('#orcamento_valor').val(total);
+    $("#tratamento_ids").val(ids_selecionados);
+    $('#orcamento_valor_pt').val(total * 100);
+    formata_valor($('#orcamento_valor_pt'));
 }
 
 function calcula_valor_orcamento(){
-    total = parseFloat($('#orcamento_valor').val());
+    total = parseFloat($('#orcamento_valor_pt').val());
     desconto = parseFloat($('#orcamento_desconto').val());
-    $('#orcamento_valor_com_desconto').val(total - (total * desconto / 100 ));
+    valor_do_desconto = (total - (total * desconto / 100 ) )* 100;
+    $('#orcamento_valor_com_desconto_pt').val(valor_do_desconto);
+    formata_valor($('#orcamento_valor_com_desconto_pt'));
     calcula_valor_da_parcela();
 }
 
 function calcula_valor_da_parcela(){
-	  valor_com_desconto = $('#orcamento_valor_com_desconto').val().replace(',','.');
+	  valor_com_desconto = $('#orcamento_valor_com_desconto_pt').val().replace(',','.');
     valor = parseFloat(valor_com_desconto);
     numero = $('#orcamento_numero_de_parcelas').val();
-    $('#orcamento_valor_da_parcela').val(parseInt((valor / numero)*100));
-    
-    formata_valor($('#orcamento_valor_da_parcela'));
+    valor_da_parcela = parseInt((valor / numero) * 100) / 100;
+    $('#orcamento_valor_da_parcela_pt').val(valor_da_parcela * 100);
+    formata_valor($('#orcamento_valor_da_parcela_pt'));
 //# FIXME escrever este ajax de outra maneira
-  $.getJSON('monta_tabela_de_parcelas?numero_de_parcelas='+numero + '&valor_da_parcela=' + valor +
-        '&data_primeira_parcela=' + $('#orcamento_vencimento_primeira_parcela').val(),
-    function(data){$('#parcelas').replaceWith(data);});
+  $.ajax({
+    url  : '/orcamentos/monta_tabela_de_parcelas',
+    type :'GET', 
+    data : { numero_de_parcelas:numero, valor_da_parcela:valor, data_primeira_parcela:$('#orcamento_vencimento_primeira_parcela').val()},
+    success :function(data){
+      $('#parcelas').replaceWith(data);
+    }
+  });
+  // $.getJSON('monta_tabela_de_parcelas?numero_de_parcelas='+numero + '&valor_da_parcela=' + valor +
+  //        '&data_primeira_parcela=' + $('#orcamento_vencimento_primeira_parcela').val(),
+  //    function(data){
+  //      $('#parcelas').replaceWith(data);
+  //    });
 }
 
 function definir_valor(){
@@ -476,19 +493,44 @@ function orcamento_dentista(){
       selecionadas += $("#"+ clinicas[i].id).val() + ",";
     } 
   }
-  url = "orcamentos?inicio='" + $("#datepicker5").val() + 
-         "'&fim='" + $("#datepicker6").val() +
-         "'&clinicas=" + selecionadas;
-  $.getJSON( url, function(data){
-      $("#lista_orcamento").replaceWith(data);
-  }); 
+  $.ajax({
+    url: "orcamentos",
+    data: {inicio:  $("#datepicker5").val(),
+          fim: $("#datepicker6").val(),
+          clinicas: selecionadas},
+    success: function(data){
+      // alert(data);    
+      $("#lista_orcamento").replaceWith(data);  
+    }
+    });
 }
 
 function finalizar_tratamento(tratamento_id){
+  alert("vai entrar");
   $.ajax({url : '/tratamentos/' + tratamento_id + '/finalizar_procedimento',
-         success: function(){
-           window.location.reload();
-         }});
+         success: function(data){
+           $("#finalizar_"+tratamento_id + " a" ).replaceWith(hoje);
+           $("#extrato_table").replaceWith(data);
+         },
+         error: function(objRequest, textStatus){
+           alert(textStatus);
+         }
+         });
+}
+
+function hoje(){
+  hoje = new Date();
+  dia  = hoje.getDate();
+  mes  = hoje.getMonth();
+  ano  = hoje.getFullYear();
+  if (dia < 10)
+    dia = "0" + dia;
+  mes = mes + 1;
+  if (mes < 9)
+    mes = "0"+ mes;
+  if (ano < 2000)
+    ano = "19" + ano;
+  return dia+"/"+(mes)+"/"+ano;
 }
 
 function busca_id(numero){
@@ -504,7 +546,7 @@ function busca_id(numero){
 }
 
 function valida_senha(){
-  var senha_digitada = $('#senha').val();
+  var senha_digitada = $('#nova_senha').val();
   var controller     = $('#controller').html();
   var action         = $('#action').html();
   $.ajax({
@@ -522,3 +564,18 @@ function valida_senha(){
     
   });
 }
+
+function busca_usuarios(){
+  $.ajax({
+    url  : "/clinicas/usuarios_da_clinica",
+    type : 'GET', 
+    data : {clinica_id: $("#clinica_monitor_id").val()},
+    success :function(data){
+      $("#user_monitor_id").html("");
+      for (var i = 0; i < data.length; i++){ 
+        $("#user_monitor_id").append(new Option(data[i][1]   ,data[i][0]));
+      }    
+    }
+  });
+}
+

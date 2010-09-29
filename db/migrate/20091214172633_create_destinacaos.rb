@@ -1,15 +1,14 @@
 class CreateDestinacaos < ActiveRecord::Migration
   def self.up
     create_table :destinacaos do |t|
-      t.string :nome
-      t.integer :sequencial
-      t.integer :clinica_id
+      t.string     :nome, :limit=> 30
+      t.integer    :sequencial
+      t.references :clinica
       t.timestamps
     end
     add_column :cheques, :destinacao_id, :integer
     add_column :cheques, :data_destinacao, :date
     add_index :destinacaos, :id
-    add_index :destinacaos, :clinica_id
   end
 
   def self.down

@@ -6,45 +6,55 @@ class ApplicationController < ActionController::Base
   protect_from_forgery # See ActionController::RequestForgeryProtection for details
   filter_parameter_logging :password, :password_confirmation
   helper_method :current_user_session, :current_user
-  before_filter :busca_clinicas
   before_filter :administracao
-  before_filter :verifica_se_tem_senha
+  before_filter :busca_clinica_atual
+  
 
-  def quinze_dias
-    begin
-      @data_inicial = params[:datepicker].to_date
-    rescue 
-      @data_inicial = Date.today - 15.days
-    end
-    begin
-      @data_final = params[:datepicker2].to_date
-    rescue
-      @data_final = Date.today
+  def quinzena
+    ano = Date.today.year
+    mes = Date.today.month
+    dia = Date.today.day
+    if dia < 16
+      @data_inicial = Date.new(ano,mes,1)
+      @data_final   = Date.new(ano,mes,15)
+    else
+      @data_inicial = Date.new(ano,mes,16)
+      @data_final   = Date.new(ano,mes,1) + 1.month - 1.day
     end
   end
   
   def verifica_se_tem_senha
     if params[:action]
       session[:senha] = Senha.senha(params[:controller], params[:action], session[:clinica_id])
+      session[:senha_digitada] = nil if session[:senha].nil?
     else
-      session[:senha] = nil
+      session[:senha]          = nil
+      session[:senha_digitada] = nil
     end
     @senha = session[:senha]
     debugger
     if params[:action] && params[:controller]
-      @esta_dentro = (params[:controler] + ',' + params[:action] == session[:action_name])
+      @esta_dentro = (params[:controller] + ',' + params[:action] == session[:action_name])
     else
       @esta_dentro = false
     end  
     
+    @action         = session[:action]
+    @senha          = session[:senha]
+    @senha_digitada = session[:senha_digitada]
   end
+  
+  def salva_action_na_session
+    session[:action] = params[:controller]+','+params[:action]
+  end 
+  
   
   # def @administracao
   #     session[:clinica_id].to_i == 10
   #   end
   
   def administracao
-    @administracao = session[:clinica_id].to_i == 10
+    @administracao = session[:clinica_id].to_i == Clinica::ADMINISTRACAO_ID
   end
   
   def primeiro_dia_do_mes
@@ -99,13 +109,26 @@ class ApplicationController < ActionController::Base
       session[:return_to] = nil
     end
     
-    
-    def busca_clinicas
-      @as_clinicas = Clinica.all(:order=>:nome).collect{|obj| [obj.nome,obj.id]}
-      if !session[:clinica_id].nil?
-        @clinica_atual = Clinica.find(session[:clinica_id]) 
+    def busca_clinica_atual
+      if current_user && session[:clinica_id]
+        if !session[:clinica_id]
+          session[:clinica_id] = current_user.clinicas.first.id
+        end
+        @clinica_atual = Clinica.busca_clinica(session[:clinica_id])
       end
-      @administracao = session[:clinica_id] == 10
+    end
+
+    def busca_clinicas
+      clinicas = []
+      if !Rails.cache.read(Clinica::ADMINISTRACAO_ID.to_s)
+        Clinica.all.each do |clinica|
+          clinicas << clinica
+          Rails.cache.write("clinica_#{clinica.id}",clinica, :expires_in => 14.hours) 
+        end
+      else
+        (1..Clinica::NUMERO_DE_CLINICAS).each { |ind| clinicas << Rails.cache.read("clinica_#{ind}") }
+      end
+      clinicas
     end
     
     def verifica_horario_de_trabalho
@@ -119,7 +142,39 @@ class ApplicationController < ActionController::Base
     
     
 end
-#TODO usar this no jquery
-#TODO http://www.mouseoverstudio.com/blog/2010/05/14/adicionando-um-carregando-em-todas-as-requisicoes-ajax-com-uma-linha-de-codigo/
-#TODO ao editar um recebimento commais de um paciente está misturando os pacientes
-#FIXME AO salvar um dados d epaciente, atualizar o cache do memcached
+
+#  Consertos realizados
+# Consertar Flash messages
+# definir tamanho dos campos na tabela senhas e demais tabelas
+# Pensar em diminuir o numero de letras digitadas para busca, e até mesmo configurar por usuário.
+# Colocar as clinicas no memcached
+# dentes para selecionar ao invez de escrever entre vírgulas
+# Os dados de endereço não vieram. Verificar esta informação.
+# Refazer clinicas em cadastro de usuário
+# a seleção de cheques a enviar para a clinica está trazendo até os não selecionados
+# Consertar layout do autocomplete ( barra de rolagem)
+# Tabs demorando a sreem montadas
+# Consertar conversão de cheque que não está com ligação com recebimento
+# AO salvar um dados de paciente, atualizar o cache do memcached
+# Revisar o finalisar do odontograma. Está demorando muito.
+# Colocar débitos em vermelho
+# link para exclusão de tratamento
+# aumentar velocidade do site. Imagem pesada . Uso de eTags
+# Perguntar se o número da conta é uma informação importante no cadastro de cheque = NAO
+# Refatorar geração de tables para partials quando chamado por ajax
+
+#   Consertos pendentes
+#FIXME  link de finalizar Colocar a partial e a data de hoje na tabela de tratamentos
+#TODO ao editar um recebimento com mais de um paciente está misturando os pacientes
+#TODO o link de orçamento no aproveitamento de orçamento na adm está errado.
+#TODO Relatórios
+#TODO Melhorar a recarga do extrato ao finalizar tratamento
+#TODO Uso de autocomplete no tipos de pagamento e recebimento.
+#TODO fazer campo pagamento_id ao tratamento  
+
+# menos importante
+#TODO colocar plugin de cookies no yml
+#TODO Falta campos no cadastro : Profissao, indicado por , observacao, nome recibo, apelido, destaque, tabela de convenio, matricula de convenio
+#TODO Fazer rotina que monta tabela de parcelas de orçamento toda em js
+#TODO Colocar mapa de dentistas no memcached e expirar ao alterar dentista na adminitração
+#TODO Verificar o uso de @controller que está disponível, ao invez de passar como parâmetros

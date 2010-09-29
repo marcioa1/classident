@@ -9,8 +9,8 @@ class ItemTabelasController < ApplicationController
 
   def show
     @item_tabela = ItemTabela.find(params[:id])
-    @clinicas = Clinica.all(:order=>:nome)
-    @preco = Array.new
+    @clinicas    = busca_clinicas #Clinica.all(:order=>:nome)
+    @preco       = Array.new
     @clinicas.each do |clinica|
       preco = Preco.find_by_item_tabela_id_and_clinica_id(@item_tabela.id,
                   clinica.id)
@@ -80,7 +80,7 @@ class ItemTabelasController < ApplicationController
   
   def grava_precos
     @item_tabela = ItemTabela.find(params[:item_tabela_id])
-    @clinicas = Clinica.all()
+    @clinicas = busca_clinicas #Clinica.all()
     @clinicas.each do |clinica|
       valor_convertido = params["preco_" + clinica.id.to_s].gsub(",",".")
       preco = Preco.find_by_item_tabela_id_and_clinica_id(
@@ -98,7 +98,7 @@ class ItemTabelasController < ApplicationController
   
   def busca_descricao
     item_tabela  = ItemTabela.find(params[:id])
-    result = item_tabela.descricao + ";" + item_tabela.preco_na_clinica().real.to_s
+    result       = item_tabela.descricao + ";" + item_tabela.preco.real.to_s
     render :json => result.to_json
   end
 end

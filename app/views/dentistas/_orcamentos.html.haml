@@ -1,0 +1,39 @@
+#lista_orcamento
+  %table
+    %tr
+      %th
+        %br
+        Data
+      %th
+        %br
+        Paciente
+      %th{:width=>'70px;'}
+        %br
+        Valor
+      %th
+        %br
+        Desconto
+      %th{:width=>'70px;'}
+        %br
+        Valor c/ desconto
+      %th
+        Núm. de
+        %br
+        parcelas
+      %th{:width=>'70px;'}
+        %br
+        Valor parcela
+      %th
+        %br
+        Estado          
+    
+    - orcamentos.each do |orca|
+      %tr
+        %td=orca.data.to_s_br
+        %td=orca.paciente.nome
+        %td{:align=>'right'}=orca.valor.real.to_s
+        %td{:align=>'right'}=orca.desconto.to_s
+        %td{:align=>'right'}=orca.valor_com_desconto.real.to_s
+        %td{:align=>'right'}=orca.numero_de_parcelas.to_s
+        %td{:align=>'right'}=orca.valor_da_parcela.real.to_s
+        %td=orca.estado

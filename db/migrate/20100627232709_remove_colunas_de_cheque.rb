@@ -1,7 +1,7 @@
 class RemoveColunasDeCheque < ActiveRecord::Migration
   def self.up
-    remove_column :cheques, :recebimento_id_2
-    remove_column :cheques, :recebimento_id_3
+    # remove_column :cheques, :recebimento_id_2
+    # remove_column :cheques, :recebimento_id_3
     remove_column :cheques, :valor_primeiro_paciente
     remove_column :cheques, :valor_segundo_paciente
     remove_column :cheques, :valor_terceiro_paciente
@@ -19,7 +19,7 @@ class RemoveColunasDeCheque < ActiveRecord::Migration
     add_column :cheques, :valor_terceiro_paciente, :decimal,            :precision => 9, :scale => 2
     add_column :cheques, :valor_segundo_paciente, :decimal,             :precision => 9, :scale => 2
     add_column :cheques, :valor_primeiro_paciente, :decimal,            :precision => 9, :scale => 2
-    add_column :cheques, :recebimento_id_3, :integer
-    add_column :cheques, :recebimento_id_2, :integer
+    # add_column :cheques, :recebimento_id_3, :integer
+    # add_column :cheques, :recebimento_id_2, :integer
   end
 end

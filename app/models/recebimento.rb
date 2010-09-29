@@ -30,9 +30,27 @@ class Recebimento < ActiveRecord::Base
   
   
   validates_presence_of :valor, :message => "Não pode ser em branco."
+  validates_numericality_of :valor, :greater_than => 0, :message => " tem que ser numérico maior que zero."
+ validate :verifica_quinzena
+  # FIXME Retirar em producao
+  
   # validates_numericality_of :valor_segundo_paciente, :only => [:create, :update] , :message => "não é numérico"
   #   validates_numericality_of :valor_terceiro_paciente, :only => [:create, :update] , :message => "não é numérico"
   #   validates_numericality_of :valor_do_cheque, :only => [:create, :update] , :message => "não é numérico"
+  
+  def na_quinzena?
+    primeira = Date.new(Date.today.year,Date.today.month,1)
+    segunda  = Date.new(Date.today.year,Date.today.month,16)
+    return false if self.data < primeira
+    return false if self.data < segunda && Date.today >= segunda
+    return true if self.data < segunda && Date.today < segunda
+    return true if self.data >= segunda && Date.today >= segunda
+    return true
+  end
+  
+  def verifica_quinzena
+    errors.add(:data, "Fora da quinzena : anterior ao dia #{@data_inicial.to_s_br}") if !na_quinzena?
+  end
   
   def valor_real
     self.valor.real
@@ -122,7 +140,6 @@ class Recebimento < ActiveRecord::Base
       end
     end
     self.save
-    
   end
     
   def verifica_fluxo_de_caixa

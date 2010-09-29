@@ -18,7 +18,37 @@ class Orcamento < ActiveRecord::Base
   validates_numericality_of :valor, :message=>'Valor deve ser numérico .'
   validates_numericality_of :valor_da_parcela, :message=>'Valor deve ser numérico .'
   validates_presence_of :data, :valor_da_parcela
+  
+  attr_accessor :data_pt, :valor_pt, :valor_com_desconto_pt, :valor_da_parcela_pt
+  
+  def data_pt
+    data_pt = self.data.to_s_br if Date.valid?(self.data)
+  end
+  def data_pt=(new_date)
+    self.data = new_date.to_date if Date.valid?(new_date)
+  end
+  
+  def valor_pt
+    valor_pt = self.valor.real if self.valor
+  end
+  def valor_pt=(new_value)
+    self.valor = new_value.gsub('.', '').gsub(',', '.')
+  end
+  
+  def valor_com_desconto_pt
+    valor_com_desconto_pt = self.valor_com_desconto.real if self.valor_com_desconto
+  end
+  def valor_com_desconto_pt=(new_value)
+    self.valor_com_desconto = new_value.gsub('.', '').gsub(',', '.').to_f
+  end
 
+  def valor_da_parcela_pt
+    valor_da_parcela_pt = self.valor_da_parcela.real if self.valor_da_parcela
+  end
+  def valor_da_parcela_pt=(new_value)
+    self.valor_da_parcela = new_value.gsub('.', '').gsub(',', '.').to_f
+  end
+  
   def estado
     nao_feito = Tratamento.first(:conditions=>['orcamento_id = ? and data IS NULL', self.id])
     feito     = Tratamento.first(:conditions=>['orcamento_id = ? and data IS NOT NULL', self.id])
@@ -55,7 +85,7 @@ class Orcamento < ActiveRecord::Base
   end
 
   def self.monta_tabela_de_parcelas(numero_de_parcelas,data,valor)
-    result = "<div id='parcelas' style='padding-left: 14em; padding-top: 1em;'><table><tr><th>N. parcela</th><th>Data</th><th>Valor</th></tr>"
+    result = "<div id='parcelas'><table><tr><th>N. parcela</th><th>Data</th><th>Valor</th></tr>"
     (1..numero_de_parcelas).each do |parcela|
       result += "<tr><td align='center'>#{parcela}</td><td>#{data.to_s_br}</td><td>#{valor}</td></tr>"
       data   += 1.month

@@ -1,0 +1,27 @@
+-content_for :main do
+  %h3 Monitoramento de usuários
+  - form_tag monitoramento_users_path do
+    Clínica : 
+    = select_tag "clinica_monitor_id", options_for_select(@clinicas, params[:clinica_monitor_id]), :onChange=>"busca_usuarios();"
+    Usuário :
+    = select_tag "user_monitor_id", options_for_select(@users, params[:user_monitor_id])
+    %p
+    Entre :
+    = text_field_tag :datepicker, (Date.today - 1.day).to_s_br, :size=> 10
+    e :
+    = text_field_tag :datepicker2, (Date.today).to_s_br, :size=>10
+    = submit_tag 'pesquisar'
+  %p
+  %div  
+  %table
+    %tr
+      %th Data
+      %th Modelo
+      %th Ação
+      %th Descrição
+    -@audits.each do |audit|
+      %tr
+        %td= audit.created_at.to_s_br
+        %td= audit.auditable_type
+        %td= audit.action
+        %td= audit.changes.to_yaml

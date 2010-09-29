@@ -10,7 +10,7 @@ describe Pagamento do
   end
    
   it "deve ter dois custos" do
-    @adm.custos.should have(2).pagamentos
+    @adm.custos.should have(3).pagamentos
   end
   
   it "o total dos custos deve ser igual ao pagamento original" do
@@ -28,5 +28,9 @@ describe Pagamento do
     @adm.should be_pagamento_das_clinicas
   end
   
+  it "não deve poder alterar fora da quinzena" do
+    nao_pode_alterar = pagamentos(:nao_pode_alterar)
+    nao_pode_alterar.should_not be_pode_alterar
+  end
   
 end

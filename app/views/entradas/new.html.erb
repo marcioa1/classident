@@ -5,24 +5,24 @@
 
 <% form_for(@entrada) do |f| %>
   <%= f.error_messages %>
-  <%= text_field_tag :tipo, params[:tipo]%>
-  <p>
-    <%= f.label :data %><br />
-    <%= text_field_tag :datepicker, @entrada.data.to_s_br,  :size=>10 %>
-  </p>
-  <p>
-    <%= f.label :valor %><br />
-    <%= f.text_field :valor_br, :size=>10 %>
-  </p>
-  <p>
-    <%= f.label :observação %><br />
-    <%= f.text_field :observacao, :size=>20 %>
-  </p>
-  <p>
+  <%= hidden_field_tag :tipo, params[:tipo]%>
+  <div>
+    <%= f.label :data %> :
+    <%= text_field_tag :datepicker, @entrada.data.to_s_br,  :size=>10, :class=> 'txt' %>
+  </div>
+  <div>
+    <%= f.label :valor %> :
+    <%= f.text_field :valor_br, :size=>10, :class=> 'txt' %>
+  </div>
+  <div>
+    <%= f.label :observação %> :
+    <%= f.text_field :observacao, :size=>30, :class=> 'txt' %>
+  </div>
+  <div>
     <%= f.submit 'salvar' %>
-  </p>
+    <%= link_to 'voltar', entradas_path %>
+  </div>
 <% end %>
 
-<%= link_to 'voltar', entradas_path %>
 </fieldset>
 <% end %>

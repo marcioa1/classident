@@ -6,6 +6,9 @@ class RecebimentosController < ApplicationController
   before_filter :verifica_horario_de_trabalho
   before_filter :busca_bancos_e_forma_de_recebimento, :only=>[:new, :edit]
   before_filter :busca_recebimento, :only => [:show,  :update, :exclui, :destroy, :exclusao]
+  before_filter :salva_action_na_session
+  before_filter :verifica_se_tem_senha
+  
   
   def index
     @recebimentos = Recebimento.all(:limit=> 50,:order => 'created_at desc')
@@ -17,6 +20,7 @@ class RecebimentosController < ApplicationController
   def new
     @recebimento             = Recebimento.new
     @recebimento.cheque      = Cheque.new
+    @recebimento.formas_recebimento_id = FormasRecebimento.cheque_id
     @paciente                = Paciente.find(params[:paciente_id])
     @recebimento.paciente    = @paciente
     @recebimento.clinica_id  = @paciente.clinica_id
@@ -32,6 +36,7 @@ class RecebimentosController < ApplicationController
   end
 
   def create
+    #FIXME reescrever, método muito grande
     @recebimento      = Recebimento.new(params[:recebimento])
     if !na_quinzena?(@recebimento.data)
       @recebimento.errors.add(:data, " : não pode ser anterior à quinzena")
@@ -169,10 +174,9 @@ class RecebimentosController < ApplicationController
   
   def relatorio
     @formas_recebimento = FormasRecebimento.por_nome
-    #@tipos_recebimento  = FormasRecebimento.por_nome.collect{|obj| [obj.nome, obj.id]}
     if !params[:datepicker]
-      params[:datepicker2]  = Date.today.to_s_br
-      params[:datepicker] = (Date.today - 15.days).to_s_br
+      params[:datepicker2] = Date.today.to_s_br
+      params[:datepicker]  = (Date.today - 15.days).to_s_br
     end
     if Date.valid?(params[:datepicker]) && Date.valid?(params[:datepicker2])
       @data_inicial = params[:datepicker].to_date
@@ -300,5 +304,4 @@ class RecebimentosController < ApplicationController
     @recebimento = Recebimento.find(params[:id])
   end  
   
- 
 end

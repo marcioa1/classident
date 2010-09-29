@@ -14,8 +14,8 @@ class Paciente < ActiveRecord::Base
   
   validates_presence_of :nome, :on => :create, :message => "Campo nome é obrigatório" 
   validates_presence_of :tabela, :on => :create, :message => "Tabela obrigatória"  
-  validates_format_of :email, :with => /^(([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,}))?$/i, :only => [:create, :update], 
-                         :message => 'Formato de email inválido.'
+  # validates_format_of :email, :with => /^(([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,}))?$/i, :only => [:create, :update], 
+  #                        :message => 'Formato de email inválido.'
   validates_presence_of :inicio_tratamento, :only => [:create, :update], :message => "A data de início do tratamento é obrigatória."
   #validates_format_of :inicio_tratamento, :with => /^[\w\d]+$/, :on => :create, :message => "is invalid"
   
@@ -28,19 +28,33 @@ class Paciente < ActiveRecord::Base
   named_scope :por_nome, :order=>:nome
   
   
-  attr_accessor :inicio_tratamento_br
+  attr_accessor :inicio_tratamento_br, :data_suspensao_da_cobranca_de_orto_br,
+                :data_da_saida_da_lista_de_debitos_br
   
   def inicio_tratamento_br
     self.inicio_tratamento.nil? ? Date.today.to_s_br : self.inicio_tratamento.to_s_br
   end
   
   def inicio_tratamento_br=(value)
-    if Date.valid?(value)
-      self.inicio_tratamento = value.to_date
-    else
-      self.inicio_tratamento = nil
-    end
+    self.inicio_tratamento = value.to_date if Date.valid?(value)
   end
+  
+  def data_suspensao_da_cobranca_de_orto_br
+    self.data_suspensao_da_cobranca_de_orto_br = data_suspensao_da_cobranca_de_orto.to_s_br if data_suspensao_da_cobranca_de_orto_br
+  end
+  
+  def data_suspensao_da_cobranca_de_orto_br=(data)
+    self.data_suspensao_da_cobranca_de_orto = data_suspensao_da_cobranca_de_orto_br.to_date if Date.valid?(data_suspensao_da_cobranca_de_orto_br)
+  end
+  
+  def data_da_saida_da_lista_de_debitos_br
+    self.data_da_saida_da_lista_de_debitos.to_s_br if self.data_da_saida_da_lista_de_debitos
+  end
+  
+  def data_da_saida_da_lista_de_debitos_br=(data)
+    self.data_da_saida_da_lista_de_debitos = data_da_saida_da_lista_de_debitos_br.to_date if Date.valid?(data_da_saida_da_lista_de_debitos)
+  end
+  
   #validates_uniqueness_of :codigo
   
   def extrato
@@ -158,10 +172,14 @@ class Paciente < ActiveRecord::Base
   end
   
   def self.busca_paciente(id)
-    @paciente = Rails.cache.read(id)
-    if !@paciente
+    begin
+      @paciente = Rails.cache.read(id)
+      if !@paciente
+        @paciente = Paciente.find(id)
+        Rails.cache.write(@paciente.id.to_s, @paciente, :expires_in => 2.minutes) 
+      end
+    rescue
       @paciente = Paciente.find(id)
-      Rails.cache.write(@paciente.id.to_s, @paciente, :expires_in => 2.minutes) 
     end
     @paciente
   end

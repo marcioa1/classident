@@ -11,7 +11,6 @@ class Dentista < ActiveRecord::Base
   
   named_scope :ativos, :conditions=>["ativo=?", true]
   named_scope :inativos, :conditions=>["ativo=?", false]
-  named_scope :ortodontistas, :conditions=>["ortodontista=?", true]
   named_scope :por_nome, :order=>:nome
   named_scope :que_iniciam_com, lambda{|iniciais| {:conditions=>['nome like ?', iniciais + '%']}}
   
@@ -45,5 +44,16 @@ class Dentista < ActiveRecord::Base
   def busca_producao(inicio,fim,clinicas)
     resultado = Tratamento.do_dentista(id).por_data.entre(inicio, fim).da_clinica(clinicas)
   end
-  
+
+  def self.busca_dentistas(clinica_id)
+    key       = 'dentistas_' + clinica_id
+    dentistas = Rails.cache.read(key)
+    if !dentistas
+      clinica   = Clinica.find(clinica_id)
+      dentistas = clinica.dentistas.ativos.collect{|obj| [obj.nome,obj.id]}.sort
+      Rails.cache.write(key, dentistas, :expires_in => 2.hours) 
+    end
+    dentistas
+  end
+
 end

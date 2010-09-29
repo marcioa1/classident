@@ -1,0 +1,25 @@
+#lista
+  %table
+    %tr
+      %th{:width=>'105px;'}
+        Data
+      %th{:width=>'90px;'}
+        Valor
+      %th{:width=>'200px;'}
+        Observação
+        
+    - total = 0.0
+    -pagamentos.each do |pag|
+      %tr
+        %td=pag.data_de_pagamento.to_s_br
+        %td{:align=>'right'}=pag.valor_pago.real.to_s
+        %td=pag.observacao
+      -total += pag.valor_pago
+    %tr
+      %td{:align=>'center'}
+        Total
+      %td{:align=>'right'}
+        = total.real.to_s
+      %td
+        &nbsp;
+      

@@ -2,7 +2,7 @@ class ProteticosController < ApplicationController
   layout "adm"
   before_filter :require_user
   before_filter :busca_protetico, :only => [:edit, :abre, :show, :update, :destroy]
-  before_filter :quinze_dias, :only => [:pagamentos_feitos]
+  before_filter :quinzena, :only => [:pagamentos_feitos]
   
   def index
     params[:ativo] = 'true' if params[:ativo].nil?
@@ -79,11 +79,10 @@ class ProteticosController < ApplicationController
   
   def relatorio
     if params[:datepicker]
-      @inicio = params[:datepicker].to_date if Date.valid?(params[:datepicker])
-      @fim    = params[:datepicker2].to_date if Date.valid?(params[:datepicker2])
+      @data_inicial = params[:datepicker].to_date if Date.valid?(params[:datepicker])
+      @data_final   = params[:datepicker2].to_date if Date.valid?(params[:datepicker2])
     else
-      @inicio = Date.today
-      @fim    = Date.today
+      quinzena
     end
     @trabalhos_pendentes  = TrabalhoProtetico.pendentes.entre_datas(@inicio,@fim).da_clinica(session[:clinica_id])
     @trabalhos_devolvidos = TrabalhoProtetico.devolvidos.entre_datas(@inicio,@fim).da_clinica(session[:clinica_id])

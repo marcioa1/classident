@@ -20,7 +20,7 @@ class Converte
         registro = busca_registro(line)
         if clinica != registro.last
           clinica  = registro.last
-          @clinica = Clinica.find_by_sigla(clinica)
+          @clinica = Clinica.find_by_sigla(clinica, :select=>['id'])
           clinica_index = @clinica.id * 100000
         end
         p                       = Paciente.new
@@ -34,11 +34,11 @@ class Converte
           p.ortodontia          = false
         end
         p.sequencial            = registro[1].to_i
-        tabela                  = Tabela.find_by_sequencial_and_clinica_id(registro[2].to_i, @clinica.id)
-        if tabela.nil?
+        tabela_id               = @@tabelas[clinica_index + registro[2].to_i] #Tabela.find_by_sequencial_and_clinica_id(registro[2].to_i, @clinica.id)
+        if tabela_id.nil?
           p.tabela_id           = tabela_inexistente.id
         else
-          p.tabela_id           = tabela.id 
+          p.tabela_id           = tabela_id 
         end
         p.clinica_id            = @clinica.id unless @clinica.nil?
         p.cpf                   = registro[16]
@@ -83,8 +83,8 @@ class Converte
         else
           nome                  = registro[0].nome_proprio
         end
-        
-        p = Paciente.find_by_nome_and_clinica_id(nome, @clinica.id)
+        p = Paciente.find_by_nome_and_clinica_id(nome, @clinica.id, 
+                :select => 'id, logradouro, bairro, cidade, nascimento, uf, cep, telefone, email, inicio_tratamento')
         if !p.nil?
           p.logradouro   = registro[3]
           p.bairro       = registro[4]
@@ -93,7 +93,8 @@ class Converte
           p.uf           = registro[7]
           p.cep          = registro[8][0..7]
           p.telefone     = registro[9]
-          p.save
+          p.email        = registro[15]
+          p.save!
         end
       rescue Exception => ex
         @arquivo.puts line + "\n"+ "      ->" + ex
@@ -125,7 +126,7 @@ class Converte
         d.valor         = le_valor(registro[2])
         d.descricao     = registro[3]
         d.tratamento_id = registro[10].to_i
-        d.save
+        d.save!
       rescue Exception => ex
         @arquivo.puts line + "\n"+ "      ->" + ex
       end
@@ -219,7 +220,7 @@ class Converte
     puts "Convertendo tabelas ...."
     f = File.open("doc/convertidos/tabela_nova.txt" , "r")
     Tabela.delete_all
-    Tabela.create!(:nome => 'Inexistente', :ativa => false)
+    Tabela.create!(:nome => 'Inexistente', :clinica_id=>0, :ativa => false, :sequencial=>1)
     clinica = '' 
     # @ct     = 1
     while line = f.gets 
@@ -232,7 +233,7 @@ class Converte
         t              = Tabela.new
         t.sequencial   = registro[0].to_i
         t.nome         = registro[1].nome_proprio
-        t.ativa        = ['Verdadeiro', 'True'].include?(registro[5])
+        t.ativa        = ['Verdadeiro', 'True', 1].include?(registro[5])
         t.clinica_id   = @clinica.id
         t.save
       rescue Exception => ex
@@ -265,9 +266,9 @@ class Converte
           t.tabela_id  = tabela.id
           t.codigo     = registro[2]
           t.descricao  = registro[3]
+          t.preco      = le_valor(registro[4])
           t.save
-          valor        = le_valor(registro[4])
-          Preco.create(:item_tabela_id=> t.id, :clinica_id=>@clinica.id, :preco=> valor)
+          # Preco.create(:item_tabela_id=> t.id, :clinica_id=>@clinica.id, :preco=> valor)
         end
       rescue Exception => ex
         @arquivo.puts line + "\n"+ "      ->" + ex
@@ -316,10 +317,12 @@ class Converte
           t.face           = registro[4]
           t.descricao      = registro[5]
           if registro[8].to_i > 0
-            orcamento        = Orcamento.find_by_numero_and_paciente_id_and_clinica_id(registro[8].to_i, paciente, @clinica.id)
+            orcamento      = Orcamento.find_by_numero_and_paciente_id_and_clinica_id(registro[8].to_i, paciente, @clinica.id,
+               :select=>'data_de_inicio')
             if orcamento && orcamento.em_aberto? && t.data.present?
-              orcamento.data_de_inicio = t.data
-              orcamento.save
+              orcamento.update_attribute(:data_de_inicio , t.data)
+              # orcamento.data_de_inicio = t.data
+              # orcamento.save
             end
             t.orcamento_id   = orcamento.id if orcamento.present?
           end
@@ -413,7 +416,7 @@ class Converte
         end
         t                   = Pagamento.new
         t.clinica_id        = @clinica.id
-        tipo_pagamento      = TipoPagamento.find_by_seq_and_clinica_id(registro[1].to_i,@clinica.id)
+        tipo_pagamento      = TipoPagamento.find_by_seq_and_clinica_id(registro[1].to_i,@clinica.id, :select=>['id'])
         t.tipo_pagamento_id = tipo_pagamento.id if tipo_pagamento
         t.data_de_pagamento = registro[3].to_date if Date.valid?(registro[3])
         t.sequencial        = registro[6].to_i
@@ -508,7 +511,8 @@ class Converte
             t.data_destinacao = registro[10].to_date if Date.valid?(registro[10])
           end
         end
-        pagamento             = Pagamento.find_by_sequencial_and_clinica_id(registro[11].to_i, @clinica.id)
+        pagamento             = Pagamento.find_by_sequencial_and_clinica_id(registro[11].to_i, @clinica.id,
+            :select=>'id')
         t.pagamento_id        = pagamento.id if pagamento.present?
         if ['Verdadeiro', 'True', '1'].include?(registro[12])
           if Date.valid?(registro[13])
@@ -540,16 +544,18 @@ class Converte
         t.data_de_exclusao          = registro[28] if Date.valid?(registro[28])
         t.data_arquivo_morto        = registro[29].to_date if Date.valid?(registro[29])
         t.save
-        recebimento                 = Recebimento.find_by_sequencial_and_clinica_id(registro[27].to_i, @clinica.id)
-        if recebimento
-          recebimento.update_attribute(:cheque_id , t.id)
-        end
+        recebimento                 = Recebimento.find_by_sequencial_and_clinica_id(registro[27].to_i, @clinica.id,
+                                      :select=>'id,cheque_id')
+        recebimento.update_attribute(:cheque_id , t.id) if recebimento
         if paciente2
-          recebimentos = Recebimento.find_all_by_clinica_id_and_cheque_id(@clinica.id, t.id)
-          recebimentos.each do |rec|
-            rec.update_attribute(:cheque_id,  t.id)
-            # rec.observacao = t.banco.nome + " - " + t.numero if !recebimento.observacao.present?
-          end
+          recebimento = Recebimento.find_by_sequencial_and_clinica_id(paciente2.to_i, @clinica.id,           
+                        :select=>'id,cheque_id')
+          recebimento.update_attribute(:cheque_id,  t.id) if recebimento
+        end
+        if paciente3
+          recebimento = Recebimento.find_by_sequencial_and_clinica_id(paciente3.to_i, @clinica.id,           
+                        :select=>'id,cheque_id')
+          recebimento.update_attribute(:cheque_id,  t.id) if recebimento
         end
       rescue Exception => ex
         @arquivo.puts line + "\n"+ "      ->" + ex
@@ -895,7 +901,7 @@ class Converte
   end
   
   def adm_tipo_pagamento
-    abre_arquivo_de_erros('Tipo de Pagamentona Administação')
+    abre_arquivo_de_erros('Tipo de Pagamento na Administração')
     puts "Convertendo tipos de pagamentos na administração ...."
     f        = File.open("doc/convertidos/adm_tipo_pagamento.txt" , "r")
     @clinica = Clinica.administracao.first
@@ -906,7 +912,7 @@ class Converte
         t            = TipoPagamento.new
         t.seq        = registro[0].to_i
         t.nome       = registro[1].nome_proprio
-        t.ativo      = ['Verdadeiro','True', '1'].include?(registro[2].at(0)) 
+        t.ativo      = ['Verdadeiro','True', '1'].include?(registro[2]) 
         t.clinica_id = @clinica.id
         t.save
       rescue Exception => ex
@@ -941,11 +947,9 @@ class Converte
   end
   
   def inicia_arquivos_na_memoria
-    # @@pacientes = Paciente.all(:select=> ['id, sequencial, clinica_id'])
-    # @@dentistas = Dentista.all(:select=> ['id, sequencial, clinica_id'])
-   
     inicia_pacientes_em_memoria
     inicia_dentistas_em_memoria
+    inicia_tabelas_em_memoria
   end
 
   def inicia_pacientes_em_memoria
@@ -961,6 +965,13 @@ class Converte
       @@dentistas[de.clinica_id * 100000 + de.sequencial] = de.id
     end
   end 
+  
+  def inicia_tabelas_em_memoria
+    @@tabelas = Array.new
+    Tabela.all(:select=>['id,sequencial,clinica_id']).each do |t|
+      @@tabelas[t.clinica_id * 100000 + t.sequencial] = t.id
+    end
+  end
   
   
   private

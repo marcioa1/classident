@@ -1,10 +1,7 @@
 module PacientesHelper
   
   def nome_paciente(paciente)
-    result = "<div class= 'destaque'>Paciente : #{paciente.nome} "
-    result += " ( Tabela: #{paciente.tabela.nome}) " if paciente.tabela
-    result += "</div>"
-    result
+     "<p class='identifica_paciente'>Ficha do paciente (#{paciente.sequencial}) : <b><a href='/pacientes/#{paciente.id}/abre'>#{paciente.nome}</a></b> &nbsp;&nbsp;&nbsp;&nbsp; ( Tel.: #{paciente.telefones} )</p> "     if paciente
   end
   
 end

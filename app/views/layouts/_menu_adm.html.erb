@@ -1,6 +1,7 @@
 <ul>
   <li><a href= "#">Cadastro</a>
     <ul>
+      <li><%= link_to "Dentistas", dentistas_path %></li>
       <li><%= link_to "Usuários", users_path %></li>
       <li><%= link_to "Descrição das condutas", descricao_condutas_path %></li>
       <li><%= link_to "Tabela de protético", tabela_proteticos_path %></li>
@@ -20,7 +21,8 @@
       <li><%= link_to "Trabalhos de protéticos entregues e não pagos", trabalhos_por_clinica_proteticos_path %></li>
       <li><%= link_to "Pagamentos feitos aos protéticos", pagamentos_feitos_proteticos_path %></li>
       <li><%= link_to "Resumo anual - falta", "#" %></li>
-      <li><%= link_to "Controle de exclusões - falta", "#" %></li>
+      <li><%= link_to "Controle de exclusões", relatorio_de_exclusao_clinicas_path %></li>
+      <li><%= link_to "Monitoramento de usuários", monitoramento_users_path %></li>
     </ul>
   </li>
   <li><a href="#">Financeiro</a>

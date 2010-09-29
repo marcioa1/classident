@@ -7,10 +7,9 @@
 <table>
   <tr>
     <th width="100px">Código</th>
-    <th width="220px">Descrição</th>
+    <th width="290px">Descrição</th>
     <th width='60px'>Preço</th>
     <th>Ativo</th>
-    <th>&nbsp;</th>
     <th>&nbsp;</th>
   </tr>
 
@@ -18,9 +17,9 @@
   <tr>
     <td><%=h item_tabela.codigo %></td>
     <td><%= link_to item_tabela.descricao, edit_item_tabela_path(item_tabela) %></td>
-    <td align='right'><%=h item_tabela.preco_na_clinica().real %></td>
+    <td align='right'><%=h item_tabela.preco.real %></td>
     <td><%=h item_tabela.ativo ? "sim" : "não" %></td>
-    <td><%= link_to 'Excluir', item_tabela, :confirm => 'Tem certeza?', :method => :delete  %></td>
+    <td><%= link_to 'Excluir', item_tabela, :confirm => 'Tem certeza?', :method => :delete, :class => 'ui-icon ui-icon-trash', :title=>'Excluir'  %></td>
     
   </tr>
 <% end %>

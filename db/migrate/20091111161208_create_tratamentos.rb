@@ -1,18 +1,16 @@
 class CreateTratamentos < ActiveRecord::Migration
   def self.up
     create_table :tratamentos do |t|
-      t.integer :paciente_id
-      t.integer :item_tabela_id
-      t.integer :dentista_id
-      t.decimal :valor, :precision=>9, :scale=>2
-      t.date :data
-      t.string :dente
-      t.integer :orcamento_id
+      t.references   :paciente
+      t.references   :item_tabela
+      t.references   :dentista
+      t.decimal      :valor, :precision=>9, :scale=>2
+      t.date         :data
+      t.string       :dente, :limit => 6
+      t.references   :orcamento
 
       t.timestamps
     end
-    add_index :tratamentos, "id"
-    add_index :tratamentos, "paciente_id"
   end
 
   def self.down

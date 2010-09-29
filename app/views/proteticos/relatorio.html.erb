@@ -2,8 +2,8 @@
 <h3>Relatório de protético</h3>
 <p>
 <% form_tag relatorio_proteticos_path do %>
-  Entre : <%= text_field_tag :datepicker, @inicio.to_s_br, :size=>10 %>
-   e : <%= text_field_tag :datepicker2, @fim.to_s_br, :size=>10 %>
+  Entre : <%= text_field_tag :datepicker, @data_inicial.to_s_br, :size=>10 %>
+   e : <%= text_field_tag :datepicker2, @data_final.to_s_br, :size=>10 %>
    &nbsp;&nbsp;Protético : <%= select_tag "protetico", options_for_select(@proteticos, params[:protetico]), :include_blank=>true %>
   &nbsp;&nbsp;<%= submit_tag "pesquisar" %>
 <% end %>

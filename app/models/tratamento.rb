@@ -25,20 +25,42 @@ class Tratamento < ActiveRecord::Base
   
   validates_presence_of :descricao, :message => "não pode ser vazio."
   validates_presence_of :dentista,  :message => "não pode ser vazio."
-  validates_presence_of :dente,     :message => "can't be blank"
+  validate :data_nao_pode_ser_futura
   
-  attr_accessor :data_termino_br
+  attr_accessor :data_termino_br, :valor_pt, :custo_pt
+  
+  def valor_pt
+    self.valor.real rescue "0,00"
+  end
+  def valor_pt=(new_value)
+    self.valor = new_value.gsub(".","").gsub(",",".").to_f rescue 0.0
+  end
+  
+  def custo_pt
+    self.custo.real rescue "0,00"
+  end
+  def custo_pt=(new_value)
+    self.custo = new_value.gsub(".","").gsub(",",".").to_f rescue 0.0
+  end
+  
   
   def data_termino_br
-    self.data ? self.data.to_s_br : '' 
+    self.data ? self.data.to_s_br : nil 
   end
   
   def data_termino_br=(value)
     if Date.valid?(value)
       self.data = value.to_date
+    else
+      self.data = nil
     end
   end
   
+  def data_nao_pode_ser_futura
+    if self.data_termino_br && self.data_termino_br.to_date > Date.today
+      errors.add(:data_de_termino, " não pode ser futura")
+    end
+  end
   def self.valor_a_fazer(paciente_id)
     Tratamento.sum(:valor, :conditions=>["paciente_id = ? and data IS NULL and excluido  = ? and orcamento_id IS NULL", paciente_id, false])
   end
@@ -66,6 +88,10 @@ class Tratamento < ActiveRecord::Base
     (self.valor - self.custo) * (100 - dentista.percentual) / 100 
   end
   
+  def pode_excluir?
+    pode_alterar? && self.data.nil?
+  end
+  
   def pode_alterar?
     na_quinzena?
   end
@@ -84,16 +110,16 @@ class Tratamento < ActiveRecord::Base
   end
   
   def finalizar_procedimento(user)
-    if self.orcamento.nil?
-      debito = Debito.new
-      debito.paciente_id = paciente_id
-      debito.tratamento_id = id
-      debito.descricao = item_tabela.descricao
-      debito.valor = valor
-      debito.data = data
+    if self.orcamento.nil? && self.valor > 0
+      debito               = Debito.new
+      debito.paciente_id   = self.paciente_id
+      debito.tratamento_id = self.id
+      debito.descricao     = self.descricao + " (dente :" + self.dente + ")"
+      debito.valor         = self.valor
+      debito.data          = self.data
       debito.save
     else
-      if self.orcamento.em_aberto?
+      if self.orcamento && self.orcamento.em_aberto?
         self.orcamento.data_de_inicio = self.data
         Debito.cria_debitos_do_orcamento(@orcamento.id) unless @orcamento.data_de_inicio.nil?
       end

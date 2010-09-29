@@ -6,8 +6,8 @@ class AddSequencialToPagamento < ActiveRecord::Migration
     add_column :pagamentos, :valor_restante, :decimal, :precision=>9, :scale=>2
     add_column :pagamentos, :opcao_restante, :integer
     add_column :pagamentos, :conta_bancaria_id, :integer
-    add_column :pagamentos, :numero_do_cheque, :string
-    add_index :pagamentos, :sequencial
+    add_column :pagamentos, :numero_do_cheque, :string, :limit=>20
+    add_index  :pagamentos, :sequencial
   end
 
   def self.down

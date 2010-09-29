@@ -1,7 +1,7 @@
 class TratamentosController < ApplicationController
   layout "adm"
   before_filter :require_user
-  before_filter :busca_registro, :only => [:finalizar_procedimento, :update, :edit]
+  before_filter :busca_registro, :only => [:finalizar_procedimento, :update, :edit, :destroy]
   before_filter :converte_valor_lido, :only => [:create, :update]
   
   def new
@@ -10,53 +10,40 @@ class TratamentosController < ApplicationController
     @tratamento.paciente_id = @paciente.id
     @items                  = @paciente.tabela.item_tabelas.
         collect{|obj| [obj.codigo + " - " + obj.descricao,obj.id]}.insert(0,"")
-    @dentistas              = @clinica_atual.dentistas.ativos.collect{|obj| [obj.nome,obj.id]}.sort
+    # @dentistas              = @clinica_atual.dentistas.ativos.collect{|obj| [obj.nome,obj.id]}.sort
+    @dentistas = Dentista.busca_dentistas(session[:clinica_id])
   end
   
   def create
-    erro = false
-    if Date.valid?(params[:tratamento][:data_termino_br])
-      data = params[:tratamento][:data_termino_br].to_date
-      if data > Date.today
-        @tratamento = Tratamento.new
-        @tratamento.errors.add(:data_termino_br, "Não pode ser data futura.")
+    @tratamento = Tratamento.new(params[:tratamento])
+    dentes = params[:tratamento][:dente].nil? ? [' '] : params[:tratamento][:dente].split(',') 
+    erro   = false
+    dentes.each do |dente|
+      @tratamento             = Tratamento.new(params[:tratamento])
+      @tratamento.paciente_id = session[:paciente_id]
+      @tratamento.dente       = dente
+      @tratamento.clinica_id  = session[:clinica_id]
+      @tratamento.excluido    = false
+      if @tratamento.save 
+        @tratamento.finalizar_procedimento(current_user) if @tratamento.data
+      else
         erro = true
       end
     end
-    if !erro    
-      dentes = params[:dentes].split(',')
-      dentes.each do |dente|
-        @tratamento             = Tratamento.new(params[:tratamento])
-        @tratamento.paciente_id = session[:paciente_id]
-        @tratamento.dente       = dente
-        @tratamento.clinica_id  = session[:clinica_id]
-        @tratamento.excluido    = false
-        @tratamento.data        = params[:tratamento][:data_termino_br].to_date 
-        if @tratamento.save 
-          if !@tratamento.data.nil?
-            @tratamento.finalizar_procedimento(current_user)
-          end
-          erro = false
-        else
-          erro = true
-        end
-      end
-    end
     if erro
-      @paciente = Paciente.find(session[:paciente_id])
-      # @tratamento             = Tratamento.new
-      # @tratamento.paciente_id = @paciente.id
-      @items                  = @paciente.tabela.item_tabelas.
+      @paciente   = Paciente.find(session[:paciente_id])
+      @items      = @paciente.tabela.item_tabelas.
           collect{|obj| [obj.codigo + " - " + obj.descricao,obj.id]}.insert(0,"")
-      @dentistas              = @clinica_atual.dentistas.ativos.collect{|obj| [obj.nome,obj.id]}.sort
-      
-      render :action => "new" 
+      @dentistas  = @clinica_atual.dentistas.ativos.collect{|obj| [obj.nome,obj.id]}.sort
+
+      render :action => "new"
     else
       redirect_to(abre_paciente_path(:id=>session[:paciente_id])) 
     end
   end
   
-  def edit  
+  def edit      
+    @paciente               = @tratamento.paciente
     @items = @tratamento.paciente.tabela.item_tabelas.
         collect{|obj| [obj.codigo + " - " + obj.descricao,obj.id]}
     @dentistas = @clinica_atual.dentistas.ativos.collect{|obj| [obj.nome,obj.id]}
@@ -66,16 +53,16 @@ class TratamentosController < ApplicationController
     @tratamento.data   = params[:data_de_termino].to_date if Date.valid?(params[:data_de_termino])
     if @tratamento.update_attributes(params[:tratamento])
       if !@tratamento.data.nil?
-        @tratamento.paciente.verifica_alta_automatica
+        @tratamento.paciente.verifica_alta_automatica(current_user, session[:clinica_id])
         @debito = Debito.find_by_tratamento_id(@tratamento.id)
         if @debito.nil? && @tratamento.orcamento.nil?
           @debito = Debito.new
           @debito.paciente_id = @tratamento.paciente_id
           @debito.tratamento_id = @tratamento.id
         end
-        @debito.descricao = @tratamento.item_tabela.descricao
-        @debito.valor = @tratamento.valor
-        @debito.data = @tratamento.data
+        @debito.descricao = @tratamento.descricao
+        @debito.valor     = @tratamento.valor
+        @debito.data      = @tratamento.data
         @debito.save
       end
       redirect_to(abre_paciente_path(:id=>@tratamento.paciente_id)) 
@@ -84,14 +71,21 @@ class TratamentosController < ApplicationController
     end
   end
   
+  def destroy
+    paciente  = @tratamento.paciente
+    redirect_to(abre_paciente_path(paciente) )
+  end
+  
   def finalizar_procedimento
     begin
       @tratamento.data = Date.today
+      @paciente        = @tratamento.paciente
       @tratamento.finalizar_procedimento(current_user)
-      @tratamento.save
+      @tratamento.save!
       @tratamento.paciente.verifica_alta_automatica(current_user, session[:clinica_id])
-      head :ok
-    rescue
+      Rails.cache.write(@paciente.id.to_s, @paciente, :expires_in => 2.minutes) 
+      render :partial => 'pacientes/extrato', :locals => {:paciente => @paciente}
+    rescue  Exception => ex
       head :bad_request
     end
   end
@@ -101,8 +95,8 @@ class TratamentosController < ApplicationController
   end
   
   def converte_valor_lido
-    params[:tratamento][:valor] = params[:tratamento][:valor].gsub(',', '.')
-    params[:tratamento][:custo] = params[:tratamento][:custo].gsub(',', '.')
+    # params[:tratamento][:valor] = params[:tratamento][:valor].gsub(',', '.')
+    # params[:tratamento][:custo] = params[:tratamento][:custo].gsub(',', '.')
   end
   
 end

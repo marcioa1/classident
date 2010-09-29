@@ -24,4 +24,48 @@ class TrabalhoProtetico < ActiveRecord::Base
   def data_de_devolucao_final
     self.data_de_devolucao_da_repeticao.nil? ? self.data_de_devolucao : self.data_de_devolucao_da_repeticao
   end
+  
+  attr_accessor :data_envio_pt, :data_prevista_de_devolucao_pt, 
+                :data_de_devolucao_pt, :data_de_repeticao_pt, 
+                :data_prevista_da_devolucao_da_repeticao_pt
+  
+  def data_envio_pt
+    self.data_de_envio.nil? ? Date.today.to_s_br : self.data_de_envio.to_s_br
+  end
+
+  def data_envio_pt=(data)
+    self.data_de_envio = data_envio_pt.to_date if Date.valid?(data)
+  end
+  
+  def data_prevista_de_devolucao_pt
+    self.data_prevista_de_devolucao.nil? ? (Date.today + 5.days).to_s_br : self.data_prevista_de_devolucao
+  end
+
+  def data_prevista_de_devolucao_pt=(data)
+    self.data_prevista_de_devolucao = data.to_date if Date.valid?(data)
+  end  
+
+  def data_de_devolucao_pt
+    data_de_devolcao_pt = self.data_de_devolucao.to_s_br if self.data_de_devolucao
+  end
+
+  def data_de_devolucao_pt=(data)
+    self.data_de_devolucao = data_de_devolucao_pt.to_date if Date.valid?(data)
+  end
+
+  def data_de_repeticao_pt
+    data_de_repeticao_pt = self.data_de_repeticao
+  end
+  
+  def data_de_repeticao_pt=(data)
+    self.data_de_repeticao = data_de_repeticao_pt if Date.valid?(data_de_repeticao_pt)
+  end
+  
+  def data_prevista_da_devolucao_da_repeticao_pt
+    data_prevista_da_devolucao_da_repeticao_pt = self.data_prevista_da_devolucao_da_repeticao 
+  end
+  
+  def data_prevista_da_devolucao_da_repeticao_pt=(data)
+    self.data_prevista_da_devolucao_da_repeticao = data_prevista_da_devolucao_da_repeticao_pt.to_date if Date.valid?(data_prevista_da_devolucao_da_repeticao_pt)
+  end
 end

@@ -101,7 +101,7 @@ box.height=e.outerHeight();box.width=e.outerWidth();return box;},pageBox:functio
 var c='client'+side;return Math.max(doc.documentElement[c],doc.body[c]);}},off:function(old,l){this.data('loading',null);if(old.maxout)clearTimeout(old.maxout);if(old.timeout)return clearTimeout(old.timeout);if(old.pulse)old.stopPulse.call(this,old,l);if(old.originalText)old.text=old.originalText;if(old.mask)old.stopMask.call(this,old,l);$(window).unbind(old.resizeEvents,old.resizer);if(old.display)old.display.remove();if(old.parent)old.parent.trigger('loadingEnd',[old]);},stopPulse:function(old,l){$.each(old.pulse.split(' '),function(){var p=old[this];if(p.end)p.end.call(l.display,old,l);if(p.interval)clearInterval(p.interval);if(p.timeout)clearTimeout(p.timeout);});},stopMask:function(old,l){this.removeClass(l.maskedClass);$(document).unbind(old.maskEvents,old.handler);old.mask.remove();}});function toOpts(s,l){if(l===undefined){l=(typeof s=="boolean")?{show:s}:s;}else{l.show=s;}
 if(l&&(l.img||l.element)&&!l.pulse)l.pulse=false;if(l&&l.onAjax!==undefined&&l.show===undefined)l.show=false;return l;}
 function css(el,prop){var val=el.css(prop);return val=='auto'?0:parseFloat(val,10);}})(jQuery);jQuery(function(){$('input[type="text"].first').focus();$("#tabs").tabs();$("#datepicker").datepicker();$("#datepicker2").datepicker();$("#datepicker3").datepicker();$("#datepicker4").datepicker();$("#datepicker5").datepicker();$("#datepicker6").datepicker();$(".datepicker").datepicker();});function outra_clinica(){$("#seleciona_clinica").show();};function conta_caracteres(){if($("#nome").val().length>2){$("#pesquisar_button").attr('disabled',false);}else{$("#pesquisar_button").attr('disabled',true);}}
-function selecionou_item_tabela(clinica_id){$.getJSON('/item_tabelas/busca_descricao',{'id':$("#tratamento_item_tabela_id").selectedValues()[0]},function(data){resultado=data.split(";");$("#tratamento_descricao").val(resultado[0]);$("#tratamento_valor").val(resultado[1]);});}
+function selecionou_item_tabela(item_id){$.getJSON('/item_tabelas/busca_descricao',{'id':item_id},function(data){resultado=data.split(";");$("#tratamento_descricao").val(resultado[0]);$("#iniciais").val(resultado[0]);$("#tratamento_valor_pt").val(resultado[1]);$("#tratamento_dentista_id").focus();});}
 function coloca_data_de_hoje(dia,mes,ano){$("#tratamento_data_3i").selectOptions(dia+"");$("#tratamento_data_2i").selectOptions(mes+"");$("#tratamento_data_1i").selectOptions(ano+"");}
 function selecionou_forma(element){if($("#"+element).selectedOptions().text().toLowerCase()=="cheque"){$("#cheque").show();}else{$("#cheque").hide();}}
 function alterou_data_tratamento(){data=$("#datepicker").datepicker('getDate');if(data==null){$("#tratamento_data_3i").selectOptions("");$("#tratamento_data_2i").selectOptions("");$("#tratamento_data_1i").selectOptions("");}else{dia=data.getDate();mes=data.getMonth()+1;ano=data.getFullYear();$("#tratamento_data_3i").selectOptions(dia+"");$("#tratamento_data_2i").selectOptions(mes+"");$("#tratamento_data_1i").selectOptions(ano+"");}}
@@ -153,13 +153,123 @@ function busca_pacientes_que_iniciam_com(text_field){$("#linha_"+text_field).sho
 function escolheu_nome_da_lista(nome,div,id){$("#"+div).val(nome);$("#id_"+div).val(id);$("#linha_"+div).hide();}
 function selecionou_face(){$('#tratamento_estado_nenhum').attr('checked',true);}
 function todas_as_faces(){selecionou_face();$(':checkbox').attr('checked',$('#todas').is(':checked'));}
-function selecionou_tratamento(){var todos=$(":checked");var total=0.0;for(i=0;i<todos.length;i++){total=total+parseFloat(todos[i].value);}
-$('#orcamento_valor').val(total);}
-function calcula_valor_orcamento(){total=parseFloat($('#orcamento_valor').val());desconto=parseFloat($('#orcamento_desconto').val());$('#orcamento_valor_com_desconto').val(total-(total*desconto/100));calcula_valor_da_parcela();}
-function calcula_valor_da_parcela(){valor_com_desconto=$('#orcamento_valor_com_desconto').val().replace(',','.');valor=parseFloat(valor_com_desconto);numero=$('#orcamento_numero_de_parcelas').val();$('#orcamento_valor_da_parcela').val(parseInt((valor/numero)*100));formata_valor($('#orcamento_valor_da_parcela'));$.getJSON('monta_tabela_de_parcelas?numero_de_parcelas='+numero+'&valor_da_parcela='+valor+'&data_primeira_parcela='+$('#orcamento_vencimento_primeira_parcela').val(),function(data){$('#parcelas').replaceWith(data);});}
+function selecionou_tratamento(){var todos=$("td :checked");var total=0.0;ids_selecionados='';for(i=0;i<todos.length-1;i++){total=total+parseFloat(todos[i].value);ids_selecionados+=todos[i].id+',';}
+$("#tratamento_ids").val(ids_selecionados);$('#orcamento_valor_pt').val(total*100);formata_valor($('#orcamento_valor_pt'));}
+function calcula_valor_orcamento(){total=parseFloat($('#orcamento_valor_pt').val());desconto=parseFloat($('#orcamento_desconto').val());valor_do_desconto=(total-(total*desconto/100))*100;$('#orcamento_valor_com_desconto_pt').val(valor_do_desconto);formata_valor($('#orcamento_valor_com_desconto_pt'));calcula_valor_da_parcela();}
+function calcula_valor_da_parcela(){valor_com_desconto=$('#orcamento_valor_com_desconto_pt').val().replace(',','.');valor=parseFloat(valor_com_desconto);numero=$('#orcamento_numero_de_parcelas').val();valor_da_parcela=parseInt((valor/numero)*100)/100;$('#orcamento_valor_da_parcela_pt').val(valor_da_parcela*100);formata_valor($('#orcamento_valor_da_parcela_pt'));$.ajax({url:'/orcamentos/monta_tabela_de_parcelas',type:'GET',data:{numero_de_parcelas:numero,valor_da_parcela:valor,data_primeira_parcela:$('#orcamento_vencimento_primeira_parcela').val()},success:function(data){$('#parcelas').replaceWith(data);}});}
 function definir_valor(){if($('#acima_de_um_valor').is(':checked')){$('#valor').focus();}else{$('#valor').val('');}}
 function orcamento_dentista(){var clinicas=$("#fragment-4 input:checkbox");var selecionadas='';for(var i=0;i<clinicas.length;i++){if($("#"+clinicas[i].id).is(':checked')){selecionadas+=$("#"+clinicas[i].id).val()+",";}}
 url="orcamentos?inicio='"+$("#datepicker5").val()+"'&fim='"+$("#datepicker6").val()+"'&clinicas="+selecionadas;$.getJSON(url,function(data){$("#lista_orcamento").replaceWith(data);});}
 function finalizar_tratamento(tratamento_id){$.ajax({url:'/tratamentos/'+tratamento_id+'/finalizar_procedimento',success:function(){window.location.reload();}});}
 function busca_id(numero){$.ajax({url:"/pacientes/busca_id_do_paciente",type:'GET',data:{nome:$('#paciente_'+numero).val()},success:function(data){$('#paciente_id_'+numero).val(data);}});}
-function valida_senha(){var senha_digitada=$('#senha').val();var controller=$('#controller').html();var action=$('#action').html();$.ajax({url:"/valida_senha",type:'GET',data:{controller_name:controller,action_name:action,senha_digitada:senha_digitada},success:function(data){if(data==true){$("#corpo").toggle('slow');$("#corpo_senha").hide();}else{alert("senha inválida.");}}});}
+function valida_senha(){var senha_digitada=$('#nova_senha').val();var controller=$('#controller').html();var action=$('#action').html();$.ajax({url:"/valida_senha",type:'GET',data:{controller_name:controller,action_name:action,senha_digitada:senha_digitada},success:function(data){if(data==true){$("#corpo").toggle('slow');$("#corpo_senha").hide();}else{alert("senha inválida.");}}});}
+function busca_usuarios(){$.ajax({url:"/clinicas/usuarios_da_clinica",type:'GET',data:{clinica_id:$("#clinica_monitor_id").val()},success:function(data){$("#user_monitor_id").html("");for(var i=0;i<data.length;i++){$("#user_monitor_id").append(new Option(data[i][1],data[i][0]));}}});}
+(function($){$.extend({tablesorter:new function(){var parsers=[],widgets=[];this.defaults={cssHeader:"header",cssAsc:"headerSortUp",cssDesc:"headerSortDown",sortInitialOrder:"asc",sortMultiSortKey:"shiftKey",sortForce:null,sortAppend:null,textExtraction:"simple",parsers:{},widgets:[],widgetZebra:{css:["even","odd"]},headers:{},widthFixed:false,cancelSelection:true,sortList:[],headerList:[],dateFormat:"us",decimal:'.',debug:false};function benchmark(s,d){log(s+","+(new Date().getTime()-d.getTime())+"ms");}this.benchmark=benchmark;function log(s){if(typeof console!="undefined"&&typeof console.debug!="undefined"){console.log(s);}else{alert(s);}}function buildParserCache(table,$headers){if(table.config.debug){var parsersDebug="";}var rows=table.tBodies[0].rows;if(table.tBodies[0].rows[0]){var list=[],cells=rows[0].cells,l=cells.length;for(var i=0;i<l;i++){var p=false;if($.metadata&&($($headers[i]).metadata()&&$($headers[i]).metadata().sorter)){p=getParserById($($headers[i]).metadata().sorter);}else if((table.config.headers[i]&&table.config.headers[i].sorter)){p=getParserById(table.config.headers[i].sorter);}if(!p){p=detectParserForColumn(table,cells[i]);}if(table.config.debug){parsersDebug+="column:"+i+" parser:"+p.id+"\n";}list.push(p);}}if(table.config.debug){log(parsersDebug);}return list;};function detectParserForColumn(table,node){var l=parsers.length;for(var i=1;i<l;i++){if(parsers[i].is($.trim(getElementText(table.config,node)),table,node)){return parsers[i];}}return parsers[0];}function getParserById(name){var l=parsers.length;for(var i=0;i<l;i++){if(parsers[i].id.toLowerCase()==name.toLowerCase()){return parsers[i];}}return false;}function buildCache(table){if(table.config.debug){var cacheTime=new Date();}var totalRows=(table.tBodies[0]&&table.tBodies[0].rows.length)||0,totalCells=(table.tBodies[0].rows[0]&&table.tBodies[0].rows[0].cells.length)||0,parsers=table.config.parsers,cache={row:[],normalized:[]};for(var i=0;i<totalRows;++i){var c=table.tBodies[0].rows[i],cols=[];cache.row.push($(c));for(var j=0;j<totalCells;++j){cols.push(parsers[j].format(getElementText(table.config,c.cells[j]),table,c.cells[j]));}cols.push(i);cache.normalized.push(cols);cols=null;};if(table.config.debug){benchmark("Building cache for "+totalRows+" rows:",cacheTime);}return cache;};function getElementText(config,node){if(!node)return"";var t="";if(config.textExtraction=="simple"){if(node.childNodes[0]&&node.childNodes[0].hasChildNodes()){t=node.childNodes[0].innerHTML;}else{t=node.innerHTML;}}else{if(typeof(config.textExtraction)=="function"){t=config.textExtraction(node);}else{t=$(node).text();}}return t;}function appendToTable(table,cache){if(table.config.debug){var appendTime=new Date()}var c=cache,r=c.row,n=c.normalized,totalRows=n.length,checkCell=(n[0].length-1),tableBody=$(table.tBodies[0]),rows=[];for(var i=0;i<totalRows;i++){rows.push(r[n[i][checkCell]]);if(!table.config.appender){var o=r[n[i][checkCell]];var l=o.length;for(var j=0;j<l;j++){tableBody[0].appendChild(o[j]);}}}if(table.config.appender){table.config.appender(table,rows);}rows=null;if(table.config.debug){benchmark("Rebuilt table:",appendTime);}applyWidget(table);setTimeout(function(){$(table).trigger("sortEnd");},0);};function buildHeaders(table){if(table.config.debug){var time=new Date();}var meta=($.metadata)?true:false,tableHeadersRows=[];for(var i=0;i<table.tHead.rows.length;i++){tableHeadersRows[i]=0;};$tableHeaders=$("thead th",table);$tableHeaders.each(function(index){this.count=0;this.column=index;this.order=formatSortingOrder(table.config.sortInitialOrder);if(checkHeaderMetadata(this)||checkHeaderOptions(table,index))this.sortDisabled=true;if(!this.sortDisabled){$(this).addClass(table.config.cssHeader);}table.config.headerList[index]=this;});if(table.config.debug){benchmark("Built headers:",time);log($tableHeaders);}return $tableHeaders;};function checkCellColSpan(table,rows,row){var arr=[],r=table.tHead.rows,c=r[row].cells;for(var i=0;i<c.length;i++){var cell=c[i];if(cell.colSpan>1){arr=arr.concat(checkCellColSpan(table,headerArr,row++));}else{if(table.tHead.length==1||(cell.rowSpan>1||!r[row+1])){arr.push(cell);}}}return arr;};function checkHeaderMetadata(cell){if(($.metadata)&&($(cell).metadata().sorter===false)){return true;};return false;}function checkHeaderOptions(table,i){if((table.config.headers[i])&&(table.config.headers[i].sorter===false)){return true;};return false;}function applyWidget(table){var c=table.config.widgets;var l=c.length;for(var i=0;i<l;i++){getWidgetById(c[i]).format(table);}}function getWidgetById(name){var l=widgets.length;for(var i=0;i<l;i++){if(widgets[i].id.toLowerCase()==name.toLowerCase()){return widgets[i];}}};function formatSortingOrder(v){if(typeof(v)!="Number"){i=(v.toLowerCase()=="desc")?1:0;}else{i=(v==(0||1))?v:0;}return i;}function isValueInArray(v,a){var l=a.length;for(var i=0;i<l;i++){if(a[i][0]==v){return true;}}return false;}function setHeadersCss(table,$headers,list,css){$headers.removeClass(css[0]).removeClass(css[1]);var h=[];$headers.each(function(offset){if(!this.sortDisabled){h[this.column]=$(this);}});var l=list.length;for(var i=0;i<l;i++){h[list[i][0]].addClass(css[list[i][1]]);}}function fixColumnWidth(table,$headers){var c=table.config;if(c.widthFixed){var colgroup=$('<colgroup>');$("tr:first td",table.tBodies[0]).each(function(){colgroup.append($('<col>').css('width',$(this).width()));});$(table).prepend(colgroup);};}function updateHeaderSortCount(table,sortList){var c=table.config,l=sortList.length;for(var i=0;i<l;i++){var s=sortList[i],o=c.headerList[s[0]];o.count=s[1];o.count++;}}function multisort(table,sortList,cache){if(table.config.debug){var sortTime=new Date();}var dynamicExp="var sortWrapper = function(a,b) {",l=sortList.length;for(var i=0;i<l;i++){var c=sortList[i][0];var order=sortList[i][1];var s=(getCachedSortType(table.config.parsers,c)=="text")?((order==0)?"sortText":"sortTextDesc"):((order==0)?"sortNumeric":"sortNumericDesc");var e="e"+i;dynamicExp+="var "+e+" = "+s+"(a["+c+"],b["+c+"]); ";dynamicExp+="if("+e+") { return "+e+"; } ";dynamicExp+="else { ";}var orgOrderCol=cache.normalized[0].length-1;dynamicExp+="return a["+orgOrderCol+"]-b["+orgOrderCol+"];";for(var i=0;i<l;i++){dynamicExp+="}; ";}dynamicExp+="return 0; ";dynamicExp+="}; ";eval(dynamicExp);cache.normalized.sort(sortWrapper);if(table.config.debug){benchmark("Sorting on "+sortList.toString()+" and dir "+order+" time:",sortTime);}return cache;};function sortText(a,b){return((a<b)?-1:((a>b)?1:0));};function sortTextDesc(a,b){return((b<a)?-1:((b>a)?1:0));};function sortNumeric(a,b){return a-b;};function sortNumericDesc(a,b){return b-a;};function getCachedSortType(parsers,i){return parsers[i].type;};this.construct=function(settings){return this.each(function(){if(!this.tHead||!this.tBodies)return;var $this,$document,$headers,cache,config,shiftDown=0,sortOrder;this.config={};config=$.extend(this.config,$.tablesorter.defaults,settings);$this=$(this);$headers=buildHeaders(this);this.config.parsers=buildParserCache(this,$headers);cache=buildCache(this);var sortCSS=[config.cssDesc,config.cssAsc];fixColumnWidth(this);$headers.click(function(e){$this.trigger("sortStart");var totalRows=($this[0].tBodies[0]&&$this[0].tBodies[0].rows.length)||0;if(!this.sortDisabled&&totalRows>0){var $cell=$(this);var i=this.column;this.order=this.count++%2;if(!e[config.sortMultiSortKey]){config.sortList=[];if(config.sortForce!=null){var a=config.sortForce;for(var j=0;j<a.length;j++){if(a[j][0]!=i){config.sortList.push(a[j]);}}}config.sortList.push([i,this.order]);}else{if(isValueInArray(i,config.sortList)){for(var j=0;j<config.sortList.length;j++){var s=config.sortList[j],o=config.headerList[s[0]];if(s[0]==i){o.count=s[1];o.count++;s[1]=o.count%2;}}}else{config.sortList.push([i,this.order]);}};setTimeout(function(){setHeadersCss($this[0],$headers,config.sortList,sortCSS);appendToTable($this[0],multisort($this[0],config.sortList,cache));},1);return false;}}).mousedown(function(){if(config.cancelSelection){this.onselectstart=function(){return false};return false;}});$this.bind("update",function(){this.config.parsers=buildParserCache(this,$headers);cache=buildCache(this);}).bind("sorton",function(e,list){$(this).trigger("sortStart");config.sortList=list;var sortList=config.sortList;updateHeaderSortCount(this,sortList);setHeadersCss(this,$headers,sortList,sortCSS);appendToTable(this,multisort(this,sortList,cache));}).bind("appendCache",function(){appendToTable(this,cache);}).bind("applyWidgetId",function(e,id){getWidgetById(id).format(this);}).bind("applyWidgets",function(){applyWidget(this);});if($.metadata&&($(this).metadata()&&$(this).metadata().sortlist)){config.sortList=$(this).metadata().sortlist;}if(config.sortList.length>0){$this.trigger("sorton",[config.sortList]);}applyWidget(this);});};this.addParser=function(parser){var l=parsers.length,a=true;for(var i=0;i<l;i++){if(parsers[i].id.toLowerCase()==parser.id.toLowerCase()){a=false;}}if(a){parsers.push(parser);};};this.addWidget=function(widget){widgets.push(widget);};this.formatFloat=function(s){var i=parseFloat(s);return(isNaN(i))?0:i;};this.formatInt=function(s){var i=parseInt(s);return(isNaN(i))?0:i;};this.isDigit=function(s,config){var DECIMAL='\\'+config.decimal;var exp='/(^[+]?0('+DECIMAL+'0+)?$)|(^([-+]?[1-9][0-9]*)$)|(^([-+]?((0?|[1-9][0-9]*)'+DECIMAL+'(0*[1-9][0-9]*)))$)|(^[-+]?[1-9]+[0-9]*'+DECIMAL+'0+$)/';return RegExp(exp).test($.trim(s));};this.clearTableBody=function(table){if($.browser.msie){function empty(){while(this.firstChild)this.removeChild(this.firstChild);}empty.apply(table.tBodies[0]);}else{table.tBodies[0].innerHTML="";}};}});$.fn.extend({tablesorter:$.tablesorter.construct});var ts=$.tablesorter;ts.addParser({id:"text",is:function(s){return true;},format:function(s){return $.trim(s.toLowerCase());},type:"text"});ts.addParser({id:"digit",is:function(s,table){var c=table.config;return $.tablesorter.isDigit(s,c);},format:function(s){return $.tablesorter.formatFloat(s);},type:"numeric"});ts.addParser({id:"currency",is:function(s){return/^[£$€?.]/.test(s);},format:function(s){return $.tablesorter.formatFloat(s.replace(new RegExp(/[^0-9.]/g),""));},type:"numeric"});ts.addParser({id:"ipAddress",is:function(s){return/^\d{2,3}[\.]\d{2,3}[\.]\d{2,3}[\.]\d{2,3}$/.test(s);},format:function(s){var a=s.split("."),r="",l=a.length;for(var i=0;i<l;i++){var item=a[i];if(item.length==2){r+="0"+item;}else{r+=item;}}return $.tablesorter.formatFloat(r);},type:"numeric"});ts.addParser({id:"url",is:function(s){return/^(https?|ftp|file):\/\/$/.test(s);},format:function(s){return jQuery.trim(s.replace(new RegExp(/(https?|ftp|file):\/\//),''));},type:"text"});ts.addParser({id:"isoDate",is:function(s){return/^\d{4}[\/-]\d{1,2}[\/-]\d{1,2}$/.test(s);},format:function(s){return $.tablesorter.formatFloat((s!="")?new Date(s.replace(new RegExp(/-/g),"/")).getTime():"0");},type:"numeric"});ts.addParser({id:"percent",is:function(s){return/\%$/.test($.trim(s));},format:function(s){return $.tablesorter.formatFloat(s.replace(new RegExp(/%/g),""));},type:"numeric"});ts.addParser({id:"usLongDate",is:function(s){return s.match(new RegExp(/^[A-Za-z]{3,10}\.? [0-9]{1,2}, ([0-9]{4}|'?[0-9]{2}) (([0-2]?[0-9]:[0-5][0-9])|([0-1]?[0-9]:[0-5][0-9]\s(AM|PM)))$/));},format:function(s){return $.tablesorter.formatFloat(new Date(s).getTime());},type:"numeric"});ts.addParser({id:"shortDate",is:function(s){return/\d{1,2}[\/\-]\d{1,2}[\/\-]\d{2,4}/.test(s);},format:function(s,table){var c=table.config;s=s.replace(/\-/g,"/");if(c.dateFormat=="us"){s=s.replace(/(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})/,"$3/$1/$2");}else if(c.dateFormat=="uk"){s=s.replace(/(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})/,"$3/$2/$1");}else if(c.dateFormat=="dd/mm/yy"||c.dateFormat=="dd-mm-yy"){s=s.replace(/(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{2})/,"$1/$2/$3");}return $.tablesorter.formatFloat(new Date(s).getTime());},type:"numeric"});ts.addParser({id:"time",is:function(s){return/^(([0-2]?[0-9]:[0-5][0-9])|([0-1]?[0-9]:[0-5][0-9]\s(am|pm)))$/.test(s);},format:function(s){return $.tablesorter.formatFloat(new Date("2000/01/01 "+s).getTime());},type:"numeric"});ts.addParser({id:"metadata",is:function(s){return false;},format:function(s,table,cell){var c=table.config,p=(!c.parserMetadataName)?'sortValue':c.parserMetadataName;return $(cell).metadata()[p];},type:"numeric"});ts.addWidget({id:"zebra",format:function(table){if(table.config.debug){var time=new Date();}$("tr:visible",table.tBodies[0]).filter(':even').removeClass(table.config.widgetZebra.css[1]).addClass(table.config.widgetZebra.css[0]).end().filter(':odd').removeClass(table.config.widgetZebra.css[0]).addClass(table.config.widgetZebra.css[1]);if(table.config.debug){$.tablesorter.benchmark("Applying Zebra widget",time);}}});})(jQuery);var jaaulde=window.jaaulde||{};jaaulde.utils=jaaulde.utils||{};jaaulde.utils.cookies=(function()
+{var resolveOptions,assembleOptionsString,parseCookies,constructor,defaultOptions={expiresAt:null,path:'/',domain:null,secure:false};resolveOptions=function(options)
+{var returnValue,expireDate;if(typeof options!=='object'||options===null)
+{returnValue=defaultOptions;}
+else
+{returnValue={expiresAt:defaultOptions.expiresAt,path:defaultOptions.path,domain:defaultOptions.domain,secure:defaultOptions.secure};if(typeof options.expiresAt==='object'&&options.expiresAt instanceof Date)
+{returnValue.expiresAt=options.expiresAt;}
+else if(typeof options.hoursToLive==='number'&&options.hoursToLive!==0)
+{expireDate=new Date();expireDate.setTime(expireDate.getTime()+(options.hoursToLive*60*60*1000));returnValue.expiresAt=expireDate;}
+if(typeof options.path==='string'&&options.path!=='')
+{returnValue.path=options.path;}
+if(typeof options.domain==='string'&&options.domain!=='')
+{returnValue.domain=options.domain;}
+if(options.secure===true)
+{returnValue.secure=options.secure;}}
+return returnValue;};assembleOptionsString=function(options)
+{options=resolveOptions(options);return((typeof options.expiresAt==='object'&&options.expiresAt instanceof Date?'; expires='+options.expiresAt.toGMTString():'')+'; path='+options.path+
+(typeof options.domain==='string'?'; domain='+options.domain:'')+
+(options.secure===true?'; secure':''));};parseCookies=function()
+{var cookies={},i,pair,name,value,separated=document.cookie.split(';'),unparsedValue;for(i=0;i<separated.length;i=i+1)
+{pair=separated[i].split('=');name=pair[0].replace(/^\s*/,'').replace(/\s*$/,'');try
+{value=decodeURIComponent(pair[1]);}
+catch(e1)
+{value=pair[1];}
+if(typeof JSON==='object'&&JSON!==null&&typeof JSON.parse==='function')
+{try
+{unparsedValue=value;value=JSON.parse(value);}
+catch(e2)
+{value=unparsedValue;}}
+cookies[name]=value;}
+return cookies;};constructor=function(){};constructor.prototype.get=function(cookieName)
+{var returnValue,item,cookies=parseCookies();if(typeof cookieName==='string')
+{returnValue=(typeof cookies[cookieName]!=='undefined')?cookies[cookieName]:null;}
+else if(typeof cookieName==='object'&&cookieName!==null)
+{returnValue={};for(item in cookieName)
+{if(typeof cookies[cookieName[item]]!=='undefined')
+{returnValue[cookieName[item]]=cookies[cookieName[item]];}
+else
+{returnValue[cookieName[item]]=null;}}}
+else
+{returnValue=cookies;}
+return returnValue;};constructor.prototype.filter=function(cookieNameRegExp)
+{var cookieName,returnValue={},cookies=parseCookies();if(typeof cookieNameRegExp==='string')
+{cookieNameRegExp=new RegExp(cookieNameRegExp);}
+for(cookieName in cookies)
+{if(cookieName.match(cookieNameRegExp))
+{returnValue[cookieName]=cookies[cookieName];}}
+return returnValue;};constructor.prototype.set=function(cookieName,value,options)
+{if(typeof options!=='object'||options===null)
+{options={};}
+if(typeof value==='undefined'||value===null)
+{value='';options.hoursToLive=-8760;}
+else if(typeof value!=='string')
+{if(typeof JSON==='object'&&JSON!==null&&typeof JSON.stringify==='function')
+{value=JSON.stringify(value);}
+else
+{throw new Error('cookies.set() received non-string value and could not serialize.');}}
+var optionsString=assembleOptionsString(options);document.cookie=cookieName+'='+encodeURIComponent(value)+optionsString;};constructor.prototype.del=function(cookieName,options)
+{var allCookies={},name;if(typeof options!=='object'||options===null)
+{options={};}
+if(typeof cookieName==='boolean'&&cookieName===true)
+{allCookies=this.get();}
+else if(typeof cookieName==='string')
+{allCookies[cookieName]=true;}
+for(name in allCookies)
+{if(typeof name==='string'&&name!=='')
+{this.set(name,null,options);}}};constructor.prototype.test=function()
+{var returnValue=false,testName='cT',testValue='data';this.set(testName,testValue);if(this.get(testName)===testValue)
+{this.del(testName);returnValue=true;}
+return returnValue;};constructor.prototype.setOptions=function(options)
+{if(typeof options!=='object')
+{options=null;}
+defaultOptions=resolveOptions(options);};return new constructor();})();(function()
+{if(window.jQuery)
+{(function($)
+{$.cookies=jaaulde.utils.cookies;var extensions={cookify:function(options)
+{return this.each(function()
+{var i,nameAttrs=['name','id'],name,$this=$(this),value;for(i in nameAttrs)
+{if(!isNaN(i))
+{name=$this.attr(nameAttrs[i]);if(typeof name==='string'&&name!=='')
+{if($this.is(':checkbox, :radio'))
+{if($this.attr('checked'))
+{value=$this.val();}}
+else if($this.is(':input'))
+{value=$this.val();}
+else
+{value=$this.html();}
+if(typeof value!=='string'||value==='')
+{value=null;}
+$.cookies.set(name,value,options);break;}}}});},cookieFill:function()
+{return this.each(function()
+{var n,getN,nameAttrs=['name','id'],name,$this=$(this),value;getN=function()
+{n=nameAttrs.pop();return!!n;};while(getN())
+{name=$this.attr(n);if(typeof name==='string'&&name!=='')
+{value=$.cookies.get(name);if(value!==null)
+{if($this.is(':checkbox, :radio'))
+{if($this.val()===value)
+{$this.attr('checked','checked');}
+else
+{$this.removeAttr('checked');}}
+else if($this.is(':input'))
+{$this.val(value);}
+else
+{$this.html(value);}}
+break;}}});},cookieBind:function(options)
+{return this.each(function()
+{var $this=$(this);$this.cookieFill().change(function()
+{$this.cookify(options);});});}};$.each(extensions,function(i)
+{$.fn[i]=this;});})(window.jQuery);}})();

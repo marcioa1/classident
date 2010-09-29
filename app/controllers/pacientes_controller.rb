@@ -20,7 +20,7 @@ class PacientesController < ApplicationController
   end
 
   def edit
-    @indicacoes = Indicacao.por_descricao.collect{|obj| [obj.descricao, obj.id]}
+    # @indicacoes = Indicacao.por_descricao.collect{|obj| [obj.descricao, obj.id]}
   end
 
   def create
@@ -30,6 +30,7 @@ class PacientesController < ApplicationController
     @paciente.data_da_suspensao_da_cobranca_de_orto = parasm[:datepicker3].to_date unless params[:datepicker3].blank?
     @paciente.data_da_saida_da_lista_de_debitos     = params[:datepicker4].to_date unless params[:datepicker4].blank?
     if @paciente.save
+      Rails.cache.write(@paciente.id.to_s, @paciente, :expires_in => 2.minutes) 
       redirect_to(abre_paciente_path(@paciente)) 
     else
       render :action => "new" 
@@ -37,9 +38,11 @@ class PacientesController < ApplicationController
   end
 
   def update
-    @paciente.data_da_suspensao_da_cobranca_de_orto = params[:datepicker3].to_date if Date.valid?(params[:datepicker3])
-    @paciente.data_da_saida_da_lista_de_debitos     = params[:datepicker4].to_date if Date.valid?(params[:datepicker4])
+    if @paciente.frozen?
+      @paciente = Paciente.find(params[:id])
+    end
     if @paciente.update_attributes(params[:paciente])
+      Rails.cache.write(@paciente.id.to_s, @paciente, :expires_in => 2.minutes) 
       redirect_to(abre_paciente_path(:id=>@paciente.id)) 
     else
       # render :edit
@@ -55,16 +58,10 @@ class PacientesController < ApplicationController
   end
   
   def pesquisa
-    params[:nome]         = params[:nome].nome_proprio if params[:nome]
     session[:paciente_id] = nil
-    # if !session[:paciente_id].nil?
-    #   @paciente       = Paciente.find(session[:paciente_id])
-    #   params[:codigo] = @paciente.id
-    #   params[:nome]   = @paciente.nome
-    # end  
     @pacientes = []
     if !params[:codigo].blank?
-      if administracao
+      if @administracao
         @pacientes = Paciente.all(:conditions=>["codigo=?", params[:codigo]], :order=>:nome)
       else
         @pacientes = Paciente.all(:conditions=>["clinica_id=? and codigo=?", session[:clinica_id].to_i, params[:codigo].to_i],:order=>:nome)
@@ -72,33 +69,24 @@ class PacientesController < ApplicationController
       if !@pacientes.empty?
         if @pacientes.size==1
           redirect_to abre_paciente_path(:id=>@pacientes.first.id)
-        else
         end 
       else
         flash[:notice] =  'Não foi encontrado paciente com o código ' + params[:codigo]
         render :action=> "pesquisa"
       end
-    else
-      if params[:nome]
-        if administracao
-          @pacientes = Paciente.all(:conditions=>["nome like ?", params[:nome] + '%'],:order=>:nome)
-        else
-          @pacientes = Paciente.all(:conditions=>["clinica_id= ? and nome like ?", session[:clinica_id].to_i, params[:nome] + '%'],:order=>:nome)
-        end
-      end 
     end 
   end
   
   
   def pesquisa_nomes
-    if administracao
+    if @administracao
       nomes = Paciente.all(:select=>'nome,clinica_id', :conditions=>["nome like ?", "#{params[:term].nome_proprio}%" ])  
     else
       nomes = Paciente.all(:select=>'nome,clinica_id', :conditions=>["nome like ? and clinica_id = ? ", "#{params[:term].nome_proprio}%", session[:clinica_id] ])  
     end
     result = []
     nomes.each do |nome|
-      if administracao
+      if @administracao
         result << nome.nome + ', ' + Clinica.find(nome.clinica_id).sigla
       else
         result << nome.nome 
@@ -115,10 +103,9 @@ class PacientesController < ApplicationController
     else
       @paciente =  Paciente.busca_paciente(params[:id])
     end
-    @indicacoes             = Indicacao.por_descricao.collect{|obj| [obj.descricao, obj.id]}
+    # @indicacoes             = Indicacao.por_descricao.collect{|obj| [obj.descricao, obj.id]}
     session[:paciente_id]   = @paciente.id
     session[:paciente_nome] = @paciente.nome
-    @tab_index = session[:tab_paciente]
   end
   
   def nova_alta
@@ -155,9 +142,9 @@ class PacientesController < ApplicationController
   end  
 
   def busca_tabelas
-    @tabelas    = Tabela.ativas.collect{|obj| [obj.nome,obj.id]}
-    @indicacoes = Indicacao.por_descricao.collect{|obj| [obj.descricao, obj.id]}
-    @ortodontistas        = Dentista.ortodontistas.por_nome.collect{|obj| [obj.nome,obj.id]}
+    @tabelas        = Tabela.ativas.collect{|obj| [obj.nome,obj.id]}
+    @indicacoes     = Indicacao.por_descricao.collect{|obj| [obj.descricao, obj.id]}
+    @ortodontistas  = Clinica.find(session[:clinica_id]).ortodontistas.collect{|obj| [obj.nome,obj.id]}
   end
 
 end

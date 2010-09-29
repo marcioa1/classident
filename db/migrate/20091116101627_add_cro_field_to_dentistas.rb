@@ -1,6 +1,6 @@
 class AddCroFieldToDentistas < ActiveRecord::Migration
   def self.up
-    add_column :dentistas, :cro, :string
+    add_column :dentistas, :cro, :string, :limit => 12
   end
 
   def self.down

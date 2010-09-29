@@ -1,0 +1,52 @@
+#lista
+
+  %table
+    %tr
+      %th{:width=>'105px;'}
+        Data
+      %th{:width=>'220px;'}
+        Paciente
+      %th{:width=>'220px;'}
+        Procedimento
+      %th{:width=>'90px;'}
+        Valor
+      %th{:width=>'90px;'}
+        Custo
+      %th{:width=>'90px;'}
+        Dentista
+      %th{:width=>'90px;'}
+        Clínica
+      - if @administracao
+        %th{:width=>'90px;'}
+          Selecionar
+          %br
+          p/ pgto
+    - total = 0.0
+    - total_dentista = 0.0
+    - total_custo = 0.0
+    - total_clinica = 0.0
+    - @producao.each() do |tratamento|
+      %tr
+        %td{:align=>'center'}=tratamento.data.to_s_br
+        %td=tratamento.paciente.nome
+        %td=tratamento.descricao
+        %td{:align=>'right'}=tratamento.valor.real.to_s
+        %td{:align=>'right'}=tratamento.custo.real.to_s
+        %td{:align=>'right'}=tratamento.valor_dentista.real.to_s
+        %td{:align=>'right'}=tratamento.valor_clinica.real.to_s
+        - if @administracao
+          %td{:align=>'center'}
+            ="<input type='checkbox' id='pagar_dentista_" + tratamento.id.to_s + "' onclick= 'pagar_dentista("+tratamento.valor_dentista.to_s+ "," + tratamento.id.to_s + "," +  tratamento.dentista.id.to_s + ")'"
+
+      - total_dentista += tratamento.valor_dentista
+      - total_custo += tratamento.custo unless tratamento.custo.nil?
+      - total_clinica += tratamento.valor_clinica unless tratamento.valor_clinica.nil?
+      - total += tratamento.valor
+
+    %tr
+      %td{:colspan=>'3', :align=>'center'}
+        Total
+      %td{:align=>'right'}=total.real.to_s      
+      %td{:align=>'right'}=total_custo.real.to_s
+      %td{:align=>'right'}=total_dentista.real.to_s
+      %td{:align=>'right'}=total_clinica.real.to_s
