@@ -78,7 +78,22 @@ function qual_coluna(dente){
 }
 
 function desenha_numero_dos_dentes(){
-  saida = "<table class='transparente'><tr>";
+  saida = "<table border='0' class='transparente'>";
+  saida = saida + "<tr>"
+  for (ind = 1; ind < 4; ind = ind + 1){
+    saida = saida + "<td>&nbsp;</td>"
+  }
+  for (ind = 55; ind > 50; ind = ind -1){
+    saida = saida + "<td><a href='#' onClick='escolheu_dente(" + ind + ");' class='botao_dente'>" + ind + "</a>";
+  }
+  saida = saida + "<td> &nbsp; </td>";
+  for (ind = 61; ind < 66; ind = ind + 1){
+    saida = saida + "<td><a href='#' onClick='escolheu_dente(" + ind + ");' class='botao_dente'>" + ind + "</a>";
+  }
+  for (ind = 1; ind < 4; ind = ind + 1){
+    saida = saida + "<td>&nbsp;</td>"
+  }
+  saida = saida  +"</tr>"
   for (ind=18; ind > 10; ind = ind - 1){
     saida = saida + "<td><a href='#' onClick='escolheu_dente(" + ind + ");' class='botao_dente'>" + ind + "</a>";
   }
@@ -94,8 +109,23 @@ function desenha_numero_dos_dentes(){
   for (ind=41; ind < 49; ind = ind + 1){
     saida = saida + "<td><a href='#' onClick='escolheu_dente(" + ind + ");' class='botao_dente'>" + ind + "</a>";
   }
-  
-  saida = saida + "</tr></table>";
+  saida = saida + "</tr>"
+  saida = saida + "<tr>"
+  for (ind = 1; ind < 4; ind = ind + 1){
+    saida = saida + "<td>&nbsp;</td>"
+  }
+  for (ind = 65; ind > 60; ind = ind -1){
+    saida = saida + "<td><a href='#' onClick='escolheu_dente(" + ind + ");' class='botao_dente'>" + ind + "</a>";
+  }
+  saida = saida + "<td> &nbsp; </td>";
+  for (ind = 71; ind < 76; ind = ind + 1){
+    saida = saida + "<td><a href='#' onClick='escolheu_dente(" + ind + ");' class='botao_dente'>" + ind + "</a>";
+  }
+  for (ind = 1; ind < 4; ind = ind + 1){
+    saida = saida + "<td>&nbsp;</td>"
+  }
+
+  "</table>";
   $("#numero_dos_dentes").html(saida);
 }
 
