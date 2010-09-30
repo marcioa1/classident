@@ -148,13 +148,17 @@ class PacientesController < ApplicationController
   end
   
   def extrato_pdf
+    require "prawn/layout"
     pdf = Prawn::Document.new
+    pdf.font "Times-Roman"
     pdf.text( "Imprimindo o extrato")
     # pdf.table(self.extrato.to_a) do
-    # pdf.table([["foo", "bar " * 15, "baz"],
-    #      ["baz", "bar", "foo " * 15]], :cell_style => { :padding => 12 }) do
-    # cells.borders = []
-    # 
+        # pdf.table([["foo", "bar " * 15, "baz"],
+        #          ["baz", "bar", "foo " * 15]], :cell_style => { :padding => 12 }) do
+        #     
+        #     cells.borders = []
+        # end
+        # 
     # # Use the row() and style() methods to select and style a row.
     # style row(0), :border_width => 2, :borders => [:bottom]
     # 
@@ -163,8 +167,15 @@ class PacientesController < ApplicationController
     # style(columns(0..1)) { |cell| cell.borders |= [:right] }
 
   # pdf.move_down 12
-  
-  pdf.table([%w[foo bar bazbaz], %w[baz bar foofoo]],
+  @paciente = busca_paciente()
+  items = @paciente.extrato.map do |item|
+    if item.is_a?(Debito)
+      [item.data.to_s_br,  '', item.valor ]
+    else
+      [item.data.to_s_br, item.valor, '']
+    end
+  end
+  pdf.table(items,
         :cell_style => { :padding => 12 }, :width => 300)
   pdf.render_file('tmp/prawn.pdf')
 

@@ -53,6 +53,8 @@ set :use_sudo, false
 
 set :group_writable, false
 
+set :keep_releases, 3
+
 default_run_options[:pty] = true 
 
 
