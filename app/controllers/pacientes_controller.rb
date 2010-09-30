@@ -150,6 +150,7 @@ class PacientesController < ApplicationController
   def extrato_pdf
     pdf = Prawn::Document.new
     pdf.text( "Imprimindo o extrato")
+    # pdf.table(self.extrato.to_a) do
     # pdf.table([["foo", "bar " * 15, "baz"],
     #      ["baz", "bar", "foo " * 15]], :cell_style => { :padding => 12 }) do
     # cells.borders = []
@@ -162,10 +163,10 @@ class PacientesController < ApplicationController
     # style(columns(0..1)) { |cell| cell.borders |= [:right] }
 
   # pdf.move_down 12
-  # 
-  # pdf.table([%w[foo bar bazbaz], %w[baz bar foofoo]],
-  #       :cell_style => { :padding => 12 }, :width => bounds.width)
-  pdf.render_file('prawn.pdf')
+  
+  pdf.table([%w[foo bar bazbaz], %w[baz bar foofoo]],
+        :cell_style => { :padding => 12 }, :width => 300)
+  pdf.render_file('tmp/prawn.pdf')
 
   render :nothing=>true
   
