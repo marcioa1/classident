@@ -2,8 +2,8 @@
   = link_to "Novo recebimento", new_recebimento_path(:paciente_id=>@paciente.id)
   | 
   = link_to "Novo débito", new_debito_path(:paciente_id=>@paciente.id)
-%br
-= link_to "Imprime", extrato_pdf_paciente_path(@paciente)
+  |
+  = link_to "Imprime", extrato_pdf_paciente_path(@paciente), :class => 'ui-icon ui-icon-print'
 %br
 %table
   %tr

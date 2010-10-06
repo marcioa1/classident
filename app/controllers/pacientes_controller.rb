@@ -149,38 +149,35 @@ class PacientesController < ApplicationController
   
   def extrato_pdf
     require "prawn/layout"
-    pdf = Prawn::Document.new
-    pdf.font "Times-Roman"
-    pdf.text( "Imprimindo o extrato")
-    # pdf.table(self.extrato.to_a) do
-        # pdf.table([["foo", "bar " * 15, "baz"],
-        #          ["baz", "bar", "foo " * 15]], :cell_style => { :padding => 12 }) do
-        #     
-        #     cells.borders = []
-        # end
-        # 
-    # # Use the row() and style() methods to select and style a row.
-    # style row(0), :border_width => 2, :borders => [:bottom]
-    # 
-    # # The style method can take a block, allowing you to customize properties
-    # # per-cell.
-    # style(columns(0..1)) { |cell| cell.borders |= [:right] }
+    require "prawn/core"
+    Prawn::Document.generate("tmp/extrato.pdf") do |pdf|
 
-  # pdf.move_down 12
-  @paciente = busca_paciente()
-  items = @paciente.extrato.map do |item|
-    if item.is_a?(Debito)
-      [item.data.to_s_br,  '', item.valor ]
-    else
-      [item.data.to_s_br, item.valor, '']
+      # pdf = Prawn::Document.new
+      pdf.font "Times-Roman"
+      imprime_cabecalho(pdf)
+      pdf.text( "Extrato")
+      pdf.move_down 10
+      @paciente = busca_paciente()
+      pdf.text " Paciente : #{@paciente.nome}"
+      pdf.move_down 10
+      saldo = 0.0
+      items = @paciente.extrato.map do |item|
+        if item.is_a?(Debito)
+          saldo -= item.valor
+          [item.data.to_s_br, item.descricao.tira_acento, '', item.valor.real.to_s, saldo.real.to_s ]
+        else
+          saldo += item.valor
+          [item.data.to_s_br,  item.observacao.tira_acento, item.valor.real.to_s, '', saldo.real.to_s]
+        end
+      end
+      pdf.table(items,
+            :row_colors =>['FFFFFF', 'DDDDDD'],
+            :header_color => 'AAAAAA',
+            :headers => ['Data', 'Observação', 'Débito', 'Crédito', 'Saldo'],
+            :align => {0=>:center, 1=>:left, 2=>:right, 3=>:right, 4=>:right},
+            :cell_style => { :padding => 12 }, :width => 400)
+
     end
-  end
-  pdf.table(items,
-        :cell_style => { :padding => 12 }, :width => 300)
-  pdf.render_file('tmp/prawn.pdf')
-
-  render :nothing=>true
-  
-
+    render "http://localhost:3000/tmp/extrato.pdf"
   end
 end

@@ -70,6 +70,11 @@ class ApplicationController < ActionController::Base
     return true if data >= segunda && Date.today >= segunda
   end
   
+  def imprime_cabecalho(pdf)
+    pdf.text "Classident   #{Time.current.to_s_br}"
+    pdf.move_down 20
+  end
+
   private
   
     def require_user
@@ -171,10 +176,11 @@ end
 #TODO Melhorar a recarga do extrato ao finalizar tratamento
 #TODO Uso de autocomplete no tipos de pagamento e recebimento.
 #TODO fazer campo pagamento_id ao tratamento  
+#TODO Verificar a troca de dentista em um tratamento
+#TODO Falta campos no cadastro : Profissao e indicado por 
 
 # menos importante
 #TODO colocar plugin de cookies no yml
-#TODO Falta campos no cadastro : Profissao, indicado por , observacao, nome recibo, apelido, destaque, tabela de convenio, matricula de convenio
 #TODO Fazer rotina que monta tabela de parcelas de orçamento toda em js
 #TODO Colocar mapa de dentistas no memcached e expirar ao alterar dentista na adminitração
 #TODO Verificar o uso de @controller que está disponível, ao invez de passar como parâmetros

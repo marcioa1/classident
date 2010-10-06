@@ -7,6 +7,6 @@
   <% end %>
 <% else %>
   <span style="display:none">
-    <%= check_box_tag "aclinica_"+ session[:clinica_id],session[:clinica_id], true %>  
+    <%= check_box_tag "aclinica_#{session[:clinica_id]}" ,session[:clinica_id], true %>  
   </span>
 <% end %>

@@ -10,7 +10,7 @@ ActionController::Routing::Routes.draw do |map|
        :relatorio_alta=>:get, :abandono_de_tratamento=>:get, :pacientes_de_ortodontia =>:get,
        :fechamento_mes=>:get, :relatorio_de_exclusao=>:get, :usuarios_da_clinica => :get }
   map.resources :conta_bancarias
-  map.resources :conversao, :collection=>{:cheque_adm => :get}
+  map.resources :conversao, :collection=>{:cheque_adm => :get, :teste=>:get}
   map.resources :debitos, :collection=>{:pacientes_em_debito=>:get, :pacientes_fora_da_lista=>:get}
   map.resources :dentistas, :member=>{:abre=>:get, :producao=>:get, :pagamento=>:get,:orcamentos=>:get, :reativar=>:get}, 
                     :collection=>{:pesquisar=>:get, :producao_geral=>:get, 
