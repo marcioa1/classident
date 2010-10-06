@@ -154,7 +154,7 @@ class PacientesController < ApplicationController
 
       pdf.font "Times-Roman"
       imprime_cabecalho(pdf)
-      pdf.text( "Extrato")
+      pdf.text "Extrato", :size=>22, :align=>:center
       pdf.move_down 10
       @paciente = busca_paciente()
       pdf.text " Paciente : #{@paciente.nome}"

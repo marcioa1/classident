@@ -72,7 +72,8 @@ class ApplicationController < ActionController::Base
   
 
   def imprime_cabecalho(pdf)
-    pdf.text "Classident   #{Time.current.to_s_br}"
+    pdf.image "public/images/logo2.jpg", :align => :left
+    pdf.text "#{Time.current.to_s_br}", :align => :right, :size=>8
     pdf.move_down 20
   end
 
