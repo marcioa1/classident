@@ -126,7 +126,7 @@ class Converte
         d.paciente_id   = paciente unless paciente.nil?
         d.data          = registro[1].to_date
         d.valor         = le_valor(registro[2])
-        d.descricao     = registro[3]#.tira_acento
+        d.descricao     = registro[3].tira_acento
         d.tratamento_id = registro[10].to_i
         debugger
         d.save!

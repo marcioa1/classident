@@ -150,9 +150,8 @@ class PacientesController < ApplicationController
   def extrato_pdf
     require "prawn/layout"
     require "prawn/core"
-    Prawn::Document.generate("tmp/extrato.pdf") do |pdf|
+    Prawn::Document.generate("public/relatorios/extrato.pdf") do |pdf|
 
-      # pdf = Prawn::Document.new
       pdf.font "Times-Roman"
       imprime_cabecalho(pdf)
       pdf.text( "Extrato")
@@ -178,6 +177,6 @@ class PacientesController < ApplicationController
             :cell_style => { :padding => 12 }, :width => 400)
 
     end
-    render "http://localhost:3000/tmp/extrato.pdf"
+    head :ok
   end
 end

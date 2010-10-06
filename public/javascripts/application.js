@@ -579,3 +579,16 @@ function busca_usuarios(){
   });
 }
 
+function imprime_extrato(paciente_id){
+  $.ajax({
+    url  : "/pacientes/" + paciente_id + "/extrato_pdf",
+    type : "GET",
+    success :function(data){
+        window.open("http://localhost:3000/relatorios/extrato.pdf")
+      }, 
+    error : function(){
+      alert("Não foi possível gerar o relatório.");
+    }
+    
+  });
+}

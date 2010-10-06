@@ -3,7 +3,7 @@
   | 
   = link_to "Novo débito", new_debito_path(:paciente_id=>@paciente.id)
   |
-  = link_to "Imprime", extrato_pdf_paciente_path(@paciente), :class => 'ui-icon ui-icon-print'
+  = link_to "Imprime", "#", :onclick=>"imprime_extrato(#{@paciente.id})", :class => 'ui-icon ui-icon-print'
 %br
 %table
   %tr
