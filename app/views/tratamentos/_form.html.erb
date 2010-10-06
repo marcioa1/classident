@@ -54,7 +54,7 @@
   <% if !@tratamento.new_record? %>
     <div>
       <%= f.label :Código %> :
-      <%= text_field_tag :codigo , @tratamento.item_tabela.codigo, :size => 12, :class=>'txt'%>
+      <%= text_field_tag :codigo , @tratamento.item_tabela && @tratamento.item_tabela.codigo, :size => 12, :class=>'txt'%>
     </div>
   <% end %>
     <div>

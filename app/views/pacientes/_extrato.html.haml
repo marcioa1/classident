@@ -1,101 +1,101 @@
-#extrato_table
-  - if !@administracao
-    = link_to "Novo recebimento", new_recebimento_path(:paciente_id=>@paciente.id)
-    | 
-    = link_to "Novo débito", new_debito_path(:paciente_id=>@paciente.id)
-  %br
-  %br
-  %table{:id => 'tabela_extrato'}
-    %tr
-      %th Data
-      %th{ :width => "200px" } Descrição
-      %th{ :width => "70px" } Débito
-      %th{ :width => "70px" } Crédito
-      %th{ :width => "70px" } Saldo
-      %th Bom para
-      %th Detalhes
-      %th &nbsp;
-    
-    - saldo         = 0.0
-    - total_debito  = 0.0
-    - total_credito = 0.0
-    - @paciente.extrato.each do |lancamento|
-      %tr{ :class=>"#{lancamento.is_a?(Debito) ? 'debito' : ''}"}
-        %td{ :align => "center" }
-          = lancamento.data.to_s_br
-        - if lancamento.class == Debito
-          - total_debito += lancamento.valor
-          %td
-            - if lancamento.pode_alterar?
-              = link_to lancamento.descricao, edit_debito_path(lancamento)
-            - else
-              = lancamento.descricao
-          %td{ :align => "right" }
-            = lancamento.valor.real
-        
-          %td
-            &nbsp;
-          - saldo -= lancamento.valor
-        - else
-          - total_credito += lancamento.valor
-          %td= lancamento.observacao_do_recebimento
-          %td
-            &nbsp;
-          %td{ :align => "right" }
-            = lancamento.valor.real
-          - saldo += lancamento.valor
-        - cor =  saldo >= 0 ? "black" : "red"
-        %td{ :align => "right", :style => "color: #{cor}" }
-          = saldo.real
-        - if lancamento.class == Recebimento
-          - if lancamento.formas_recebimento && lancamento.formas_recebimento.nome.downcase == 'dinheiro'
-            %td
-              &nbsp;
-          - else
-            %td
-              = lancamento.cheque.bom_para.to_s_br  if lancamento.cheque.present? && lancamento.cheque.bom_para.present?
-          %td
-            = lancamento.formas_recebimento.nome if lancamento.formas_recebimento
-        - else
-        
-          %td
-            &nbsp;
-
+- if !@administracao
+  = link_to "Novo recebimento", new_recebimento_path(:paciente_id=>@paciente.id)
+  | 
+  = link_to "Novo débito", new_debito_path(:paciente_id=>@paciente.id)
+  |
+  = link_to "Imprime", "#", :onclick=>"imprime_extrato(#{@paciente.id})", :class => 'ui-icon ui-icon-print'
+%br
+%table
+  %tr
+    %th Data
+    %th{ :width => "200px" } Descrição
+    %th{ :width => "70px" } Débito
+    %th{ :width => "70px" } Crédito
+    %th{ :width => "70px" } Saldo
+    %th Bom para
+    %th Detalhes
+    %th &nbsp;
+  
+  - saldo         = 0.0
+  - total_debito  = 0.0
+  - total_credito = 0.0
+  - @paciente.extrato.each do |lancamento|
+    %tr{ :class=>"#{lancamento.is_a?(Debito) ? 'debito' : ''}"}
+      %td{ :align => "center" }
+        = lancamento.data.to_s_br
+      - if lancamento.class == Debito
+        - total_debito += lancamento.valor
         %td
-          - if lancamento.pode_excluir?
-            - if lancamento.class == Recebimento
-              = link_to 'Excluiree', exclusao_recebimento_path(lancamento.id) , :class=> 'ui-icon ui-icon-trash', :title=>'excluir'
-            - else
-              %td
-                = link_to 'Excluir', lancamento, :confirm => 'Tem certeza da exclusão deste débito ?', :method => :delete , :class=>'ui-icon ui-icon-trash', :title=>'excluir'
+          - if lancamento.pode_alterar?
+            = link_to lancamento.descricao, edit_debito_path(lancamento)
           - else
-    %tr
-      %td{ :align => "center", :colspan => "2" }
-        Total
-      %td{ :align => "right" }
-        = total_debito.real
-      %td{ :align => "right" }
-        = total_credito.real
+            = lancamento.descricao
+        %td{ :align => "right" }
+          = lancamento.valor.real
+      
+        %td
+          &nbsp;
+        - saldo -= lancamento.valor
+      - else
+        - total_credito += lancamento.valor
+        %td= lancamento.observacao_do_recebimento
+        %td
+          &nbsp;
+        %td{ :align => "right" }
+          = lancamento.valor.real
+        - saldo += lancamento.valor
       - cor =  saldo >= 0 ? "black" : "red"
       %td{ :align => "right", :style => "color: #{cor}" }
         = saldo.real
-      %td{ :colspan => "3" }
-        &nbsp;
-  %p
-  %table
+      - if lancamento.class == Recebimento
+        - if lancamento.formas_recebimento && lancamento.formas_recebimento.nome.downcase == 'dinheiro'
+          %td
+            &nbsp;
+        - else
+          %td
+            = lancamento.cheque.bom_para.to_s_br  if lancamento.cheque.present? && lancamento.cheque.bom_para.present?
+        %td
+          = lancamento.formas_recebimento.nome if lancamento.formas_recebimento
+      - else
+      
+        %td
+          &nbsp;
+
+      %td
+        - if lancamento.pode_excluir?
+          - if lancamento.class == Recebimento
+            = link_to 'Excluiree', exclusao_recebimento_path(lancamento.id) , :class=> 'ui-icon ui-icon-trash', :title=>'excluir'
+          - else
+            %td
+              = link_to 'Excluir', lancamento, :confirm => 'Tem certeza da exclusão deste débito ?', :method => :delete , :class=>'ui-icon ui-icon-trash', :title=>'excluir'
+        - else
+  %tr
+    %td{ :align => "center", :colspan => "2" }
+      Total
+    %td{ :align => "right" }
+      = total_debito.real
+    %td{ :align => "right" }
+      = total_credito.real
+    - cor =  saldo >= 0 ? "black" : "red"
+    %td{ :align => "right", :style => "color: #{cor}" }
+      = saldo.real
+    %td{ :colspan => "3" }
+      &nbsp;
+%p
+%table
+  %tr
+    %th
+      Data 1 devolução
+    %th{ :width => "200px" }
+      Motivo
+    %th{ :width => "70px" }
+      Data 2 devolução
+  - @paciente.cheques_devolvidos.each do |cheque|
     %tr
-      %th
-        Data 1 devolução
-      %th{ :width => "200px" }
-        Motivo
-      %th{ :width => "70px" }
-        Data 2 devolução
-    - @paciente.cheques_devolvidos.each do |cheque|
-      %tr
-        %td
-          = cheque.data_primeira_devolucao
-        %td
-          = cheque.motivo_primeira_devolucao
-        %td
-          = cheque.data_segunda_devolucao
-  = render :partial=>"recebimentos/recebimentos_excluidos", :locals=>{:paciente=>@paciente}
+      %td
+        = cheque.data_primeira_devolucao
+      %td
+        = cheque.motivo_primeira_devolucao
+      %td
+        = cheque.data_segunda_devolucao
+= render :partial=>"recebimentos/recebimentos_excluidos", :locals=>{:paciente=>@paciente}

@@ -31,6 +31,14 @@ class ApplicationController < ActionController::Base
       session[:senha]          = nil
       session[:senha_digitada] = nil
     end
+    @senha = session[:senha]
+    debugger
+    if params[:action] && params[:controller]
+      @esta_dentro = (params[:controller] + ',' + params[:action] == session[:action_name])
+    else
+      @esta_dentro = false
+    end  
+    
     @action         = session[:action]
     @senha          = session[:senha]
     @senha_digitada = session[:senha_digitada]
@@ -62,35 +70,10 @@ class ApplicationController < ActionController::Base
     return true if data >= segunda && Date.today >= segunda
   end
   
-  
-  def tira_acento(palavra)
-    palavra.
-        gsub(/\xC3\xA0/,  'a').     # à => a
-        gsub(/\xC3\xA1/,  'a').     # á => a
-        gsub(/\xC3\xA2/,  'a').     # â => a
-        gsub(/\xC3\xA3/,  'a').     # ã => a
-        gsub(/\xC3\xA9/,  'e').     # é => e
-        gsub(/\xC3\xAA/,  'e').     # ê => e
-        gsub(/\xC3\xAD/,  'i').     # í => i
-        gsub(/\xC3\xB3/,  'o').     # ó => o
-        gsub(/\xC3\xB4/,  'o').     # ô => o
-        gsub(/\xC3\xB5/,  'o').     # õ => o
-        gsub(/\xC3\xBA/,  'u').     # ú => u
-        gsub(/\xC3\xBC/,  'u').     # ü => u
-        gsub(/\xC3\xA7/,  'c').     # ç => c
-        gsub(/\xC3\x80/,  'A').     # À => A
-        gsub(/\xC3\x81/,  'A').     # Á => A
-        gsub(/\xC3\x82/,  'A').     # Â => A
-        gsub(/\xC3\x83/,  'A').     # Ã => A
-        gsub(/\xC3\x89/,  'E').     # É => E
-        gsub(/\xC3\x8A/,  'E').     # Ê => E
-        gsub(/\xC3\x8D/,  'I').     # Í => I
-        gsub(/\xC3\x93/,  'O').     # Ó => O
-        gsub(/\xC3\x94/,  'O').     # Ô => O
-        gsub(/\xC3\x95/,  'O').     # Õ => O
-        gsub(/\xC3\x9A/,  'U').     # Ú => U
-        gsub(/\xC3\x9C/,  'U').     # Ü => U
-        gsub(/\xC3\x87/,  'C')      # Ç => C
+
+  def imprime_cabecalho(pdf)
+    pdf.text "Classident   #{Time.current.to_s_br}"
+    pdf.move_down 20
   end
 
   private
@@ -194,10 +177,11 @@ end
 #TODO Melhorar a recarga do extrato ao finalizar tratamento
 #TODO Uso de autocomplete no tipos de pagamento e recebimento.
 #TODO fazer campo pagamento_id ao tratamento  
+#TODO Verificar a troca de dentista em um tratamento
+#TODO Falta campos no cadastro : Profissao e indicado por 
 
 # menos importante
 #TODO colocar plugin de cookies no yml
-#TODO Falta campos no cadastro : Profissao, indicado por , observacao, nome recibo, apelido, destaque, tabela de convenio, matricula de convenio
 #TODO Fazer rotina que monta tabela de parcelas de orçamento toda em js
 #TODO Colocar mapa de dentistas no memcached e expirar ao alterar dentista na adminitração
 #TODO Verificar o uso de @controller que está disponível, ao invez de passar como parâmetros

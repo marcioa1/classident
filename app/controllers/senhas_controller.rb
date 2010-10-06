@@ -2,6 +2,8 @@ class SenhasController < ApplicationController
   layout "adm"
   
   def valida_senha
+    retorno                  =  (params[:senha_digitada] == Senha.senha(params[:controller_name], params[:action_name], session[:clinica_id])) ? true : false
+    session[:current_action] = params[:controller_name] + ',' + params[:action_name] if retorno
     senha_da_action = Senha.senha(params[:controller_name], params[:action_name], session[:clinica_id]) 
     retorno =  (params[:senha_digitada] == senha_da_action) ? true : false
     session[:senha_digitada] = params[:senha_digitada] if retorno

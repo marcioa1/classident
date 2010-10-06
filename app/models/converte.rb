@@ -42,6 +42,8 @@ class Converte
         end
         p.clinica_id            = @clinica.id unless @clinica.nil?
         p.cpf                   = registro[16]
+        p.profissao             =
+        p.indicado_por          =
         p.sexo                  = registro[6].to_i == 0 ? "M" : "F"
         p.inicio_tratamento     = registro[7].to_date unless !Date.valid?(registro[7])
         p.sair_da_lista_de_debitos          = registro[29]
@@ -107,7 +109,7 @@ class Converte
   def debito
     # Depende de tratamento
     abre_arquivo_de_erros('Débitos')
-    puts "Convertendo débitos ...."
+    puts "Convertendo débitos ....#{Time.current}"
     f = File.open("doc/convertidos/debito.txt" , "r")
     Debito.delete_all
     clinica = ''
@@ -124,10 +126,12 @@ class Converte
         d.paciente_id   = paciente unless paciente.nil?
         d.data          = registro[1].to_date
         d.valor         = le_valor(registro[2])
-        d.descricao     = registro[3]
+        d.descricao     = registro[3].tira_acento
         d.tratamento_id = registro[10].to_i
+        debugger
         d.save!
       rescue Exception => ex
+        debugger
         @arquivo.puts line + "\n"+ "      ->" + ex
       end
     end
@@ -199,7 +203,7 @@ class Converte
           r.formas_recebimento_id = forma_recebimento.id_adm 
         end
         r.valor                 = le_valor(registro[4])
-        r.observacao            = registro[7]
+        r.observacao            = registro[7].tira_acento
         r.sequencial            = registro[8].to_i
         r.clinica_id            = @clinica.id
         r.data_de_exclusao      = registro[12].to_date if Date.valid?(registro[12])
@@ -1010,6 +1014,7 @@ class Converte
   end
   
   def fecha_arquivo_de_erros(mensagem)
+    puts  "Terminando conversão de #{mensagem} em #{Time.current}"
     @arquivo.puts "Terminando conversão de #{mensagem} em #{Time.current}"
     @arquivo.puts '                '
     @arquivo.close

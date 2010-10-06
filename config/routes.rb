@@ -10,7 +10,7 @@ ActionController::Routing::Routes.draw do |map|
        :relatorio_alta=>:get, :abandono_de_tratamento=>:get, :pacientes_de_ortodontia =>:get,
        :fechamento_mes=>:get, :relatorio_de_exclusao=>:get, :usuarios_da_clinica => :get }
   map.resources :conta_bancarias
-  map.resources :conversao, :collection=>{:cheque_adm => :get}
+  map.resources :conversao, :collection=>{:cheque_adm => :get, :teste=>:get}
   map.resources :debitos, :collection=>{:pacientes_em_debito=>:get, :pacientes_fora_da_lista=>:get}
   map.resources :dentistas, :member=>{:abre=>:get, :producao=>:get, :pagamento=>:get,:orcamentos=>:get, :reativar=>:get}, 
                     :collection=>{:pesquisar=>:get, :producao_geral=>:get, 
@@ -32,7 +32,7 @@ ActionController::Routing::Routes.draw do |map|
                   :collection=>{:pesquisa=>:get,:nomes_que_iniciam_com=>:get, 
                                 :pesquisa_nomes=> :get, :retorna_paciente_por_nome=>:get,
                                 :busca_id_do_paciente=>:get},
-                  :member => {:abre=>:get}
+                  :member => {:abre=>:get, :extrato_pdf => :get}
 
   map.administracao "administracao", :controller=>"administracao", :action=>"index"
   map.salva_tab_do_paciente "salva_tab_do_paciente", :controller=>"administracao", :action=>"salva_tab_do_paciente"

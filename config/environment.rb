@@ -42,6 +42,6 @@ Rails::Initializer.run do |config|
   config.gem "authlogic"
   config.gem "brazilian-rails"
   config.gem 'hoptoad_notifier', :source => 'http://gems.github.com'
-#  config.gem "rghost", :version=>">=0.8.7"
-#  config.gem "rghost_rails"
+  config.gem 'prawn'
+
 end

@@ -146,5 +146,37 @@ class PacientesController < ApplicationController
     @indicacoes     = Indicacao.por_descricao.collect{|obj| [obj.descricao, obj.id]}
     @ortodontistas  = Clinica.find(session[:clinica_id]).ortodontistas.collect{|obj| [obj.nome,obj.id]}
   end
+  
+  def extrato_pdf
+    require "prawn/layout"
+    require "prawn/core"
+    Prawn::Document.generate("public/relatorios/extrato.pdf") do |pdf|
 
+      pdf.font "Times-Roman"
+      imprime_cabecalho(pdf)
+      pdf.text( "Extrato")
+      pdf.move_down 10
+      @paciente = busca_paciente()
+      pdf.text " Paciente : #{@paciente.nome}"
+      pdf.move_down 10
+      saldo = 0.0
+      items = @paciente.extrato.map do |item|
+        if item.is_a?(Debito)
+          saldo -= item.valor
+          [item.data.to_s_br, item.descricao.tira_acento, '', item.valor.real.to_s, saldo.real.to_s ]
+        else
+          saldo += item.valor
+          [item.data.to_s_br,  item.observacao.tira_acento, item.valor.real.to_s, '', saldo.real.to_s]
+        end
+      end
+      pdf.table(items,
+            :row_colors =>['FFFFFF', 'DDDDDD'],
+            :header_color => 'AAAAAA',
+            :headers => ['Data', 'Observação', 'Débito', 'Crédito', 'Saldo'],
+            :align => {0=>:center, 1=>:left, 2=>:right, 3=>:right, 4=>:right},
+            :cell_style => { :padding => 12 }, :width => 400)
+
+    end
+    head :ok
+  end
 end
