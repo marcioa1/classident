@@ -32,7 +32,6 @@ class ApplicationController < ActionController::Base
       session[:senha_digitada] = nil
     end
     @senha = session[:senha]
-    debugger
     if params[:action] && params[:controller]
       @esta_dentro = (params[:controller] + ',' + params[:action] == session[:action_name])
     else
@@ -180,7 +179,8 @@ end
 #TODO fazer campo pagamento_id ao tratamento  
 #TODO Verificar a troca de dentista em um tratamento
 #TODO Falta campos no cadastro : Profissao e indicado por 
-
+#FIXME Rever edição de recebimento
+#FIXME PEnsar em como alterar a observação do recebimento caso altera dados do cheque.
 # menos importante
 #TODO colocar plugin de cookies no yml
 #TODO Fazer rotina que monta tabela de parcelas de orçamento toda em js

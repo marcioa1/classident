@@ -38,7 +38,11 @@
         - saldo -= lancamento.valor
       - else
         - total_credito += lancamento.valor
-        %td= lancamento.observacao_do_recebimento
+        %td
+          - if lancamento.pode_alterar?
+            = link_to lancamento.observacao_do_recebimento, edit_recebimento_path(lancamento)
+          - else
+            = lancamento.observacao_do_recebimento
         %td
           &nbsp;
         %td{ :align => "right" }

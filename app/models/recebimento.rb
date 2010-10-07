@@ -99,6 +99,10 @@ class Recebimento < ActiveRecord::Base
     !data_de_exclusao.nil?
   end
   
+  def pode_alterar?
+    self.na_quinzena?
+  end
+  
   def pode_excluir?
     self.na_quinzena?
   end

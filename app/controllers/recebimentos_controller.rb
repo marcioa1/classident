@@ -5,7 +5,7 @@ class RecebimentosController < ApplicationController
   before_filter :require_user
   before_filter :verifica_horario_de_trabalho
   before_filter :busca_bancos_e_forma_de_recebimento, :only=>[:new, :edit]
-  before_filter :busca_recebimento, :only => [:show,  :update, :exclui, :destroy, :exclusao]
+  before_filter :busca_recebimento, :only => [:show,  :edit, :update, :exclui, :destroy, :exclusao]
   before_filter :salva_action_na_session
   before_filter :verifica_se_tem_senha
   
@@ -28,11 +28,9 @@ class RecebimentosController < ApplicationController
   end
 
   def edit
-    # @cheque    = @recebimento.cheque
-    #   @paciente  = @recebimento.paciente
-    #   if @recebimento.cheque.nil?
-    #     @recebimento.cheque = Cheque.new
-    #   end
+    @cheque    = @recebimento.cheque
+    @paciente  = @recebimento.paciente
+    @recebimento.cheque = Cheque.new if @recebimento.cheque.nil?
   end
 
   def create
@@ -125,21 +123,24 @@ class RecebimentosController < ApplicationController
   end
 
   def update
-    if !na_quinzena?(@recebimento.data)
+    debugger
+    if !@recebimento.na_quinzena?
       @recebimento.errors.add(:data, " : não pode ser anterior à quinzena")
     elsif @recebimento.em_cheque? && @recebimento.cheque
       # @recebimento.data_pr_br             = params[:datepicker].to_date
       # @recebimento.valor_real             = params[:recebimento_valor_real]
       @recebimento.observacao             = params[:observacao]
-      @recebimento.cheque.bom_para        = params[:datepicker2].to_date
-      @recebimento.cheque.banco_id        = params[:banco_id]
-      @recebimento.cheque.agencia         = params[:agencia]
-      @recebimento.cheque.numero          = params[:numero]
-      @recebimento.cheque.conta_corrente  = params[:conta_corrente]
-      @recebimento.cheque.valor           = params[:valor_cheque].gsub('.','').gsub(',','.')
-      @recebimento.errors.add(:banco, 'não pode ser branco') if !@recebimento.cheque.banco.present?
-      @recebimento.errors.add(:numero, 'do cheque não pode ser branco') if !@recebimento.cheque.numero.present?
-      @recebimento.errors.add(:valor, ' do cheque não pode ser branco') if !@recebimento.cheque.valor.present?
+      @cheque                             = @recebimento.cheque
+      debugger
+      @cheque.bom_para        = params[:datepicker2].to_date
+      @cheque.banco_id        = params[:banco_id]
+      @cheque.agencia         = params[:agencia]
+      @cheque.numero          = params[:numero]
+      @cheque.conta_corrente  = params[:conta_corrente]
+      @cheque.valor           = params[:valor_cheque].gsub('.','').gsub(',','.')
+      @cheque.add(:banco, 'não pode ser branco') if !@recebimento.cheque.banco.present?
+      @cheque.add(:numero, 'do cheque não pode ser branco') if !@recebimento.cheque.numero.present?
+      @cheque.add(:valor, ' do cheque não pode ser branco') if !@recebimento.cheque.valor.present?
     else
       @recebimento.cheque = nil
     end
@@ -148,7 +149,7 @@ class RecebimentosController < ApplicationController
       @recebimento.verifica_fluxo_de_caixa
       
       if @recebimento.em_cheque? && @recebimento.cheque
-        @recebimento.cheque.save
+        @cheque.save
       end
       #TODO fazer redirect_to back votlar para a presquisa feita com dados
       # redirect_to :back

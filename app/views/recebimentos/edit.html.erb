@@ -42,10 +42,11 @@
     </tr>
     <tr>
       <td align='right'><%= label_tag :agencia %> :</td>
-      <td>   <%= text_field_tag :agencia, (@cheque.nil? ? '' : @cheque.agencia), :size=>8 %>
-        
-         <%= label_tag :número %> : 
-         <%= text_field_tag :numero, (@cheque.nil? ? '':  @cheque.numero),:size=>7 %></td>
+      <td>   <%= text_field_tag :agencia, (@cheque.nil? ? '' : @cheque.agencia), :size=>8 %></td>
+    </tr>
+    <tr>
+      <td align='right'><%= label_tag :número %> : </td>
+      <td><%= text_field_tag :numero, (@cheque.nil? ? '':  @cheque.numero),:size=>7 %></td>
     </tr>
     <tr>
       <td align='right'><%= label_tag :valor_do_cheque %> : </td>
