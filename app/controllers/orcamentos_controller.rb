@@ -127,19 +127,21 @@ class OrcamentosController < ApplicationController
       pdf.move_down 10
       pdf.text "Paciente : #{@orcamento.paciente.nome}", :size=>14
       pdf.move_down 8
-      
-      pdf.text "Número : #{@orcamento.numero}"
-      pdf.text "Data   : #{@orcamento.data.to_s_br}"
-      pdf.text "Dentista : #{@orcamento.dentista.nome}"
-      pdf.text "Valor : R$ #{@orcamento.valor.real.to_s}"
-      if @orcamento.desconto && @orcamento.desconto > 0
-        pdf.text "Desconto : #{@orcamento.desconto} %"
-        pdf.text "Valor c/ desconto : R$ #{@orcamento.valor_com_desconto.real.to_s}"
-      end
-      pdf.text "Forma de pgto : #{@orcamento.forma_de_pagamento}"
-      pdf.text "Número de parcelas : #{@orcamento.numero_de_parcelas}"
-      pdf.text "Vencto primeira parcela : #{@orcamento.vencimento_primeira_parcela.to_s_br}"
-      pdf.text "Valor da parcela : #{@orcamento.valor_da_parcela.real.to_s}"
+      corpo = [
+                ['Número :', @orcamento.numero],
+                ['Data :', @orcamento.data.to_s_br],
+                ['Dentista :', @orcamento.dentista.nome],
+                ['Valor :', @orcamento.valor.real.to_s],
+                ['Desconto :', @orcamento.desconto.to_s + '%'],
+                ['Valor c/ desc.', @orcamento.valor_com_desconto.real],
+                ['Forma pgto :', @orcamento.forma_de_pagamento],
+                ['Núm. parcelas :', @orcamento.numero_de_parcelas],
+                ['Vencto primeira parc.:', @orcamento.vencimento_primeira_parcela.to_s_br],
+                ['Valor parcela :', @orcamento.valor_da_parcela.real.to_s]
+              ]
+      pdf.table(corpo, 
+               :align => {0=>:right, 1=>:left},
+               :cell_border => 0)
       pdf.move_down 15
       
       data = @orcamento.vencimento_primeira_parcela - 1.month
@@ -153,7 +155,8 @@ class OrcamentosController < ApplicationController
                 :header_color => 'AAAAAA',
                 :headers=> ['Parcela', 'Data', 'Valor'],
                 :align => {0=>:right, 1=>:center, 2=>:right},
-                :cell_style => { :padding => 12 }, :width => 300)
+                :cell_style => { :padding => 12 }, 
+                :width => 300)
       
       
       head :ok

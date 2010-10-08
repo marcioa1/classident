@@ -42,8 +42,8 @@ class Converte
         end
         p.clinica_id            = @clinica.id unless @clinica.nil?
         p.cpf                   = registro[16]
-        p.profissao             =
-        p.indicado_por          =
+        p.profissao             = ''
+        p.indicado_por          = ''
         p.sexo                  = registro[6].to_i == 0 ? "M" : "F"
         p.inicio_tratamento     = registro[7].to_date unless !Date.valid?(registro[7])
         p.sair_da_lista_de_debitos          = registro[29]

@@ -298,6 +298,7 @@ ActiveRecord::Schema.define(:version => 20101008012442) do
     t.date     "data_da_suspensao_da_cobranca_de_orto"
     t.string   "motivo_suspensao_cobranca_orto",        :limit => 30
     t.string   "profissao",                             :limit => 50
+    t.string   "indicado_por",                          :limit => 50
   end
 
   add_index "pacientes", ["clinica_id"], :name => "index_pacientes_on_clinica_id"
