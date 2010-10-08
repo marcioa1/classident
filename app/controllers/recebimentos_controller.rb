@@ -123,7 +123,6 @@ class RecebimentosController < ApplicationController
   end
 
   def update
-    debugger
     if !@recebimento.na_quinzena?
       @recebimento.errors.add(:data, " : não pode ser anterior à quinzena")
     elsif @recebimento.em_cheque? && @recebimento.cheque
@@ -131,7 +130,6 @@ class RecebimentosController < ApplicationController
       # @recebimento.valor_real             = params[:recebimento_valor_real]
       @recebimento.observacao             = params[:observacao]
       @cheque                             = @recebimento.cheque
-      debugger
       @cheque.bom_para        = params[:datepicker2].to_date
       @cheque.banco_id        = params[:banco_id]
       @cheque.agencia         = params[:agencia]

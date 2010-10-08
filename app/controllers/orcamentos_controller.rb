@@ -1,7 +1,7 @@
 class OrcamentosController < ApplicationController
   layout "adm"
   before_filter :require_user
-  
+  before_filter :find_current, :only=>[:show, :edit, :update, :imprime, :destroy]
   before_filter :quinzena, :only=>:aproveitamento
   
   def index
@@ -9,7 +9,6 @@ class OrcamentosController < ApplicationController
   end
 
   def show
-    @orcamento = Orcamento.find(params[:id])
   end
 
   def new
@@ -26,7 +25,6 @@ class OrcamentosController < ApplicationController
   end
 
   def edit
-    @orcamento = Orcamento.find(params[:id])
     @paciente = @orcamento.paciente
     @dentistas = Clinica.find(session[:clinica_id]).dentistas.ativos.por_nome.collect{|obj| [obj.nome,obj.id]}
   end
@@ -48,8 +46,6 @@ class OrcamentosController < ApplicationController
   end
 
   def update
-    @orcamento  = Orcamento.find(params[:id])
-    
     if @orcamento.update_attributes(params[:orcamento])
       redirect_to(abre_paciente_path(@orcamento.paciente_id)) 
     else
@@ -61,7 +57,6 @@ class OrcamentosController < ApplicationController
   end
 
   def destroy
-    @orcamento = Orcamento.find(params[:id])
     @orcamento.destroy
 
     redirect_to(orcamentos_url) 
@@ -121,4 +116,52 @@ class OrcamentosController < ApplicationController
     render :json => result.to_json  
   end
   
+  def imprime
+    require "prawn/layout"
+    require "prawn/core"
+    Prawn::Document.generate("public/relatorios/orcamento_#{params[:clinica_id]}.pdf") do |pdf|
+
+      pdf.font "Times-Roman"
+      imprime_cabecalho(pdf)
+      pdf.text "Orçamento", :size=>22, :align=>:center
+      pdf.move_down 10
+      pdf.text "Paciente : #{@orcamento.paciente.nome}", :size=>14
+      pdf.move_down 8
+      
+      pdf.text "Número : #{@orcamento.numero}"
+      pdf.text "Data   : #{@orcamento.data}"
+      pdf.text "Dentista : #{@orcamento.dentista.nome}"
+      pdf.text "Valor : R$ #{@orcamento.valor.real.to_s}"
+      if @orcamento.desconto && @orcamento.desconto > 0
+        pdf.text "Desconto : #{@orcamento.desconto} %"
+        pdf.text "Valor c/ desconto : R$ #{@orcamento.valor_com_desconto.real.to_s}"
+      end
+      pdf.text "Forma de pgto : #{@orcamento.forma_de_pagamento}"
+      pdf.text "Número de parcelas : #{@orcamento.numero_de_parcelas}"
+      pdf.text "Vencto primeira parcela : #{@orcamento.vencimento_primeira_parcela.to_s_br}"
+      pdf.text "Valor da parcela : #{@orcamento.valor_da_parcela.real.to_s}"
+      pdf.move_down 15
+      
+      data = @orcamento.vencimento_primeira_parcela - 1.month
+      parcelas = (1..@orcamento.numero_de_parcelas).each.map do |par|
+        data = data + 1.month
+        [par, data.to_s_br, @orcamento.valor_da_parcela.real]
+      end
+      
+      pdf.table(parcelas,
+                :row_colors =>['FFFFFF', 'DDDDDD'],
+                :header_color => 'AAAAAA',
+                :headers=> ['Parcela', 'Data', 'Valor'],
+                :align => {0=>:right, 1=>:center, 2=>:right},
+                :cell_style => { :padding => 12 }, :width => 300)
+      
+      
+      head :ok
+    end
+    
+  end
+
+  def find_current
+    @orcamento = Orcamento.find(params[:id])
+  end  
 end

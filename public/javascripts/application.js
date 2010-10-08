@@ -579,16 +579,29 @@ function busca_usuarios(){
   });
 }
 
-function imprime_extrato(paciente_id){
+function imprime_extrato(paciente_id, clinica_id){
   $.ajax({
     url  : "/pacientes/" + paciente_id + "/extrato_pdf",
     type : "GET",
     success :function(data){
-        window.open("http://localhost:3000/relatorios/extrato.pdf")
+        window.open("http://" + location.host + "/relatorios/extrato_" + clinica_id +".pdf");
       }, 
     error : function(){
       alert("Não foi possível gerar o relatório.");
     }
-    
+  });
+}
+   
+function imprime_orcamento(orcamento_id,clinica_id){
+  $.ajax({
+    url  : "/orcamentos/" + orcamento_id + "/imprime",
+    data : {clinica_id: clinica_id},
+    type : "GET",
+    success :function(data){
+        window.open("http://" + location.host + "/relatorios/orcamento_" + clinica_id + ".pdf");
+      }, 
+    error : function(){
+      alert("Não foi possível gerar o relatório.");
+    }
   });
 }
