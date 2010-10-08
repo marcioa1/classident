@@ -129,7 +129,7 @@ class OrcamentosController < ApplicationController
       pdf.move_down 8
       
       pdf.text "Número : #{@orcamento.numero}"
-      pdf.text "Data   : #{@orcamento.data}"
+      pdf.text "Data   : #{@orcamento.data.to_s_br}"
       pdf.text "Dentista : #{@orcamento.dentista.nome}"
       pdf.text "Valor : R$ #{@orcamento.valor.real.to_s}"
       if @orcamento.desconto && @orcamento.desconto > 0

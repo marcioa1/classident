@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100907021812) do
+ActiveRecord::Schema.define(:version => 20101008012442) do
 
   create_table "altas", :force => true do |t|
     t.integer  "paciente_id"
@@ -297,6 +297,7 @@ ActiveRecord::Schema.define(:version => 20100907021812) do
     t.date     "data_da_saida_da_lista_de_debitos"
     t.date     "data_da_suspensao_da_cobranca_de_orto"
     t.string   "motivo_suspensao_cobranca_orto",        :limit => 30
+    t.string   "profissao",                             :limit => 50
   end
 
   add_index "pacientes", ["clinica_id"], :name => "index_pacientes_on_clinica_id"

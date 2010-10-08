@@ -47,8 +47,12 @@
     <%= f.radio_button :sexo, :f %> Fem
    </p>
   <p>
-  	<%= f.label :indicacao %>
+  	<%= f.label :indicacao %> :
     <%= f.select :indicacao_id, @indicacoes, :include_blank=>true %>
+  </p>
+  <p>
+    <%= f.label :profissão %> :
+    <%= f.text_field :profissao, :size => 30 %>
   </p>
   <fieldset class="fieldset_40">
   <legend><%= f.check_box :ortodontia %> <%= f.label :Paciente_de_ortodontia %></legend>

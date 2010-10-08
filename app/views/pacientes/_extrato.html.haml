@@ -21,10 +21,13 @@
   - total_credito = 0.0
   - @paciente.extrato.each do |lancamento|
     %tr{ :class=>"#{lancamento.is_a?(Debito) ? 'debito' : ''}"}
-      %td{ :align => "center" }
-        = lancamento.data.to_s_br
       - if lancamento.class == Debito
-        - total_debito += lancamento.valor
+        %td{ :align => "center" }
+          - if lancamento.pode_alterar?
+            = link_to lancamento.data.to_s_br, edit_debito_path(landamento)
+          - else
+            = lancamento.data.to_s_br
+          - total_debito += lancamento.valor
         %td
           - if lancamento.pode_alterar?
             = link_to lancamento.descricao, edit_debito_path(lancamento)
@@ -38,11 +41,15 @@
         - saldo -= lancamento.valor
       - else
         - total_credito += lancamento.valor
-        %td
+        %td{ :align => "center" }
           - if lancamento.pode_alterar?
-            = link_to lancamento.observacao_do_recebimento, edit_recebimento_path(lancamento)
+            = link_to lancamento.data.to_s_br, edit_recebimento_path(lancamento)
           - else
-            = lancamento.observacao_do_recebimento
+            = lancamento.data.to_s_br
+          - total_debito += lancamento.valor
+
+        %td
+          = lancamento.observacao_do_recebimento
         %td
           &nbsp;
         %td{ :align => "right" }

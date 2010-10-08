@@ -77,11 +77,11 @@ class Recebimento < ActiveRecord::Base
     end
   end
   
-  def observacao
-    if self[:observacao].blank? && self.em_cheque?
+  def observacao_recebimento
+    if self.observacao.blank? && self.em_cheque?
       return self.cheque.nil? ? '' : self.cheque.observacao
     else
-      return self[:observacao]
+      return self.observacao
     end
   end
 
@@ -118,7 +118,7 @@ class Recebimento < ActiveRecord::Base
   end
   
   def observacao_do_recebimento
-    if self.observacao.nil? 
+    if self.observacao.nil? || self.observacao.blank?
       if self.em_cheque?
         if self.cheque.present? 
           return self.cheque.observacao

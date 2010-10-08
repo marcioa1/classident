@@ -26,7 +26,10 @@
       <td align='right'><%= f.label :observação %> :</td>
       <td><%= f.text_field :observacao %></td>
     </tr>
-    
+    <tr>
+        <td>Observação cheque: </td>
+        <td><%= @recebimento.observacao_recebimento %></td>
+      </tr>
   </table>
 
   <div id="cheque" style="display:yes;">
