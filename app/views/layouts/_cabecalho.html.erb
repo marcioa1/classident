@@ -1,7 +1,7 @@
-<% cache "cabecalho_#{current_user.id}" do%>
+<% cache "cabecalho_#{current_user.id}" do %>
   <div id="logo"><%= image_tag "logo2.jpg" %>
     <div id="login">
-      Usuário : <%= current_user.nome %> ( <%= current_user.tipo_usuario.nome %> ) | <%= @clinica_atual.nome %>
+      Usuário : <%= current_user.nome %> ( <%= current_user.tipo_usuario.nome %> ) | <span id="nome_da_clinica"><%= @clinica_atual.nome %></span>
   | <%= link_to "trocar senha", troca_senha_path %>
   | <%= link_to "logout", logout_path %>
    <% if current_user.clinicas.size > 1 %>

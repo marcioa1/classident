@@ -17,8 +17,9 @@
   </p>
 <% end %>
 <br/>
+<% dados = "Cheques recebidos;>Bom para;Paciente;Valor;Banco;Número;Estado>center;left;right;left;left;left>" %>
 
-<table>
+<table id='table'>
   <tr>
     <% if @administracao %>
       <th>Clínica</th>
@@ -28,7 +29,6 @@
     <th width="60px">Valor</th>
     <th width="140px">Banco</th>
     <th>Agência</th>
-    <th>Conta corrente</th>
     <th>Número</th>
     <th>Adm</th>
     <th>Situação</th>
@@ -38,7 +38,11 @@
   <% for cheque in @cheques do %>
     <tr>
     <% if @administracao %>
+      <% dados += "#{cheque.clinica.nome};#{cheque.bom_para.to_s_br};#{cheque.nome_dos_pacientes}; #{cheque.valor.real};#{cheque.banco.nome};#{cheque.numero};#{cheque.status}>" %>
       <td><%= cheque.clinica.nome %></td>
+    <% else %>
+      <% dados += "#{cheque.bom_para.to_s_br};#{cheque.nome_dos_pacientes}; #{cheque.valor.real};#{cheque.banco.nome};#{cheque.numero};#{cheque.status}>" %>
+
     <% end %>
     <td align="center">
       <% if  @administracao %>
@@ -51,7 +55,7 @@
     <td align="right"><%= cheque.valor.real %></td>
     <td align="center"><%= cheque.banco.numero + "-"+ cheque.banco.nome unless cheque.banco.nil? %></td>
     <td><%= cheque.agencia  %></td>
-    <td><%= cheque.conta_corrente %></td>
+    
     <td><%= cheque.numero %></td>
     <% if @administracao %>
       <td><%= cheque.data_recebimento_na_administracao.to_s_br %></td>
@@ -79,8 +83,9 @@
     <td colspan="3" align="center">Total</td>
     <td align="right"><%= total.real%></td>
     <td colspan="5" align="right"><%= link_to "enviar cheques selecionados p/ administração" , "#", :onclick=>"enviar_administracao();"  if params[:status]=="disponíveis" && !@administracao %></td>
-    <td>&nbsp;</td>
+    
   </tr>
 </table>
+<%= link_to "imprime", "#", :onclick=>"gera_pdf('#{dados}')"%>
 </div>
 <% end %>

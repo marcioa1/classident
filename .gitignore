@@ -12,4 +12,4 @@ doc/convertidos/*.*
 *.sql
 config/database.yml
 public/javascripts/jsDraw2D/*
-public/relatorio/*.*
+public/relatorios/*.*

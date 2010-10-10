@@ -70,11 +70,7 @@ class ApplicationController < ActionController::Base
   end
   
 
-  def imprime_cabecalho(pdf)
-    pdf.image "public/images/logo2.jpg", :align => :left
-    pdf.text "#{Time.current.to_s_br}", :align => :right, :size=>8
-    pdf.move_down 20
-  end
+ 
 
   private
   

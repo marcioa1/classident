@@ -605,3 +605,17 @@ function imprime_orcamento(orcamento_id,clinica_id){
     }
   });
 }
+
+function gera_pdf(dados){
+  $.ajax({
+    url  : "/gera_pdf",
+    data : {tabela: dados},
+    type : "POST",
+    success :function(data){
+        window.open("http://" + location.host + "/relatorios/relatorio.pdf");
+      }, 
+    error : function(){
+      alert("Não foi possível gerar o relatório.");
+    }
+  });
+}
