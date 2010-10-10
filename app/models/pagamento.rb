@@ -30,6 +30,8 @@ class Pagamento < ActiveRecord::Base
   named_scope :por_data, :order=>:data_de_pagamento
 #  named_scope :total,  :sum('valor_pago') #conditions=>['sum valor_pago where data between ? and ? ', '2009-01-01', '2009-01-31']
        
+   OPCAO_RESTANTE_EM_DINHEIRO = 2
+ 
   include ApplicationHelper
 
   attr_accessor :valor_pago_real, :data_de_pagamento_pt
@@ -75,4 +77,9 @@ class Pagamento < ActiveRecord::Base
   def pode_alterar?
     na_quinzena?(self.data_de_pagamento)
   end
+  
+  def em_dinheiro?
+    self.cheques.empty?
+  end
+
 end

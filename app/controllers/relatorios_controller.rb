@@ -21,10 +21,8 @@ class RelatoriosController < ApplicationController
       imprime_cabecalho(pdf, titulo)
       alinhamento = Hash.new
       tr[2].split(';').each_with_index do |elem, index|
-        # debugger
         alinhamento.merge!({index => elem.to_sym})
       end
-debugger
       pdf.table(items,
             :row_colors =>['FFFFFF', 'DDDDDD'],
             :header_color => 'AAAAAA',

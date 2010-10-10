@@ -32,7 +32,7 @@ class PagamentosController < ApplicationController
       session[:dentista_id] = nil
     end
     @tipos_pagamento = TipoPagamento.da_clinica(session[:clinica_id]).ativos.por_nome.collect{|obj| [obj.nome, obj.id]}
-    @pagamento       = Pagamento.new
+    @pagamento       = Pagamento.new(:data_de_pagamento => Date.today)
     if params[:valor]
       @pagamento.valor_pago = params[:valor]
     end

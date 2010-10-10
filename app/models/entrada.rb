@@ -29,4 +29,7 @@ class Entrada < ActiveRecord::Base
     data_confirmacao_da_entrada.present?  
   end
   
+  def remessa?
+    self.valor < 0
+  end
 end

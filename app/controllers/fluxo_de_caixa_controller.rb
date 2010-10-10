@@ -8,7 +8,6 @@ class FluxoDeCaixaController < ApplicationController
   
   def index
     @fluxo          = FluxoDeCaixa.atual(session[:clinica_id])
-    @fluxo_de_ontem = FluxoDeCaixa.da_clinica(session[:clinica_id]).saldo_na_data(@fluxo.data - 1.day).first
     if @fluxo.nil?
       FluxoDeCaixa.create(:clinica_id=>session[:clinica_id], :data=>Date.today, :saldo_em_dinheiro=>0.0, :saldo_em_cheque=>0.0)
       @fluxo = FluxoDeCaixa.da_clinica(session[:clinica_id]).first
