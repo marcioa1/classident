@@ -4,6 +4,7 @@
   <tr>
     <th width="210px">Nome</th>
     <th>Ativo</th>
+    <th>Tipo</th>
     <th>&nbsp;</th>
     <th>&nbsp;</th>
   </tr>
@@ -12,6 +13,7 @@
   <tr>
     <td><%=h formas_recebimento.nome %></td>
     <td><%=h formas_recebimento.ativo ? 'sim' : 'não '%></td>
+    <td><%=h formas_recebimento.tipo %></td>
     <td><%= link_to 'editar', edit_formas_recebimento_path(formas_recebimento) %></td>
     <td><%= link_to 'apagar', formas_recebimento, :confirm => 'Tem certeza ?', :method => :delete %></td>
   </tr>

@@ -1,6 +1,6 @@
 - content_for :main do
   = render :partial => '/layouts/include_senha'
-
+  = link_to 'novo pagamento', new_pagamento_path
   %h3{ :style => "padding-left: 10em;" }
     Fluxo de caixa do dia :
     = @fluxo.data.to_s_br
@@ -59,31 +59,31 @@
             %td{ :align => "right" }
               = #saldo_cheque.real
           - when "Recebimento" :
-            %td= lancamento.paciente.nome
             - if lancamento.formas_recebimento.nome.downcase =="dinheiro"
+              %td= lancamento.paciente.nome
               %td{ :align => "right" }
                 = lancamento.valor.real
               %td &nbsp;
               - saldo_dinheiro += lancamento.valor
               %td{ :align => "right" }
-                = #saldo_dinheiro.real
+                = saldo_dinheiro.real
               %td &nbsp;
               %td &nbsp;
               %td{ :align => "right" }
-                = #saldo_cheque.real
+                = saldo_cheque.real
             - elsif lancamento.formas_recebimento.nome.downcase =="cheque"
+              %td= lancamento.paciente.nome
               %td &nbsp;
               %td &nbsp;
               %td{ :align => "right" }
-                = #saldo_dinheiro.real
+                = saldo_dinheiro.real
               %td{ :align => "right" }
                 = lancamento.valor.real
               %td &nbsp;
               - saldo_cheque += lancamento.valor
               %td{ :align => "right" }
-                =# saldo_cheque.real
+                = saldo_cheque.real
           - when "Pagamento"
-            -debugger
             %td
               = lancamento.tipo_pagamento.nome + ', ' + lancamento.observacao
             %td &nbsp;

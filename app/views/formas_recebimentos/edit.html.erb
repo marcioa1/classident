@@ -10,6 +10,11 @@
     <%= f.text_field :nome %>
   </p>
   <p>
+    <%= f.label :tipo %><br />
+     <%= f.select :tipo, [['Outros', 'O'], ['Cheque', 'C'], ['Dinheiro', 'D']] %>
+  </p>
+
+  <p>
     <%= f.check_box :ativo %>
     <%= f.label :ativo %>
   </p>

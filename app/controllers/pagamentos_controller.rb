@@ -79,7 +79,8 @@ class PagamentosController < ApplicationController
           end
         end
         flash[:notice] = 'Pagamento criado com sucesso.'
-        redirect_to(relatorio_pagamentos_path) #TODO retornar para tela anterio
+        debugger
+        redirect_to(session[:origem] || relatorio_pagamentos_path) #TODO retornar para tela anterio
       else
         @tipos_pagamento  = TipoPagamento.da_clinica(session[:clinica_id]).ativos.por_nome.collect{|obj| [obj.nome, obj.id]}
         @contas_bancarias = ContaBancaria.all.collect{|obj| [obj.nome, obj.id]}
@@ -125,6 +126,7 @@ class PagamentosController < ApplicationController
   end
   
    def relatorio
+     session[:origem] = '/pagamentos/relatorio'
      @tipos_pagamento = TipoPagamento.da_clinica(session[:clinica_id]).por_nome.collect{|obj| [obj.nome, obj.id.to_s]}
      if params[:datepicker] && Date.valid?(params[:datepicker])
        @data_inicial = params[:datepicker].to_date 

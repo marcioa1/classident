@@ -157,6 +157,14 @@ class Converte
         if forma_adm.nil?
           forma_adm = FormasRecebimento.new
           forma_adm.nome = registro[0].strip
+          case forma_adm.nome.downcase
+            when 'dinheiro' 
+              forma_adm.tipo = 'D'
+            when 'cheque'
+              forma_adm.tipo = 'C'
+            else 
+              forma_adm.tipo = 'O'
+          end
           forma_adm.save
         end
         forma_cli            = FormaRecebimentoTemp.new

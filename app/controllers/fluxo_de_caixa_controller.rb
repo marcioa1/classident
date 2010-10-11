@@ -7,7 +7,8 @@ class FluxoDeCaixaController < ApplicationController
   before_filter :verifica_se_tem_senha
   
   def index
-    @fluxo          = FluxoDeCaixa.atual(session[:clinica_id])
+    session[:origem] = '/fluxo_de_caixa'
+    @fluxo           = FluxoDeCaixa.atual(session[:clinica_id])
     if @fluxo.nil?
       FluxoDeCaixa.create(:clinica_id=>session[:clinica_id], :data=>Date.today, :saldo_em_dinheiro=>0.0, :saldo_em_cheque=>0.0)
       @fluxo = FluxoDeCaixa.da_clinica(session[:clinica_id]).first
@@ -25,7 +26,7 @@ class FluxoDeCaixaController < ApplicationController
       @cheques      = Cheque.por_bom_para.na_administracao.
                entre_datas(@fluxo.data,@fluxo.data).nao_excluidos
     else
-      @recebimentos = Recebimento.da_clinica(session[:clinica_id]).no_dia(@fluxo.data).nao_excluidos
+      @recebimentos = Recebimento.da_clinica(session[:clinica_id]).no_dia(@fluxo.data).nao_excluidos.nas_formas(FormasRecebimento.dinheiro_ou_cheque)
       @cheques      = []
     end
     @pagamentos   = Pagamento.da_clinica(session[:clinica_id]).no_dia(@fluxo.data).no_livro_caixa

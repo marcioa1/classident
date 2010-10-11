@@ -3,6 +3,7 @@ class FormasRecebimento < ActiveRecord::Base
   has_many :recebimentos
   
   named_scope :por_nome ,:order=>:nome
+  named_scope :dinheiro_ou_cheque, :conditions=>["tipo in ('C','D')"]
   
   def self.cheque_id
     FormasRecebimento.find_by_nome("cheque").id
