@@ -24,7 +24,7 @@
       - if lancamento.class == Debito
         %td{ :align => "center" }
           - if lancamento.pode_alterar?
-            = link_to lancamento.data.to_s_br, edit_debito_path(landamento)
+            = link_to lancamento.data.to_s_br, edit_debito_path(lancamento)
           - else
             = lancamento.data.to_s_br
           - total_debito += lancamento.valor
