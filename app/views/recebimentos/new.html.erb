@@ -36,7 +36,7 @@
 
   <fieldset class="fieldset_40">
   <legend>Novo recebimento</legend>
-
+ortodontia : <%= @recebimento.paciente.de_ortodontia? %>
   <% form_for(@recebimento, @cheque) do |f| %>
     <%= f.error_messages %>
     <%= f.hidden_field :paciente_id %>
@@ -58,7 +58,12 @@
         <td align='right'><%= f.label :observação %> :</td>
         <td><%= f.text_field :observacao %></td>
       </tr>
-      
+      <% if @recebimento.paciente.de_ortodontia? %>
+        <tr>
+          <td align='right'><%= f.label :percentual_do_dentista %> :</td>
+          <td><%= f.text_field :percentual_dentista, :size=>6 %> %</td>
+        </tr>
+      <% end %>
     
     </table>
 

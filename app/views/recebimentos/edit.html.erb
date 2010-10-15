@@ -26,6 +26,12 @@
       <td align='right'><%= f.label :observação %> :</td>
       <td><%= f.text_field :observacao %></td>
     </tr>
+    <% if @recebimento.paciente.de_ortodontia? %>
+        <tr>
+          <td align='right'><%= f.label :percentual_do_dentista %> :</td>
+          <td><%= f.text_field :percentual_dentista, :size=>6 %> %</td>
+        </tr>
+      <% end %>
     <tr>
         <td>Observação cheque: </td>
         <td><%= @recebimento.observacao_recebimento %></td>

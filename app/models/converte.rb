@@ -42,8 +42,8 @@ class Converte
         end
         p.clinica_id            = @clinica.id unless @clinica.nil?
         p.cpf                   = registro[16]
-        p.profissao             = ''
-        p.indicado_por          = ''
+        p.profissao             = registro[8]
+        p.indicado_por          = registro[15]
         p.sexo                  = registro[6].to_i == 0 ? "M" : "F"
         p.inicio_tratamento     = registro[7].to_date unless !Date.valid?(registro[7])
         p.sair_da_lista_de_debitos          = registro[29]
@@ -214,6 +214,7 @@ class Converte
         r.observacao            = registro[7].tira_acento
         r.sequencial            = registro[8].to_i
         r.clinica_id            = @clinica.id
+        r.percentual_dentista   = registro[11].to_i
         r.data_de_exclusao      = registro[12].to_date if Date.valid?(registro[12])
         r.observacao_exclusao   = registro[14]
         #FIXME Verificar qual o campo de cheque_id
