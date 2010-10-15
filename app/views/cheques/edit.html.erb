@@ -6,30 +6,34 @@
   <%= f.error_messages %>
   <%= f.hidden_field :clinica_id %>
 
-  <p>
+  <div>
     <%= f.label :paciente %> : <%= @cheque.nome_dos_pacientes %>
-  </p>
+  </div>
 
-  <p>
+  <div>
      <%= f.label :banco %> : 
      <%= f.select :banco_id, options_for_select(@bancos)  %>
-  </p>
-  <p>
+  </div>
+  <div>
      <%= f.label :agencia %> : 
      <%= f.text_field :agencia, :size=>7 %>
+  </div>
+  <div>
      <%= f.label :conta_corrente %> : 
      <%= f.text_field :conta_corrente, :size=>7 %>
+  </div>
+  <div>
      <%= f.label :número %> : 
      <%= f.text_field :numero, :size=>7 %>
-  </p>
-  <p>
-    <%= f.label :valor %>
+  </div>
+  <div>
+    <%= f.label :valor %> :
     <%= f.text_field :valor, :size=>8%>
-  </p>
-  <p>
-      <%= f.label :bom_para %>
-      <%= text_field_tag :datepicker, Date.today.to_s_br, :size=>10 %>
-    </p>
+  </div>
+  <div>
+    <%= f.label :bom_para %> :
+    <%= text_field_tag :datepicker, Date.today.to_s_br, :size=>10 %>
+  </div>
  <p>
     <%= check_box_tag :uma_devolucao, 1, checked=@cheque.devolvido_uma_vez? , options={ :onclick=>"abre_uma_devolucao();"}%> devolvido uma vez
  </p>
@@ -39,12 +43,18 @@
   <% else %>
     <div id="devolvido_uma_vez" style="display:none;">
   <% end %>
-    <p class="borda_dupla">
-      <%= f.label :data_primeira_devolucao %>   
-      <%= text_field_tag :datepicker2, @cheque.data_primeira_devolucao.to_s_br, :size=>10 %>
-      <%= f.label :motivo %>    
-      <%= f.text_field :motivo_primeira_devolucao, :size=>10 %>
-    </p>
+    <fieldset>
+      <legend>Primeira devolução</legend>
+      <div>
+        <%= f.label :data_primeira_devolução %> :   
+        <%= text_field_tag :datepicker2, @cheque.data_primeira_devolucao.to_s_br, :size=>10 %>
+      </div>
+      <div>
+        <%= f.label :motivo %> :
+        <%= f.text_field :motivo_primeira_devolucao, :size=>20 %>
+      </div>
+    </fieldset>
+  </div>
     <p>
         <%= check_box_tag :reapresentacao, 'reapresentado', checked=@cheque.reapresentado? , options={ :onclick=>"abre_reapresentacao();"}%> reapresentado
      </p>
@@ -53,11 +63,14 @@
     <% else %>
       <div id="reapresentado" style="display:none">
     <% end %>
-      <p class="borda_dupla">
-        <%= f.label :data_da_reapresentação %>
-        <%= text_field_tag :datepicker3, @cheque.data_reapresentacao, :size=>10%>
-      </p>
-        <p >
+    <fieldset>
+      <legend>Reapresentação</legend>
+      <div>
+        <%= f.label :data_da_reapresentação %> :
+        <%= text_field_tag :datepicker3, @cheque.data_reapresentacao.to_s_br, :size=>10%>
+      </div>
+      </fieldset>
+        <p>
             <%= check_box_tag :segunda_devolucao, 1, checked=@cheque.devolvido_duas_vezes? , options={ :onclick=>"abre_segunda_devolucao();"}%> segunda devolução
          </p>
         <% if @cheque.devolvido_duas_vezes? %>

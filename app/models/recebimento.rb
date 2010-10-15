@@ -118,19 +118,9 @@ class Recebimento < ActiveRecord::Base
   end
   
   def observacao_do_recebimento
-    if self.observacao.nil? || self.observacao.blank?
-      if self.em_cheque?
-        if self.cheque.present? 
-          return self.cheque.observacao
-        else
-          return '.'
-        end
-      else 
-        return '-'
-      end
-    else
-      return self.observacao
-    end
+    observacao = self.observacao
+    observacao += ' - ' + self.cheque.observacao if self.em_cheque? && self.cheque.present?
+    return observacao
   end
   
   def exclui(user)
