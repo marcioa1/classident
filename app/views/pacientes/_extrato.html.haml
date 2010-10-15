@@ -75,7 +75,7 @@
       %td
         - if lancamento.pode_excluir?
           - if lancamento.class == Recebimento
-            = link_to 'Excluiree', exclusao_recebimento_path(lancamento.id) , :class=> 'ui-icon ui-icon-trash', :title=>'excluir'
+            = link_to 'Excluir', exclusao_recebimento_path(lancamento.id) , :class=> 'ui-icon ui-icon-trash', :title=>'excluir'
           - else
             %td
               = link_to 'Excluir', lancamento, :confirm => 'Tem certeza da exclusão deste débito ?', :method => :delete , :class=>'ui-icon ui-icon-trash', :title=>'excluir'

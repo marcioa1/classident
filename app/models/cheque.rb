@@ -159,10 +159,9 @@ class Cheque < ActiveRecord::Base
   
   def observacao
     result = ''
-    result += self.banco.nome + '/' if self.banco.present?
-    result += self.agencia + '/' if self.agencia.present?
-    result += self.conta_corrente + '/' if self.conta_corrente.present?
-    result += self.numero if self.numero.present?
+    result += 'bc.' + self.banco.nome + '/' if self.banco.present?
+    result += 'ag.' + self.agencia + '/' if self.agencia.present?
+    result += 'num.'+ self.numero if self.numero.present?
     result
   end
 end
