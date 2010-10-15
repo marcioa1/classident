@@ -57,6 +57,7 @@ class TrabalhoProteticosController < ApplicationController
 
   def destroy
     @trabalho_protetico.destroy
+    #TODO refazer este redirect
     redirect_to(trabalho_proteticos_url) 
   end
   
