@@ -1,6 +1,5 @@
 <h2>Trabalhos devolvidos não pagos</h2>
-<%= link_to imprime_relatorios_path()%>
-<% dados = "Trabalhos devolvidos de protético;>Paciente;Dente;Data  de envio;Descrição;Observação;Valor;Data de Devolução;Dentista;"%>
+<% dados = "Trabalhos devolvidos e não pagos do protético #{@protetico.nome};>Paciente;Dente;Data  de envio;Descrição;Observação;Valor;Data de Devolução;Dentista;>left;center;center;left;left;right;center;left>"%>
 <table>
   <tr>
     <th><br/>Paciente</th>
@@ -24,6 +23,9 @@
     <td align='center'><%= trab.data_prevista_de_devolucao.to_s_br%></td>
     <td align='center'><%= trab.data_de_devolucao.to_s_br %></td>
     <td><%= trab.dentista.nome %></td>
+    <% dados += "#{trab.paciente.nome};#{trab.dente};#{trab.data_de_envio.to_s_br};"%>
+    <% dados += "#{trab.tabela_protetico.descricao};#{trab.observacoes};#{trab.valor.real};#{ trab.data_de_devolucao.to_s_br};#{trab.dentista.nome}>"%>
   </tr>
 <% end %>
 </table>
+<%= link_to "imprime", "#", :onclick=>"gera_pdf('#{dados}')", :class=>'ui-icon ui-icon-print'%>
