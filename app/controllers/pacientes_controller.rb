@@ -103,6 +103,7 @@ class PacientesController < ApplicationController
     else
       @paciente =  Paciente.busca_paciente(params[:id])
     end
+    session[:origem] = abre_paciente_path(@paciente.id)
     # @indicacoes             = Indicacao.por_descricao.collect{|obj| [obj.descricao, obj.id]}
     session[:paciente_id]   = @paciente.id
     session[:paciente_nome] = @paciente.nome

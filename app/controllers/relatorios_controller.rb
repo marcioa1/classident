@@ -30,9 +30,7 @@ class RelatoriosController < ApplicationController
             :font_size => 8,
             :align => alinhamento,
             :cell_style => { :padding => 6 }, :width => 550)
-
     end
-
     head :ok
   end
   

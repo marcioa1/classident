@@ -58,7 +58,12 @@ class TrabalhoProteticosController < ApplicationController
   def destroy
     @trabalho_protetico.destroy
     #TODO refazer este redirect
-    redirect_to(trabalho_proteticos_url) 
+    debugger
+    if session[:origem]
+      redirect_to session[:origem]
+    else
+      redirect_to(trabalho_proteticos_url) 
+    end
   end
   
   def registra_devolucao_de_trabalho

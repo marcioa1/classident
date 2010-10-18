@@ -56,10 +56,11 @@ class ProteticosController < ApplicationController
 
   def destroy
     @protetico.destroy
-    redirect_to(proteticos_url) 
+    redirect_to(session[:origem] ? session[:origem] : proteticos_url) 
   end
   
   def abre
+    session[:origem] = abre_protetico_path(@protetico.id)
     @clinicas = Clinica.por_nome - Clinica.administracao
     if @administracao
       @trabalhos_pendentes  = TrabalhoProtetico.do_protetico(@protetico.id).pendentes

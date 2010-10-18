@@ -11,6 +11,7 @@
     <th><br/>Data de devolução</th>
     <th><br/>Dentista</th>
     <th><br/>Protético</th>
+    <th>&nbsp;</th>
   </tr>
 <% @trabalhos_pendentes.each do |trab| %>
   <tr>
@@ -26,6 +27,7 @@
        </span></td>
     <td><%= trab.dentista.nome unless trab.dentista.nil? %></td>
     <td><%= link_to trab.protetico.nome, abre_protetico_path(trab.protetico) unless trab.protetico.nil? %></td>
+    <td><%= link_to "excluir", trab, :confirm=> "Tem certeza que quer excluir este trabalho ?", :method=>'delete', :class => 'ui-icon ui-icon-trash'%></td>
   </tr>
 
 <% end %>
