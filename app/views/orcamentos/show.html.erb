@@ -53,8 +53,10 @@
   <b>Valor da parcela:</b>
   <%=h @orcamento.valor_da_parcela.real %>
 </p>
-<%= render :partial => 'tratamentos', :locals=>{:tratamentos => @orcamento.tratamentos }%>
 <p>
-<%= link_to 'voltar', :back %>
+  <p>Parcelas :</p>
+  <%= render :partial=>'parcelas' %>
 </p>
+<%= render :partial => 'tratamentos', :locals=>{:tratamentos => @orcamento.tratamentos }%>
+
 <% end %>

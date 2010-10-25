@@ -79,6 +79,8 @@ class OrcamentosController < ApplicationController
   end
 
   def aproveitamento
+    @data_inicial  = params[:datepicker].to_date if Date.valid?(params[:datepicker])
+    @data_final    = params[:datepicker2].to_date if Date.valid?(params[:datepicker2])
     @orcamentos                  = Orcamento.por_dentista.entre_datas(@data_inicial, @data_final)
     @aberto_por_clinica          = Array.new(10,0)
     @iniciado_por_clinica        = Array.new(10,0)

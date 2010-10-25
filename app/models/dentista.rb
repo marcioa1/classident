@@ -44,6 +44,10 @@ class Dentista < ActiveRecord::Base
   def busca_producao(inicio,fim,clinicas)
     resultado = Tratamento.do_dentista(id).por_data.entre(inicio, fim).da_clinica(clinicas)
   end
+  
+  def busca_producao_de_ortodontia(inicio,fim)
+     resultado = Recebimento.all(:conditions =>["(data between ? and ?) and paciente_id in (?)",inicio,fim,self.pacientes_de_ortodontia ])
+  end
 
   def self.busca_dentistas(clinica_id)
     key       = 'dentistas_' + clinica_id.to_s
@@ -54,6 +58,10 @@ class Dentista < ActiveRecord::Base
       Rails.cache.write(key, dentistas, :expires_in => 2.hours) 
     end
     dentistas
+  end
+  
+  def pacientes_de_ortodontia
+    Paciente.all(:select=>"id", :conditions => ["ortodontista_id = ?", self.id]).map(&:id)
   end
 
 end

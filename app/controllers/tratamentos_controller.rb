@@ -67,6 +67,12 @@ class TratamentosController < ApplicationController
       end
       redirect_to(abre_paciente_path(:id=>@tratamento.paciente_id)) 
     else
+      @paciente               = @tratamento.paciente
+
+      @items = @tratamento.paciente.tabela.item_tabelas.
+        collect{|obj| [obj.codigo + " - " + obj.descricao,obj.id]}
+      @dentistas = @clinica_atual.dentistas.ativos.collect{|obj| [obj.nome,obj.id]}
+
       render :action => "edit" 
     end
   end

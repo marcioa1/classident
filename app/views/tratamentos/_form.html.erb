@@ -78,7 +78,12 @@
     <%= f.text_field :data_termino_br, :class => 'datepicker', :size=>10     %>
   </div>
   <div>
-    <%= f.submit "salvar" if !@tratamento.data || (@tratamento.data + 15.days > Date.today )%>
+    <%= f.label :orçamento %> :
+
+    <%= f.select :orcamento_id, @tratamento.paciente.orcamentos.collect{ |o| [ o.numero, o.id.to_s]}.insert(0, '') %>
+  </div>
+  <div>
+    <%= f.submit "salvar" if (!@tratamento.data || (@tratamento.data + 15.days > Date.today )) && !@administracao%>
   </div>
 <% end %>
 <hr>

@@ -1,0 +1,11 @@
+%table
+  %tr
+    %th Parcela
+    %th Vencimento
+  - data = @orcamento.vencimento_primeira_parcela
+  - (1..@orcamento.numero_de_parcelas).each do |parcela| 
+    %tr
+      %td= parcela
+      %td= data.to_s_br
+    - data = data + 1.month
+%p
