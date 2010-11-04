@@ -36,6 +36,7 @@ class RecebimentosController < ApplicationController
   def create
     #FIXME reescrever, método muito grande
     @recebimento      = Recebimento.new(params[:recebimento])
+    @recebimento.percentual_dentista = 0 if @recebimento.percentual_dentista.nil?
     if !na_quinzena?(@recebimento.data)
       @recebimento.errors.add(:data, " : não pode ser anterior à quinzena")
     elsif @recebimento.em_cheque?
@@ -53,6 +54,7 @@ class RecebimentosController < ApplicationController
           @recebimento.errors.add("Formato do valor do segundo paciente ")
        else
          @recebimento2                       = Recebimento.new
+         @recebimento2.percentual_dentista   = @recebimento.percentual_dentista
          @recebimento2.paciente_id           = params[:paciente_id_2]
          @recebimento2.valor                 = params[:valor_segundo_paciente].gsub('.','').gsub(',','.')
          @recebimento2.observacao            = params[:observacao_paciente_2]
@@ -67,6 +69,7 @@ class RecebimentosController < ApplicationController
           @recebimento.errors.add("Formato do valor do segundo paciente ")
         else
           @recebimento3                       = Recebimento.new
+          @recebimento3.percentual_dentista   = @recebimento.percentual_dentista
           @recebimento3.paciente_id           = params[:paciente_id_3]
           @recebimento3.valor                 = params[:valor_terceiro_paciente].gsub('.','').gsub(',','.')
           @recebimento3.observacao            = params[:observacao_paciente_3]
@@ -79,6 +82,7 @@ class RecebimentosController < ApplicationController
     else
       @cheque = nil
     end
+    
     Recebimento.transaction do
       if (@recebimento.errors.size==0) && ((@recebimento.em_cheque? && @cheque.valid?) || (!@recebimento.em_cheque?))
         @cheque.save if @cheque
