@@ -22,7 +22,12 @@
     <td><%= trab.observacoes %></td>
     <td align='right'><%= trab.valor.real %></td>
     <td align='center'><%= trab.data_prevista_de_devolucao.to_s_br%></td>
-    <td align='center'><span id=<%= "data_#{trab.id}" %> > 
+    <td align='center'><span id=<%= "data_#{trab.id}" %> >
+      <% if trab.data_de_devolucao %>
+        <span style="font-size:8px;">
+        ( <%= trab.data_de_devolucao.to_s_br%> )<br />
+        </span>
+      <% end %>
       <%= link_to 'registra devolução', '#', :onclick=>'javascript:devolve_trabalho('+ trab.id.to_s + ')' %>
        </span></td>
     <td><%= trab.dentista.nome unless trab.dentista.nil? %></td>
