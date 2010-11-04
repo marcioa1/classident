@@ -26,7 +26,7 @@
   </p>
   <p>
     <%= f.label :data_de_devolução %><br />
-    <%= text_field_tag :datepicker3, @trabalho_protetico.data_de_devolucao.to_s_br, :size=>10 %>
+    <%= f.text_field :data_de_devolucao_pt, :class=>'datepicker',  :size=>10 %>
   </p>
   <p>
     <%= f.label :tabela_protetico_id %><br />
@@ -46,16 +46,16 @@
   </p>
 <fieldset class='fieldset_20'><legend> Repetição </legend>
   <p>
-    <%= f.label :data_de_repeticao %><br />
-    <%= text_field_tag :datepicker4, @trabalho_protetico.data_de_repeticao.to_s_br, :size=>10 %>
+    <%= f.label :data_de_repetição %><br />
+    <%= f.text_field :data_de_repeticao_pt, :class => 'datepicker', :size=>10 %>
   </p>
   <p>
-    <%= f.label :motivo_da_repeticao %><br />
+    <%= f.label :motivo_da_repetição %><br />
     <%= f.text_field :motivo_da_repeticao %>
   </p>
   <p>
-    <%= f.label :data_prevista_da_devolucao_da_repeticao %><br />
-    <%= text_field_tag :datepicker5, @trabalho_protetico.data_prevista_da_devolucao_da_repeticao.to_s_br, :size=>10 %>
+    <%= f.label :data_prevista_da_devolução_da_repetição %><br />
+    <%= f.text_field :data_prevista_da_devolucao_da_repeticao_pt, :class => 'datepicker', :size=>10 %>
   </p>
 </fieldset>
   <p>
