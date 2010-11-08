@@ -10,7 +10,8 @@ class Pagamento < ActiveRecord::Base
   belongs_to :pagamento, :class_name => "Pagamento"
   
   validates_presence_of :data_de_pagamento, :message => " : obrigatória."
-  validate :data_nao_pode_ser_no_passado
+  # validate :verifica_quinzena
+  #FIXME Retirar na conversão
   validates_numericality_of :valor_pago, :message => " : deve ser numérico"
   
   named_scope :ao_protetico, lambda{|protetico_id| {:conditions=>["protetico_id = ?", protetico_id]}}
@@ -50,7 +51,7 @@ class Pagamento < ActiveRecord::Base
     self.data_de_pagamento = nova_data.to_date if Date.valid?(nova_data)
   end
   
-  def data_nao_pode_ser_no_passado
+  def verifica_quinzena
     errors.add(:data_de_pagamento, "não pode ser fora da quinzena.") if
       !na_quinzena?(data_de_pagamento)# < Date.today  
   end
@@ -79,7 +80,21 @@ class Pagamento < ActiveRecord::Base
   end
   
   def em_dinheiro?
-    self.cheques.empty?
+    self.cheques.empty? && !self.em_cheque_classident?
+  end
+  
+  def em_cheque_pacientes?
+    !self.cheques.empty?
   end
 
+  def em_cheque_classident?
+    (self.conta_bancaria_id > 0)
+  end
+  
+  def modo_de_pagamento
+    return "Cheque classident" if em_cheque_classident?
+    return "Cheque paciente" if em_cheque_pacientes?
+    return "Dinheiro" if em_dinheiro?
+  end
+  
 end

@@ -15,6 +15,18 @@
         <td colspan='2'><%= check_box_tag :pela_adm, params[:pela_adm], params[:pela_adm] %> Incluir pagos pela Adm
         </td>
       </tr>
+      <tr>
+        <td colspan='2'><%= radio_button_tag :modo, 'todos' %> Todas </td>
+      </tr>
+      <tr>
+        <td colspan='2'><%= radio_button_tag :modo, 'dinheiro' %> Dinheiro</td>
+      </tr>
+      <tr>
+        <td colspan='2'><%= radio_button_tag :modo, 'cheque paciente' %> Cheque de pacientes</td>
+      </tr>
+      <tr>
+        <td colspan='2'><%= radio_button_tag :modo, 'cheque classident' %> Cheque da classident</td>
+      </tr>
     <% end %>
     </table>
     </td>
@@ -36,6 +48,7 @@
     <th>Valor pago</th>
     <th width="220px">Observação</th>
     <th>Tipo</th>
+    <th>Modo pgto</th>
     <th>Livro caixa</th>
     <th>&nbsp;</th>
     <th>&nbsp;</th>
@@ -49,6 +62,7 @@
     <td align="right"><%=h pagamento.valor_pago.real %></td>
     <td><%=h pagamento.observacao %></td>
     <td><%=h pagamento.tipo_pagamento.nome %></td>
+    <td><%=h pagamento.modo_de_pagamento %></td>
     <td align="center"><%=h pagamento.nao_lancar_no_livro_caixa ? "sim" : "não" %></td>
     <td><%= link_to 'editar', edit_pagamento_path(pagamento), :class=>'ui-icon ui-icon-pencil', :title=>'editar' if pagamento.pode_alterar? %></td>
     <td><%= link_to 'excluir', exclusao_pagamento_path(pagamento), :class=>'ui-icon ui-icon-trash', :title=>'excluir'  if pagamento.pode_alterar?%></td>

@@ -29,7 +29,7 @@ class FluxoDeCaixaController < ApplicationController
       @recebimentos = Recebimento.da_clinica(session[:clinica_id]).no_dia(@fluxo.data).nao_excluidos.nas_formas(FormasRecebimento.dinheiro_ou_cheque)
       @cheques      = []
     end
-    @pagamentos   = Pagamento.da_clinica(session[:clinica_id]).no_dia(@fluxo.data).no_livro_caixa
+    @pagamentos   = Pagamento.da_clinica(session[:clinica_id]).no_dia(@fluxo.data).no_livro_caixa.nao_excluidos
     @entradas     = Entrada.entrada.da_clinica(session[:clinica_id]).do_dia(@fluxo.data)
     @remessas     = Entrada.remessa.da_clinica(session[:clinica_id]).do_dia(@fluxo.data)
     @lancamentos  = @recebimentos + @pagamentos + @entradas + @remessas + @cheques
