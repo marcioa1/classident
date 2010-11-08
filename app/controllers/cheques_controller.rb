@@ -174,17 +174,7 @@ class ChequesController < ApplicationController
       @cheques = Cheque.da_clinica(session[:clinica_id]).disponiveis_na_clinica.por_valor.menores_ou_igual_a(params[:valor]);
     end
     @cheques = @cheques.all(:limit => 50)
-    result = "<table >"
-    result += "<tr><th>Bom para</th><th>valor</th><th>Paciente</th><th>&nbsp;</th></tr>"
-    @cheques.each() do |cheque|
-      result +=  "<tr><td><a href='javascript:abre_cheque(#{cheque.id})'>" + cheque.bom_para.to_s_br + "</a></td>" 
-      result += "<td align='right'><span id='valor_#{cheque.id}'>" + cheque.valor.real.to_s + "</span></td>"
-      result += "<td>" + cheque.nome_dos_pacientes + "</td>"
-      result += "<td> <input type='checkbox' id='cheque_#{cheque.id}' onclick='selecionou_cheque(#{cheque.id});'</input></td> " 
-      result += "</tr>"
-    end
-    result += "</table>"
-    render :json =>result.to_json
+    render :partial => 'cheques_disponiveis', :locals=>{:cheques => @cheques}
   end
   
   def pesquisa

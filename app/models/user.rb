@@ -1,6 +1,6 @@
 class User < ActiveRecord::Base
   acts_as_authentic
-  # #acts_as_audited
+  # acts_as_audited
   #TODO permitir auditar este model. No momento está dando conflito com authlogic
   
   belongs_to :tipo_usuario

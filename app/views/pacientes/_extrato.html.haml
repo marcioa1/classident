@@ -92,21 +92,6 @@
       = saldo.real
     %td{ :colspan => "3" }
       &nbsp;
-%p
-%table
-  %tr
-    %th
-      Data 1 devolução
-    %th{ :width => "200px" }
-      Motivo
-    %th{ :width => "70px" }
-      Data 2 devolução
-  - @paciente.cheques_devolvidos.each do |cheque|
-    %tr
-      %td
-        = cheque.data_primeira_devolucao
-      %td
-        = cheque.motivo_primeira_devolucao
-      %td
-        = cheque.data_segunda_devolucao
-= render :partial=>"recebimentos/recebimentos_excluidos", :locals=>{:paciente=>@paciente}
+= render :partial => 'cheques/cheques_do_paciente' if !@paciente.cheques.empty?
+= render :partial => 'cheques/devolvidos_do_paciente' if !@paciente.cheques_devolvidos.empty?
+= render :partial=>"recebimentos/recebimentos_excluidos" if !@paciente.recebimentos_excluidos.empty?

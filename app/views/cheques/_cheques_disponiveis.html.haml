@@ -1,0 +1,23 @@
+%table
+  %tr
+    %th Bom para
+    %th Valor
+    %th Paciente
+    %th &nbsp;
+    %th Banco
+    %th Agência
+    %th Número
+  - cheques.each do |cheque|
+    %tr
+      %td
+        = link_to_function cheque.bom_para.to_s_br, "abre_cheque(#{cheque.id})"
+      %td{:align=>'right'}
+        %span{:id=>"valor_#{cheque.id}" }
+          = cheque.valor.real.to_s 
+      %td
+        = cheque.nome_dos_pacientes
+      %td
+        = check_box_tag :id=>"cheque_#{cheque.id}", :onclick=>"selecionou_cheque(#{cheque.id})"
+      %td= cheque.banco.nome
+      %td= cheque.agencia
+      %td= cheque.numero

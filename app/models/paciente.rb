@@ -187,4 +187,12 @@ class Paciente < ActiveRecord::Base
     self.ortodontia
   end
   
+  def cheques
+    result = []
+    self.recebimentos.each do |rec|
+      result << Cheque.find(rec.cheque_id) if rec.cheque
+    end
+    result
+  end
+  
 end

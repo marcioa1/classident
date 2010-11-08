@@ -1,0 +1,18 @@
+%h4 Cheques do paciente
+%table
+  %tr
+    %th Bom para
+    %th Valor
+    %th Banco
+    %th Agência
+    %th Número
+    %th Status
+  - @paciente.cheques.each do |cheque|
+    %tr
+      %td= cheque.bom_para.to_s_br
+      %td= cheque.valor.real
+      %td= cheque.banco.nome
+      %td= cheque.agencia
+      %td= cheque.numero
+      %td= cheque.status
+  

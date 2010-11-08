@@ -1,0 +1,15 @@
+%h4 Cheques Devolvidos
+%p
+%table
+  %tr
+    %th
+      Data 1 devolução
+    %th{ :width => "200px" }
+      Motivo
+    %th{ :width => "70px" }
+      Data 2 devolução
+  - @paciente.cheques_devolvidos.each do |cheque|
+    %tr
+      %td= cheque.data_primeira_devolucao
+      %td= cheque.motivo_primeira_devolucao
+      %td= cheque.data_segunda_devolucao
