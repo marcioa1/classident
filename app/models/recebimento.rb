@@ -33,7 +33,7 @@ class Recebimento < ActiveRecord::Base
   validates_numericality_of :valor, :greater_than => 0, :message => " tem que ser numérico maior que zero."
   validates_numericality_of :percentual_dentista, :message => "deve ser um número."
 
-  # validate :verifica_quinzena
+  validate :verifica_quinzena
   # FIXME Retirar em producao
   
   # validates_numericality_of :valor_segundo_paciente, :only => [:create, :update] , :message => "não é numérico"

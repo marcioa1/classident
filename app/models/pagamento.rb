@@ -10,7 +10,7 @@ class Pagamento < ActiveRecord::Base
   belongs_to :pagamento, :class_name => "Pagamento"
   
   validates_presence_of :data_de_pagamento, :message => " : obrigatória."
-  # validate :verifica_quinzena
+  validate :verifica_quinzena
   #FIXME Retirar na conversão
   validates_numericality_of :valor_pago, :message => " : deve ser numérico"
   
