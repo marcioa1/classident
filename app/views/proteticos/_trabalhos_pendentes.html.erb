@@ -28,7 +28,7 @@
         ( <%= trab.data_de_devolucao.to_s_br%> )<br />
         </span>
       <% end %>
-      <%= link_to_function 'registra devolução', 'javascript:devolve_trabalho('+ trab.id.to_s + ')' if trab.pendente?%>
+      <%= link_to_function 'registra devolução', 'javascript:registra_devolucao('+ trab.id.to_s + ')' if trab.pendente?%>
        </span></td>
     <td><%= trab.dentista.nome unless trab.dentista.nil? %></td>
     <td><%= link_to trab.protetico.nome, abre_protetico_path(trab.protetico) unless trab.protetico.nil? %></td>

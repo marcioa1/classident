@@ -10,7 +10,7 @@ class TrabalhoProtetico < ActiveRecord::Base
   
   named_scope :da_clinica, lambda {|clinica_id| 
             {:conditions=>["trabalho_proteticos.clinica_id = ? ", clinica_id]}}
-  named_scope :devolvidos, :conditions=>["data_de_devolucao IS NOT NULL"]
+  named_scope :devolvidos, :conditions=>["(data_de_devolucao IS NOT NULL) OR (data_de_repeticao IS NOT NULL and data_de_devolucao_da_repeticao IS NULL)"]
   named_scope :do_paciente, lambda {|paciente_id| 
             {:conditions=>["paciente_id = ? ", paciente_id]}}
   named_scope :do_protetico, lambda {|protetico_id| 
