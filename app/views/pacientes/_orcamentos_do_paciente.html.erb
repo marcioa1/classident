@@ -1,13 +1,13 @@
-<table>
+<table class='tabela'>
   <tr>
-    <th>Número</th>
+    <th width='30px'>Núm.</th>
     <th>Data</th>
-    <th>Dentista</th>
-    <th width='100px'>Valor</th>
+    <th width='100px'>Dentista</th>
+    <th width='60px'>Valor</th>
     <th>Desconto</th>
-    <th>Valor c/ desconto</th>
+    <th width='60px'>Valor c/ desconto</th>
     <th>N. parcelas</th>
-    <th>Valor parcela</th>
+    <th width='60px'>Valor parcela</th>
     <th>Vencto 1a parcela</th>
     <th>Forma pgto</th>
     <th>Estado</th>
@@ -22,7 +22,7 @@
         <td align='right'><%= orca.valor_com_desconto.real %></td>
         <td align='right'><%= orca.numero_de_parcelas %></td>
         <td align='right'><%= orca.valor_da_parcela.real %></td>
-        <td align='center'><%= orca.vencimento_primeira_parcela %></td>
+        <td align='center'><%= orca.vencimento_primeira_parcela.to_s_br %></td>
         <td><%= orca.forma_de_pagamento %></td>
         <td><%= orca.estado %></td>
         <td><%= link_to "Imprime", "#", :onclick=>"imprime_orcamento(#{orca.id}, #{@paciente.clinica_id})", :class => 'ui-icon ui-icon-print'%></td>

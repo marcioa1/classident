@@ -5,7 +5,7 @@
   |
   = link_to "Imprime", "#", :onclick=>"imprime_extrato(#{@paciente.id}, #{@paciente.clinica_id})", :class => 'ui-icon ui-icon-print'
 %br
-%table
+%table{:class=>'tabela'}
   %tr
     %th Data
     %th{ :width => "200px" } Descrição

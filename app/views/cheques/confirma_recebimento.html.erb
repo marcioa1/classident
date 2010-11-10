@@ -1,10 +1,10 @@
 <% content_for :main do %>
 <h3>Confirma recebimento de cheques 	(Cheques enviados à administração mas com recebimento não confirmado)</h3>
 <%= @cheques.size %> cheques
-<table>
+<table width="95%">
   <tr>
     <th>Clínica</th>
-    <th width="200px">Paciente</th>
+    <th width="250px">Paciente</th>
     <th>Bom para</th>
     <th>Banco</th>
     <th width="90px">Valor</th>
@@ -23,10 +23,12 @@
   </tr>
   <% total += cheque.valor %>
   <% end %>
-  <tr>
-    <td colspan="4" align= "center">Total</td>
-    <td align="right"><%= total.real %></td>
-    <td><%= button_to "confirmar", "javascript:confirma_recebimento_de_cheque();"%></td>
-  </tr>
+  <% if total > 0%>
+    <tr>
+      <td colspan="4" align= "center">Total</td>
+      <td align="right"><%= total.real %></td>
+      <td align='center'><%= button_to "confirmar", "javascript:confirma_recebimento_de_cheque();"%></td>
+    </tr>
+  <% end %>
 </table>
 <% end %>

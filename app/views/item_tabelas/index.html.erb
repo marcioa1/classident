@@ -4,7 +4,7 @@
   <%= link_to "Voltar à lista de tabelas", tabelas_path()%> | 
   <%= link_to 'Novo item da tabela', new_item_tabela_path(:tabela_id=>@tabela.id) if current_user.pode_incluir_tabela and @administracao%>
 </p>
-<table>
+<table class='tabela'>
   <tr>
     <th width="100px">Código</th>
     <th width="290px">Descrição</th>

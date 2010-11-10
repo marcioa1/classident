@@ -85,7 +85,7 @@ class Orcamento < ActiveRecord::Base
   end
 
   def self.monta_tabela_de_parcelas(numero_de_parcelas,data,valor)
-    result = "<div id='parcelas'><table><tr><th>N. parcela</th><th>Data</th><th>Valor</th></tr>"
+    result = "<div id='parcelas'><table class='tabela'><tr><th>N. parcela</th><th>Data</th><th>Valor</th></tr>"
     (1..numero_de_parcelas).each do |parcela|
       result += "<tr><td align='center'>#{parcela}</td><td>#{data.to_s_br}</td><td>#{valor}</td></tr>"
       data   += 1.month
