@@ -30,7 +30,7 @@
             - if !trab.data_de_devolucao.nil? 
               = trab.data_de_devolucao.to_s_br 
             -else  
-              = link_to 'registra devolução', '#', :onclick=>'registra_devolucao(' + trab.id.to_s + ')'
+              = link_to_function 'registra devolução', 'registra_devolucao(' + trab.id.to_s + ')'
         - total += trab.valor
     %tr
       %td{:colspan=>"3"}  
