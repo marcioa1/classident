@@ -150,4 +150,16 @@ class Tratamento < ActiveRecord::Base
     self.dente
   end
   
+  def resumo_protetico
+    result = ''
+    self.trabalho_proteticos.each do |trab|
+      if trab.devolvido?
+        result +=  trab.tabela_protetico.descricao + " (#{trab.protetico.nome}), "
+      else
+        result += "<i>" + trab.tabela_protetico.descricao + " (#{trab.protetico.nome})</i>, "
+      end
+    end
+    result
+  end
+  
 end

@@ -68,4 +68,10 @@ class TrabalhoProtetico < ActiveRecord::Base
   def data_prevista_da_devolucao_da_repeticao_pt=(data)
     self.data_prevista_da_devolucao_da_repeticao = data.to_date if Date.valid?(data)
   end
+  
+  def devolvido?
+    !self.data_de_devolucao.nil? && 
+       ((data_de_repeticao.nil?) || 
+        ( !data_de_repeticao.nil?) && (!data_de_devolucao_da_repeticao.nil?))
+  end
 end

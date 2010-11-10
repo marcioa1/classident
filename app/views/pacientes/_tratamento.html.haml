@@ -69,7 +69,9 @@
           = tratamento.data.to_s_br
       %td{ :align => "center" }
         = tratamento.orcamento.numero unless tratamento.orcamento.nil?
-      %td{:align=>'center'}= link_to "trab. protético", new_trabalho_protetico_path(:tratamento_id=>tratamento.id, :paciente_id=>tratamento.paciente.id), :class=>'ui-icon ui-icon-plus' , :title => 'Novo tratalho de protético' if tratamento.pode_alterar? && tratamento.data.nil?
+      %td{:align=>'center'}
+        = tratamento.resumo_protetico
+        = link_to "trab. protético", new_trabalho_protetico_path(:tratamento_id=>tratamento.id, :paciente_id=>tratamento.paciente.id), :class=>'ui-icon ui-icon-plus' , :title => 'Novo tratalho de protético' if tratamento.pode_alterar? && tratamento.data.nil?
       %td{ :align => "center" }
         = link_to "excluir",  tratamento, :confirm => 'Tem certeza ?', :method=>:delete , :class => "ui-icon ui-icon-trash", :title => 'excluir'  if tratamento.pode_excluir?
     - total += tratamento.valor

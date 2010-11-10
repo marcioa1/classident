@@ -1,40 +1,41 @@
 %h3
   Trabalhos de protético
 = link_to "novo trabalho", new_trabalho_protetico_path(:tratamento_id=>tratamento.id, :paciente_id=>tratamento.paciente_id)
-%p
-%table
-  %tr
-    %th Protético
-    %th Descrição
-    %th Observações
-    %th Valor
-    %th Envio
-    %th Devolução
-    
-  - total = 0.0
-  - tratamento.trabalho_proteticos.each do |trab|
+- if !tratamento.trabalho_proteticos.empty?
+  %p
+  %table
     %tr
-      %td 
-        = trab.protetico.nome 
-      %td 
-        = trab.tabela_protetico.descricao
-      %td 
-        = trab.observacoes
+      %th Protético
+      %th Descrição
+      %th Observações
+      %th Valor
+      %th Envio
+      %th Devolução
+    
+    - total = 0.0
+    - tratamento.trabalho_proteticos.each do |trab|
+      %tr
+        %td 
+          = trab.protetico.nome 
+        %td 
+          = trab.tabela_protetico.descricao
+        %td 
+          = trab.observacoes
+        %td{:align=>'right'}
+          = trab.valor.real
+        %td
+          =trab.data_de_envio.to_s_br
+        %td{:align=>'center'}
+          %span{:id=>"data_devolucao_#{trab.id}"}
+            - if !trab.data_de_devolucao.nil? 
+              = trab.data_de_devolucao.to_s_br 
+            -else  
+              = link_to 'registra devolução', '#', :onclick=>'registra_devolucao(' + trab.id.to_s + ')'
+        - total += trab.valor
+    %tr
+      %td{:colspan=>"3"}  
+        Total de custo
       %td{:align=>'right'}
-        = trab.valor.real
-      %td
-        =trab.data_de_envio.to_s_br
-      %td{:align=>'center'}
-        %span{:id=>"data_devolucao_#{trab.id}"}
-          - if !trab.data_de_devolucao.nil? 
-            = trab.data_de_devolucao.to_s_br 
-          -else  
-            = link_to 'registra devolução', '#', :onclick=>'registra_devolucao(' + trab.id.to_s + ')'
-      - total += trab.valor
-  %tr
-    %td{:colspan=>"3"}  
-      Total de custo
-    %td{:align=>'right'}
-      %span{:id=>'total'}= total.real
-    %td{:colspan=>2, :align=>'center'}
-      = link_to 'Atualiza custo', '#', :onclick=>"javascript:$('#tratamento_custo').val($('#total').html());"
+        %span{:id=>'total'}= total.real
+      %td{:colspan=>2, :align=>'center'}
+        = link_to 'Atualiza custo', '#', :onclick=>"javascript:$('#tratamento_custo').val($('#total').html());"
