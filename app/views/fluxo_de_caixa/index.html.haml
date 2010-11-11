@@ -4,7 +4,7 @@
   %h3{ :style => "padding-left: 10em;" }
     Fluxo de caixa do dia :
     = @fluxo.data.to_s_br
-  %table.transparente
+  %table{:class=>'tabela'}.transparente
     %tr
       %td
         Saldo anterior em dinheiro :
@@ -15,7 +15,7 @@
         Saldo anterior em cheque :
       %td{ :align => "right" }
         = @fluxo.saldo_em_cheque.real
-  %table
+  %table{:class=>'tabela'}
     %tr
       %th{ :width => "350px" }
         %br
