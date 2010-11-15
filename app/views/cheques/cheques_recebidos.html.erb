@@ -82,7 +82,7 @@
   <tr>
     <td colspan="3" align="center">Total</td>
     <td align="right"><%= total.real%></td>
-    <td colspan="5" align="right"><%= link_to "enviar cheques selecionados p/ administração" , "#", :onclick=>"enviar_administracao();"  if params[:status]=="disponíveis" && !@administracao %></td>
+    <td colspan="5" align="right"><%= link_to_function "enviar cheques selecionados p/ administração" , "enviar_administracao();"  if params[:status]=="disponíveis" && !@administracao %></td>
     
   </tr>
 </table>

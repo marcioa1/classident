@@ -104,7 +104,6 @@ function enviar_administracao(){
     }
     $.getJSON("recebe_cheques", {cheques: selecionados}, function(data){
       $("form:last").trigger("submit");
-      alert(data);
     });
 }
 
@@ -183,7 +182,6 @@ function confirma_recebimento_de_cheque(){
     }
     $.getJSON("registra_recebimento_de_cheques", {cheques: selecionados}, function(data){
 //      $("form:last").trigger("submit");
-      alert(data);
     });
 }
 
@@ -376,7 +374,6 @@ function busca_pacientes_que_iniciam_com(text_field){
 
 function escolheu_nome_da_lista(nome,div,id){
   $("#"+div).val(nome);
-  //alert(div)
   $("#id_"+div).val(id);
  $("#linha_"+ div).hide();
 }
@@ -455,14 +452,12 @@ function orcamento_dentista(){
           fim: $("#datepicker6").val(),
           clinicas: selecionadas},
     success: function(data){
-      // alert(data);    
       $("#lista_orcamento").replaceWith(data);  
     }
     });
 }
 
 function finalizar_tratamento(tratamento_id){
-  alert("vai entrar");
   $.ajax({url : '/tratamentos/' + tratamento_id + '/finalizar_procedimento',
          success: function(data){
            $("#finalizar_"+tratamento_id + " a" ).replaceWith(hoje);
