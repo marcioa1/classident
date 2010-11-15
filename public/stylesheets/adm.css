@@ -105,12 +105,12 @@ fieldset{
 .pd_menu_01 ul li ul {display:none; border:none;color: #FFFFFF;background: #455A79; width:1px}
 .pd_menu_01 ul li:hover a {background-color:#90b7e5; text-decoration:none; color:#F5F5F5;} /*Color main cells hovering mode*/
 .pd_menu_01 ul li:hover ul {display:block;  position:absolute; z-index:999; top:19px; margin-top:1px; left:0;}
-.pd_menu_01 ul li:hover ul li a {display:block; width:12em; height:auto; line-height:1.3em; margin-left:-1px; padding:5px 10px 5px 10px; border-left:solid 1px #455A79; border-bottom: solid 1px #455A79; background-color:#455A79;  color:#FFFFFF;} /*Color subcells normal mode*/
+.pd_menu_01 ul li:hover ul li a {display:block; width:16em; height:auto; line-height:1.3em; margin-left:-1px; padding:5px 10px 5px 10px; border-left:solid 1px #455A79; border-bottom: solid 1px #455A79; background-color:#455A79;  color:#FFFFFF;} /*Color subcells normal mode*/
 .pd_menu_01 ul li:hover ul li a:hover {background-color:#90b7e5; text-decoration:none;color:#F5F5F5;} /*Color subcells hovering mode*/
 .pd_menu_01 ul li a:hover {background-color:#90b7e5; text-decoration:none;color:#F5F5F5;} /*Color main cells hovering mode*/
-.pd_menu_01 ul li a:hover ul {display:block; width:12em; position:absolute; z-index:999; top:29px; left:0; }
+.pd_menu_01 ul li a:hover ul {display:block; width:16em; position:absolute; z-index:999; top:29px; left:0; }
 .pd_menu_01 ul li ul li a:visited { background-color:#455A79;  color:#FFFFFF;} /*Color subcells normal mode*/
-.pd_menu_01 ul li a:hover ul li a {display:block; width:12em; height:1px; line-height:1.3em; padding:4px 16px 4px 16px; border-left:solid 1px #455A79; border-bottom: solid 1px #455A79; background-color:#455A79;  color:#FFFFFF;} 
+.pd_menu_01 ul li a:hover ul li a {display:block; width:16em; height:1px; line-height:1.3em; padding:4px 16px 4px 16px; border-left:solid 1px #455A79; border-bottom: solid 1px #455A79; background-color:#455A79;  color:#FFFFFF;} 
 .pd_menu_01 ul li a:hover ul li a:hover {background-color:#90b7e5; text-decoration:none;color:#F5F5F5;} /*Color subcells hovering mode*/
 
 .transparente{
