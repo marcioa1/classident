@@ -94,4 +94,4 @@
       &nbsp;
 = render :partial => 'cheques/cheques_do_paciente' if !@paciente.cheques.empty?
 = render :partial => 'cheques/devolvidos_do_paciente' if !@paciente.cheques_devolvidos.empty?
-= render :partial=>"recebimentos/recebimentos_excluidos" if !@paciente.recebimentos_excluidos.empty?
+= render :partial=>"recebimentos/recebimentos_excluidos", :locals=>{:paciente => @paciente} if !@paciente.recebimentos_excluidos.empty?
