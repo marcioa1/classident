@@ -1,6 +1,7 @@
 class PagamentosController < ApplicationController
   
   layout "adm" , :except=> :show
+  
   before_filter :require_user
   before_filter :salva_action_na_session
   before_filter :verifica_se_tem_senha
@@ -47,12 +48,11 @@ class PagamentosController < ApplicationController
 
   def create
     @pagamento                   = Pagamento.new(params[:pagamento])
+    debugger
     @pagamento.clinica_id        = session[:clinica_id]
-    if params[:opcao_restante]  !=" pago_em_cheque"
-      @pagamento.conta_bancaria_id = nil
-    end
-    @pagamento.protetico_id = session[:protetico_id] unless session[:protetico_id].nil?
-    @pagamento.dentista_id  = session[:dentista_id] unless session[:dentista_id].nil?
+    @pagamento.conta_bancaria_id = nil if params[:opcao_restante]  !=" pago_em_cheque"
+    @pagamento.protetico_id      = session[:protetico_id] unless session[:protetico_id].nil?
+    @pagamento.dentista_id       = session[:dentista_id] unless session[:dentista_id].nil?
     Pagamento.transaction do
       ids = params[:cheques_ids].split(",")
       ids.each do |id|
@@ -160,6 +160,14 @@ class PagamentosController < ApplicationController
   
   def exclusao
     @pagamento = Pagamento.find(params[:id])
+  end
+  
+  def hoje
+  end
+  
+  def pagamentos_de_hoje
+    session[:origem] = '/pagamentos/pagamentos_de_hoje'
+    @pagamentos = Pagamento.da_clinica(session[:clinica_id]).no_dia(Date.today)
   end
   
 end

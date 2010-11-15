@@ -18,11 +18,13 @@
   <b>Valor pago:</b>
   <%=h @pagamento.valor_pago.real %>
 </p>
-<p>
-  <b>Valor restante:</b>
-  <%=h @pagamento.valor_restante.real %> - 
-  <%=h @pagamento.descricao_opcao_restante %>
-</p>
+<% if @pagamento.valor_restante >0 %>
+  <p>
+    <b>Valor restante:</b>
+    <%=h @pagamento.valor_restante.real %> - 
+    <%=h @pagamento.descricao_opcao_restante %>
+  </p>
+<% end %>
 
 <p>
   <b>Observação:</b>

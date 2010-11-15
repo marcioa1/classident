@@ -88,7 +88,7 @@ class Pagamento < ActiveRecord::Base
   end
 
   def em_cheque_classident?
-    (self.conta_bancaria_id > 0)
+    (self.conta_bancaria_id && self.conta_bancaria_id > 0)
   end
   
   def modo_de_pagamento

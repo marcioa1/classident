@@ -17,7 +17,7 @@
       %td
         = cheque.nome_dos_pacientes
       %td
-        = check_box_tag :id=>"cheque_#{cheque.id}", :onclick=>"selecionou_cheque(#{cheque.id})"
+        = check_box_tag "cheque_#{cheque.id}", false ,false ,options={ :onclick=>"selecionou_cheque(#{cheque.id})"}
       %td= cheque.banco.nome
       %td= cheque.agencia
       %td= cheque.numero

@@ -1,0 +1,15 @@
+%p
+  Cheques utilizados 
+  %br
+  %table{:class=>"tabela"}
+    %tr
+      %th{:width=>"220px"}Paciente
+      %th{:width=>"90px"}Valor
+      %th{:width=>"120px"}Banco
+      %th Número
+    - @pagamento.cheques.each() do |cheque|
+      %tr
+        %td= cheque.nome_dos_pacientes 
+        %td{:align=>"right"}= cheque.valor.real 
+        %td= cheque.banco.numero + "-" + cheque.banco.nome 
+        %td= cheque.numero 
