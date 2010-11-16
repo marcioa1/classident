@@ -85,7 +85,13 @@
                 = saldo_cheque.real
           - when "Pagamento"
             %td
-              = lancamento.tipo_pagamento && lancamento.observacao && lancamento.tipo_pagamento.nome + ', ' + lancamento.observacao
+              - if lancamento.observacao && lancamento.tipo_pagamento
+                = lancamento.tipo_pagamento.nome + ', ' + lancamento.observacao
+              - elsif lancamento.observacao
+                = lancamento.observacao
+              - else
+                = lancamento.tipo_pagamento.nome
+               
             %td &nbsp;
             - if lancamento.em_dinheiro? || lancamento.opcao_restante == Pagamento::OPCAO_RESTANTE_EM_DINHEIRO
               - if lancamento.em_dinheiro?

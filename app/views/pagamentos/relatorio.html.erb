@@ -63,7 +63,7 @@
     <td><%=h pagamento.observacao %></td>
     <td><%=h pagamento.tipo_pagamento.nome %></td>
     <td><%=h pagamento.modo_de_pagamento %></td>
-    <td align="center"><%=h pagamento.nao_lancar_no_livro_caixa ? "sim" : "não" %></td>
+    <td align="center"><%=h pagamento.nao_lancar_no_livro_caixa ? "não" : "sim" %></td>
     <td><%= link_to 'editar', edit_pagamento_path(pagamento), :class=>'ui-icon ui-icon-pencil', :title=>'editar' if pagamento.pode_alterar? %></td>
     <td><%= link_to 'excluir', exclusao_pagamento_path(pagamento), :class=>'ui-icon ui-icon-trash', :title=>'excluir'  if pagamento.pode_alterar?%></td>
     <td><%= link_to 'mostrar', '#', :onclick=>'javascript:abre_pagamento('+ pagamento.id.to_s + ')' , :class=>'ui-icon ui-icon-info', :title=>'ver detalhes'%></td>
