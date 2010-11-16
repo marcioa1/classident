@@ -1,34 +1,40 @@
 <% content_for :main do %>
 <h3>Confirma recebimento de cheques 	(Cheques enviados à administração mas com recebimento não confirmado)</h3>
-<%= @cheques.size %> cheques
-<table width="95%">
-  <tr>
-    <th>Clínica</th>
-    <th width="250px">Paciente</th>
-    <th>Bom para</th>
-    <th>Banco</th>
-    <th width="90px">Valor</th>
-    <th>selecionar</th>
-  </tr>
-  
-  <% total = 0%>
-  <% @cheques.each() do |cheque| %>
-  <tr>
-    <td><%= cheque.clinica.nome %></td>
-    <td><%= cheque.nome_dos_pacientes %></td>
-    <td align="center"><%= cheque.bom_para.to_s_br %></td>
-    <td><%= cheque.banco && cheque.banco.nome %></td>
-    <td align="right"><%= cheque.valor.real %></td>
-    <td align="center"><%= check_box_tag cheque.id.to_s %></td>
-  </tr>
-  <% total += cheque.valor %>
-  <% end %>
-  <% if total > 0%>
+<% form_tag do |f| %>
+<%= render :partial=>'clinicas/radio' , :locals=>{:clinicas => @clinicas}%>
+<%= submit_tag "Pesquisar" %>
+<% end %>
+<% if @cheques.size > 0 %>
+  <%= @cheques.size %> cheques
+  <table width="95%">
     <tr>
-      <td colspan="4" align= "center">Total</td>
-      <td align="right"><%= total.real %></td>
-      <td align='center'><%= button_to "confirmar", "javascript:confirma_recebimento_de_cheque();"%></td>
+      <th>Clínica</th>
+      <th width="250px">Paciente</th>
+      <th>Bom para</th>
+      <th>Banco</th>
+      <th width="90px">Valor</th>
+      <th>selecionar</th>
     </tr>
-  <% end %>
-</table>
+  
+    <% total = 0%>
+    <% @cheques.each() do |cheque| %>
+    <tr>
+      <td><%= cheque.clinica.nome %></td>
+      <td><%= cheque.nome_dos_pacientes %></td>
+      <td align="center"><%= cheque.bom_para.to_s_br %></td>
+      <td><%= cheque.banco && cheque.banco.nome %></td>
+      <td align="right"><%= cheque.valor.real %></td>
+      <td align="center"><%= check_box_tag cheque.id.to_s %></td>
+    </tr>
+    <% total += cheque.valor %>
+    <% end %>
+    <% if total > 0%>
+      <tr>
+        <td colspan="4" align= "center">Total</td>
+        <td align="right"><%= total.real %></td>
+        <td align='center'><%= button_to_function "confirmar", "confirma_recebimento_de_cheque();"%></td>
+      </tr>
+    <% end %>
+  </table>
+<% end %>
 <% end %>

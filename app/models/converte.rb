@@ -128,10 +128,8 @@ class Converte
         d.valor         = le_valor(registro[2])
         d.descricao     = registro[3].tira_acento
         d.tratamento_id = registro[10].to_i
-        debugger
         d.save!
       rescue Exception => ex
-        debugger
         @arquivo.puts line + "\n"+ "      ->" + ex
       end
     end

@@ -141,7 +141,8 @@ class ChequesController < ApplicationController
   end
 
   def confirma_recebimento
-    @cheques = Cheque.entregues_a_administracao.nao_recebidos
+    @cheques  = Cheque.vindo_da_clinica(params[:clinica]).entregues_a_administracao.nao_recebidos
+    @clinicas = Clinica.todas 
   end
   
   def registra_recebimento_de_cheques

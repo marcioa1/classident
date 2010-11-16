@@ -180,8 +180,18 @@ function confirma_recebimento_de_cheque(){
                selecionados += item + ",";
              }
     }
-    $.getJSON("registra_recebimento_de_cheques", {cheques: selecionados}, function(data){
-//      $("form:last").trigger("submit");
+
+    $.ajax({
+      url: "registra_recebimento_de_cheques",
+      data:  {cheques: selecionados},
+      success: function(data){
+        alert("cheques recebidos com sucesso.");
+        $("form:last").trigger("submit");
+      },
+      error: function(data){
+        alert("Cheques não foram registrados corretamente.");
+      }
+      
     });
 }
 

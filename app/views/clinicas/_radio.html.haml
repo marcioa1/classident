@@ -1,0 +1,9 @@
+%fieldset{:class=>"fieldset_40"}
+  %legend Clínicas
+  - ct=0 
+  %table{:class=>"transparente"}
+    %tr
+      - clinicas.each() do |clinica| 
+        %td
+          = radio_button_tag  'clinica', clinica.id, params[:clinica].to_i == clinica.id
+          = clinica.nome 

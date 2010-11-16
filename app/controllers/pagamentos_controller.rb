@@ -48,7 +48,6 @@ class PagamentosController < ApplicationController
 
   def create
     @pagamento                   = Pagamento.new(params[:pagamento])
-    debugger
     @pagamento.clinica_id        = session[:clinica_id]
     @pagamento.conta_bancaria_id = nil if params[:opcao_restante]  !=" pago_em_cheque"
     @pagamento.protetico_id      = session[:protetico_id] unless session[:protetico_id].nil?
@@ -79,7 +78,6 @@ class PagamentosController < ApplicationController
           end
         end
         flash[:notice] = 'Pagamento criado com sucesso.'
-        debugger
         redirect_to(session[:origem] || relatorio_pagamentos_path) #TODO retornar para tela anterio
       else
         @tipos_pagamento  = TipoPagamento.da_clinica(session[:clinica_id]).ativos.por_nome.collect{|obj| [obj.nome, obj.id]}

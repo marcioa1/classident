@@ -111,7 +111,6 @@ class DentistasController < ApplicationController
       fim         = params[:datepicker2].to_date if Date.valid?(params[:datepicker2])
       @producao   = dentista.busca_producao(inicio,fim,clinicas)
       @ortodontia = dentista.busca_producao_de_otodontia(inicio,fim,clinicas)
-      debugger
       render :partial=>'dentistas/producao_do_dentista', :locals=>{:producao=>@producao} 
     else
       @erros = ''
@@ -153,7 +152,6 @@ class DentistasController < ApplicationController
       clinicas = session[:clinica_id].to_a
     end
     @orcamentos = Orcamento.do_dentista(dentista.id).entre_datas(inicio,fim)
-    debugger
     render :partial => 'dentistas/orcamentos', :locals=>{:orcamentos => @orcamentos}
   end
   
