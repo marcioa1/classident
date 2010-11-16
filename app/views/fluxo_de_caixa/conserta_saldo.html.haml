@@ -3,7 +3,7 @@
     Conserta saldo
   - form_tag grava_saldo_path do
     Clínica :
-    = select_tag :clinica, options_for_select(@as_clinicas), :onchange=>"busca_saldo();"
+    = select_tag :clinica, options_for_select(@clinicas), :onchange=>"busca_saldo();"
     %p
       = label_tag :Data
       = ' :'

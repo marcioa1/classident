@@ -1,6 +1,6 @@
 - content_for :main do
   %h3
-    Trabalhos devolvidos de protético por clínica
+    Trabalhos entregues de protético e não pagos.
   - form_tag :controller => :proteticos, :action=>:trabalhos_por_clinica do
     Clinica :
     = select_tag :clinica, options_for_select(@clinicas, params[:clinica]) , :onchange => "busca_proteticos_da_clinica();"

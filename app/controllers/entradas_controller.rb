@@ -1,7 +1,7 @@
 class EntradasController < ApplicationController
   layout "adm"
   before_filter :require_user
-  before_filter :quinzena, :only=>:administracao
+  before_filter :quinzena, :only=>:na_administracao
 
   def index
     if params[:data]
@@ -62,7 +62,7 @@ class EntradasController < ApplicationController
     redirect_to(entradas_url) 
   end
   
-  def administracao
+  def na_administracao
     @entradas = Entrada.remessa.entre_datas(@data_inicial, @data_final)
   end
   
