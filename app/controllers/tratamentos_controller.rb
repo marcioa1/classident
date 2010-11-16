@@ -79,6 +79,9 @@ class TratamentosController < ApplicationController
   
   def destroy
     paciente  = @tratamento.paciente
+    if @tratamento.pode_excluir?
+      @tratamento.destroy
+    end
     redirect_to(abre_paciente_path(paciente) )
   end
   
