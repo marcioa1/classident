@@ -24,14 +24,14 @@ fieldset{ width: 30em}
 .pd_menu_01 ul li ul {display:none; border:none;color: #FFFFFF;background: #455A79; width:1px}
 .pd_menu_01 ul li:hover a {background-color:#90b7e5; text-decoration:none; color:#F5F5F5;}
  .pd_menu_01 ul li:hover ul {display:block; position:absolute; z-index:999; top:19px; margin-top:1px; left:0;}
-.pd_menu_01 ul li:hover ul li a {display:block; width:12em; height:auto; line-height:1.3em; margin-left:-1px; padding:5px 10px 5px 10px; border-left:solid 1px #455A79; border-bottom: solid 1px #455A79; background-color:#455A79; color:#FFFFFF;}
+.pd_menu_01 ul li:hover ul li a {display:block; width:16em; height:auto; line-height:1.3em; margin-left:-1px; padding:5px 10px 5px 10px; border-left:solid 1px #455A79; border-bottom: solid 1px #455A79; background-color:#455A79; color:#FFFFFF;}
  .pd_menu_01 ul li:hover ul li a:hover {background-color:#90b7e5; text-decoration:none;color:#F5F5F5;}
  .pd_menu_01 ul li a:hover {background-color:#90b7e5; text-decoration:none;color:#F5F5F5;}
- .pd_menu_01 ul li a:hover ul {display:block; width:12em; position:absolute; z-index:999; top:29px; left:0}
+ .pd_menu_01 ul li a:hover ul {display:block; width:16em; position:absolute; z-index:999; top:29px; left:0}
 .pd_menu_01 ul li ul li a:visited {background-color:#455A79; color:#FFFFFF;}
- .pd_menu_01 ul li a:hover ul li a {display:block; width:12em; height:1px; line-height:1.3em; padding:4px 16px 4px 16px; border-left:solid 1px #455A79; border-bottom: solid 1px #455A79; background-color:#455A79; color:#FFFFFF;}
+ .pd_menu_01 ul li a:hover ul li a {display:block; width:16em; height:1px; line-height:1.3em; padding:4px 16px 4px 16px; border-left:solid 1px #455A79; border-bottom: solid 1px #455A79; background-color:#455A79; color:#FFFFFF;}
 .pd_menu_01 ul li a:hover ul li a:hover {background-color:#90b7e5; text-decoration:none;color:#F5F5F5;}
- .transparente{ padding:0; margin:0}
+ .transparente{ padding:0; margin:0; font-family: 'Geneva'; font-size: 13px}
 .transparente table, tr, td{ border:0px}
 .transparente, table , td{ border:0px}
 .transparente td{ border:0px; background: white}
@@ -46,7 +46,8 @@ fieldset{ width: 30em}
 tr.even {background-color: #F6F6F6}
 tr.odd {background-color: #ffffff}
 tbody th{ background:#455A79; color: white}
-table,td,th{ border:1px solid #000; border-collapse:collapse; margin:0; padding:0}
+table,td,th{ border:1px solid #000; border-collapse:collapse; margin:0; padding:0;   }
+.tabela{ font-family: "Geneva"; font-size: 11px}
 td,th{ padding:.2em .5em; vertical-align:top; font-weight:normal}
 thead th{  background:#455A79; color:#fff}
 tbody th{ background:#455A79; color: white}
@@ -63,8 +64,9 @@ input.btn {color: #00008B; background-color: #ADD8E6; border: 1px outset #00008B
 #canvas{ padding-top: 14em}
 #parcelas{ padding-top : -2em; padding-left: 10.5em}
 #link_de_clinicas{ padding-top: -4em; padding-left: 29em; text-align :right}
-.botao_dente{ background-color: gray; color: white; text-decoration: none}
-#numero_dos_dentes{ padding-left: 10em; padding-top: 4em}
+.botao_dente{ padding: 0.1em 0.1em 0.1em 0.1em; background-color: #E9ECFA; color: black; text-decoration: none; border:solid 1px #455A79}
+#numero_dos_dentes{ float :right; padding-bottom: 0.1em}
+.debito{ background-color :#F1888F}
  .loading-text {background: #FFC129; color: black; font-weight: bold; padding: 3px; border-radius: 5px; -o-border-radius: 5px; -moz-border-radius: 5px; -webkit-border-radius: 5px; -khtml-border-radius: 5px}
 .loading-text .place-img-content {margin: 0 3px 0 1px}
 .loading.top {border-top-left-radius: 0px; border-top-right-radius: 0px; -moz-border-radius-topleft: 0px; -moz-border-radius-topright: 0px; -webkit-border-top-left-radius: 0px; -webkit-border-top-right-radius: 0px}
