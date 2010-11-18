@@ -25,6 +25,7 @@ class PacientesController < ApplicationController
 
   def create
     @paciente                   = Paciente.new(params[:paciente])
+    @paciente.nome              = params[:paciente][:nome].nome_proprio
     @paciente.clinica_id        = session[:clinica_id]
     @paciente.codigo            = @paciente.gera_codigo(session[:clinica_id])
     @paciente.data_da_suspensao_da_cobranca_de_orto = parasm[:datepicker3].to_date unless params[:datepicker3].blank?
@@ -41,6 +42,7 @@ class PacientesController < ApplicationController
     if @paciente.frozen?
       @paciente = Paciente.find(params[:id])
     end
+    params[:paciente][:nome] = params[:paciente][:nome].nome_proprio
     if @paciente.update_attributes(params[:paciente])
       Rails.cache.write(@paciente.id.to_s, @paciente, :expires_in => 2.minutes) 
       redirect_to(abre_paciente_path(:id=>@paciente.id)) 

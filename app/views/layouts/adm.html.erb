@@ -45,7 +45,7 @@
         <br/>
         <%= flash[:notice] %>
         <br/>
-        <%= nome_paciente(@paciente) if @paciente && !@paciente.new_record?%>
+        <%= nome_paciente(@paciente) if @paciente && !@paciente.new_record? %>
         <span id="controller" style='display: none;'><%= params[:controller] %></span> 
         <span id="action" style='display: none;'><%= params[:action] %></span>
 
