@@ -34,7 +34,7 @@ class TrabalhoProteticosController < ApplicationController
     @trabalho_protetico.data_prevista_de_devolucao = params[:datepicker2].to_date if params[:datepicker2]
     @trabalho_protetico.data_de_devolucao          = params[:datepicker3].to_date if !params[:datepicker3].blank?
     if @trabalho_protetico.save
-      if @trabalho_protetico.tratamento.present? @trabalho_protetico.tratamento.adiciona_custo(@trabalho_protetico.valor)
+      @trabalho_protetico.tratamento.adiciona_custo(@trabalho_protetico.valor) if @trabalho_protetico.tratamento.present? 
       redirect_to( abre_paciente_path(:id => @trabalho_protetico.paciente_id)) 
     else
       render :action => "new" 
@@ -55,7 +55,7 @@ class TrabalhoProteticosController < ApplicationController
   end
 
   def destroy
-    if @trabalho_protetico.tratamento.present?  @trabalho_protetico.tratamento.adiciona_custo(@trabalho_protetico.valor * (-1))
+    @trabalho_protetico.tratamento.adiciona_custo(@trabalho_protetico.valor * (-1)) if @trabalho_protetico.tratamento.present? 
     @trabalho_protetico.destroy
     #TODO refazer este redirect
     if session[:origem]

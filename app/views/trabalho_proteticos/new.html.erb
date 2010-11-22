@@ -7,6 +7,9 @@
   <%= f.hidden_field :paciente_id %>
   <%= f.hidden_field :clinica_id %>
   <%= f.hidden_field :tratamento_id %>
+  <%= f.hidden_field :dentista_id %>
+  <%= f.hidden_field :dente %>
+  
   <% if @tratamento %>
     <div>
       Tratamento : <%= @tratamento.descricao if @tratamento %>
@@ -14,11 +17,12 @@
   <% end %>
   <div>
     <%= f.label 'dentista :' %>
-    <%= f.select :dentista_id, @dentistas, :include_blank=>true, :class=>'txt' %>
+    <%=  @tratamento.dentista.nome %>
+    
   </div>
   <div>
     <%= f.label 'dente : ' %>   
-    <%= f.text_field :dente, :size=>10, :class=>'txt' %>
+    <%= @tratamento.dente %>
   </div>
   <hr>
   <div>

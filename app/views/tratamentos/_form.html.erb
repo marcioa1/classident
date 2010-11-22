@@ -88,7 +88,7 @@
 <% end %>
 <hr>
 <p>
-  <%= render :partial=>'trabalhos_de_protetico_do_tratamento', :locals=>{:tratamento=>@tratamento} %>
+  <%= render :partial=>'trabalhos_de_protetico_do_tratamento', :locals=>{:tratamento=>@tratamento} if !@tratamento.new_record?%>
 </p>
 <script type="text/javascript">
   desenha_numero_dos_dentes();
