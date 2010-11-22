@@ -613,7 +613,8 @@ function transfere_paciente(id){
     data : {id: id},
     type : "GET",
     success :function(data){
-      alert("Paciente transferido. Pesquise novamente pelo nome para trazer sua dados.");
+      location.href="0/abre?nome=" + data
+      // alert("Paciente transferido. Pesquise novamente pelo nome para trazer sua dados.");
     }
   });
 }
