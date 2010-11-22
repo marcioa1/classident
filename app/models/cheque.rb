@@ -65,6 +65,7 @@ class Cheque < ActiveRecord::Base
     return "arquivo morto" unless !arquivo_morto?
     return "SPC" unless !spc?
     return "devolvido duas vezes em " + data_segunda_devolucao.to_s_br unless !devolvido_duas_vezes? 
+   debugger
     return "reapresentado em " + data_reapresentacao.to_s_br unless !reapresentado?
     return "devolvido uma vez em " + data_primeira_devolucao.to_s_br unless !devolvido_uma_vez?
     return "usado pgto na adm" if usado_para_pagamento? and recebido_pela_administracao
@@ -89,43 +90,43 @@ class Cheque < ActiveRecord::Base
   end
   
   def devolvido_uma_vez?
-    !data_primeira_devolucao.nil?  
+    data_primeira_devolucao.present?  
   end
   
   def reapresentado?
-    !data_reapresentacao.nil?
+    data_reapresentacao.present?
   end
   
   def devolvido_duas_vezes?
-    !data_segunda_devolucao.nil?
+    data_segunda_devolucao.present?
   end
   
   def solucionado?
-    !data_solucao.nil?
+    data_solucao.present?
   end
   
   def spc?
-    !data_spc.nil?
+    data_spc.present?
   end
   
   def arquivo_morto?
-    !data_arquivo_morto.nil?
+    data_arquivo_morto.present?
   end
   
   def entregue_a_administracao
-    !data_entrega_administracao.nil?
+    data_entrega_administracao.present?
   end
   
   def recebido_pela_administracao
-    !data_recebimento_na_administracao.nil?
+    data_recebimento_na_administracao.present?
   end
   
   def usado_para_pagamento?
-    !pagamento_id.nil?
+    pagamento_id.present?
   end
   
   def com_destinacao?
-    !destinacao_id.nil?
+    destinacao_id.present?
   end
     
   def limpo?

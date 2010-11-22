@@ -1,5 +1,10 @@
 <p>
-<%= f.label :nome %> : <%= f.text_field :nome, :size=>60 %>
+<%= f.label :nome %> : 
+<% if @paciente.new_record? %>
+  <%= f.text_field :nome, :size=>60 , :onblur=>'verifica_se_tem_paciente_com_este_nome();'%>
+<% else %>
+  <%= f.text_field :nome, :size=>60%>
+  <% end %>
 </p>
 <p>
 <%= f.label :tabela_id %> : 

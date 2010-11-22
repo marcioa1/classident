@@ -580,3 +580,40 @@ function gera_pdf(dados){
     }
   });
 }
+
+function verifica_se_tem_paciente_com_este_nome(){
+  $.ajax({
+    url  : "verifica_nome_do_paciente/0",
+    data : {nome: $("#paciente_nome").val()},
+    type : "GET",
+    success :function(data){
+      $("#transfere_clinica").html(data.paciente.complemento);
+       // dialog("voltou com paciente encontrado na clinica : " + data.paciente.nome);
+       $( "#transfere" ).dialog({
+			resizable: false,
+			height:140,
+			modal: true,
+			buttons: {
+				"Transfere paciente ": function() {
+					transfere_paciente(data.paciente.id);
+				},
+				"Cancela": function() {
+					$( this ).dialog( "close" );
+				}
+			}
+		});
+
+      }
+  });
+}
+
+function transfere_paciente(id){
+  $.ajax({
+    url  : "transfere_paciente",
+    data : {id: id},
+    type : "GET",
+    success :function(data){
+      alert("Paciente transferido. Pesquise novamente pelo nome para trazer sua dados.");
+    }
+  });
+}

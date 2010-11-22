@@ -182,4 +182,28 @@ class PacientesController < ApplicationController
     end
     head :ok
   end
+  
+  def verifica_nome_do_paciente
+    paciente = Paciente.find_by_nome( params[:nome])
+    if paciente
+      paciente.complemento = paciente.clinica.nome
+      render :json => paciente.to_json
+    else
+      head :bad_request
+    end
+  end
+  
+  def transfere_paciente
+    paciente            = Paciente.find(params[:id])
+    paciente.clinica_id = session[:clinica_id]
+    novo_codigo         = @paciente.gera_codigo(session[:clinica_id])
+    @paciente.codigo    = novo_codigo + " / " + @paciente.codigo
+    if paciente.save
+      redirect_to abre_paciente_path(paciente)
+      # head :ok
+    else
+      head :bad_request
+    end
+  end
+  
 end

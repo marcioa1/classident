@@ -23,6 +23,7 @@ class DebitosController < ApplicationController
 
   def create
     @debito      = Debito.new(params[:debito])
+    @debito.clinica_id = session[:clinica_id]
     if @debito.save
       redirect_to(abre_paciente_path(:id=>@debito.paciente_id)) 
     else
