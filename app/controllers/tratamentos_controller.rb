@@ -16,8 +16,8 @@ class TratamentosController < ApplicationController
   
   def create
     @tratamento = Tratamento.new(params[:tratamento])
-    dentes = params[:tratamento][:dente].empty? ? [' '] : params[:tratamento][:dente].split(',') 
-    erro   = false
+    dentes      = params[:tratamento][:dente].empty? ? [' '] : params[:tratamento][:dente].split(',') 
+    erro        = false
     dentes.each do |dente|
       @tratamento             = Tratamento.new(params[:tratamento])
       @tratamento.paciente_id = session[:paciente_id]

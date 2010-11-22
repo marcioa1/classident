@@ -4,10 +4,6 @@ class TrabalhoProteticosController < ApplicationController
 
   before_filter :busca_trabalho, :only =>[:show, :edit, :update, :destroy]
 
-  def index
-    @trabalho_proteticos = TrabalhoProtetico.all
-  end
-
   def show
   end
 
@@ -38,6 +34,7 @@ class TrabalhoProteticosController < ApplicationController
     @trabalho_protetico.data_prevista_de_devolucao = params[:datepicker2].to_date if params[:datepicker2]
     @trabalho_protetico.data_de_devolucao          = params[:datepicker3].to_date if !params[:datepicker3].blank?
     if @trabalho_protetico.save
+      if @trabalho_protetico.tratamento.present? @trabalho_protetico.tratamento.adiciona_custo(@trabalho_protetico.valor)
       redirect_to( abre_paciente_path(:id => @trabalho_protetico.paciente_id)) 
     else
       render :action => "new" 
@@ -45,10 +42,12 @@ class TrabalhoProteticosController < ApplicationController
   end
 
   def update
-    @trabalho_protetico = TrabalhoProtetico.find(params[:id])
-
+    custo_anterior      = @trabalho_protetico.valor
     if @trabalho_protetico.update_attributes(params[:trabalho_protetico])
       flash[:notice] = 'TrabalhoProtetico alterado com sucesso.'
+      if @trabalho_protetico.tratamento.present? && custo_anterior != @trabalho_protetico.valor
+        @trabalho_protetico.tratamento.adiciona_custo(@trabalho_protetico.valor - custo_anterior)
+      end
       redirect_to(abre_paciente_path(@trabalho_protetico.paciente)) 
     else
       render :action => "edit" 
@@ -56,6 +55,7 @@ class TrabalhoProteticosController < ApplicationController
   end
 
   def destroy
+    if @trabalho_protetico.tratamento.present?  @trabalho_protetico.tratamento.adiciona_custo(@trabalho_protetico.valor * (-1))
     @trabalho_protetico.destroy
     #TODO refazer este redirect
     if session[:origem]

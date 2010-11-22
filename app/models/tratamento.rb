@@ -162,4 +162,10 @@ class Tratamento < ActiveRecord::Base
     result
   end
   
+    
+  def adiciona_custo(valor)
+    self.custo += valor
+    self.save
+  end
+
 end
