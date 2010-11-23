@@ -1,5 +1,5 @@
 <p>
-  <%= link_to "novo trabalho", new_trabalho_protetico_path(:paciente_id=>@paciente.id) unless @administracao %>
+  <%= link_to "novo trabalho", new_trabalho_protetico_path(:paciente_id=>@paciente.id) unless @administracao && 1=1%>
 </p>
 <%= render :partial=> "trabalhos_pendentes", :locals=> { :trabalhos_pendentes => @paciente.pendentes_protetico } unless @paciente.pendentes_protetico.empty? %>
 <%= render :partial=> "trabalhos_devolvidos", :locals => { :trabalhos_devolvidos => @paciente.devolvidos_protetico} unless @paciente.devolvidos_protetico.empty? %>
