@@ -17,12 +17,12 @@
   <% end %>
   <div>
     <%= f.label 'dentista :' %>
-    <%=  @tratamento.dentista.nome %>
+    <%= @tratamento.dentista && @tratamento.dentista.nome if @tratamento.dentista %>
     
   </div>
   <div>
     <%= f.label 'dente : ' %>   
-    <%= @tratamento.dente %>
+    <%= @tratamento.dente if @tratamento.dente %>
   </div>
   <hr>
   <div>

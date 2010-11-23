@@ -1,4 +1,6 @@
 - content_for :main do
+  - total_de_debito_em_dinheiro = 0.0
+  - total_de_debito_em_cheque   = 0.0
   = render :partial => '/layouts/include_senha'
   = link_to 'novo pagamento', new_pagamento_path
   %h3{ :style => "padding-left: 10em;" }
@@ -98,6 +100,7 @@
                 %td{ :align => "right", :style => "color: red;" }
                   = lancamento.valor_pago.real
                 - saldo_dinheiro -= lancamento.valor_pago
+                - total_de_debito_em_dinheiro += lancamento.valor_pago
                 %td &nbsp; 
                 %td &nbsp;
                 %td &nbsp; 
@@ -110,6 +113,8 @@
                 %td{ :align => "right", :style => "color: red;" }
                   = lancamento.valor_pago.real - lancamento.valor_restante.real
                 - saldo_cheque -= lancamento.valor_pago - lancamento.valor_restante.real
+                - total_de_debito_em_cheque += lancamento.valor_pago
+
             - else
               %td &nbsp;
               %td &nbsp;
@@ -159,10 +164,10 @@
     %tr
       %td= 'Saldo de fechamento'
       %td &nbsp;
-      %td &nbsp;
+      %td{ :align=>'right' }= tota_de_debito_em_dinheiro.real
       %td{ :align=>'right' }= saldo_dinheiro.real
       %td &nbsp;
-      %td &nbsp;
+      %td{ :align=>'right' }= tota_de_debito_em_cheque.real
       %td{ :align=>'right' }= saldo_cheque.real
 
   %p
