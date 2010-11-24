@@ -201,7 +201,6 @@ class PacientesController < ApplicationController
     paciente.codigo          = novo_codigo 
     if paciente.save
       render :json => paciente.nome.to_json
-      # head :ok
     else
       head :bad_request
     end
