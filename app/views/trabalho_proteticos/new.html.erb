@@ -17,12 +17,12 @@
   <% end %>
   <div>
     <%= f.label 'dentista :' %>
-    <%= @tratamento.dentista && @tratamento.dentista.nome if @tratamento.dentista %>
+    <%= f.select :dentista_id , options_for_select(@dentistas) %>
     
   </div>
   <div>
     <%= f.label 'dente : ' %>   
-    <%= @tratamento.dente if @tratamento.dente %>
+    <%= f.text_field :dente , :size=>8%>
   </div>
   <hr>
   <div>
