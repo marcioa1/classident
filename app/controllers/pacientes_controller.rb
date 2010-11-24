@@ -194,10 +194,11 @@ class PacientesController < ApplicationController
   end
   
   def transfere_paciente
-    paciente            = Paciente.find(params[:id])
-    paciente.clinica_id = session[:clinica_id]
-    novo_codigo         = paciente.gera_codigo(session[:clinica_id])
-    paciente.codigo     = novo_codigo #+ " / " + paciente.codigo
+    paciente                 = Paciente.find(params[:id])
+    paciente.clinica_id      = session[:clinica_id]
+    paciente.codigo_anterior = paciente.codigo_anterior + '/' + paciente.codigo + "( #{paciente.clinica.nome})"
+    novo_codigo              = paciente.gera_codigo(session[:clinica_id])
+    paciente.codigo          = novo_codigo 
     if paciente.save
       render :json => paciente.nome.to_json
       # head :ok
