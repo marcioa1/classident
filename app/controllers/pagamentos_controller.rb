@@ -165,7 +165,6 @@ class PagamentosController < ApplicationController
   
   def pagamentos_de_hoje
     session[:origem] = '/pagamentos/pagamentos_de_hoje'
-    debugger
     if params[:livro_caixa] == 'on'
       @pagamentos = Pagamento.da_clinica(session[:clinica_id]).no_dia(Date.today)
     else

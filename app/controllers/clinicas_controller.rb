@@ -130,8 +130,8 @@ class ClinicasController < ApplicationController
       @data_inicial = params[:data_inicial].to_date
       @data_final   = params[:data_final].to_date
     end
-    @recebimentos_excluidos = Recebimento.all(:conditions=>['data_de_exclusao between ? and ? and clinica_id = ?', @data_inicial, @data_final, params[:clinica_id]])
-    @pagamentos_excluidos   = Pagamento.all(:conditions=>['data_de_exclusao between ? and ? and clinica_id = ?', @data_inicial, @data_final, params[:clinica_id]])
+    @recebimentos_excluidos = Recebimento.entre_datas(@data_inicial, @data_final).da_clinica(params[:clinica_id])
+    @pagamentos_excluidos   = Pagamento.excluidos.entre_datas(@data_inicial, @data_final).da_clinica(params[:clinica_id])
   end
   
   def usuarios_da_clinica

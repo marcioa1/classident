@@ -19,6 +19,7 @@ class Pagamento < ActiveRecord::Base
   named_scope :da_clinica, lambda{|clinica_id| {:conditions=>["clinica_id = ?", clinica_id]}}
   named_scope :entre_datas, lambda{|inicio,fim| 
        {:conditions=>["data_de_pagamento between ? and ?", inicio,fim]}}
+  named_scope :excluidos, :conditions=>["data_de_exclusao IS NOT NULL"]
   named_scope :filhos, lambda{|pagamento_id| {:conditions=>["pagamento_id = ?", pagamento_id]}}
   named_scope :fora_do_livro_caixa, :conditions=>['nao_lancar_no_livro_caixa = ?', true]
   named_scope :no_dia, lambda{|dia|
