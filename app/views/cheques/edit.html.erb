@@ -1,5 +1,5 @@
 <% content_for :main do %>
-<fieldset>
+<fieldset class="fieldset_50">
 <legend>Editando cheque ( <%= @cheque.id%> )</legend>
 
 <% form_for(@cheque) do |f| %>
@@ -12,23 +12,20 @@
 
   <div>
      <%= f.label :banco %> : 
-     <%= f.select :banco_id, options_for_select(@bancos)  %>
+     <%= f.select :banco_id, options_for_select(@bancos, @cheque.banco_id.to_i)  %>
   </div>
   <div>
      <%= f.label :agencia %> : 
      <%= f.text_field :agencia, :size=>7 %>
   </div>
+  
   <div>
-     <%= f.label :conta_corrente %> : 
-     <%= f.text_field :conta_corrente, :size=>7 %>
-  </div>
-  <div>
-     <%= f.label :número %> : 
+     <%= f.label :número_do_cheque %> : 
      <%= f.text_field :numero, :size=>7 %>
   </div>
   <div>
     <%= f.label :valor %> :
-    <%= f.text_field :valor, :size=>8%>
+    <%= f.text_field :valor_real, :size=>8%>
   </div>
   <div>
     <%= f.label :bom_para %> :

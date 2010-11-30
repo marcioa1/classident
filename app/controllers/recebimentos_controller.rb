@@ -86,6 +86,7 @@ class RecebimentosController < ApplicationController
     Recebimento.transaction do
       if (@recebimento.errors.size==0) && ((@recebimento.em_cheque? && @cheque.valid?) || (!@recebimento.em_cheque?))
         @cheque.save if @cheque
+        debugger
         @recebimento.save 
         @recebimento2.save if @recebimento2
         @recebimento3.save if @recebimento3
@@ -165,10 +166,8 @@ class RecebimentosController < ApplicationController
   end
   
   def exclui
-    @paciente    = @recebimento.paciente
-    @recebimento.observacao_exclusao = params[:observacao_exclusao]
-    @recebimento.exclui(current_user.id)
-    redirect_to(abre_paciente_path(@paciente))
+    @recebimento.exclui(current_user.id, params[:observacao_exclusao])
+    redirect_to(abre_paciente_path(@recebimento.paciente))
   end
   
   def exclusao

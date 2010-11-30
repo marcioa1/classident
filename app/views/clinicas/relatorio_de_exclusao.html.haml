@@ -20,6 +20,7 @@
       %th Usuário
       %th Data de exclusão
       %th Observação
+      %th Cheque
     -@recebimentos_excluidos.each do |rec|
       %tr
         %td= rec.data.to_s_br
@@ -28,7 +29,7 @@
         %td= user && user.nome 
         %td= rec.data_de_exclusao.to_s_br
         %td= rec.observacao_exclusao
-        
+        %td= rec.cheque.observacao if rec.cheque.present?
   %p
   %h4 Pagamentos
   %table{:class=>'tabela'}

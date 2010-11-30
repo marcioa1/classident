@@ -123,7 +123,7 @@ class ClinicasController < ApplicationController
   end
   
   def relatorio_de_exclusao
-    @clinicas    = busca_clinicas #Clinica.all.collect{|cl| [cl.nome, cl.id.to_s]}
+    @clinicas    = busca_clinicas.collect{|cl| [cl.nome, cl.id.to_s]}
     if !params[:data_inicial]
       quinzena
     else 

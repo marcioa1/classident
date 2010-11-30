@@ -58,14 +58,13 @@ class Cheque < ActiveRecord::Base
   end
   
   def valor_real=(valor)
-    self.valor = valor
+    self.valor = valor.gsub(".", "").sub(",",".")
   end
   
   def status
     return "arquivo morto" unless !arquivo_morto?
     return "SPC" unless !spc?
     return "devolvido duas vezes em " + data_segunda_devolucao.to_s_br unless !devolvido_duas_vezes? 
-   debugger
     return "reapresentado em " + data_reapresentacao.to_s_br unless !reapresentado?
     return "devolvido uma vez em " + data_primeira_devolucao.to_s_br unless !devolvido_uma_vez?
     return "usado pgto na adm" if usado_para_pagamento? and recebido_pela_administracao
@@ -156,6 +155,15 @@ class Cheque < ActiveRecord::Base
       result = result[0..(result.size-2)]
     end
     return result
+  end
+
+  def nome_dos_outros_pacientes(recebimento_id)
+    result = []
+    recebimentos = Recebimento.all(:conditions=>['cheque_id = ? and id <> ?',self.id, recebimento_id])
+    recebimentos.each do |rec|
+      result << rec.paciente.nome  if rec.paciente.present?
+    end
+    return result.join(", ")
   end
   
   def observacao

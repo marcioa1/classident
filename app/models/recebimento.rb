@@ -125,17 +125,20 @@ class Recebimento < ActiveRecord::Base
     return observacao
   end
   
-  def exclui(user)
-    self.data_de_exclusao    = Date.today
-    self.usuario_exclusao    = user
+  def exclui(user, obs)
+    # self.data_de_exclusao    = Time.current
+    # self.usuario_exclusao    = user
     if self.cheque
-      self.cheque.data_de_exclusao = Time.current
+      self.cheque.update_attribute(:data_de_exclusao, Time.current)
       todos = self.cheque.recebimentos
-      todos.each do |chq|
-        chq.update_attribute(:data_de_exclusao,Time.current)
-      end
+    else
+      todos = self
     end
-    self.save
+    todos.each do |rec|
+      rec.update_attributes(:data_de_exclusao => Time.current, 
+                                  :observacao_exclusao => obs, :usuario_exclusao => user)
+    end
+    # self.save
   end
     
   def verifica_fluxo_de_caixa
