@@ -547,10 +547,10 @@ class Converte
           t.data_primeira_devolucao   = registro[17].to_date 
           t.motivo_primeira_devolucao = registro[18] 
           t.data_lancamento_primeira_devolucao = registro[19].to_date if Date.valid?(registro[19])
-          t.data_reapresentacao       = registro[20].to_date if Date.valid?(registro[20])
-          t.data_segunda_devolucao    = registro[21].to_date if Date.valid?(registro[21])
+          t.data_reapresentacao       = registro[20].to_date if t.data_primeira_devolucao && Date.valid?(registro[20])
+          t.data_segunda_devolucao    = registro[21].to_date if t.data_primeira_devolucao && Date.valid?(registro[21])
           t.motivo_segunda_devolucao  = registro[22]
-          t.data_solucao              = registro[23].to_date if Date.valid?(registro[23])
+          t.data_solucao              = registro[23].to_date if t.data_primeira_devolucao && Date.valid?(registro[23])
           t.descricao_solucao         = registro[24]
           t.data_caso_perdido         = registro[25]
         t.data_arquivo_morto        = registro[29].to_date if Date.valid?(registro[29])
@@ -856,6 +856,7 @@ class Converte
             cheque.destinacao               = destinacao
             cheque.data_destinacao          = data_destinacao
             if pagamento > 0
+              #FIXME Procurar cheque ref pgto valor 3582.51
               reg_pagamento = Pagamento.find_by_clinica_id_and_sequencial(clinica.id, pagamento)
               cheque.pagamento_id = reg_pagamento.id if reg_pagamento.present?
             end
@@ -896,13 +897,14 @@ class Converte
         t.tipo_pagamento_id = tipo_pagamento.id if tipo_pagamento
         t.data_de_pagamento = registro[3].to_date if Date.valid?(registro[3])
         t.sequencial        = registro[6].to_i
+        t.opcao_restante    = registro[9]
         t.valor_pago        = le_valor(registro[11])
         t.observacao        = registro[4].gsub('"', '') unless registro[4].blank?
         t.valor_restante    = le_valor(registro[13]) unless registro[13].blank?
-        t.valor_cheque      = le_valor(registro[11]) unless registro[11].blank?
-        t.valor_terceiros   = le_valor(registro[10]) unless registro[10].blank?
-        t.conta_bancaria_id = registro[14].to_i unless registro[14].to_i == -1 
-        t.numero_do_cheque  = registro[15]
+        t.valor_cheque      = le_valor(registro[10]) unless registro[10].blank?
+        t.valor_terceiros   = le_valor(registro[15]) unless registro[15].blank?
+        t.conta_bancaria_id = registro[12].to_i unless registro[12].to_i == -1 
+        t.numero_do_cheque  = registro[14]
         t.nao_lancar_no_livro_caixa = (registro[16].to_i!= 0)
         t.data_de_exclusao          = registro[17].to_date unless registro[17].blank?
         t.save

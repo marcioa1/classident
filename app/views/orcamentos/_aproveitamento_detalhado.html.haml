@@ -11,7 +11,7 @@
   - @orcamentos.each do |orca| 
     %tr
       %td= orca.dentista.nome if orca.dentista.present? 
-      %td= orca.paciente.clinica.nome 
+      %td= orca.paciente.clinica.sigla 
       %td= orca.data.to_s_br
       %td= orca.paciente.nome 
       %td{:align=>'right'}= orca.valor.real 
