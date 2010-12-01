@@ -42,9 +42,9 @@
             <% end %>
         </div>
       <div id="main">
-        <br/>
-        <%= flash[:notice] %>
-        <br/>
+        <div class='notice'>
+          <%= flash[:notice] %>
+        </div>
         <%= nome_paciente(@paciente) if @paciente && !@paciente.new_record? %>
         <span id="controller" style='display: none;'><%= params[:controller] %></span> 
         <span id="action" style='display: none;'><%= params[:action] %></span>

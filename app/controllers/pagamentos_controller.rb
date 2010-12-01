@@ -94,14 +94,13 @@ class PagamentosController < ApplicationController
     if @pagamento.update_attributes(params[:pagamento])
       @pagamento.verifica_fluxo_de_caixa
       flash[:notice] = 'Pagamento alterado com sucesso.'
-      redirect_to(relatorio_pagamentos_path) 
+      redirect_to(session[:origem] || relatorio_pagamentos_path) 
     else
       render :action => "edit" 
     end
   end
 
-  def exclui #destroy
-    #TODO excluir gravando observação da exlcusao
+  def exclui 
     @pagamento                     = Pagamento.find(params[:id])
     @pagamento.observacao_exclusao = params[:observacao_exclusao]
     @pagamento.data_de_exclusao    = Time.current
@@ -119,8 +118,7 @@ class PagamentosController < ApplicationController
       end
       @pagamento.save
     end
-
-    redirect_to(relatorio_pagamentos_path) 
+    redirect_to(session[:origem] || relatorio_pagamentos_path) 
   end
   
    def relatorio
@@ -160,15 +158,12 @@ class PagamentosController < ApplicationController
     @pagamento = Pagamento.find(params[:id])
   end
   
-  def hoje
-  end
-  
   def pagamentos_de_hoje
     session[:origem] = '/pagamentos/pagamentos_de_hoje'
     if params[:livro_caixa] == 'on'
-      @pagamentos = Pagamento.da_clinica(session[:clinica_id]).no_dia(Date.today)
+      @pagamentos = Pagamento.da_clinica(session[:clinica_id]).no_dia(Date.today).nao_excluidos
     else
-      @pagamentos = Pagamento.da_clinica(session[:clinica_id]).no_dia(Date.today).fora_do_livro_caixa
+      @pagamentos = Pagamento.da_clinica(session[:clinica_id]).no_dia(Date.today).fora_do_livro_caixa.nao_excluidos
     end
   end
   

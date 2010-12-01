@@ -1,6 +1,7 @@
 <% content_for :main do %>
-<%= link_to 'novo pagamento', new_pagamento_path %> 
-
+<div id="link">
+  <%= link_to 'novo pagamento', new_pagamento_path %> 
+</div>
 <fieldset>
     <legend>Relatório de pagamentos</legend>
 <% form_tag relatorio_pagamentos_path do %>
@@ -15,6 +16,7 @@
         <td colspan='2'><%= check_box_tag :pela_adm, params[:pela_adm], params[:pela_adm] %> Incluir pagos pela Adm
         </td>
       </tr>
+    <% end %>
       <tr>
         <td colspan='2'><%= radio_button_tag :modo, 'todos' %> Todas </td>
       </tr>
@@ -27,7 +29,6 @@
       <tr>
         <td colspan='2'><%= radio_button_tag :modo, 'cheque classident' %> Cheque da classident</td>
       </tr>
-    <% end %>
     </table>
     </td>
     <td>
@@ -41,13 +42,16 @@
 <% end %>
 </fieldset>
 <br/>
-<table id="tabela">
+<table id="tabela" class='tabela'>
   <thead>
   <tr>
-    <th>Data de pagamento</th>
+    <th>Tipo</th>
     <th>Valor pago</th>
     <th width="220px">Observação</th>
-    <th>Tipo</th>
+    <th>Pago em</th>
+    <th>Terceiros</th>
+    <th>Dinheiro</th>
+    <th>Cheque</th>
     <th>Modo pgto</th>
     <th>Livro caixa</th>
     <th>&nbsp;</th>
@@ -55,13 +59,19 @@
     <th>&nbsp;</th>
   </tr></thead>
 <% total = 0 %>
+<% total_terceiros = 0 %>
+<% total_cheque = 0 %>
+<% total_dinheiro = 0 %>
 <tbody>
 <% @pagamentos.each do |pagamento| %>
   <tr>
-    <td align="center"><%=h pagamento.data_de_pagamento.to_s_br %></td>
+    <td><%=h pagamento.tipo_pagamento.nome %></td>
     <td align="right"><%=h pagamento.valor_pago.real %></td>
     <td><%=h pagamento.observacao %></td>
-    <td><%=h pagamento.tipo_pagamento.nome %></td>
+    <td align="center"><%=h pagamento.data_de_pagamento.to_s_br %></td>
+    <td align="right"><%= pagamento.valor_terceiros.real %></td>
+    <td align="right"><%= pagamento.valor_restante.real %></td>
+    <td align="right"><%= pagamento.valor_cheque.real %></td>
     <td><%=h pagamento.modo_de_pagamento %></td>
     <td align="center"><%=h pagamento.nao_lancar_no_livro_caixa ? "não" : "sim" %></td>
     <td><%= link_to 'editar', edit_pagamento_path(pagamento), :class=>'ui-icon ui-icon-pencil', :title=>'editar' if pagamento.pode_alterar? %></td>
@@ -69,12 +79,19 @@
     <td><%= link_to 'mostrar', '#', :onclick=>'javascript:abre_pagamento('+ pagamento.id.to_s + ')' , :class=>'ui-icon ui-icon-info', :title=>'ver detalhes'%></td>
   </tr>
   <% total += pagamento.valor_pago  %>
+  <% total_dinheiro += pagamento.valor_dinheiro %>
+  <% total_cheque += pagamento.valor_cheque %>
+  <% total_terceiros += pagamento.valor_terceiros %>
 <% end %>
   </tbody>
   <tr>
   	<td align="center">Total</td>
     <td align="right"><%= total.real %></td>
-    <td colspan="6">&nbsp;</td>
+    <td colspan="2">&nbsp;</td>
+    <td align="right"><%= total_terceiros.real %></td>
+    <td align="right"><%= total_dinheiro.real %></td>
+    <td align="right"><%= total_cheque.real %></td>
+    <td colspan="5">&nbsp;</td>
   </tr>
 </table>
 

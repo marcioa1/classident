@@ -4,6 +4,9 @@
     = check_box_tag :livro_caixa, params[:livro_caixa] , params[:livro_caixa] == 'on'
     = label_tag 'Incluir livro caixa'
     = submit_tag "Pesquisar"
+  #novo_pagamento
+    %br
+    = link_to 'novo pagamento', new_pagamento_path
   %br
   %table{:class=>"tabela"}
     %thead
@@ -34,4 +37,4 @@
     %tr
       %td{:align=>"center"}Total
       %td{:align=>"right"}= total.real 
-      %td{:colspan=>"6"}&nbsp;
+      %td{:colspan=>"7"} &nbsp;

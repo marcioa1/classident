@@ -36,7 +36,7 @@ class Pagamento < ActiveRecord::Base
  
   include ApplicationHelper
 
-  attr_accessor :valor_pago_real, :data_de_pagamento_pt
+  attr_accessor :valor_pago_real, :data_de_pagamento_pt, :valor_dinheiro
   
   def valor_pago_real
     self.valor_pago.real.to_s
@@ -50,6 +50,10 @@ class Pagamento < ActiveRecord::Base
   end
   def data_de_pagamento_pt=(nova_data)
     self.data_de_pagamento = nova_data.to_date if Date.valid?(nova_data)
+  end
+  
+  def valor_dinheiro
+    self.valor_pago - self.valor_terceiros - self.valor_cheque
   end
   
   def verifica_quinzena
