@@ -20,6 +20,7 @@ class ChequesController < ApplicationController
 
   def update
     @cheque = Cheque.find(params[:id])
+    valor_anterior = @cheque.valor
     if params[:datepicker2].empty?
       @cheque.data_primeira_devolucao = nil
     else
@@ -37,7 +38,10 @@ class ChequesController < ApplicationController
     end
 
     if @cheque.update_attributes(params[:cheque])
-      redirect_to(:back) 
+      if valor_anterior != @cheque.valor
+        @cheque.recebimentos.first.update_attribute(:valor, @cheque.valor)
+      end
+      redirect_to( session[:origem] ) 
     else
       render :action => "edit" 
     end
@@ -51,7 +55,7 @@ class ChequesController < ApplicationController
   end
   
   def cheques_recebidos
-    #TODO falta colocar fitro de clínica
+    session[:origem] = cheques_recebidos_cheques_path
     @clinicas = Clinica.todas.por_nome if @administracao
     if params[:datepicker] && Date.valid?(params[:datepicker])
       @data_inicial = params[:datepicker].to_date

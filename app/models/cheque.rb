@@ -76,6 +76,21 @@ class Cheque < ActiveRecord::Base
     return "solucionado" unless !solucionado?
   end
   
+  def status_resumido
+    return "arq morto" unless !arquivo_morto?
+    return "SPC" unless !spc?
+    return "devol 2X:" + data_segunda_devolucao.to_s_br unless !devolvido_duas_vezes? 
+    return "reapr. :" + data_reapresentacao.to_s_br unless !reapresentado?
+    return "devolv.: " + data_primeira_devolucao.to_s_br unless !devolvido_uma_vez?
+    return "pgto adm" if usado_para_pagamento? and recebido_pela_administracao
+    return "pgto clí" if usado_para_pagamento? and !recebido_pela_administracao
+    return "destinação" if com_destinacao?
+    return "rec. adm" if recebido_pela_administracao
+    return "disponível" unless !sem_devolucao? 
+    return "entr. adm" if entregue_a_administracao
+    return "solucionado" unless !solucionado?
+  end
+  
   def sem_devolucao?
     data_primeira_devolucao.nil?
   end
@@ -172,5 +187,9 @@ class Cheque < ActiveRecord::Base
     result += 'ag.' + self.agencia + '/' if self.agencia.present?
     result += 'num.'+ self.numero if self.numero.present?
     result
+  end
+  
+  def para_mais_de_um_paciente?
+    self.recebimentos.size > 1
   end
 end

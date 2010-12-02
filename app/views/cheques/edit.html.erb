@@ -25,7 +25,7 @@
   </div>
   <div>
     <%= f.label :valor %> :
-    <%= f.text_field :valor_real, :size=>8%>
+    <%= f.text_field :valor_real, :size=>8, :disabled=> @cheque.para_mais_de_um_paciente? %>
   </div>
   <div>
     <%= f.label :bom_para %> :
@@ -87,8 +87,13 @@
   <% if @cheque.entregue_a_administracao %>
   <p>Entregue à Administração em <%= @cheque.data_entrega_administracao.to_s_br %></p>
   <% end %>
+  <% if @cheque.recebimentos.size == 1%>
+    <p>
+      Ao alterar o valor deste cheque, o valor de respectivo recebimento também será alterado, juntamente com o extrato do paciente
+    </p>
+  <% end %>
   <p>
-    <%= f.submit 'Update' unless @cheque.entregue_a_administracao%>
+    <%= f.submit 'Update' unless @cheque.entregue_a_administracao || @cheque.para_mais_de_um_paciente? %>
   </p>
 <% end %>
 <%= link_to 'voltar', :back %>

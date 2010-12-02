@@ -27,10 +27,10 @@ def index
  # converte.tabela_protetico
  # converte.trabalho_protetico
   # converte.alta
- # converte.adm_tipo_pagamento
+ converte.adm_tipo_pagamento
  converte.adm_pagamento
-  # converte.adm_cheques
- # converte.adm_fluxo
+ converte.adm_cheques
+ converte.adm_fluxo
   puts "Término da conversão."
 end
 
