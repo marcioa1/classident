@@ -13,7 +13,7 @@ class OrcamentosController < ApplicationController
 
   def new
     params[:tratamento_ids] = Tratamento.ids_orcamento(params[:paciente_id]).join(",")
-    @paciente           = Paciente.find(session[:paciente_id], :select=>'id,nome,sequencial,telefone, celular')
+    @paciente           = Paciente.find(session[:paciente_id], :select=>'id,nome,sequencial,telefone, codigo,celular')
     @orcamento          = Orcamento.new(:vencimento_primeira_parcela => Date.today + 30.days, :data => Date.today, :forma_de_pagamento => 'cheque_pre')
     @orcamento.paciente = @paciente
     @orcamento.numero   = Orcamento.proximo_numero(session[:paciente_id])
