@@ -8,8 +8,12 @@ class TratamentosController < ApplicationController
     @paciente               = Paciente.find(params[:paciente_id])
     @tratamento             = Tratamento.new
     @tratamento.paciente_id = @paciente.id
-    @items                  = @paciente.tabela.item_tabelas.
+    if @paciente.tabela
+      @items                  = @paciente.tabela.item_tabelas.
         collect{|obj| [obj.codigo + " - " + obj.descricao,obj.id]}.insert(0,"")
+    else
+      @items = []
+    end
     # @dentistas              = @clinica_atual.dentistas.ativos.collect{|obj| [obj.nome,obj.id]}.sort
     @dentistas = Dentista.busca_dentistas(session[:clinica_id])
   end
@@ -43,9 +47,12 @@ class TratamentosController < ApplicationController
   end
   
   def edit      
-    @paciente               = @tratamento.paciente
-    @items = @tratamento.paciente.tabela.item_tabelas.
+    @paciente = @tratamento.paciente
+    @items    = []
+    if @tratamento.paciente.tabela && @tratamento.paciente.tabela.item_tabelas
+      @items = @tratamento.paciente.tabela.item_tabelas.
         collect{|obj| [obj.codigo + " - " + obj.descricao,obj.id]}
+    end
     @dentistas = @clinica_atual.dentistas.ativos.collect{|obj| [obj.nome,obj.id]}
   end
   

@@ -1,4 +1,4 @@
-
+ID:<%=h @pagamento.id %>
 <p>
   <b>Tipo de pagamento</b>
   <%=h @pagamento.tipo_pagamento.nome %>
@@ -25,6 +25,10 @@
     <%=h @pagamento.descricao_opcao_restante %>
   </p>
 <% end %>
+<p>
+  <b>Modo de pagamento :</b>
+  <%=h @pagamento.modo_de_pagamento %>  
+</p>
 
 <p>
   <b>Observação:</b>
@@ -44,7 +48,8 @@
   </p>
 <% end %>
 
-<%= render :partial=>"pagamentos/cheques_utilizados" %>
+<%= render :partial=>"pagamentos/cheques_utilizados" if @pagamento.em_cheque_pacientes? %>
+<%= render :partial=>"pagamentos/cheque_classident" if @pagamento.em_cheque_classident? %>
 <%= render :partial=>"trabalho_proteticos/trabalho_pagamento"%>
 
 <a href="javascript: self.close();">fechar</a>

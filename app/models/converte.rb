@@ -1,8 +1,13 @@
 class Converte
-
+  
+  require 'fastercsv'
+  
+  CLINICAS = Hash.new
+  
   def clinicas
     todas = Clinica.all
     todas.each() do |cli|
+      CLINICAS[cli.sigla]  = cli.id
       cli.dentistas = []
       cli.save
     end
@@ -11,18 +16,12 @@ class Converte
   def cadastro 
     abre_arquivo_de_erros('Cadastro')
     puts "Convertendo cadastro ..."
-    f = File.open("doc/convertidos/cadastro.txt" , "r")
+
     tabela_inexistente = Tabela.find_by_nome('Inexistente')
     Paciente.delete_all
-    clinica = ''
-    while line = f.gets
+    FasterCSV.foreach('doc/convertidos/cadastro.txt', option={:col_sep=>';'}) do |registro|
       begin
-        registro = busca_registro(line)
-        if clinica != registro.last
-          clinica  = registro.last
-          @clinica = Clinica.find_by_sigla(clinica, :select=>['id'])
-          clinica_index = @clinica.id * 100000
-        end
+        clinica_index           = CLINICAS[registro.last] * 100000
         p                       = Paciente.new
         p.codigo                = registro[1].to_i
         if registro[0].upcase.include?('ORTO')
@@ -40,7 +39,7 @@ class Converte
         else
           p.tabela_id           = tabela_id 
         end
-        p.clinica_id            = @clinica.id unless @clinica.nil?
+        p.clinica_id            = CLINICAS[registro.last]
         p.cpf                   = registro[16]
         p.profissao             = registro[8]
         p.indicado_por          = registro[15]
@@ -49,6 +48,7 @@ class Converte
         p.sair_da_lista_de_debitos          = registro[29]
         p.motivo_sair_da_lista_de_debitos   = registro[30]
         p.data_da_saida_da_lista_de_debitos = registro[31].to_date unless !Date.valid?(registro[31])
+
         if registro[34].to_i  > 0
           ortodontista = @@dentistas[clinica_index + registro[34].to_i]
           p.ortodontia = true
@@ -57,12 +57,13 @@ class Converte
         else
           p.ortodontia = false
         end
-        p.save!
+        if !p.save
+          puts 'Cadastro : ' + p.errors.full_messages
+        end
       rescue Exception => ex
-        @arquivo.puts line + "\n"+ "      ->" + ex 
+        @arquivo.puts registro.join(';') + "\n"+ "      ->" + ex 
       end
     end
-    f.close
     fecha_arquivo_de_erros('Cadastro')
   end
   
@@ -70,39 +71,35 @@ class Converte
     #FIXME considerar que pode haver outras pessoas que não sejam pacientes
     abre_arquivo_de_erros('Mala-direta')
     puts "Convertendo mala direta ..."
-    f = File.open("doc/convertidos/maladireta.txt" , "r")
-    clinica = ''
-    while line = f.gets
+    FasterCSV.foreach('doc/convertidos/maladireta.txt', option={:col_sep=>';'}) do |registro|
       begin
-        registro = busca_registro(line)
-        if clinica != registro.last
-          clinica  = registro.last
-          @clinica = Clinica.find_by_sigla(clinica)
-        end
+        clinica_id = CLINICAS[registro.last]
         if registro[0].upcase.include?('ORTO')
-          index                 = registro[0].upcase.index('ORTO')
-          nome                  = registro[0][0..index-1].nome_proprio
+          index    = registro[0].upcase.index('ORTO')
+          nome     = registro[0][0..index-1].nome_proprio
         else
-          nome                  = registro[0].nome_proprio
+          nome     = registro[0].nome_proprio
         end
-        p = Paciente.find_by_nome_and_clinica_id(nome, @clinica.id, 
-                :select => 'id, logradouro, bairro, cidade, nascimento, uf, cep, telefone, email, inicio_tratamento')
-        if !p.nil?
+        p = Paciente.find_by_nome_and_clinica_id(nome, clinica_id)
+        if p.present?
           p.logradouro   = registro[3]
           p.bairro       = registro[4]
           p.cidade       = registro[5]
           p.nascimento   = registro[6].to_date if Date.valid?(registro[6])
           p.uf           = registro[7]
-          p.cep          = registro[8][0..7]
+          p.cep          = registro[8][0..7] if registro[8]
           p.telefone     = registro[9]
           p.email        = registro[15]
-          p.save!
+          if !p.save
+            puts "Erro #{p.errors.full_messages}"
+          end
+        else
+          puts "Não encontrou  "+ nome + '/'+ clinica_id.to_s
         end
       rescue Exception => ex
-        @arquivo.puts line + "\n"+ "      ->" + ex
+        @arquivo.puts registro.join(';') + "\n"+ "      ->" + ex
       end
     end
-    f.close
     fecha_arquivo_de_erros('Mala-direta')
   end
   
@@ -110,12 +107,10 @@ class Converte
     # Depende de tratamento
     abre_arquivo_de_erros('Débitos')
     puts "Convertendo débitos ....#{Time.current}"
-    f = File.open("doc/convertidos/debito.txt" , "r")
     Debito.delete_all
     clinica = ''
-    while line = f.gets 
+    FasterCSV.foreach('doc/convertidos/debito.txt', option={:col_sep=>';'}) do |registro|
       begin
-        registro = busca_registro(line)
         if clinica != registro.last
           clinica       = registro.last
           @clinica      = Clinica.find_by_sigla(clinica)
@@ -131,23 +126,20 @@ class Converte
         d.clinica_id    = @clinica.id
         d.save!
       rescue Exception => ex
-        @arquivo.puts line + "\n"+ "      ->" + ex
+        @arquivo.puts registro.join(';') + "\n"+ "      ->" + ex
       end
     end
-    f.close
     fecha_arquivo_de_erros('Débitos')
   end
   
   def formas_recebimento
     abre_arquivo_de_erros('Formas de recebimento')
     puts "Convertendo formas de recebimentos ...."
-    f = File.open("doc/convertidos/formarec.txt" , "r")
     FormasRecebimento.delete_all
     FormaRecebimentoTemp.delete_all
     clinica = ''
-    while line = f.gets 
+    FasterCSV.foreach('doc/convertidos/formarec.txt', option={:col_sep=>';'}) do |registro|
       begin
-        registro = busca_registro(line)
         if clinica != registro.last
           clinica = registro.last
           @clinica = Clinica.find_by_sigla(clinica)
@@ -172,22 +164,19 @@ class Converte
         forma_cli.clinica_id = @clinica.id
         forma_cli.save
       rescue Exception => ex
-        @arquivo.puts line + "\n"+ "      ->" + ex
+        @arquivo.puts registro.join(';') + "\n"+ "      ->" + ex
       end
     end
-    f.close
     fecha_arquivo_de_erros('Formas de recebimento')
   end
   
   def recebimento
     abre_arquivo_de_erros("Recebimentos")
     puts "Convertendo recebimentos ...."
-    f = File.open("doc/convertidos/recebimento.txt" , "r")
     Recebimento.delete_all
     clinica = ''
-    while line = f.gets 
+    FasterCSV.foreach('doc/convertidos/recebimento.txt', option={:col_sep=>';'}) do |registro|
       begin
-        registro   = busca_registro(line)
         if clinica != registro.last
           clinica  = registro.last
           @clinica = Clinica.find_by_sigla(clinica)
@@ -198,14 +187,14 @@ class Converte
         paciente                = @@pacientes[clinica_index + registro[2].to_i]
         if paciente.nil?
           @arquivo.puts "Paciente não encontrado em recebimento: id #{registro[2]}, clínica : #{@clinica.id}"
-          @arquivo.puts line
+          @arquivo.puts registro.join(';')
         else
           r.paciente_id         = paciente
         end
         forma_recebimento       = FormaRecebimentoTemp.find_by_seq_and_clinica_id(registro[3].to_i, @clinica.id)
         if forma_recebimento.nil?
           @arquivo.puts "Forma de recebimento não encontrada em recebimento: id #{registro[3]}, clínica : #{@clinica.id}"
-          @arquivo.puts line
+          @arquivo.puts registro.join(';')
         else
           r.formas_recebimento_id = forma_recebimento.id_adm 
         end
@@ -220,24 +209,21 @@ class Converte
         # r.cheque_id             = registro[0].to_i if !registro[0].blank?
         r.save
       rescue Exception => ex
-        @arquivo.puts line + "\n"+ "      ->" + ex
+        @arquivo.puts registro.join(';') + "\n"+ "      ->" + ex
       end
     end
-    f.close
     fecha_arquivo_de_erros('Recebimento')
   end
   
   def tabela
     abre_arquivo_de_erros('Tabelas ....')
-    puts "Convertendo tabelas ...."
-    f = File.open("doc/convertidos/tabela_nova.txt" , "r")
+    puts "Convertendo tabelas ....#{Time.current}"
     Tabela.delete_all
     Tabela.create!(:nome => 'Inexistente', :clinica_id=>0, :ativa => false, :sequencial=>1)
-    clinica = '' 
-    # @ct     = 1
-    while line = f.gets 
+
+    clinica = ''
+    FasterCSV.foreach('doc/convertidos/tabela_nova.txt', option={:col_sep=>';'}) do |registro|
       begin
-        registro = busca_registro(line)
         if clinica != registro.last
           clinica = registro.last
           @clinica = Clinica.find_by_sigla(clinica)
@@ -249,23 +235,21 @@ class Converte
         t.clinica_id   = @clinica.id
         t.save
       rescue Exception => ex
-        @arquivo.puts line + "\n"+ "      ->" + ex
+        puts registro.join(';') + "\n"+ "      ->" + ex
       end
     end
-    f.close
     fecha_arquivo_de_erros('Tabelas')
   end
-  
+       
+       
   def item_tabela
     abre_arquivo_de_erros('Item tabelas ...')
     puts "Convertendo item das tabelas ...."
-    f = File.open("doc/convertidos/item_tabela.txt" , "r")
     ItemTabela.delete_all
     Preco.delete_all
     clinica = ''
-    while line = f.gets 
+    FasterCSV.foreach('doc/convertidos/item_tabela.txt', option={:col_sep=>';'}) do |registro|
       begin
-        registro = busca_registro(line)
         if clinica != registro.last
           clinica = registro.last
           @clinica = Clinica.find_by_sigla(clinica)
@@ -283,10 +267,10 @@ class Converte
           # Preco.create(:item_tabela_id=> t.id, :clinica_id=>@clinica.id, :preco=> valor)
         end
       rescue Exception => ex
-        @arquivo.puts line + "\n"+ "      ->" + ex
+        @arquivo.puts registro.join(';') + "\n"+ "      ->" + ex
+          @arquivo.puts t.errors.full_message
       end
     end
-    f.close
     fecha_arquivo_de_erros('Item Tabela')
   end
   
@@ -294,22 +278,15 @@ class Converte
     # depende de dentista
     abre_arquivo_de_erros('Odontograma')
     puts "Convertendo odontograma ...."
-    f = File.open("doc/convertidos/odontograma.txt" , "r")
     itens_das_tabelas = Array.new
     ItemTabela.all.each do |it|
       itens_das_tabelas[it.clinica_id * 100000 + it.sequencial] = it.id
     end
     Tratamento.delete_all
     clinica = ''
-    
-    while line = f.gets 
+    FasterCSV.foreach('doc/convertidos/odontograma.txt', option={:col_sep=>';'}) do |registro|
       begin
-        registro = busca_registro(line)
-        if clinica != registro.last
-          clinica  = registro.last
-          @clinica = Clinica.find_by_sigla(clinica)
-          clinica_index = @clinica.id * 100000
-        end
+        clinica_index     = CLINICAS[registro.last] * 100000
         t                 = Tratamento.new
         t.sequencial      = registro[0].to_i
         paciente          = @@pacientes[clinica_index + registro[2].to_i]
@@ -340,37 +317,35 @@ class Converte
           end
           t.custo          = le_valor(registro[12])
           t.excluido       = ['Verdadeiro', 'True'].include?(registro[16])
-          t.clinica_id     = @clinica.id
+          t.clinica_id     = CLINICAS[registro.last]
           t.created_at     = registro[14].to_date if Date.valid?(registro[14])
           t.save
         end
         rescue Exception => ex
-          @arquivo.puts line + "\n"+ "      ->" + ex
+          @arquivo.puts registro.join(';') + "\n"+ "      ->" + ex
         end
     end
-    f.close
     fecha_arquivo_de_erros('odontograma')
   end
   
   def dentista
     abre_arquivo_de_erros('Dentistas')
-    puts "Convertendo dentistas ...."
-    f = File.open("doc/convertidos/dentista.txt" , "r")
+    puts "Convertendo dentistas ....#{Time.current}"
     Dentista.delete_all
     clinica = ''
-    while line = f.gets 
+    FasterCSV.foreach('doc/convertidos/dentista.txt', option={:col_sep=>';'}) do |registro|
       begin
-        registro = busca_registro(line)
-        if clinica != registro.last
-          @clinica.save if !clinica.blank?
-          clinica  = registro.last
-          @clinica = Clinica.find_by_sigla(clinica)
-        end
+        # if clinica != registro.last
+        #           @clinica.save if !clinica.blank?
+        #           clinica  = registro.last
+        #           @clinica = Clinica.find_by_sigla(clinica)
+        #         end
+        clinica_id               = CLINICAS[registro.last] 
         dentista                 = Dentista.new
         dentista.sequencial      = registro[0].to_i
-        dentista.clinica_id      = @clinica.id
-        dentista.nome            = registro[1].strip.nome_proprio
-        dentista.cro             = registro[2].strip
+        dentista.clinica_id      = clinica_id
+        dentista.nome            = registro[1].strip.nome_proprio if registro[1]
+        dentista.cro             = registro[2].strip if registro[2]
         dentista.cro             = '?' if dentista.cro.blank?
         dentista.ativo           = registro[5] == 'True'
         dentista.percentual      = registro[4].sub(",",".") unless registro[4].blank? or registro[4].nil?
@@ -378,23 +353,20 @@ class Converte
         dentista.save
         @clinica.dentistas << dentista
       rescue Exception => ex
-        @arquivo.puts line + "\n"+ "      ->" + ex
+        @arquivo.puts registro.join(';') + "\n"+ "      ->" + ex
       end
     end
     @clinica.save if @clinica
-    f.close
     fecha_arquivo_de_erros('Dentistas')
   end
   
   def tipo_pagamento
     abre_arquivo_de_erros('Tipo de Pagamento')
     puts "Convertendo tipos de pagamentos ...."
-    f = File.open("doc/convertidos/tipo_pagamento.txt" , "r")
     TipoPagamento.delete_all
     clinica = ''
-    while line = f.gets 
+    FasterCSV.foreach('doc/convertidos/tipo_pagamento.txt', option={:col_sep=>';'}) do |registro|
       begin
-        registro = busca_registro(line)
         if clinica != registro.last
           clinica  = registro.last
           @clinica = Clinica.find_by_sigla(clinica)
@@ -406,22 +378,19 @@ class Converte
         t.clinica_id = @clinica.id
         t.save
       rescue Exception => ex
-        @arquivo.puts line + "\n"+ "      ->" + ex
+        @arquivo.puts registro.join(';') + "\n"+ "      ->" + ex
       end
     end
-    f.close
     fecha_arquivo_de_erros('Tipo de Pagamento')
   end
   
   def pagamento
     abre_arquivo_de_erros('Pagamentos')
     puts 'Convertendo pagamentos ... '
-    f = File.open("doc/convertidos/pagamento.txt" , "r")
     Pagamento.delete_all
     clinica = ''
-    while line = f.gets 
+    FasterCSV.foreach('doc/convertidos/pagamento.txt', option={:col_sep=>';'}) do |registro|
       begin
-        registro = busca_registro(line)
         if clinica != registro.last
           clinica  = registro.last
           @clinica = Clinica.find_by_sigla(clinica)
@@ -446,7 +415,6 @@ class Converte
         @arquivo.puts "Erro ao processar a linha #{line}"
       end
     end
-    f.close
     fecha_arquivo_de_erros('Pagamentos')
   end
   
@@ -456,12 +424,11 @@ class Converte
     #  @arquivo.puts "Iniciando conversão de Fluxo em #{Time.current}"
  
     puts "Convertendo fluxo de caixa ...."
-    f = File.open("doc/convertidos/saldos.txt" , "r")
+
     FluxoDeCaixa.delete_all
     clinica = ''  
-    while line = f.gets 
+    FasterCSV.foreach('doc/convertidos/saldos.txt', option={:col_sep=>';'}) do |registro|
       begin
-        registro = busca_registro(line)
         if clinica != registro[3]
           clinica = registro[3]
           @clinica = Clinica.find_by_sigla(registro[3])
@@ -476,7 +443,6 @@ class Converte
         @arquivo.puts "Erro ao processar a linha #{line}"
       end
     end
-    f.close
     fecha_arquivo_de_erros('Fluxo de caixa')
   end
   
@@ -484,16 +450,14 @@ class Converte
     # depende de destinacao, recebimento, pagamento
     abre_arquivo_de_erros("Cheques")
     puts "Convertendo cheques ...."
-    f = File.open("doc/convertidos/cheque.txt" , "r")
     Cheque.delete_all
     clinica = ''
     @dest   = Destinacao.all
     um_paciente    = 0
     dois_pacientes = 0
     tres_pacientes = 0
-    while line = f.gets 
+    FasterCSV.foreach('doc/convertidos/cheque.txt', option={:col_sep=>';'}) do |registro|
       begin
-        registro = busca_registro(line)
         if clinica != registro.last
           clinica = registro.last
           @clinica = Clinica.find_by_sigla(clinica)
@@ -553,7 +517,7 @@ class Converte
           t.data_solucao              = registro[23].to_date if t.data_primeira_devolucao && Date.valid?(registro[23])
           t.descricao_solucao         = registro[24]
           t.data_caso_perdido         = registro[25]
-        t.data_arquivo_morto        = registro[29].to_date if Date.valid?(registro[29])
+          t.data_arquivo_morto        = registro[29].to_date if Date.valid?(registro[29])
         end
         # t.recebimento_id            = recebimento.id if recebimento.present?
         t.data_de_exclusao          = registro[28] if Date.valid?(registro[28])
@@ -572,10 +536,9 @@ class Converte
           recebimento.update_attribute(:cheque_id,  t.id) if recebimento
         end
       rescue Exception => ex
-        @arquivo.puts line + "\n"+ "      ->" + ex
+        @arquivo.puts registro.join(';') + "\n"+ "      ->" + ex
       end
     end
-    f.close
     @arquivo.puts "Cheques para um paciente : " + um_paciente.to_s
     @arquivo.puts "Cheques para dois pacientes : " + dois_pacientes.to_s
     fecha_arquivo_de_erros("Cheques")
@@ -584,12 +547,10 @@ class Converte
   def destinacao
     abre_arquivo_de_erros("Destinação")
     puts "Convertendo destinacao ...."
-    f = File.open("doc/convertidos/destinacao.txt" , "r")
     Destinacao.delete_all
     clinica = ''
-    while line = f.gets 
+    FasterCSV.foreach('doc/convertidos/destinacao.txt', option={:col_sep=>';'}) do |registro|
       begin
-        registro = busca_registro(line)
         if clinica != registro.last
           clinica  = registro.last
           @clinica = Clinica.find_by_sigla(clinica)
@@ -600,31 +561,23 @@ class Converte
         t.nome       = registro[1].nome_proprio
         t.save
       rescue Exception => ex
-        @arquivo.puts line + "\n"+ "      ->" + ex
+        @arquivo.puts registro.join(';') + "\n"+ "      ->" + ex
       end
     end
-    f.close
     fecha_arquivo_de_erros("Destinação")
   end
   
   def orcamento
     abre_arquivo_de_erros("Orçamento")
     puts "Convertendo orçamento ...."
-    f = File.open("doc/convertidos/orcamento.txt" , "r")
     Orcamento.delete_all
     ct_erros   = 1
-    clinica    = ''
-    while line = f.gets 
+    FasterCSV.foreach('doc/convertidos/orcamento.txt', option={:col_sep=>';'}) do |registro|
       begin
-        registro = busca_registro(line)
-        if clinica != registro.last
-          clinica  = registro.last
-          @clinica = Clinica.find_by_sigla(clinica)
-          clinica_index = @clinica.id * 100000
-        end
+        clinica_index = CLINICAS[registro.last] * 100000
         o                             = Orcamento.new
         o.sequencial                  = registro[0].to_i
-        o.clinica_id                  = @clinica.id
+        o.clinica_id                  = CLINICAS[registro.last] 
         o.data                        = registro[1].to_date if Date.valid?(registro[1])
         paciente                      = @@pacientes[clinica_index + registro[2].to_i]
         if paciente
@@ -647,26 +600,23 @@ class Converte
         else
           @arquivo.puts ct_erros
           @arquivo.puts "Orcamento #{registro[0]} sem paciente #{registro[2]} na clínica #{@clinica.id}"          
-          @arquivo.puts line
+          @arquivo.puts registro.join(';')
           ct_erros += 1 
         end
       rescue Exception => ex
-        @arquivo.puts line + "\n"+ "      ->" + ex
+        @arquivo.puts registro.join(';') + "\n"+ "      ->" + ex
       end
     end
-    f.close
     fecha_arquivo_de_erros("Orçamento")
   end
   
   def protetico
     abre_arquivo_de_erros('Protético')
     puts "Convertendo protéticos ...."
-    f = File.open("doc/convertidos/protetico.txt" , "r")
     Protetico.delete_all
     clinica = ''
-    while line = f.gets 
+    FasterCSV.foreach('doc/convertidos/protetico.txt', option={:col_sep=>';'}) do |registro|
       begin
-        registro = busca_registro(line)
         if clinica  != registro.last
           clinica   = registro.last
           @clinica  = Clinica.find_by_sigla(clinica)
@@ -687,10 +637,9 @@ class Converte
         p.nascimento   = registro[10].to_date if Date.valid?(registro[10])
         p.save
       rescue Exception => ex
-        @arquivo.puts line + "\n"+ "      ->" + ex
+        @arquivo.puts registro.join(';') + "\n"+ "      ->" + ex
       end
     end
-    f.close 
     fecha_arquivo_de_erros("Protéticos")
   end
   
@@ -698,11 +647,9 @@ class Converte
     #Tabela base
     abre_arquivo_de_erros('Tabela base de protético')
     puts "Convertendo tabela base de protéticos ...."
-    f = File.open("doc/convertidos/tabela_protetico.txt" , "r")
     TabelaProtetico.delete_all
-    while line = f.gets 
+    FasterCSV.foreach('doc/convertidos/tabela_protetico.txt', option={:col_sep=>';'}) do |registro|
       begin
-        registro = busca_registro(line)
         item     = TabelaProtetico.find_by_descricao(registro[1]) 
         if item.nil?
           t              = TabelaProtetico.new
@@ -711,20 +658,17 @@ class Converte
           t.save
         end
       rescue Exception => ex
-        @arquivo.puts line + "\n"+ "      ->" + ex
+        @arquivo.puts registro.join(';') + "\n"+ "      ->" + ex
       end
     end
-    f.close
     fecha_arquivo_de_erros('Tabela base de protético')
     #
     abre_arquivo_de_erros('Tabela dos protéticos')
     # tabelas dos proteticos
     puts "Convertendo tabela dos protéticos ...."
-    f = File.open("doc/convertidos/item_protetico.txt" , "r")
     clinica = ''
-    while line = f.gets 
+    FasterCSV.foreach('doc/convertidos/item_protetico.txt', option={:col_sep=>';'}) do |registro|
       begin
-      registro = busca_registro(line)
         if clinica != registro.last
           clinica  = registro.last
           @clinica = Clinica.find_by_sigla(clinica)
@@ -739,10 +683,9 @@ class Converte
         t.valor          = le_valor(registro[3])
         t.save
       rescue Exception => ex 
-        @arquivo.puts line + "\n"+ "      ->" + ex
+        @arquivo.puts registro.join(';') + "\n"+ "      ->" + ex
       end
     end
-    f.close
     fecha_arquivo_de_erros('Tabela de protético')
   end
   
@@ -750,12 +693,10 @@ class Converte
     # depende de orçamento
     abre_arquivo_de_erros('Trabalho protético')
     puts "Convertendo trabalho protético ...."
-    f = File.open("doc/convertidos/noprotetico.txt" , "r")
     TrabalhoProtetico.delete_all
     clinica = ''
-    while line = f.gets 
+    FasterCSV.foreach('doc/convertidos/noprotetico.txt', option={:col_sep=>';'}) do |registro|
       begin
-        registro = busca_registro(line)
         if clinica != registro.last
           clinica  = registro.last
           @clinica = Clinica.find_by_sigla(clinica)
@@ -785,20 +726,20 @@ class Converte
         #FIXME definir como registrar que foi pago
         t.save
       rescue Exception => ex 
-        @arquivo.puts line + "\n"+ "      ->" + ex
+        @arquivo.puts registro.join(';') + "\n"+ "      ->" + ex
       end
     end
-    f.close
     fecha_arquivo_de_erros('Tabela de protético')
   end
   
   def alta
+    abre_arquivo_de_erros('Alta')
     puts "Convertendo altas ...."
     Paciente.all.each do |p|  
       begin
-        t = Tratamento.all(:conditions=>['paciente_id = ? and data IS NULL', p])
+        t = p.tratamentos.find_all{ |t| t.data==nil}
         if t.empty?
-          ultimo          = Tratamento.last(:conditions=>['paciente_id = ? and data IS NOT NULL', p], :order=>'data desc')
+          ultimo          = p.tratamenos.last     #Tratamento.last(:conditions=>['paciente_id = ? and data IS NOT NULL', p], :order=>'data desc')
           alta            = Alta.new
           alta.clinica_id = p.clinica_id
           #FIXME fazer para todas as clínicas
@@ -812,26 +753,22 @@ class Converte
           alta.user_id     = 1
           alta.save
         end
-      rescue
+      rescue Exception => ex
         @arquivo.puts p.nome + "\n"+ "      ->" + ex
       end
     end
-    f.close
     fecha_arquivo_de_erros('Tabela de protético')
   end
   
   def adm_cheques
     abre_arquivo_de_erros('Cheques na Administação')
     puts "Convertendo cheques na administração ...."
-    f = File.open("doc/convertidos/adm_cheque.txt" , "r")
     @as_clinicas = Clinica.all
     @siglas      = @as_clinicas.map(&:sigla)
     @clinica = Clinica.administracao.first
-    line     = f.gets
     ct       = 0
-    while line = f.gets 
+    FasterCSV.foreach('doc/convertidos/adm_cheque.txt', option={:col_sep=>';'}) do |registro|
       begin
-        registro                 = busca_registro(line)
         ct += 1
         if @siglas.include?(registro[1].downcase)
           clinica                  = @as_clinicas.find{ |cl| cl.sigla == registro[1].downcase}
@@ -841,14 +778,16 @@ class Converte
           data_destinacao          = registro[12].to_date if Date.valid?(registro[12])
           pagamento                = registro[13].to_i 
           devolvido                = registro[16]
-          data_devolucao           = registro[17]
-          motivo_devolucao         = registro[18]
-          data_reapresentacao      = registro[19].to_date if Date.valid?(registro[19])
-          data_segunda_devolucao   = registro[20].to_date if Date.valid?(registro[20])
-          motivo_segunda_devolucao = registro[21]
-          data_solucao             = registro[22].to_date if Date.valid?(registro[22])
-          solucao                  = registro[23]
-          data_caso_perdido        = registro[24].to_date if Date.valid?(registro[24])
+          if Date.valid?(registro[17])
+            data_devolucao           = registro[17].to_date 
+            motivo_devolucao         = registro[18]
+            data_reapresentacao      = registro[19].to_date if Date.valid?(registro[19])
+            data_segunda_devolucao   = registro[20].to_date if Date.valid?(registro[20])
+            motivo_segunda_devolucao = registro[21]
+            data_solucao             = registro[22].to_date if Date.valid?(registro[22])
+            solucao                  = registro[23]
+            data_caso_perdido        = registro[24].to_date if Date.valid?(registro[24])
+          end
           historico                = registro[25]
           adm                      = registro[26]
           cheque                   = Cheque.find_by_clinica_id_and_sequencial(clinica.id, seq)
@@ -875,22 +814,18 @@ class Converte
           end
         end
       rescue Exception => ex
-        @arquivo.puts ct.to_s + '->' + line + "\n"+ "      ->" + ex
+        @arquivo.puts ct.to_s + '->' + registro.join(',') + "\n"+ "      ->" + ex
       end
     end
-    f.close
     fecha_arquivo_de_erros('Cheques Administração')   
   end
   
   def adm_pagamento
     abre_arquivo_de_erros('Pagamentos na administração')
     puts 'Convertendo pagamentos na administração ... '
-    f        = File.open("doc/convertidos/adm_pagamento.txt" , "r")
     @clinica = Clinica.administracao.first
-    # line     = f.gets
-    while line = f.gets 
+    FasterCSV.foreach('doc/convertidos/adm_pagamento.txt', option={:col_sep=>';'}) do |registro|
       begin
-        registro = busca_registro(line)
         t                   = Pagamento.new
         t.clinica_id        = @clinica.id
         tipo_pagamento      = TipoPagamento.find_by_seq_and_clinica_id(registro[1].to_i,@clinica.id)
@@ -912,19 +847,15 @@ class Converte
         @arquivo.puts "Erro ao processar a linha #{line}"
       end
     end
-    f.close
     fecha_arquivo_de_erros('Pagamentos na administração')
   end
   
   def adm_tipo_pagamento
     abre_arquivo_de_erros('Tipo de Pagamento na Administração')
     puts "Convertendo tipos de pagamentos na administração ...."
-    f        = File.open("doc/convertidos/adm_tipo_pagamento.txt" , "r")
     @clinica = Clinica.administracao.first
-    # line     = f.gets
-    while line = f.gets 
+    FasterCSV.foreach('doc/convertidos/adm_tipo_pagamento.txt', option={:col_sep=>';'}) do |registro|
       begin
-        registro     = busca_registro(line)
         t            = TipoPagamento.new
         t.seq        = registro[0].to_i
         t.nome       = registro[1].nome_proprio
@@ -932,22 +863,18 @@ class Converte
         t.clinica_id = @clinica.id
         t.save
       rescue Exception => ex
-        @arquivo.puts line + "\n"+ "      ->" + ex
+        @arquivo.puts registro.join(';') + "\n"+ "      ->" + ex
       end
     end
-    f.close
     fecha_arquivo_de_erros('Tipo de Pagamento Administração')
   end
   
   def adm_fluxo
     abre_arquivo_de_erros('Fluxo de Caixa Administação')
     puts "Convertendo fluxo de caixa na administração ...."
-    f        = File.open("doc/convertidos/adm_saldos.txt" , "r")
     @clinica = Clinica.administracao.first
-    # line     = f.gets
-    while line = f.gets 
+    FasterCSV.foreach('doc/convertidos/adm_saldos.txt', option={:col_sep=>';'}) do |registro|
       begin
-        registro            = busca_registro(line)
         t                   = FluxoDeCaixa.new
         t.clinica_id        = @clinica.id
         t.data              = registro[0].to_date
@@ -955,10 +882,9 @@ class Converte
         t.saldo_em_cheque   = le_valor(registro[2])
         t.save
       rescue Exception => ex
-        @arquivo.puts line + "\n"+ "      ->" + ex
+        @arquivo.puts registro.join(';') + "\n"+ "      ->" + ex
       end
     end
-    f.close
     fecha_arquivo_de_erros('Fluxo de Caixa Administração')
   end
   
@@ -971,7 +897,7 @@ class Converte
   def inicia_pacientes_em_memoria
     @@pacientes = Array.new
     Paciente.all(:select=> ['id, sequencial, clinica_id']).each do |pa|
-      pa.sequencial && @@pacientes[pa.clinica_id * 100000 + pa.sequencial] = pa.id
+       pa.sequencial && @@pacientes[pa.clinica_id * 100000 + pa.sequencial] = pa.id
     end
   end  
 
@@ -1010,14 +936,14 @@ class Converte
     return aux
   end
   
-  def busca_registro(line)
-    # @ct += 1
-    if line[0..0]=='"'
-      line.split('"')[1].split(";")
-    else
-      line.split(";")
-    end
-  end
+  # def busca_registro(line)
+  #    # @ct += 1
+  #    if line[0..0]=='"'
+  #      line.split('"')[1].split(";")
+  #    else
+  #      line.split(";")
+  #    end
+  #  end
 
   def abre_arquivo_de_erros(mensagem)
     @arquivo = File.open('doc/erros de conversao.txt', 'a')  

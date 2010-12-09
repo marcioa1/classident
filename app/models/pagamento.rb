@@ -2,6 +2,7 @@ class Pagamento < ActiveRecord::Base
   acts_as_audited
   belongs_to :clinica
   belongs_to :tipo_pagamento
+  belongs_to :conta_bancaria
   has_many   :cheques
   has_many   :trabalho_proteticos
   belongs_to :protetico
@@ -97,8 +98,8 @@ class Pagamento < ActiveRecord::Base
   end
   
   def modo_de_pagamento
-    return "Cheque classident" if em_cheque_classident?
     return "Cheque paciente" if em_cheque_pacientes?
+    return "Cheque classident" if em_cheque_classident?
     return "Dinheiro" if em_dinheiro?
   end
   

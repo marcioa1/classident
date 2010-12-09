@@ -1,7 +1,11 @@
 <% content_for :main do %>
 <fieldset class='fieldset_60'>
 <legend>Alterando tratamento</legend>
-<%= render :partial=>"form"%>
+<% if @tratamento.paciente.tabela %>
+  <%= render :partial=>"form" %>
+<% else %>
+  Este paciente não tem tabela associada
+<% end %>
 
 </fieldset>
 <%= link_to "voltar", abre_paciente_path(:id=>@tratamento.paciente_id) %>

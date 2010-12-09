@@ -1,0 +1,12 @@
+%p
+  Cheques utilizados 
+  %br
+  %table{:celpadding=>0, :cellspacing=>0, :border=>1}
+    %tr{:style=>'background-color: #455A79; color: white;'}
+      %th{:width=>"220px"}Conta
+      %th{:width=>"90px"}Número
+      %th{:width=>"120px"}Valor
+    %tr
+      %td= @pagamento.conta_bancaria
+      %td= @pagamento.numero_do_cheque 
+      %td{:align=>"right"}= @pagamento.valor.real 
