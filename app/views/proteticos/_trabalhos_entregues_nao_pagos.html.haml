@@ -1,0 +1,49 @@
+%div{:style => "float:right;"}
+  Valor dos trabalhos selecionados : R$
+  %span#valor 0
+  %span#link_pagamento
+    = link_to "efetua pagamento ", new_pagamento_path()
+%h2 Trabalhos recebidos e não pagos
+%table.tabela
+  %tr
+    %th
+      %br
+      Paciente
+    %th
+      %br
+      Dente
+    %th
+      %br
+      Data da envio
+    %th
+      %br
+      Descrição
+    %th
+      %br
+      Observação
+    %th
+      %br
+      Valor
+    %th
+      %br
+      Data de devolução
+    %th
+      %br
+      Dentista
+    %th
+      Selecionar
+      %br
+      p/ pagto
+  - @trabalhos_devolvidos.each do |trab|
+    %tr
+      %td= trab.paciente.nome
+      %td= trab.dente if trab.dente.present?
+      %td{:align => "center"}= trab.data_de_envio.to_s_br
+      %td= link_to trab.tabela_protetico.descricao, edit_trabalho_protetico_path(trab)
+      %td= trab.observacoes
+      - id = "valor_#{trab.valor}"
+      %td= trab.valor.real
+      %td{:align => "center"}= trab.data_de_devolucao.to_s_br
+      %td= trab.dentista.nome
+      %td{:align => "center"}= check_box_tag :pagar, trab.id, false , options={ :onclick=>'pagar(' + trab.valor.to_s + ',' + trab.id.to_s + ',' + @protetico.id.to_s +  ');', :id=>'pagar_'+trab.id.to_s}
+  

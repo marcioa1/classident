@@ -160,11 +160,8 @@ class PagamentosController < ApplicationController
   
   def pagamentos_de_hoje
     session[:origem] = '/pagamentos/pagamentos_de_hoje'
-    if params[:livro_caixa] == 'on'
-      @pagamentos = Pagamento.da_clinica(session[:clinica_id]).no_dia(Date.today).nao_excluidos
-    else
-      @pagamentos = Pagamento.da_clinica(session[:clinica_id]).no_dia(Date.today).fora_do_livro_caixa.nao_excluidos
-    end
+    @pagamentos_no_livro_caixa      = Pagamento.da_clinica(session[:clinica_id]).no_dia(Date.today).no_livro_caixa.nao_excluidos
+    @pagamentos_fora_do_livro_caixa = Pagamento.da_clinica(session[:clinica_id]).no_dia(Date.today).fora_do_livro_caixa.nao_excluidos
   end
   
 end

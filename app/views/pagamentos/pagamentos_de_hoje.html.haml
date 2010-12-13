@@ -1,40 +1,6 @@
 - content_for :main do
   %h3 Pagamentos de hoje
-  - form_tag do
-    = check_box_tag :livro_caixa, params[:livro_caixa] , params[:livro_caixa] == 'on'
-    = label_tag 'Incluir livro caixa'
-    = submit_tag "Pesquisar"
   #novo_pagamento
-    %br
     = link_to 'novo pagamento', new_pagamento_path
-  %br
-  %table{:class=>"tabela"}
-    %thead
-      %tr
-        %th Data de pagamento
-        %th Valor pago
-        %th{:width=>"220px"}Observação
-        %th Tipo
-        %th Modo pgto
-        %th Livro caixa
-        %th &nbsp;
-        %th &nbsp;
-        %th &nbsp;
-    - total = 0 
-    - @pagamentos.each do |pagamento| 
-      %tr
-        %td{:align=>"center"}=h pagamento.data_de_pagamento.to_s_br 
-        %td{:align=>"right"}=h pagamento.valor_pago.real 
-        %td=h pagamento.observacao 
-        %td=h pagamento.tipo_pagamento.nome 
-        %td=h pagamento.modo_de_pagamento 
-        %td{:align=>"center"}=h pagamento.nao_lancar_no_livro_caixa ? "não" : "sim" 
-        %td= link_to 'editar', edit_pagamento_path(pagamento), :class=>'ui-icon ui-icon-pencil', :title=>'editar' if pagamento.pode_alterar? 
-        %td= link_to 'excluir', exclusao_pagamento_path(pagamento), :class=>'ui-icon ui-icon-trash', :title=>'excluir'  if pagamento.pode_alterar?
-        %td= link_to 'mostrar', '#', :onclick=>'javascript:abre_pagamento('+ pagamento.id.to_s + ')' , :class=>'ui-icon ui-icon-info', :title=>'ver detalhes'
-  
-      - total += pagamento.valor_pago
-    %tr
-      %td{:align=>"center"}Total
-      %td{:align=>"right"}= total.real 
-      %td{:colspan=>"7"} &nbsp;
+  = render :partial=>'pagamentos', :locals=>{:pagamentos => @pagamentos_no_livro_caixa, :titulo=>'No livro caixa'}
+  = render :partial=>'pagamentos', :locals=>{:pagamentos => @pagamentos_fora_do_livro_caixa, :titulo=>'Fora do livro caixa'}
