@@ -8,6 +8,7 @@
     %th Forma
     %th{ :width => "200" } Observação
     %th Usuário
+    %th Dados do cheque
   - paciente.recebimentos_excluidos.each do |rec|
     %tr
       %td= rec.data_de_exclusao.to_s_br
@@ -18,3 +19,5 @@
         - debugger
         - user = User.find(rec.usuario_exclusao)
       %td= user && user.nome
+      %td
+        = rec.cheque.observacao if rec.cheque.present?

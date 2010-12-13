@@ -1,7 +1,7 @@
 - content_for :main do
   %fieldset
     %legend Exclusão de recebimento
-    - if @recebimento.valor != @recebimento.cheque.valor
+    - if @recebimento.valor != @recebimento.cheque.valor && @recebimento.cheque.present?
       = "Este cheque também foi usado para este(s) paciente(s) : #{@recebimento.cheque.nome_dos_outros_pacientes(@recebimento.id)}. A exclusão deste cheque excluirá os recebimentos dos mesmos."
     %p
       Valor : 

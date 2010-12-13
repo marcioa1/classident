@@ -8,11 +8,12 @@
     %th Número
     %th Status
   - @paciente.cheques.each do |cheque|
-    %tr
-      %td= cheque.bom_para.to_s_br
-      %td= cheque.valor.real
-      %td= cheque.banco.nome
-      %td= cheque.agencia
-      %td= cheque.numero
-      %td= cheque.status
+    - if !cheque.excluido?
+      %tr
+        %td= cheque.bom_para.to_s_br
+        %td= cheque.valor.real
+        %td= cheque.banco.nome
+        %td= cheque.agencia
+        %td= cheque.numero
+        %td= cheque.status
   

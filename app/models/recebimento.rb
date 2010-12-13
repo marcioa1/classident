@@ -132,13 +132,13 @@ class Recebimento < ActiveRecord::Base
       self.cheque.update_attribute(:data_de_exclusao, Time.current)
       todos = self.cheque.recebimentos
     else
-      todos = self
+      todos = self.to_a
     end
     todos.each do |rec|
-      rec.update_attributes(:data_de_exclusao => Time.current, 
-                                  :observacao_exclusao => obs, :usuario_exclusao => user)
+      rec.update_attributes(:data_de_exclusao    => Time.current, 
+                            :observacao_exclusao => obs, 
+                            :usuario_exclusao    => user)
     end
-    # self.save
   end
     
   def verifica_fluxo_de_caixa

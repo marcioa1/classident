@@ -192,4 +192,8 @@ class Cheque < ActiveRecord::Base
   def para_mais_de_um_paciente?
     self.recebimentos.size > 1
   end
+  
+  def excluido?
+    self.data_de_exclusao.present?
+  end
 end
