@@ -2,22 +2,22 @@
 <fieldset>
 <legend>Troca de senha</legend>
 
-<% form_for(@user , :url=>salva_nova_senha_user_path(@user)) do |f| %>
-  <%= f.error_messages %>
+<% form_tag(:controller => 'users', :action=>'salva_nova_senha') do |f| %>
+  <%= hidden_field_tag :id, @user.id %>
   <br/>  
   <table class='transparente'>
     <tr>
-      <td><%= f.label :nova_senha %> :</td>
-      <td><%= f.password_field :password, :size=>8 %></td>
+      <td><%= label_tag :nova_senha %> :</td>
+      <td><%= password_field_tag :password, '', :size=>8 %></td>
     </tr>
     <tr>
-      <td><%= f.label :confirmação_da_senha %> :</td>
-      <td><%= f.password_field :password_confirmation, :size=>8 %></td>
+      <td><%= label_tag :confirmação_da_senha %> :</td>
+      <td><%= password_field_tag :password_confirmation,'', :size=>8 %></td>
     </tr>
   </table>
    
   <br/>
-  <%= f.submit "Salvar" %>
+  <%= submit_tag "Salvar" %>
 <% end %>
 </fieldset>
 <% end %>

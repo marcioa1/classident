@@ -63,8 +63,8 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :tipo_pagamentos, :member=>{:reativar=>:get}
   map.resources :trabalho_proteticos
   map.resources :tratamentos, :member=>{:finalizar_procedimento=>:get}
-  map.resources :users, :member =>{:troca_senha=>:get, :salva_nova_senha=>:post}, 
-                  :collection=>{:monitoramento=>:get, :reiniciar_senha => :get}
+  map.resources :users, :member =>{:troca_senha=>:get}, 
+                  :collection=>{:monitoramento=>:get, :reiniciar_senha => :get, :salva_nova_senha=>:post}
   map.resource  :user_sessions
   
   
