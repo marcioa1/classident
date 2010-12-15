@@ -1,7 +1,7 @@
 class ProteticosController < ApplicationController
   layout "adm"
   before_filter :require_user
-  before_filter :busca_protetico, :only => [:edit, :abre, :show, :update, :destroy]
+  before_filter :busca_protetico, :only => [:edit, :abre, :show, :update, :destroy, :busca_trabalhos_devolvidos]
   before_filter :quinzena, :only => [:pagamentos_feitos]
   
   def index
@@ -60,6 +60,7 @@ class ProteticosController < ApplicationController
   end
   
   def abre
+    session[:reload] = false
     session[:origem] = abre_protetico_path(@protetico.id)
     @clinicas = Clinica.por_nome - Clinica.administracao
     if @administracao
@@ -122,6 +123,12 @@ class ProteticosController < ApplicationController
   
   def pagamentos_feitos
     @pagamentos = Pagamento.aos_proteticos.entre_datas(@data_inicial, @data_final)
+  end
+  
+  def busca_trabalhos_devolvidos
+    @trabalhos_devolvidos = TrabalhoProtetico.do_protetico(@protetico.id).devolvidos.
+      nao_pagos
+    render :partial => 'trabalhos_entregues_nao_pagos'
   end
   
 end

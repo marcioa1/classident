@@ -1,5 +1,7 @@
 <% content_for :main do %>
+<br/>
 <h3>Protético <%= @protetico.nome %></h3>
+<span id="protetico_id" style="display:   none;"><%= @protetico.id %></span>
 <% if @administracao %>
 
 	<div id="tabs">
@@ -50,4 +52,21 @@
 </div>
 <% end %>
 
+<script type="text/javascript">
+$("#tabs").tabs({
+   select: function(event, ui) { 
+     if (ui.index == 2){
+       $.ajax({
+         url : "/proteticos/busca_trabalhos_devolvidos",
+         type: 'GET',
+         data: {id: $("#protetico_id").html()},
+         success: function(data){
+           $("#fragment-3").html(data);
+           // $("#lista_de_cheques").replaceWith("<span id='lista_de_cheques'>" + data + "</span>");
+         }
+       });
+     }
+   }
+});
+</script>
 <% end %>
