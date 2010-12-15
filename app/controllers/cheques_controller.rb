@@ -72,9 +72,10 @@ class ChequesController < ApplicationController
         ["usados para pagamento","usados para pagamento"],
         ["destinação", "destinação"], ["devolvido","devolvido"],
         ["reapresentado","reapresentado"], ["spc", "spc"]].sort!
-    if !administracao
-      @status << ["administração","administração"]
-    end
+    # if !administracao
+      @status << ["enviados à administração","enviados à administração"]
+      @status << ["recebidos pela administração", "recebidos pela administração"]
+    # end
     @cheques = []
     if params[:status] == "todos"
       if administracao
@@ -98,13 +99,22 @@ class ChequesController < ApplicationController
       @cheques = Cheque.por_bom_para.da_clinica(session[:clinica_id]).entre_datas(@data_inicial,@data_final).
               devolvido_duas_vezes.nao_excluidos
     end 
-    if params[:status]=="administração"     
+    if params[:status]=="enviados à administração"     
       if administracao
-        @cheques = Cheque.por_bom_para.na_administracao.entre_datas(@data_inicial,@data_final).
-              entregues_a_administracao.nao_excluidos
+        @cheques = Cheque.por_bom_para.entre_datas(@data_inicial,@data_final).
+              entregues_a_administracao.nao_recebidos.nao_excluidos
       else
         @cheques = Cheque.por_bom_para.da_clinica(session[:clinica_id]).entre_datas(@data_inicial,@data_final).
-              entregues_a_administracao.nao_excluidos
+              entregues_a_administracao.nao_recebidos.nao_excluidos
+      end
+    end
+    if params[:status]=="recebidos pela administração"     
+      if administracao
+        @cheques = Cheque.por_bom_para.entre_datas(@data_inicial,@data_final).
+              na_administracao.nao_excluidos
+      else
+        @cheques = Cheque.por_bom_para.da_clinica(session[:clinica_id]).entre_datas(@data_inicial,@data_final).
+              na_administracao.nao_excluidos
       end
     end
     if params[:status]=="usados para pagamento"

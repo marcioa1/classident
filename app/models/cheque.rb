@@ -71,8 +71,8 @@ class Cheque < ActiveRecord::Base
     return "usado pgto na clínica" if usado_para_pagamento? and !recebido_pela_administracao
     return "com destinação" if com_destinacao?
     return "recebido pela adm" if recebido_pela_administracao
-    return "disponível" unless !sem_devolucao? 
     return "entregue à adm" if entregue_a_administracao
+    return "disponível" unless !sem_devolucao? 
     return "solucionado" unless !solucionado?
   end
   
@@ -85,9 +85,9 @@ class Cheque < ActiveRecord::Base
     return "pgto adm" if usado_para_pagamento? and recebido_pela_administracao
     return "pgto clí" if usado_para_pagamento? and !recebido_pela_administracao
     return "destinação" if com_destinacao?
-    return "rec. adm" if recebido_pela_administracao
+    return "receb. adm" if recebido_pela_administracao
+    return "enviado adm" if entregue_a_administracao
     return "disponível" unless !sem_devolucao? 
-    return "entr. adm" if entregue_a_administracao
     return "solucionado" unless !solucionado?
   end
   
@@ -161,15 +161,12 @@ class Cheque < ActiveRecord::Base
   end
   
   def nome_dos_pacientes
-    result = ''
+    result = []
     recebimentos = Recebimento.all(:conditions=>['cheque_id = ?',self.id])
     recebimentos.each do |rec|
-      result += rec.paciente.nome + "," if rec.paciente.present?
+      result << rec.paciente.nome if rec.paciente.present?
     end
-    if result.size>1
-      result = result[0..(result.size-2)]
-    end
-    return result
+    return result.join(',')
   end
 
   def nome_dos_outros_pacientes(recebimento_id)

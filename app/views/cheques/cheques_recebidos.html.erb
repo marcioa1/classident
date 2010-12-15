@@ -75,14 +75,20 @@
     end %>
   
   </td>
-    <td><%= cheque.recebimentos.first.data.to_s_br unless cheque.recebimentos.empty? %></td>
+    <td><%= cheque.data_recebimento_na_administracao.to_s_br %></td>
   </tr>
   <% total += cheque.valor %>
   <% end %>
   <tr>
-    <td colspan="3" align="center">Total</td>
-    <td align="right"><%= total.real%></td>
-    <td colspan="5" align="right"><%= link_to_function "enviar cheques selecionados p/ administração" , "enviar_administracao();"  if params[:status]=="disponíveis" && !@administracao %></td>
+    <% if @administracao %>
+      <td colspan="3" align="center">Total</td>
+      <td align="right"><%= total.real%></td>
+      <td colspan="6" align="right">&nbsp;</td>
+    <% else %>
+      <td colspan="2" align="center">Total</td>
+      <td align="right"><%= total.real%></td>
+      <td colspan="6" align="right"><%= link_to_function "enviar cheques selecionados p/ administração" , "enviar_administracao();"  if params[:status]=="disponíveis" && !@administracao %></td>
+    <% end %>
     
   </tr>
 </table>
