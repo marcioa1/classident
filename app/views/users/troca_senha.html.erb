@@ -2,7 +2,7 @@
 <fieldset>
 <legend>Troca de senha</legend>
 
-<% form_for(@user) do |f| %>
+<% form_for(@user , :url=>salva_nova_senha_user_path(@user)) do |f| %>
   <%= f.error_messages %>
   <br/>  
   <table class='transparente'>

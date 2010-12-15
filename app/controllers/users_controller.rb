@@ -73,7 +73,20 @@ class UsersController < ApplicationController
   end
   
   def troca_senha
-    @user = current_user
+    @user          = current_user
+    @user.password = ""
+  end
+  
+  def salva_nova_senha
+    @user = User.find(params[:id])   
+    if params[:password]  == params[:password_confirmation]
+      @user.update_attribute('password', params[:password_confirmation])
+      current_user = @user
+      redirect_to pesquisa_pacientes_path
+    else
+      flash[:error] = "senhas não conferem"
+      render "troca senha"
+    end
   end
   
   def monitoramento
@@ -88,6 +101,11 @@ class UsersController < ApplicationController
     else
       @users = Array.new
     end
+  end
+  
+  def reiniciar_senha
+    @user = User.find(params[:id])
+    @user.update_attribute(:password, '1234')
   end
 
 end

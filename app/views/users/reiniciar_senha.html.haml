@@ -1,0 +1,5 @@
+- content_for :main do
+  %p
+  = "A senha do usuário #{@user.nome} foi alterada para #{@user.password}"
+  %p
+  = link_to 'voltar para usuários', users_path

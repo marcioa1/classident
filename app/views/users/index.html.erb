@@ -1,12 +1,13 @@
 <% content_for :main do %>
 <h3>Usuários por nome</h3ˇ>
-<table border="1">
+<table border="1" class='tabela'>
   <tr>
   	<th width="200px">Nome</th>
     <th width="100px">login</th>
     <th width="100px">Tipo usuário</th>
     <th width="100px">Clinicas</th>
     <th width="100px">email</th>
+    <th>&nbsp;</th>
     <th>&nbsp;</th>
   </tr>
   <% @users.each() do |user| %>
@@ -16,13 +17,12 @@
     <td><%= user.tipo_usuario.nome%></td>
     <td><%= user.nome_das_clinicas %></td>
     <td><%= user.email %></td>
+    <td><%= link_to 'reiniciar a senha', reiniciar_senha_users_path(:id=>user.id) %></td>
     <td><%= link_to "editar", edit_user_path(user.id), :class=>'ui-icon ui-icon-pencil', :title=>'editar' if current_user.master? %></td>
   </tr>
   <% end %>
 </table>
 <br/>
-<% if current_user.pode_incluir_user %>
- <%= link_to("Novo", new_user_path())%>
- <%  end %>
+<%= link_to"Novo", new_user_path() if current_user.pode_incluir_user%>
 
 <% end %>
