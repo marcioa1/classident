@@ -15,14 +15,10 @@
 	      <%= render :partial=>"edit" , :locals=>{:protetico=>@protetico} %>
 	    </div>
 	    <div id="fragment-2">
-	      <%= render :partial=>"trabalhos_entregues_nao_pagos" %>
+  	      <%= render :partial=>"trabalhos_entregues_nao_pagos" %>
 	    </div>
 	    <div id="fragment-3">
-	      <% if @administracao %>
   	      <%= render :partial=>"pagamentos" %>
-  	    <% else %>
-  	      <%= render 'libera_para_pagamento'%>
-  	    <% end%>
 	    </div>
 	    <div id="fragment-4">
 	      <%= render :partial=>"tabela" %>
@@ -34,7 +30,7 @@
     <ul>
         <li><a href="#fragment-1"><span>Cadastro</span></a></li>
         <li><a href="#fragment-2"><span>Itens pendentes</span></a></li>
-        <li><a href="#fragment-3"><span>Itens devolvidos não pagos</span></a></li>
+        <li><a href="#fragment-3"><span>Itens não liberados para pagamento</span></a></li>
         <li><a href="#fragment-4"><span>Tabela</span></a></li>
         <li><a href="#pagamentos"><span>Pagamentos realizados</span></a></li>
     </ul>

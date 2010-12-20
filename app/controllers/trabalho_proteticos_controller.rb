@@ -76,4 +76,9 @@ class TrabalhoProteticosController < ApplicationController
     @trabalho_protetico = TrabalhoProtetico.find(params[:id])
   end
   
+  def libera_pagamento
+    
+  end
+
+  
 end

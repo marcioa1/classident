@@ -62,7 +62,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :tabela_proteticos, 
                 :collection=>{:importa_tabela_base=>:get,:busca_valor=>:get}
   map.resources :tipo_pagamentos, :member=>{:reativar=>:get}
-  map.resources :trabalho_proteticos
+  map.resources :trabalho_proteticos, :collection => { :libera_pagamento => :get }
   map.resources :tratamentos, :member=>{:finalizar_procedimento=>:get}
   map.resources :users, :member =>{:troca_senha=>:get}, 
                   :collection=>{:monitoramento=>:get, :reiniciar_senha => :get, :salva_nova_senha=>:post}
