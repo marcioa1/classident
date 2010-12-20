@@ -54,6 +54,9 @@ class Pagamento < ActiveRecord::Base
   end
   
   def valor_dinheiro
+    self.valor_terceiros = 0 if self.valor_terceiros.nil?
+    self.valor_pago = 0 if self.valor_pago.nil?
+    self.valor_cheque = 0 if self.valor_cheque.nil?
     self.valor_pago - self.valor_terceiros - self.valor_cheque
   end
   
