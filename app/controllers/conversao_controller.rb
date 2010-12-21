@@ -5,13 +5,13 @@ def index
   converte = Converte.new
   converte.inicia_arquivos_na_memoria
    converte.clinicas
-   converte.tabela
+   # converte.tabela
    converte.inicia_tabelas_em_memoria
-   converte.item_tabela
+   # converte.item_tabela
    converte.dentista 
    converte.inicia_dentistas_em_memoria
-   converte.cadastro  
-   converte.mala_direta  
+   # converte.cadastro  
+   # converte.mala_direta  
    converte.inicia_pacientes_em_memoria
    converte.orcamento
    converte.odontograma

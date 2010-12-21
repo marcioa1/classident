@@ -60,8 +60,15 @@ function pagar(valor,id, id_protetico){
 }
 
 function libera_pagamento(){
+  var ids = '';
+  $(".libera_pagamento :checked").each(function() {
+    ids.append (this.id)
+    $(".libera_pagamento :checked")[0].value;
+};
+// For each one, append the string as plain text, jQuery(this).append(document.createTextNode(msg)) .append("<br/>"); // then append a <br/>.
+});
   $.ajax({
     url : 'libera_pagamento',
-    data: { ids : }
+    data: { ids : '1'}
   });
 }
