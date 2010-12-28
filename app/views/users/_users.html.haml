@@ -1,0 +1,20 @@
+%h4= title
+%table{ :border=>"1", :class=>'tabela'}
+  %tr
+    %th{:width=>"200px"}Nome
+    %th{:width=>"100px"}login
+    %th{:width=>"100px"}Tipo usuário
+    %th{:width=>"100px"}Clinicas
+    %th{:width=>"100px"}email
+    %th =&nbsp;
+    %th =&nbsp;
+  
+  - users.each() do |user| 
+    %tr
+      %td= user.nome 
+      %td= user.login 
+      %td= user.tipo_usuario.nome
+      %td= user.nome_das_clinicas 
+      %td= user.email 
+      %td= link_to 'reiniciar a senha', reiniciar_senha_users_path(:id=>user.id) 
+      %td= link_to "editar", edit_user_path(user.id), :class=>'ui-icon ui-icon-pencil', :title=>'editar' if current_user.master? 
