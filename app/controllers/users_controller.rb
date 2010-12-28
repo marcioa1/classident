@@ -6,7 +6,8 @@ class UsersController < ApplicationController
 
   def index
     redirect_to logout_path unless current_user.pode_incluir_user
-    @users = User.ativos.por_nome
+    @users    = User.ativos.por_nome
+    @inativos = User.inativos.por_nome
   end
 
   def new

@@ -10,6 +10,7 @@ class User < ActiveRecord::Base
   validates_presence_of :nome, :on => :create, :message => "campo obrigatório."
   
   named_scope :ativos, :conditions=>["ativo = ?", true]
+  named_scope :inativos, :conditions=>['ativo = ?', false]
   named_scope :por_nome, :order=>:nome
   named_scope :master  , 
               :joins => ["INNER JOIN tipo_usuarios ON tipo_usuarios.id = users.tipo_usuario_id"],
