@@ -44,6 +44,6 @@
       - id = "valor_#{trab.valor}"
       %td= trab.valor.real
       %td{:align => "center"}= trab.data_de_devolucao.to_s_br
-      %td= trab.dentista.nome
+      %td= trab.dentista && trab.dentista.nome
       %td{:align => "center"}= check_box_tag :pagar, trab.id, false , options={ :onclick=>'pagar(' + trab.valor.to_s + ',' + trab.id.to_s + ',' + @protetico.id.to_s +  ');', :id=>'pagar_'+trab.id.to_s}
   

@@ -42,7 +42,7 @@
       %td= link_to trab.tabela_protetico.descricao, edit_trabalho_protetico_path(trab)
       %td= trab.observacoes
       - id = "valor_#{trab.valor}"
-      %td= trab.valor.real
+      %td{:align=>'right'}= trab.valor.real
       %td{:align => "center"}= trab.data_de_devolucao.to_s_br
-      %td= trab.dentista.nome
+      %td= trab.dentista && trab.dentista.nome
       %td{:align => "center", :class => 'libera_pagamento'}= check_box_tag :pagar, trab.id, false 

@@ -126,8 +126,7 @@ class ProteticosController < ApplicationController
   end
   
   def busca_trabalhos_devolvidos
-    @trabalhos_devolvidos = TrabalhoProtetico.do_protetico(@protetico.id).devolvidos.
-      nao_pagos
+    @trabalhos_devolvidos = TrabalhoProtetico.do_protetico(@protetico.id).devolvidos.nao_pagos
     render :partial => 'libera_para_pagamento'
   end
   

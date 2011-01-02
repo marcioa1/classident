@@ -1,3 +1,13 @@
+function registra_devolucao(id){
+   $.get("/registra_devolucao_de_trabalho?id=" + id);
+   var d = new Date();
+   var curr_date = d.getDate();
+   var curr_month = d.getMonth();
+   curr_month++;
+   var curr_year = d.getFullYear();
+   $("#data_devolucao_"+id).replaceWith(curr_date + "/" + curr_month + "/" + curr_year);
+}
+
 function escolheu_protetico(){
     $("#trabalho_protetico_tabela_protetico_id").hide();
     $.getJSON("/proteticos/busca_tabela",{'protetico_id': $("#trabalho_protetico_protetico_id").val() },
@@ -27,15 +37,6 @@ function escolheu_item_da_tabela(){
 }
 
 
-function registra_devolucao(id){
-   $.get("/registra_devolucao_de_trabalho?id=" + id);
-   var d = new Date();
-   var curr_date = d.getDate();
-   var curr_month = d.getMonth();
-   curr_month++;
-   var curr_year = d.getFullYear();
-   $("#data_devolucao_"+id).replaceWith(curr_date + "/" + curr_month + "/" + curr_year);
-}
 
 function pagar(valor,id, id_protetico){
     anterior = $('#valor').text();
@@ -60,13 +61,13 @@ function pagar(valor,id, id_protetico){
 }
 
 function libera_pagamento(){
+//  #FIXME implantar pegar os ids dos trabalhos selecionados
   var ids = '';
   $(".libera_pagamento :checked").each(function() {
-    ids.append (this.id)
+    ids.append (this.id);
     $(".libera_pagamento :checked")[0].value;
-};
-// For each one, append the string as plain text, jQuery(this).append(document.createTextNode(msg)) .append("<br/>"); // then append a <br/>.
 });
+
   $.ajax({
     url : 'libera_pagamento',
     data: { ids : '1'}
