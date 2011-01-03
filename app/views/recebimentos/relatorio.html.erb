@@ -33,7 +33,7 @@
     <tr >
       <td align="center"><%=h recebimento.data.to_s_br %></td>
       <td><%=h recebimento.paciente.nome %></td>
-      <td align="right"><%=h number_to_currency_br(recebimento.valor.to_f) %></td>
+      <td align="right"><%=h number_to_currency(recebimento.valor.to_f, :unit=>'') %></td>
       <td><%=h recebimento.observacao %></td>
       <td><%  if recebimento.em_cheque? %>
         <%= link_to_function "cheque", "abre_cheque(#{recebimento.cheque.id})" if recebimento.cheque %>
