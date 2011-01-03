@@ -70,7 +70,7 @@
       <%= render :partial=>"recebimento" , :collection=>@recebimentos_excluidos %>
       <tr>
         <td colspan="2" align="center">Total</td>
-        <td align="right"><%= @total.real %></td>
+        <td align="right"><%= number_to_currency(@total.real) %></td>
         <td colspan="4">&nbsp;</td>
       </tr>
     </table>
