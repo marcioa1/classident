@@ -9,7 +9,7 @@
     <% end %>
   <% else %>
     <span style="display:none">
-      <%= check_box_tag "orcamento_clinica_"+ session[:clinica_id],session[:clinica_id], true %>  
+      <%= check_box_tag "orcamento_clinica_"+ session[:clinica_id].to_s,session[:clinica_id], true %>  
     </span>
   <% end %>
   <br/><br/>

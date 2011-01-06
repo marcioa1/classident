@@ -31,13 +31,15 @@ class UsersController < ApplicationController
     if @user.save
       flash[:notice] = "Usuário registrado!"
       redirect_back_or_default @user
-    else  @tipos_usuario = TipoUsuario.all(:order=>:nome).collect{|obj| [obj.nome,obj.id]}
-      if !current_user.master?
+    else 
+       @tipos_usuario = TipoUsuario.all(:order=>:nome).collect{|obj| [obj.nome,obj.id]}
+       if !current_user.master?
          master = TipoUsuario.master.collect{|obj| [obj.nome,obj.id]}
          @tipos_usuario = @tipos_usuario - master
-		 @clinicas      = busca_clinicas
-      end
-      render :action => :new
+		     @clinicas      = busca_clinicas
+       end
+		     @clinicas      = busca_clinicas
+       render :action => :new
     end
   end
 
