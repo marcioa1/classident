@@ -120,7 +120,7 @@ class Recebimento < ActiveRecord::Base
   end
   
   def observacao_do_recebimento
-    observacao = self.observacao
+    observacao = self.observacao.nil? ? '' : self.observacao
     observacao += ' - ' + self.cheque.observacao if self.em_cheque? && self.cheque.present?
     return observacao
   end
