@@ -24,7 +24,6 @@ class RecebimentosController < ApplicationController
     @paciente                = Paciente.find(params[:paciente_id])
     @recebimento.paciente    = @paciente
     @recebimento.clinica_id  = @paciente.clinica_id
-    
   end
 
   def edit

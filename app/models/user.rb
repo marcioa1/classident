@@ -33,6 +33,7 @@ class User < ActiveRecord::Base
   end
   
   def horario_de_trabalho?
+    true
     wdia = Date.today.wday
     case wdia
       when 0: self.dia_da_semana_0 && Time.current.strftime('%H:%M') >= self.hora_de_inicio_0.strftime('%H:%M') && Time.current.strftime('%H:%M') <= self.hora_de_termino_0.strftime('%H:%M')
