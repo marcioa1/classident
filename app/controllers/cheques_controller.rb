@@ -118,22 +118,18 @@ class ChequesController < ApplicationController
       end
     end
     if params[:status]=="usados para pagamento"
-      @cheques = Cheque.por_bom_para.da_clinica(session[:clinica_id]).entre_datas(@data_inicial,@data_final).
+      @cheques = Cheque.por_bom_para.entre_datas(@data_inicial,@data_final).
               usados_para_pagamento
     end  
     if params[:status]=="destinação"
       @cheques = Cheque.por_bom_para.da_clinica(session[:clinica_id]).entre_datas(@data_inicial,@data_final).com_destinacao
-    end  
-    if params[:status]=="devolvido"
-      @cheques = Cheque.por_bom_para.da_clinica(session[:clinica_id]).devolvidos(@data_inicial,@data_final)
-    end
-    if params[:status]=="reapresentado"
+    elsif params[:status]=="devolvido"
+      @cheques = Cheque.por_bom_para.devolvidos(@data_inicial,@data_final)
+    elsif params[:status]=="reapresentado"
       @cheques = Cheque.por_bom_para.da_clinica(session[:clinica_id]).reapresentados(@data_inicial,@data_final)
-    end
-    if params[:status]=="spc"
+    elsif params[:status]=="spc"
       @cheques = Cheque.por_bom_para.da_clinica(session[:clinica_id]).spc(@data_inicial,@data_final)
-    end
-    if @administracao
+    elsif @administracao
       clinicas_selecionadas = ""
       @clinicas.each do |clinica|
         clinicas_selecionadas += clinica.id.to_s + "," if params["clinica_#{clinica.id}".to_sym]
@@ -195,12 +191,23 @@ class ChequesController < ApplicationController
   def pesquisa
     @bancos = Banco.por_nome.collect{|obj| [obj.nome, obj.id.to_s]}
     if @administracao
-      @cheques = Cheque.na_administracao.do_banco(params[:banco])
+      if params[:banco] && !params[:banco].blank?
+        @cheques = Cheque.na_administracao.do_banco(params[:banco])
+      else
+        @cheques = Cheque.na_administracao
+      end
     else 
-      @cheques = Cheque.da_clinica(session[:clinica_id]).do_banco(params[:banco])
+      if params[:banco] && !params[:banco].blank?
+        @cheques = Cheque.da_clinica(session[:clinica_id]).do_banco(params[:banco])
+      else
+        @cheques = Cheque.da_clinica(session[:clinica_id])
+      end
     end
     if params[:agencia] && !params[:agencia].blank?
       @cheques = @cheques.da_agencia(params[:agencia])
+    end
+    if params[:numero] && !params[:numero].blank?
+      @cheques = @cheques.com_numero(params[:numero])
     end
     @cheques = @cheques.do_valor(params[:valor].gsub(",",".")) if !params[:valor].blank?
     

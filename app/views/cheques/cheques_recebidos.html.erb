@@ -36,7 +36,7 @@
   </tr>
   <% total = 0 %>
   <% for cheque in @cheques do %>
-    <tr>
+    <tr class=<%=cheque.status_class%>>
     <% if @administracao %>
       <% dados += "#{cheque.clinica.nome};#{cheque.bom_para.to_s_br};#{cheque.nome_dos_pacientes}; #{cheque.valor.real};#{cheque.banco.nome};#{cheque.numero};#{cheque.status}>" %>
       <td><%= cheque.clinica.sigla %></td>
@@ -46,7 +46,7 @@
     <% end %>
     <td align="center">
       <% if  @administracao %>
-        <%= cheque.bom_para.to_s_br %>
+        <%= link_to cheque.bom_para.to_s_br, edit_cheque_path(cheque) %>
       <% else %>
         <%= link_to cheque.bom_para.to_s_br, edit_cheque_path(cheque) %>
       <% end %>

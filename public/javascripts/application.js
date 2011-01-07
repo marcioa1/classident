@@ -308,7 +308,7 @@ function selecionou_cheque(elemento){
   }
   $("#cheques_ids").val(selecionados);
   var total_a_pagar = $("#pagamento_valor_pago_real").val();
-  console.log(total_a_pagar);
+  //console.log(total_a_pagar);
   if (total_a_pagar < total_de_cheques){
     alert("A soma dos valores dos cheques selecionados é maior que o valor do pagamento.");
   }

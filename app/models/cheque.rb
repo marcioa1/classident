@@ -13,10 +13,11 @@ class Cheque < ActiveRecord::Base
   
   named_scope :por_bom_para, :order=>:bom_para
   named_scope :com_destinacao, :conditions=>["destinacao_id IS NOT NULL"]
+  named_scope :com_numero, lambda{|numero| {:conditions=>["numero=?",numero ]}}
   named_scope :da_agencia, lambda{|agencia| {:conditions=>["agencia=?",agencia]}}
   named_scope :da_clinica, lambda{|clinica_id| {:conditions=>["clinica_id=?",clinica_id]}}
   named_scope :devolvidos, lambda{|data_inicial, data_final| 
-      {:conditions=>["data_Reapresentacao IS NULL and data_primeira_devolucao between ? and ?", data_inicial, data_final]}}
+      {:conditions=>["data_reapresentacao IS NULL and data_primeira_devolucao between ? and ?", data_inicial, data_final]}}
   named_scope :devolvido_duas_vezes, :conditions=>["data_segunda_devolucao IS NOT NULL"]
   named_scope :devolvido_duas_vezes_entre_datas, lambda{|data_inicial, data_final| {:conditions=>["data_segunda_devolucao between ? and ? ", data_inicial, data_final ]}}
   named_scope :disponiveis_na_clinica, :conditions=>["data_segunda_devolucao IS NULL and 
@@ -90,6 +91,21 @@ class Cheque < ActiveRecord::Base
     return "disponível" unless !sem_devolucao? 
     return "solucionado" unless !solucionado?
   end
+  
+  def status_class
+    return "arq_morto" unless !arquivo_morto?
+    return "SPC" unless !spc?
+    return "devol_2X" unless !devolvido_duas_vezes? 
+    return "reapresentado" unless !reapresentado?
+    return "devolvido"  unless !devolvido_uma_vez?
+    return "pgto_adm" if usado_para_pagamento? and recebido_pela_administracao
+    return "pgto_cli" if usado_para_pagamento? and !recebido_pela_administracao
+    return "destinação" if com_destinacao?
+    return "receb_adm" if recebido_pela_administracao
+    return "enviado_adm" if entregue_a_administracao
+    return "disponível" unless !sem_devolucao? 
+    return "solucionado" unless !solucionado?
+ end
   
   def sem_devolucao?
     data_primeira_devolucao.nil?

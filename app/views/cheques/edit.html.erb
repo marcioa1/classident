@@ -93,7 +93,7 @@
     </p>
   <% end %>
   <p>
-    <%= f.submit 'Update' unless @cheque.entregue_a_administracao || @cheque.para_mais_de_um_paciente? %>
+    <%= f.submit 'Update' unless (@cheque.entregue_a_administracao && !@administracao) || @cheque.para_mais_de_um_paciente? %>
   </p>
 <% end %>
 <%= link_to 'voltar', :back %>

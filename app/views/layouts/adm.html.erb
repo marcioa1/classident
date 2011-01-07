@@ -42,16 +42,16 @@
             <% end %>
         </div>
       <div id="main">
+        <p>
         <div class='notice'>
           <%= flash[:notice] %>
         </div>
+        </p>
         <%= nome_paciente(@paciente) if @paciente && !@paciente.new_record? %>
         <span id="controller" style='display: none;'><%= params[:controller] %></span> 
         <span id="action" style='display: none;'><%= params[:action] %></span>
-
         <%= yield :main %>
       </div>
-    </div>
     </div>
   <div id="rodape">
     © 2010 - <a href="http://www.anadata.com.br/"><strong>Anadata Sistemas</strong></a>
