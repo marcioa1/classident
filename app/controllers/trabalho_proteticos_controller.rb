@@ -30,9 +30,9 @@ class TrabalhoProteticosController < ApplicationController
 
   def create
     @trabalho_protetico                            = TrabalhoProtetico.new(params[:trabalho_protetico])
-    @trabalho_protetico.data_de_envio              = params[:datepicker].to_date if params[:datepicker]
-    @trabalho_protetico.data_prevista_de_devolucao = params[:datepicker2].to_date if params[:datepicker2]
-    @trabalho_protetico.data_de_devolucao          = params[:datepicker3].to_date if !params[:datepicker3].blank?
+    # @trabalho_protetico.data_de_envio              = params[:datepicker].to_date if params[:datepicker]
+    # @trabalho_protetico.data_prevista_de_devolucao = params[:datepicker2].to_date if params[:datepicker2]
+    # @trabalho_protetico.data_de_devolucao          = params[:datepicker3].to_date if !params[:datepicker3].blank?
     if @trabalho_protetico.save
       @trabalho_protetico.tratamento.adiciona_custo(@trabalho_protetico.valor) if @trabalho_protetico.tratamento.present? 
       redirect_to( abre_paciente_path(:id => @trabalho_protetico.paciente_id)) 

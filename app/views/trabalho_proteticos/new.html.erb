@@ -70,8 +70,7 @@
     </div>
     <div>
       <%= f.label 'data prevista da devolução da repetição :'%> 
-      <%= text_field_tag :datepicker5, @trabalho_protetico.data_prevista_da_devolucao_da_repeticao.to_s_br, :size=>10 %>
-    
+      <%= f.text_field :data_prevista_da_devolucao_da_repeticao_pt, :size=>10, :class=>'datepicker' %>
     </div>
     <div>
       <%= f.submit 'salvar' %>
