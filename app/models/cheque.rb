@@ -16,6 +16,7 @@ class Cheque < ActiveRecord::Base
   named_scope :com_numero, lambda{|numero| {:conditions=>["numero=?",numero ]}}
   named_scope :da_agencia, lambda{|agencia| {:conditions=>["agencia=?",agencia]}}
   named_scope :da_clinica, lambda{|clinica_id| {:conditions=>["clinica_id=?",clinica_id]}}
+  named_scope :das_clinicas, lambda{|clinicas| {:conditions=>["clinica_id in ('?') ", clinicas]}}
   named_scope :devolvidos, lambda{|data_inicial, data_final| 
       {:conditions=>["data_reapresentacao IS NULL and data_primeira_devolucao between ? and ?", data_inicial, data_final]}}
   named_scope :devolvido_duas_vezes, :conditions=>["data_segunda_devolucao IS NOT NULL"]

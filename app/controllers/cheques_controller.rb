@@ -77,66 +77,74 @@ class ChequesController < ApplicationController
       @status << ["recebidos pela administração", "recebidos pela administração"]
     # end
     @cheques = []
-    if params[:status] == "todos"
-      if administracao
-        @cheques = Cheque.por_bom_para.na_administracao.
-               entre_datas(@data_inicial,@data_final).nao_excluidos
-      else
-        @cheques = Cheque.por_bom_para.da_clinica(session[:clinica_id]).
-               entre_datas(@data_inicial,@data_final).nao_excluidos
-      end
-    end
-    if params[:status] == "disponíveis"
-      if administracao
-        @cheques = Cheque.por_bom_para.entre_datas(@data_inicial,@data_final).
-              disponiveis_na_administracao.nao_excluidos
-      else
-        @cheques = Cheque.por_bom_para.da_clinica(session[:clinica_id]).entre_datas(@data_inicial,@data_final).
-              disponiveis_na_clinica.nao_excluidos
-      end
-    end
-    if params[:status]== "devolvido 2 vezes"
-      @cheques = Cheque.por_bom_para.da_clinica(session[:clinica_id]).entre_datas(@data_inicial,@data_final).
-              devolvido_duas_vezes.nao_excluidos
-    end 
-    if params[:status]=="enviados à administração"     
-      if administracao
-        @cheques = Cheque.por_bom_para.entre_datas(@data_inicial,@data_final).
-              entregues_a_administracao.nao_recebidos.nao_excluidos
-      else
-        @cheques = Cheque.por_bom_para.da_clinica(session[:clinica_id]).entre_datas(@data_inicial,@data_final).
-              entregues_a_administracao.nao_recebidos.nao_excluidos
-      end
-    end
-    if params[:status]=="recebidos pela administração"     
-      if administracao
-        @cheques = Cheque.por_bom_para.entre_datas(@data_inicial,@data_final).
-              na_administracao.nao_excluidos
-      else
-        @cheques = Cheque.por_bom_para.da_clinica(session[:clinica_id]).entre_datas(@data_inicial,@data_final).
-              na_administracao.nao_excluidos
-      end
-    end
-    if params[:status]=="usados para pagamento"
-      @cheques = Cheque.por_bom_para.entre_datas(@data_inicial,@data_final).
-              usados_para_pagamento
-    end  
-    if params[:status]=="destinação"
-      @cheques = Cheque.por_bom_para.da_clinica(session[:clinica_id]).entre_datas(@data_inicial,@data_final).com_destinacao
-    elsif params[:status]=="devolvido"
-      @cheques = Cheque.por_bom_para.devolvidos(@data_inicial,@data_final)
-    elsif params[:status]=="reapresentado"
-      @cheques = Cheque.por_bom_para.da_clinica(session[:clinica_id]).reapresentados(@data_inicial,@data_final)
-    elsif params[:status]=="spc"
-      @cheques = Cheque.por_bom_para.da_clinica(session[:clinica_id]).spc(@data_inicial,@data_final)
-    elsif @administracao
-      clinicas_selecionadas = ""
+    if @administracao
+      selecionadas = []
       @clinicas.each do |clinica|
-        clinicas_selecionadas += clinica.id.to_s + "," if params["clinica_#{clinica.id}".to_sym]
+        selecionadas << clinica.id if params["clinica_#{clinica.id}".to_sym]
       end
-      @cheques = @cheques.vindo_da_clinica(clinicas_selecionadas[0..-2]) if clinicas_selecionadas.size>1
+      # raise selecionadas.inspect
+      case
+        when params[:status] == 'todos'
+          @cheques = Cheque.por_bom_para.na_administracao.
+            entre_datas(@data_inicial,@data_final).nao_excluidos.das_clinicas(selecionadas)
+        when params[:status] == 'disponíveis'
+          @cheques = Cheque.por_bom_para.entre_datas(@data_inicial,@data_final).
+            disponiveis_na_administracao.nao_excluidos.das_clinicas(selecionadas)
+        when params[:status] == 'devolvido 2 vezes'
+          @cheques = Cheque.por_bom_para.da_clinica(session[:clinica_id]).entre_datas(@data_inicial,@data_final).
+            devolvido_duas_vezes.nao_excluidos.das_clinicas(selecionadas)
+        when params[:status] == 'enviados à administração'
+          @cheques = Cheque.por_bom_para.entre_datas(@data_inicial,@data_final).
+            entregues_a_administracao.nao_recebidos.nao_excluidos.das_clinicas(selecionadas)
+        when params[:status] == 'recebidos pela administração'
+          @cheques = Cheque.por_bom_para.entre_datas(@data_inicial,@data_final).
+            na_administracao.nao_excluidos.das_clinicas(selecionadas)
+        when params[:status] == 'usados para pagamento'
+          @cheques = Cheque.por_bom_para.entre_datas(@data_inicial,@data_final).
+            na_administracao.usados_para_pagamento.das_clinicas(selecionadas)
+        when params[:status] == 'devolvido'
+          @cheques = Cheque.na_administracao.por_bom_para.devolvidos(@data_inicial,@data_final).
+            das_clinicas(selecionadas)
+        when params[:status] == 'destinação'
+          @cheques = Cheque.por_bom_para.na_administracao.entre_datas(@data_inicial,@data_final).com_destinacao.
+            das_clinicas(selecionadas)
+        when params[:status] == 'reapresentado'
+          @cheques = Cheque.por_bom_para.na_administracao.reapresentados(@data_inicial,@data_final).
+            das_clinicas(selecionadas)
+        when params[:status]=="spc"
+          @cheques = Cheque.por_bom_para.na_administracao.spc(@data_inicial,@data_final).
+            das_clinicas(selecionadas)
+      end
+    else
+      case
+        when params[:status] == 'todos'
+          @cheques = Cheque.por_bom_para.da_clinica(session[:clinica_id]).
+            entre_datas(@data_inicial,@data_final).nao_excluidos
+        when params[:status] == 'disponíveis'
+          @cheques = Cheque.por_bom_para.da_clinica(session[:clinica_id]).entre_datas(@data_inicial,@data_final).
+            disponiveis_na_clinica.nao_excluidos
+        when params[:status] == 'devolvido 2 vezes'
+          @cheques = Cheque.por_bom_para.da_clinica(session[:clinica_id]).entre_datas(@data_inicial,@data_final).
+            devolvido_duas_vezes.nao_excluidos
+        when params[:status] == 'enviados à administração'
+          @cheques = Cheque.por_bom_para.da_clinica(session[:clinica_id]).entre_datas(@data_inicial,@data_final).
+            entregues_a_administracao.nao_recebidos.nao_excluidos
+        when params[:status] == 'recebidos pela administração'
+          @cheques = Cheque.por_bom_para.da_clinica(session[:clinica_id]).entre_datas(@data_inicial,@data_final).
+            na_administracao.nao_excluidos
+        when params[:status] == 'usados para pagamento'
+          @cheques = Cheque.por_bom_para.entre_datas(@data_inicial,@data_final).
+            da_clinica(session[:clinica_id]).usados_para_pagamento
+        when params[:status] == 'devolvido'
+          @cheques = Cheque.da_clinica(session[:clinica_id]).por_bom_para.devolvidos(@data_inicial,@data_final)
+        when params[:status] == 'destinação'
+          @cheques = Cheque.por_bom_para.da_clinica(session[:clinica_id]).entre_datas(@data_inicial,@data_final).com_destinacao
+        when params[:status] == 'reapresentado'
+          @cheques = Cheque.por_bom_para.da_clinica(session[:clinica_id]).reapresentados(@data_inicial,@data_final)
+        when params[:status]=="spc"
+          @cheques = Cheque.por_bom_para.da_clinica(session[:clinica_id]).spc(@data_inicial,@data_final)
+      end
     end
-     #TODO fazer parametros que faltam de situação de cheque
   end
   
   def recebe_cheques
