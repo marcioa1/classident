@@ -69,7 +69,17 @@ function libera_pagamento(){
      url : '/trabalho_proteticos/libera_pagamento',
      data: { ids: ids},
      success: function(){
-       alert('ok');
+       alert('Liberação confirmada. Por enquanto, carregue a página novamente.');
+     }
+   });
+}
+
+function cancelar_liberacao(id){
+    $.ajax({
+     url : '/trabalho_proteticos/' + id + '/cancelar_liberacao',
+     data: { id: id},
+     success: function(){
+       alert('Liberação cancelada. Por enquanto, carregue a página novamente.');
      }
    });
 }

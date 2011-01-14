@@ -85,5 +85,10 @@ class TrabalhoProteticosController < ApplicationController
     head :ok
   end
 
+  def cancelar_liberacao
+    trabalho_protetico = TrabalhoProtetico.find(params[:id])
+    trabalho_protetico.update_attribute('data_liberacao_para_pagamento', nil)
+    head :ok
+  end
   
 end
