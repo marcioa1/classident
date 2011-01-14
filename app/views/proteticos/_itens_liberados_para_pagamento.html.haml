@@ -1,0 +1,17 @@
+%h2 Itens liberados para pagamento 
+%table.tabela
+  %tr
+    %th Paciente
+    %th Dente
+    %th Descrição
+    %th Data de devolução
+    %th Data de liberação para pagamento
+    %th Dentista
+  - itens.each do |item|
+    %tr
+      %td= item.paciente.nome
+      %td= item.dente
+      %td= item.tabela_protetico.descricao
+      %td= l(item.data_de_devolucao)
+      %td= l(item.data_liberacao_para_pagamento)
+      %td= item.dentista.nome

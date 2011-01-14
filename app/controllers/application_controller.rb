@@ -55,6 +55,10 @@ class ApplicationController < ActionController::Base
   def administracao
     @administracao = session[:clinica_id].to_i == Clinica::ADMINISTRACAO_ID
   end
+
+  def administracao?
+    session[:clinica_id].to_i == Clinica::ADMINISTRACAO_ID
+  end
   
   def primeiro_dia_do_mes
     Date.new(Date.today.year, Date.today.month, 1)

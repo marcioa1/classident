@@ -7,7 +7,7 @@
 	<div id="tabs">
 	    <ul>
 	        <li><a href="#fragment-1"><span>Cadastro</span></a></li>
-	        <li><a href="#fragment-2"><span>Itens recebidos</span></a></li>
+	        <li><a href="#fragment-2"><span>Trabalhos a pagar</span></a></li>
 	        <li><a href="#fragment-3"><span>Pagamento</span></a></li>
 	        <li><a href="#fragment-4"><span>Tabela</span></a></li>
 	    </ul>
@@ -31,6 +31,7 @@
         <li><a href="#fragment-1"><span>Cadastro</span></a></li>
         <li><a href="#fragment-2"><span>Itens pendentes</span></a></li>
         <li><a href="#fragment-3"><span>Itens recebidos não liberados para pagamento</span></a></li>
+        <li><a href="#itens-liberados"><span>Itens liberados para pagamento</span></a></li>
         <li><a href="#fragment-4"><span>Tabela</span></a></li>
         <li><a href="#pagamentos"><span>Pagamentos realizados</span></a></li>
     </ul>
@@ -43,6 +44,9 @@
     <div id="fragment-3">
       <!-- <%= render :partial=>"trabalhos_entregues_nao_pagos" %> -->
     </div>
+    <div id="itens-liberados">
+      <%= render :partial => 'itens_liberados_para_pagamento', :locals => {:itens => TrabalhoProtetico.do_protetico(@protetico.id).da_clinica(session[:clinica_id]).liberados_para_pagamento } %>
+    </div>
     <div id="fragment-4">
       <%= render :partial=>"tabela" %>
     </div>
@@ -51,22 +55,23 @@
     </div
 </div>
 <% end %>
-
-<script type="text/javascript">
-$("#tabs").tabs({
-   select: function(event, ui) { 
-     if (ui.index == 2){
-       $.ajax({
-         url : "/proteticos/busca_trabalhos_devolvidos",
-         type: 'GET',
-         data: {id: $("#protetico_id").html()},
-         success: function(data){
-           $("#fragment-3").html(data);
-           // $("#lista_de_cheques").replaceWith("<span id='lista_de_cheques'>" + data + "</span>");
-         }
-       });
+<% if !@administracao %>
+  <script type="text/javascript">
+  $("#tabs").tabs({
+     select: function(event, ui) { 
+       if (ui.index == 2){
+         $.ajax({
+           url : "/proteticos/busca_trabalhos_devolvidos",
+           type: 'GET',
+           data: {id: $("#protetico_id").html()},
+           success: function(data){
+             $("#fragment-3").html(data);
+             // $("#lista_de_cheques").replaceWith("<span id='lista_de_cheques'>" + data + "</span>");
+           }
+         });
+       }
      }
-   }
-});
-</script>
+  });
+  </script>
+<% end %>
 <% end %>

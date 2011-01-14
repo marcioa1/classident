@@ -77,7 +77,12 @@ class TrabalhoProteticosController < ApplicationController
   end
   
   def libera_pagamento
-    
+    ids_array = params[:ids].split(',')
+    ids_array.each do |id|
+      trab = TrabalhoProtetico.find(id)
+      trab.update_attribute('data_liberacao_para_pagamento' , Time.current)
+    end
+    head :ok
   end
 
   

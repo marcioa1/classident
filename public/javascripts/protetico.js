@@ -61,15 +61,15 @@ function pagar(valor,id, id_protetico){
 }
 
 function libera_pagamento(){
-//  #FIXME implantar pegar os ids dos trabalhos selecionados
   var ids = '';
   $(".libera_pagamento :checked").each(function() {
-    ids.append (this.id);
-    $(".libera_pagamento :checked")[0].value;
-});
-
-  $.ajax({
-    url : 'libera_pagamento',
-    data: { ids : '1'}
+    ids+= ($(this).attr('value') + ',');
   });
+  $.ajax({
+     url : '/trabalho_proteticos/libera_pagamento',
+     data: { ids: ids},
+     success: function(){
+       alert('ok');
+     }
+   });
 }
