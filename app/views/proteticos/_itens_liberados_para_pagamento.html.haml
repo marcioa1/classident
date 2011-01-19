@@ -9,7 +9,7 @@
     %th Dentista
     %th cancelar liberação
   - itens.each do |item|
-    %tr
+    %tr{:id=>"tr-liberados#{item.id}"}
       %td= item.paciente.nome
       %td= item.dente
       %td= item.tabela_protetico.descricao

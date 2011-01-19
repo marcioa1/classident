@@ -1,8 +1,7 @@
 #libera_pagamento{:style => "float:right;"}
-  Valor dos trabalhos selecionados : R$
-  %span#valor 0
+ 
   %span#link_pagamento
-    = link_to_function 'libera pagamento', 'libera_pagamento();'
+    = button_to_function 'libera pagamento', 'libera_pagamento();'
 %h2 Trabalhos recebidos a serem liberados para pagamento
 %table.tabela
   %tr
@@ -35,7 +34,7 @@
       %br
       p/ pagto
   - @trabalhos_devolvidos.each do |trab|
-    %tr
+    %tr{:id=>"tr#{trab.id}"}
       %td= trab.paciente.nome
       %td= trab.dente if trab.dente.present?
       %td{:align => "center"}= trab.data_de_envio.to_s_br

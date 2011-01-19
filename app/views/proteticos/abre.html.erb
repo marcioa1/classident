@@ -66,10 +66,21 @@
            data: {id: $("#protetico_id").html()},
            success: function(data){
              $("#fragment-3").html(data);
-             // $("#lista_de_cheques").replaceWith("<span id='lista_de_cheques'>" + data + "</span>");
            }
          });
        }
+       if (ui.index == 3){
+         $.ajax({
+           url : "/proteticos/busca_trabalhos_liberados",
+           type: 'GET',
+           data: {id: $("#protetico_id").html()},
+           success: function(data){
+             $("#itens-liberados").html(data);
+           }
+         });
+       }
+
+
      }
   });
   </script>

@@ -1,7 +1,8 @@
 class ProteticosController < ApplicationController
   layout "adm"
   before_filter :require_user
-  before_filter :busca_protetico, :only => [:edit, :abre, :show, :update, :destroy, :busca_trabalhos_devolvidos]
+  before_filter :busca_protetico, :only => [:edit, :abre, :show, :update, :destroy, 
+                  :busca_trabalhos_devolvidos, :busca_trabalhos_liberados]
   before_filter :quinzena, :only => [:pagamentos_feitos]
   
   def index
@@ -131,4 +132,11 @@ class ProteticosController < ApplicationController
     render :partial => 'libera_para_pagamento'
   end
   
+  def busca_trabalhos_liberados
+    protetico_id = params
+    @itens = TrabalhoProtetico.
+      do_protetico(@protetico.id).da_clinica(session[:clinica_id]).liberados_para_pagamento
+    render :partial => 'itens_liberados_para_pagamento', :locals => { :itens => @itens }
+  end
+
 end
