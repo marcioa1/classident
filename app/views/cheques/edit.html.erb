@@ -32,13 +32,13 @@
     <%= text_field_tag :datepicker, Date.today.to_s_br, :size=>10 %>
   </div>
  <p>
-    <%= check_box_tag :uma_devolucao, 1, checked=@cheque.devolvido_uma_vez? , options={ :onclick=>"abre_uma_devolucao();"}%> devolvido uma vez
+    <%= check_box_tag :uma_devolucao, 1, checked=@cheque.devolvido_uma_vez? , options={ :onclick=>"abre_uma_devolucao();", :disabled=>!@administracao }%> devolvido uma vez
  </p>
  <%# @cheque.data_primeira_devolucao = Date.today %>
   <% if @cheque.devolvido_uma_vez? %>
     <div id="devolvido_uma_vez" >
   <% else %>
-    <div id="devolvido_uma_vez" style="display:none;">
+    <div id="devolvido_uma_vez" style="<%= @cheque.devolvido_uma_vez? ? '' : 'display:none;'%>" >
   <% end %>
     <fieldset>
       <legend>Primeira devolução</legend>
@@ -53,12 +53,12 @@
     </fieldset>
   </div>
     <p>
-        <%= check_box_tag :reapresentacao, 'reapresentado', checked=@cheque.reapresentado? , options={ :onclick=>"abre_reapresentacao();"}%> reapresentado
+        <%= check_box_tag :reapresentacao, 'reapresentado', checked=@cheque.reapresentado? , options={ :onclick=>"abre_reapresentacao();", :disabled=>!@administracao }%> reapresentado
      </p>
     <% if @cheque.reapresentado? %>
       <div id="reapresentado" >
     <% else %>
-      <div id="reapresentado" style="display:none">
+      <div id="reapresentado" style="<%= @cheque.reapresentado? ? '' : 'display:none;'%>">
     <% end %>
     <fieldset>
       <legend>Reapresentação</legend>
@@ -68,12 +68,12 @@
       </div>
       </fieldset>
         <p>
-            <%= check_box_tag :segunda_devolucao, 1, checked=@cheque.devolvido_duas_vezes? , options={ :onclick=>"abre_segunda_devolucao();"}%> segunda devolução
+            <%= check_box_tag :segunda_devolucao, 1, checked=@cheque.devolvido_duas_vezes? , options={ :onclick=>"abre_segunda_devolucao();", :disabled=>!@administracao }%> segunda devolução
          </p>
         <% if @cheque.devolvido_duas_vezes? %>
           <div id="devolvido_duas_vezes" >
         <% else %>
-          <div id="devolvido_duas_vezes" style="display:none">
+          <div id="devolvido_duas_vezes" style="<%= @cheque.devolvido_duas_vezes? ? '' : 'display:none;'%>">
         <% end %>
         <p class="borda_dupla">
           <%= f.label :data_da_segunda_devolução %>
@@ -87,7 +87,7 @@
   <% if @cheque.entregue_a_administracao %>
   <p>Entregue à Administração em <%= @cheque.data_entrega_administracao.to_s_br %></p>
   <% end %>
-  <% if @cheque.recebimentos.size == 1%>
+  <% if @cheque.recebimentos.size == 1 &&  (!@cheque.entregue_a_administracao || @administracao) && !@cheque.para_mais_de_um_paciente? %>
     <p>
       Ao alterar o valor deste cheque, o valor de respectivo recebimento também será alterado, juntamente com o extrato do paciente
     </p>
@@ -96,6 +96,7 @@
     <%= f.submit 'Update' unless (@cheque.entregue_a_administracao && !@administracao) || @cheque.para_mais_de_um_paciente? %>
   </p>
 <% end %>
+<%= link_to 'adiciona observação', new_acompanhamento_cheque_path %>
 <%= link_to 'voltar', :back %>
 <% #TODO volta via javascript para voltar a página com pesquisa %>
 </fieldset>

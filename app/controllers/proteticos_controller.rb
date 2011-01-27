@@ -135,7 +135,7 @@ class ProteticosController < ApplicationController
   def busca_trabalhos_liberados
     protetico_id = params
     @itens = TrabalhoProtetico.
-      do_protetico(@protetico.id).da_clinica(session[:clinica_id]).liberados_para_pagamento
+      do_protetico(@protetico.id).da_clinica(session[:clinica_id]).liberados_para_pagamento.nao_pagos
     render :partial => 'itens_liberados_para_pagamento', :locals => { :itens => @itens }
   end
 

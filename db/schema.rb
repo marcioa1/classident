@@ -9,7 +9,16 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20101219103238) do
+ActiveRecord::Schema.define(:version => 20110127081903) do
+
+  create_table "acompanhamento_cheques", :force => true do |t|
+    t.integer  "cheque_id"
+    t.string   "origem",     :limit => 1,   :default => "C"
+    t.string   "descricao",  :limit => 120
+    t.integer  "user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "altas", :force => true do |t|
     t.integer  "paciente_id"

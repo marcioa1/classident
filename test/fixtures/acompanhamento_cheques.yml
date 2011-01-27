@@ -1,0 +1,13 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  cheque: 
+  origem: MyString
+  descricao: MyString
+  user: 
+
+two:
+  cheque: 
+  origem: MyString
+  descricao: MyString
+  user: 
