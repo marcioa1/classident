@@ -6,6 +6,7 @@ class User < ActiveRecord::Base
   belongs_to :tipo_usuario
   has_and_belongs_to_many :clinicas
   belongs_to :alta
+  has_many   :acompanhamento_cheques
   
   validates_presence_of :nome, :on => :create, :message => "campo obrigatório."
   
