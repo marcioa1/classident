@@ -1,41 +1,7 @@
 
 <fieldset>
 <legend>Detalhe do cheque (<%= @cheque.id %>)</legend>
-<table class="transparente">
-	<tr>
-		<td>Paciente : </td>
-		<td><%= @cheque.nome_dos_pacientes %></td>
-	</tr>
-  <tr>
-  	<td>Banco : </td>
-    <td><%= @cheque.banco.nome %></td>
-  </tr>
-  <tr>
-  	<td>Agência : </td>
-    <td><%= @cheque.agencia%></td>
-  </tr>
-  <tr>
-  	<td>Conta-corrente : </td>
-    <td><%= @cheque.conta_corrente %></td>
-  </tr>
-  <tr>
-  	<td>Número : </td>
-    <td><%= @cheque.numero %></td>
-  </tr>
-  <tr>
-  	<td>Valor : </td>
-    <td><%= @cheque.valor.real %></td>
-  </tr>
-  <tr>
-  	<td>Bom-para : </td>
-    <td><%= @cheque.bom_para.to_s_br %></td>
-  </tr>
-  <tr>
-  	<td>Status :</td>
-	<td><%= @cheque.status %></td>
-  </tr>
-</table>
-
+<%= render :partial => '_detalhe_cheque' %>
 <br/>
 <a href="javascript: self.close();">fechar</a>
 </fieldset>

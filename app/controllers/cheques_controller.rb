@@ -16,6 +16,7 @@ class ChequesController < ApplicationController
   def edit
     @bancos = Banco.all(:order=>:nome).collect{|obj| [obj.nome,obj.id]}
     @cheque = Cheque.find(params[:id])
+    session[:origem] = edit_cheque_path(@cheque)
   end
 
   def update

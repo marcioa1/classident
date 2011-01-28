@@ -5,6 +5,7 @@ class Cheque < ActiveRecord::Base
   belongs_to :destinacao
   belongs_to :clinica 
   belongs_to :pagamento
+  has_many   :acompanhamento_cheques
   
   validates_presence_of :banco, :on => :create, :message => "Não pode ser vazio"
   validates_presence_of :numero, :on => :create, :message => "Não pode ser vazio"
@@ -209,5 +210,13 @@ class Cheque < ActiveRecord::Base
   
   def excluido?
     self.data_de_exclusao.present?
+  end
+  
+  def acompanhamentos
+    result = ''
+    self.acompanhamento_cheques.each do |a|
+      result += a.updated_at.to_s_br + ', ' + a.descricao + "\\tt"
+    end
+    result
   end
 end

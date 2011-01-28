@@ -1,0 +1,28 @@
+%table{:class=>"transparente"}
+  %tr
+    %td Paciente : 
+    %td= cheque.nome_dos_pacientes  
+  %tr
+    %td Banco : 
+    %td= cheque.banco.nome  
+  %tr
+    %td Agência : 
+    %td= cheque.agencia 
+  %tr
+    %td Conta-corrente : 
+    %td= cheque.conta_corrente  
+  %tr
+    %td Número : 
+    %td= cheque.numero  
+  %tr
+    %td Valor : 
+    %td= cheque.valor.real  
+  %tr
+    %td Bom-para : 
+    %td= cheque.bom_para.to_s_br  
+  %tr
+    %td Status :
+    %td= cheque.status  
+  %tr
+    %td Acompanhamento :
+    %td= cheque.acompanhamentos

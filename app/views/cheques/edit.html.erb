@@ -96,7 +96,7 @@
     <%= f.submit 'Update' unless (@cheque.entregue_a_administracao && !@administracao) || @cheque.para_mais_de_um_paciente? %>
   </p>
 <% end %>
-<%= link_to 'adiciona observação', new_acompanhamento_cheque_path %>
+<%= link_to 'adiciona observação', new_acompanhamento_cheque_path(:cheque_id => @cheque.id) %>
 <%= link_to 'voltar', :back %>
 <% #TODO volta via javascript para voltar a página com pesquisa %>
 </fieldset>
