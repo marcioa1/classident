@@ -165,10 +165,12 @@
       %td= 'Saldo de fechamento'
       %td &nbsp;
       %td{ :align=>'right' }= total_de_debito_em_dinheiro.real
-      %td{ :align=>'right' }= saldo_dinheiro.real
+      %td{ :align=>'right' }
+        %strong= saldo_dinheiro.real
       %td &nbsp;
       %td{ :align=>'right' }= total_de_debito_em_cheque.real
-      %td{ :align=>'right' }= saldo_cheque.real
+      %td{ :align=>'right' }
+        %strong= saldo_cheque.real
 
   %p
     = link_to "anterior", fluxo_de_caixa_path(:data=>@fluxo.data - 1.day)

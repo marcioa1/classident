@@ -60,7 +60,7 @@
         = yield :main
         = yield :detail
     #rodape
-      © 2010 -
+      © <%= Date.today.year %> -
       %a{:href => "http://www.anadata.com.br/"}
         %strong
           Anadata Sistemas

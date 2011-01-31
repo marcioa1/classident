@@ -18,7 +18,7 @@ class FluxoDeCaixaController < ApplicationController
         @fluxo = FluxoDeCaixa.voltar_para_a_data(params[:data].to_date, session[:clinica_id])
       else
         @fluxo = FluxoDeCaixa.avancar_um_dia(session[:clinica_id],
-             params[:saldo_dinheiro], params[:saldo_cheque])
+             params[:saldo_dinheiro], params[:saldo_cheque]) if params[:saldo_dinheiro]
       end
     end
     if @administracao
