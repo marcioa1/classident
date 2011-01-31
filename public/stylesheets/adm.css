@@ -1,5 +1,10 @@
 body{
-    background :#000000;
+  margin: 0; 
+  padding: 0; 
+  background-color: #050845; 
+  color: white; 
+  //background-image: url(img/bg.jpg); background-repeat: repeat-x; 
+  font: small Arial, Helvetica, Verdana, sans-serif;
 }
 fieldset{
     width: 30em;
@@ -33,10 +38,14 @@ fieldset{
     float: left;
 }
 #login{
-    margin-top: -7em;
-    padding-left: 30em;
-    background : white;
-    font-size :14px;
+   /* margin-top: -7em;
+       padding-left: 30em;
+       background : white;
+      */ 
+   margin-top: 1em;
+   font-size :14px;
+   float: right;
+   padding-right: 2em;
 }
 #cabecalho{
     margin-left: 5em;
@@ -58,15 +67,6 @@ fieldset{
   padding-left: 10em;
   padding-bottom: 0.5em;
   font-size: 19px;
-}
-#rodape{
-    background: #1C4EA3;
-    margin-top: 0em;
-    margin-left: 5em;
-    margin-right: 5em;
-    padding-right: 7em;
-    text-align: center;
-    color: white;
 }
 #rodape a{
     color :white;
@@ -147,6 +147,12 @@ fieldset{
   margin: 10px auto;
 	padding: 5px 20px 5px 20px;
 	}
+#notification{
+  border: 5px solid #9c9;
+  background-color: #cfc; 
+  padding: 5px; 
+  margin: 10px 0;
+}
 
 #valor_restante{
   float: right;
@@ -312,3 +318,79 @@ color: #00008B; background-color: #ADD8E6; border: 1px outset #00008B;
 .enviado_adm{} 
 .disponível{ color: green;}
 .solucionado{}
+
+#wrapper { 
+  background-color: white; 
+  color: black; 
+  margin: 30px 40px 30px 40px;
+}
+#header{
+  height: 9em;
+  background-color :white;
+}
+#header-bottom { 
+  border-top: 1px 
+  solid #b9d2e3; 
+  border-bottom: 1px 
+  solid #b9d2e3;
+}
+
+#main { 
+  margin-top: 10px;
+  margin-left: 20px;
+  padding-bottom: 20px;
+  background-color: white;
+}
+
+#content { 
+  margin: 30px 240px 0 30px; 
+  border: 1px solid #b9d2e3; 
+  background-color: white; 
+  color: black;
+}
+
+#rodape{
+    background: #1C4EA3;
+    /*margin-top: 0em;
+        margin-left: 5em;
+        margin-right: 5em;
+        padding-right: 7em;*/
+        padding-left: 3em;
+        padding-right: 3em;
+    text-align: center;
+    color: white;
+}
+
+#seleciona_clinica{
+  float: right;
+  padding-bottom: 1em;
+}
+
+.menu {float:left; padding:0; 
+/*  margin:0;*/
+  color: #FFFFFF;background: #455A79;
+  width:100%;
+/*  border:solid 1px #455A79;*/
+  clear:both;}
+.menu  a, .menu a:visited {
+  font-family:Verdana, Arial, Helvetica, sans-serif;
+  font-style:normal;
+  font-weight:normal;
+  font-size:8pt;
+  color: #FFFFFF;
+  background-color: #455A79;
+  text-decoration: none;
+}
+.menu ul {list-style-type:none;padding:0; margin:0;}
+.menu ul li {float:left; position:relative; z-index:auto !important ; z-index:1000 ; border-right:solid 1px #455A79; border-left:solid 1px #455A79;}
+.menu ul li a {color: #FFFFFF;background: #455A79;float:none !important ; float:left ; display:block; height:20px; line-height:20px; padding:0 10px 0 10px; text-decoration:none; }
+.menu ul li ul {display:none; border:none;color: #FFFFFF;background: #455A79; width:1px}
+.menu ul li:hover a {background-color:#90b7e5; text-decoration:none; color:#F5F5F5;} /*Color main cells hovering mode*/
+.menu ul li:hover ul {display:block;  position:absolute; z-index:999; top:19px; margin-top:1px; left:0;}
+.menu ul li:hover ul li a {display:block; width:16em; height:auto; line-height:1.3em; margin-left:-1px; padding:5px 10px 5px 10px; border-left:solid 1px #455A79; border-bottom: solid 1px #455A79; background-color:#455A79;  color:#FFFFFF;} /*Color subcells normal mode*/
+.menu ul li:hover ul li a:hover {background-color:#90b7e5; text-decoration:none;color:#F5F5F5;} /*Color subcells hovering mode*/
+.menu ul li a:hover {background-color:#90b7e5; text-decoration:none;color:#F5F5F5;} /*Color main cells hovering mode*/
+.menu ul li a:hover ul {display:block; width:16em; position:absolute; z-index:999; top:29px; left:0; }
+.menu ul li ul li a:visited { background-color:#455A79;  color:#FFFFFF;} /*Color subcells normal mode*/
+.menu ul li a:hover ul li a {display:block; width:16em; height:1px; line-height:1.3em; padding:4px 16px 4px 16px; border-left:solid 1px #455A79; border-bottom: solid 1px #455A79; background-color:#455A79;  color:#FFFFFF;} 
+.menu ul li a:hover ul li a:hover {background-color:#90b7e5; text-decoration:none;color:#F5F5F5;} /*Color subcells hovering mode*/

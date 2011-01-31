@@ -18,49 +18,47 @@
   <% end %>
   <%= stylesheet_link_merged :base %>
 </head>
-<script>
-// $(document).ready(function() {
-//   $("#tabela").tablesorter();
-// });
-</script><% if @administracao %>
+<% if @administracao %>
   <body style='background-color: #F6FDB8;'>
 <% else %>
   <body style='background-color: #E6EDF8;'>
 <% end %>
-    <div id="wrapper">
-      <div id="header">
-        <%= image_tag "logo2.jpg" %>
-        <div id="login">
-          Usuário : <%= current_user.nome %> ( <%= current_user.tipo_usuario.nome %> ) | <span id="nome_da_clinica"><%= @clinica_atual.nome %></span>
-          | <%= link_to "trocar senha", troca_senha_path %>
-          | <%= link_to "logout", logout_path %>
-        </div> <!-- login -->
-        <div id="header-bottomm">
-          <div id="seleciona_clinica">
-            <% current_user.clinicas.each do |cli| %>
-            <%= link_to cli.nome, selecionou_clinica_path(:clinica_id=>cli.id)  %> | 
-<% end %> 
-          </div>
-          <div class="menu">
+<script>
+// $(document).ready(function() {
+//   $("#tabela").tablesorter();
+// });
+</script>
+<div id="container">
+    <div id="cabecalho">
+      <%= render :partial=>'layouts/cabecalho', :locals=>{:clinica_atual => @clinica_atual, :current_user => current_user} %>
+    </div>
+    
+    <div id="principal">
+        <div class="pd_menu_01">
             <% if @administracao %>
               <%= render :partial=>"layouts/menu_adm" %>
             <% else %>
               <%= render :partial=>"layouts/menu_clinica" %>
             <% end %>
         </div>
-        </div> <!-- header-bottom -->
-      </div> <!-- header -->
-    <div id="main">
+      <div id="main">
+          <% if flash[:notice] && !flash[:notice].blank? %>
+            <div class='notification'><%= flash[:notice] %></div>
+          <% end %>
+        <p>  
+        <%= nome_paciente(@paciente) if @paciente && !@paciente.new_record? %>
+        </p>
+        <span id="controller" style='display: none;'><%= params[:controller] %></span> 
+        <span id="action" style='display: none;'><%= params[:action] %></span>
+        <div>
         <%= yield :main %>
-    </div> <!-- main-- >
-
-  </div><!-- wrapper -->
+        </div>
+      </div>
+    </div>
   <div id="rodape">
     © <%= Date.today.year %> - <a href="http://www.anadata.com.br/"><strong>Anadata Sistemas</strong></a>
     - Todos os direitos reservados
   </div>
-
-
 </body>
   <%= javascript_include_merged :base %>
   <%= javascript_include_tag 'protetico.js' %>
