@@ -62,7 +62,7 @@
               = #saldo_cheque.real
           - when "Recebimento" :
             - if lancamento.formas_recebimento.nome.downcase =="dinheiro"
-              %td= lancamento.paciente.nome
+              %td= lancamento.paciente && lancamento.paciente.nome
               %td{ :align => "right" }
                 = lancamento.valor.real
               %td &nbsp;
@@ -74,7 +74,7 @@
               %td{ :align => "right" }
                 = saldo_cheque.real
             - elsif lancamento.formas_recebimento.nome.downcase =="cheque"
-              %td= lancamento.paciente.nome
+              %td= lancamento.paciente && lancamento.paciente.nome
               %td &nbsp;
               %td &nbsp;
               %td{ :align => "right" }
