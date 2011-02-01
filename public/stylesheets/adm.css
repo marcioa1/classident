@@ -3,8 +3,9 @@ body{
   padding: 0; 
   background-color: #050845; 
   color: white; 
-  //background-image: url(img/bg.jpg); background-repeat: repeat-x; 
-  font: small Arial, Helvetica, Verdana, sans-serif;
+/*  //background-image: url(img/bg.jpg); background-repeat: repeat-x; */
+/*  font: small Arial, Helvetica, Verdana, sans-serif;*/
+  font:  Arial, Helvetica, Verdana, sans-serif;
 }
 fieldset{
     width: 30em;
