@@ -52,6 +52,10 @@
         </div> <!-- header-bottom -->
       </div> <!-- header -->
     <div id="main">
+              <p>  
+        <%= nome_paciente(@paciente) if @paciente && !@paciente.new_record? %>
+        </p>
+
         <%= yield :main %>
     </div> <!-- main-- >
 
