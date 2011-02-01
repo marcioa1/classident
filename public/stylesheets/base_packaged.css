@@ -84,7 +84,7 @@ input.btn {color: #00008B; background-color: #ADD8E6; border: 1px outset #00008B
 #wrapper {background-color: white; color: black; margin: 30px 40px 30px 40px}
 #header{ height: 9em; background-color :white}
 #header-bottom {border-top: 1px solid #b9d2e3; border-bottom: 1px solid #b9d2e3}
-#main {margin-top: 10px; margin-left: 20px; padding-bottom: 20px; background-color: white}
+#main {margin-top: 40px; margin-left: 20px; padding-bottom: 20px; background-color: white}
 #content {margin: 30px 240px 0 30px; border: 1px solid #b9d2e3; background-color: white; color: black}
 #rodape{ background: #1C4EA3;  padding-left: 3em; padding-right: 3em; text-align: center; color: white}
 #seleciona_clinica{ float: right; padding-bottom: 1em}
