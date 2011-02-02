@@ -79,10 +79,17 @@
               %td &nbsp;
               %td{ :align => "right" }
                 = saldo_dinheiro.real
-              %td{ :align => "right" }
-                = lancamento.valor.real
-              %td &nbsp;
-              - saldo_cheque += lancamento.valor
+              - if lancamento.cheque.recebido_pela_administracao
+                %td &nbsp;
+                %td{ :align => "right", :style => "color: red;" }
+                  = lancamento.valor.real
+                - saldo_cheque -= lancamento.valor
+                = total_de_debito_em_cheque += lancamento.valor
+              - else
+                %td{ :align => "right" }
+                  = lancamento.valor.real
+                %td &nbsp;
+                - saldo_cheque += lancamento.valor
               %td{ :align => "right" }
                 = saldo_cheque.real
           - when "Pagamento"
@@ -101,7 +108,7 @@
                   = lancamento.valor_pago.real
                 - saldo_dinheiro -= lancamento.valor_pago
                 - total_de_debito_em_dinheiro += lancamento.valor_pago
-                %td &nbsp; 
+                %td{:align => "right"}= saldo_dinheiro 
                 %td &nbsp;
                 %td &nbsp; 
               - else
@@ -123,9 +130,8 @@
                 = lancamento.valor_pago.real
               %td &nbsp;
               %td &nbsp;
-            - saldo_cheque -= lancamento.valor_pago
             %td{ :align => "right" }
-              = #saldo_cheque.real
+              = saldo_cheque.real
         - when "Entrada"
           - saldo_dinheiro += lancamento.valor
           - if lancamento.remessa?
@@ -164,11 +170,11 @@
     %tr
       %td= 'Saldo de fechamento'
       %td &nbsp;
-      %td{ :align=>'right' }= total_de_debito_em_dinheiro.real
+      %td{ :align=>'right', :style => 'color: red;' }= total_de_debito_em_dinheiro.real
       %td{ :align=>'right' }
         %strong= saldo_dinheiro.real
       %td &nbsp;
-      %td{ :align=>'right' }= total_de_debito_em_cheque.real
+      %td{ :align=>'right', :style => 'color: red;' }= total_de_debito_em_cheque.real
       %td{ :align=>'right' }
         %strong= saldo_cheque.real
 

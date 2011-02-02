@@ -19,10 +19,11 @@
     <thead>
     <tr>
       <th>Data</th>
-      <th width="330px">Paciente</th>
+      <th width="230px">Paciente</th>
       <th width="70px">Valor</th>
-      <th width="190px">Observação</th>
+      <th width="170px">Observação</th>
       <th>Tipo</th>
+      <th>Dados do cheque</th>
       <th>&nbsp;</th>
       <th>&nbsp;</th>
     </tr>
@@ -35,10 +36,13 @@
       <td><%=h recebimento.paciente.nome %></td>
       <td align="right"><%=h number_to_currency(recebimento.valor.to_f, :unit=>'') %></td>
       <td><%=h recebimento.observacao %></td>
-      <td><%  if recebimento.em_cheque? %>
-        <%= link_to_function "cheque", "abre_cheque(#{recebimento.cheque.id})" if recebimento.cheque %>
+      <td>
+        <%  if recebimento.em_cheque? %>
+          <%= link_to_function "cheque", "abre_cheque(#{recebimento.cheque.id})" if recebimento.cheque %>
+          <td><%= recebimento.cheque.observacao%></td>
         <% else %> 
-        <%= recebimento.formas_recebimento.nome %>
+          <%= recebimento.formas_recebimento.nome %>
+          <td>&nbsp;</td>
         <% end %></td>
         <td><%= link_to 'editar', edit_recebimento_path(recebimento), :class=>'ui-icon ui-icon-pencil', :title=>'editar' %></td>
         <td><%= link_to 'excluir', exclui_recebimento_path(recebimento), :class=>'ui-icon ui-icon-trash', :title=>'excluir' %></td>
@@ -49,7 +53,7 @@
       <tr>
         <td colspan="2" align="center">Total</td>
         <td align="right"><%= total.real %></td>
-        <td colspan="4">&nbsp;</td>
+        <td colspan="5">&nbsp;</td>
       </tr>
     </table>
 

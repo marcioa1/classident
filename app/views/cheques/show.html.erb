@@ -1,7 +1,7 @@
 
 <fieldset>
 <legend>Detalhe do cheque (<%= @cheque.id %>)</legend>
-<%= render :partial => '_detalhe_cheque' %>
+<%= render :partial => 'detalhe_cheque', :locals => { :cheque => @cheque } %>
 <br/>
 <a href="javascript: self.close();">fechar</a>
 </fieldset>

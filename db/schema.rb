@@ -45,7 +45,6 @@ ActiveRecord::Schema.define(:version => 20110127081903) do
     t.integer  "version",        :default => 0
     t.string   "comment"
     t.datetime "created_at"
-    t.integer  "clinica_id"
   end
 
   add_index "audits", ["auditable_id", "auditable_type"], :name => "auditable_index"
