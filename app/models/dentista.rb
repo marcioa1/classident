@@ -62,7 +62,9 @@ class Dentista < ActiveRecord::Base
   
   def pacientes_de_ortodontia
     # Paciente.all(:select=>"id, nome", :conditions => ["ortodontista_id = ?", self.id]).map(&:id) 
-    Paciente.all(:conditions => ["ortodontista_id = ?", self.id], :select => 'nome, id, mensalidade_de_ortodontia,data_da_suspensao_da_cobranca_de_orto,motivo_suspensao_cobranca_orto')
+    Paciente.all(:conditions => ["ortodontista_id = ?", self.id],
+                 :order => :nome,
+                 :select => 'nome, id, mensalidade_de_ortodontia,data_da_suspensao_da_cobranca_de_orto,motivo_suspensao_cobranca_orto')
   end
 
 end
