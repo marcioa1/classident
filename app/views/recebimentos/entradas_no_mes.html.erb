@@ -23,7 +23,7 @@
       <th width='120px'>Saldo</th>
     </tr>
     <% total = [0,0,0,0]%>
-    <% (1..31).each do  |dia| %>
+    <% (1..@fim.day).each do  |dia| %>
       <tr>
         <td align='right'><%= dia %></td>
         <td align='right'><%= @entradas[dia].real %></td>

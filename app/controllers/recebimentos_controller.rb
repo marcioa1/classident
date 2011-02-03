@@ -252,11 +252,11 @@ class RecebimentosController < ApplicationController
       @inicio = Date.new(params[:date][:year].to_i, params[:date][:month].to_i,1)
       @data = @inicio
       @fim = @inicio + 1.month - 1.day
-      @recebimentos = Recebimento.da_clinica(session[:clinica_id]).entre_datas(@inicio,@fim)
+      @recebimentos = Recebimento.da_clinica(session[:clinica_id]).entre_datas(@inicio,@fim).nao_excluidos
       @recebimentos.each do |rec|
-        if (!rec.em_cheque?) or (rec.em_cheque? && !rec.cheque.nil? ) #&& rec.cheque.limpo?)
+        # if (!rec.em_cheque?) || (rec.em_cheque? && rec.cheque.present? ) #&& rec.cheque.limpo?)
           @entradas[rec.data.day] += rec.valor
-        end
+        # end
       end
       @cheques_devolvidos = Cheque.devolvidos(@inicio,@fim).nao_reapresentados.nao_excluidos
       @cheques_devolvidos.each do |chq|

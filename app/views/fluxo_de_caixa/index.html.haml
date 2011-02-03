@@ -1,6 +1,8 @@
 - content_for :main do
-  - total_de_debito_em_dinheiro = 0.0
-  - total_de_debito_em_cheque   = 0.0
+  - total_de_debito_em_dinheiro  = 0.0
+  - total_de_debito_em_cheque    = 0.0
+  - total_de_credito_em_cheque   = 0.0
+  - total_de_credito_em_dinheiro = 0.0
   = render :partial => '/layouts/include_senha'
   = link_to 'novo pagamento', new_pagamento_path
   %h3{ :style => "padding-left: 10em;" }
@@ -20,7 +22,6 @@
   %table{:class=>'tabela'}
     %tr
       %th{ :width => "350px" }
-        %br
         Observação
       %th{ :width => "90px" } Crédito Dinheiro
       %th{ :width => "90px" } Débito Dinheiro
@@ -73,23 +74,26 @@
               %td &nbsp;
               %td{ :align => "right" }
                 = saldo_cheque.real
+              - total_de_credito_em_dinheiro += lancamento.valor
             - elsif lancamento.formas_recebimento.nome.downcase =="cheque"
               %td= lancamento.paciente && lancamento.paciente.nome
               %td &nbsp;
               %td &nbsp;
               %td{ :align => "right" }
                 = saldo_dinheiro.real
-              - if lancamento.cheque.recebido_pela_administracao
-                %td &nbsp;
+              - if lancamento.cheque && lancamento.cheque.recebido_pela_administracao
+                %td{:align => 'right'}= lancamento.valor.real
                 %td{ :align => "right", :style => "color: red;" }
                   = lancamento.valor.real
                 - saldo_cheque -= lancamento.valor
-                = total_de_debito_em_cheque += lancamento.valor
+                - total_de_debito_em_cheque += lancamento.valor
+                - total_de_credito_em_cheque += lancamento.valor
               - else
                 %td{ :align => "right" }
                   = lancamento.valor.real
                 %td &nbsp;
                 - saldo_cheque += lancamento.valor
+                - total_de_credito_em_cheque += lancamento.valor
               %td{ :align => "right" }
                 = saldo_cheque.real
           - when "Pagamento"
@@ -169,11 +173,11 @@
               =# saldo_cheque.real
     %tr
       %td= 'Saldo de fechamento'
-      %td &nbsp;
+      %td{ :align=>'right' }= total_de_credito_em_dinheiro.real
       %td{ :align=>'right', :style => 'color: red;' }= total_de_debito_em_dinheiro.real
       %td{ :align=>'right' }
         %strong= saldo_dinheiro.real
-      %td &nbsp;
+      %td{ :align=>'right' }= total_de_credito_em_cheque.real
       %td{ :align=>'right', :style => 'color: red;' }= total_de_debito_em_cheque.real
       %td{ :align=>'right' }
         %strong= saldo_cheque.real

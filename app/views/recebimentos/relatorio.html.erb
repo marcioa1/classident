@@ -39,7 +39,7 @@
       <td>
         <%  if recebimento.em_cheque? %>
           <%= link_to_function "cheque", "abre_cheque(#{recebimento.cheque.id})" if recebimento.cheque %>
-          <td><%= recebimento.cheque.observacao%></td>
+          <td><%= recebimento.cheque && recebimento.cheque.observacao%></td>
         <% else %> 
           <%= recebimento.formas_recebimento.nome %>
           <td>&nbsp;</td>
