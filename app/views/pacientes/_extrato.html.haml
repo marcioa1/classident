@@ -46,7 +46,7 @@
             = link_to lancamento.data.to_s_br, edit_recebimento_path(lancamento)
           - else
             = lancamento.data.to_s_br
-          - total_debito += lancamento.valor
+          -# total_debito += lancamento.valor
 
         %td
           = lancamento.observacao_do_recebimento
