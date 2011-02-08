@@ -36,7 +36,7 @@
   </tr>
   <% total = 0 %>
   <% for cheque in @cheques do %>
-    <tr class=<%=cheque.status_class%>>
+    <tr class=<%=cheque.status_class%> id="tr_<%=cheque.id%>">
     <% if @administracao %>
       <% dados += "#{cheque.clinica.nome};#{cheque.bom_para.to_s_br};#{cheque.nome_dos_pacientes}; #{cheque.valor.real};#{cheque.banco.nome};#{cheque.numero};#{cheque.status}>" %>
       <td><%= cheque.clinica.sigla %></td>
@@ -61,7 +61,7 @@
       <td><%= cheque.data_recebimento_na_administracao.to_s_br %></td>
     <% else %>
       <td>
-        <% if cheque.entregue_a_administracao  %>
+        <% if cheque.entregue_a_administracao?  %>
           <%= image_tag "ok.png" %>
           <%= cheque.data_entrega_administracao.to_s_br %>
         <% elsif cheque.disponivel? %>
@@ -71,6 +71,8 @@
     <% end %>
     <td><%= status = case 
         when cheque.status == "usado pgto" then link_to cheque.status, '#', :onclick=>'javascript:abre_pagamento('+ cheque.pagamento_id.to_s + ')'
+        when cheque.entregue_a_administracao? then 
+           link_to 'reverter', '#', :onclick=>"javascript:reverte_cheque(#{cheque.id})"
        else cheque.status_resumido
     end %>
   
@@ -94,4 +96,16 @@
 </table>
 <%= link_to "imprime", "#", :onclick=>"gera_pdf('#{dados}')"%>
 </div>
+<script type="text/javascript">
+  function reverte_cheque(id){
+     jQuery.ajax({
+     url : "/cheques/"+ id + "/reverte_cheque",
+     type: 'POST',
+     success: function(){
+       $("#tr_" + id).remove();
+       }
+    });
+  }
+</script>
+
 <% end %>

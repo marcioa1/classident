@@ -70,11 +70,11 @@ class Cheque < ActiveRecord::Base
     return "devolvido duas vezes em " + data_segunda_devolucao.to_s_br unless !devolvido_duas_vezes? 
     return "reapresentado em " + data_reapresentacao.to_s_br unless !reapresentado?
     return "devolvido uma vez em " + data_primeira_devolucao.to_s_br unless !devolvido_uma_vez?
-    return "usado pgto na adm" if usado_para_pagamento? and recebido_pela_administracao
-    return "usado pgto na clínica" if usado_para_pagamento? and !recebido_pela_administracao
+    return "usado pgto na adm" if usado_para_pagamento? and recebido_pela_administracao?
+    return "usado pgto na clínica" if usado_para_pagamento? and !recebido_pela_administracao?
     return "com destinação" if com_destinacao?
-    return "recebido pela adm" if recebido_pela_administracao
-    return "entregue à adm" if entregue_a_administracao
+    return "recebido pela adm" if recebido_pela_administracao?
+    return "entregue à adm" if entregue_a_administracao?
     return "disponível" unless !sem_devolucao? 
     return "solucionado" unless !solucionado?
   end
@@ -85,11 +85,11 @@ class Cheque < ActiveRecord::Base
     return "devol 2X:" + data_segunda_devolucao.to_s_br unless !devolvido_duas_vezes? 
     return "reapr. :" + data_reapresentacao.to_s_br unless !reapresentado?
     return "devolv.: " + data_primeira_devolucao.to_s_br unless !devolvido_uma_vez?
-    return "pgto adm" if usado_para_pagamento? and recebido_pela_administracao
-    return "pgto clí" if usado_para_pagamento? and !recebido_pela_administracao
+    return "pgto adm" if usado_para_pagamento? and recebido_pela_administracao?
+    return "pgto clí" if usado_para_pagamento? and !recebido_pela_administracao?
     return "destinação" if com_destinacao?
-    return "receb. adm" if recebido_pela_administracao
-    return "enviado adm" if entregue_a_administracao
+    return "receb. adm" if recebido_pela_administracao?
+    return "enviado adm" if entregue_a_administracao?
     return "disponível" unless !sem_devolucao? 
     return "solucionado" unless !solucionado?
   end
@@ -100,11 +100,11 @@ class Cheque < ActiveRecord::Base
     return "devol_2X" unless !devolvido_duas_vezes? 
     return "reapresentado" unless !reapresentado?
     return "devolvido"  unless !devolvido_uma_vez?
-    return "pgto_adm" if usado_para_pagamento? and recebido_pela_administracao
-    return "pgto_cli" if usado_para_pagamento? and !recebido_pela_administracao
+    return "pgto_adm" if usado_para_pagamento? and recebido_pela_administracao?
+    return "pgto_cli" if usado_para_pagamento? and !recebido_pela_administracao?
     return "destinação" if com_destinacao?
-    return "receb_adm" if recebido_pela_administracao
-    return "enviado_adm" if entregue_a_administracao
+    return "receb_adm" if recebido_pela_administracao?
+    return "enviado_adm" if entregue_a_administracao?
     return "disponível" unless !sem_devolucao? 
     return "solucionado" unless !solucionado?
  end
@@ -145,11 +145,11 @@ class Cheque < ActiveRecord::Base
     data_arquivo_morto.present?
   end
   
-  def entregue_a_administracao
-    data_entrega_administracao.present?
+  def entregue_a_administracao?
+    data_entrega_administracao.present? and !recebido_pela_administracao?
   end
   
-  def recebido_pela_administracao
+  def recebido_pela_administracao?
     data_recebimento_na_administracao.present?
   end
   

@@ -221,4 +221,10 @@ class ChequesController < ApplicationController
     @cheques = @cheques.do_valor(params[:valor].gsub(",",".")) if !params[:valor].blank?
     
   end
+  
+  def reverte_cheque
+    cheque = Cheque.find(params[:id])
+    cheque.update_attribute(:data_entrega_administracao, nil)
+    head :ok
+  end
 end

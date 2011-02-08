@@ -81,7 +81,7 @@
               %td &nbsp;
               %td{ :align => "right" }
                 = saldo_dinheiro.real
-              - if lancamento.cheque && lancamento.cheque.recebido_pela_administracao
+              - if lancamento.cheque && lancamento.cheque.recebido_pela_administracao?
                 %td{:align => 'right'}= lancamento.valor.real
                 %td{ :align => "right", :style => "color: red;" }
                   = lancamento.valor.real
