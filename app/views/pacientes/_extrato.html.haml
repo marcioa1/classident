@@ -64,13 +64,13 @@
             &nbsp;
         - else
           %td
-            = link_to lancamento.cheque.bom_para.to_s_br, lancamento.cheque  if lancamento.cheque.present? && lancamento.cheque.bom_para.present?
+            = link_to lancamento.cheque.bom_para.to_s_br, lancamento.cheque, :target => :blank  if lancamento.cheque.present? && lancamento.cheque.bom_para.present?
         %td
           = lancamento.formas_recebimento.nome if lancamento.formas_recebimento
       - else
       
-        %td
-          &nbsp;
+        %td&nbsp;
+        %td&nbsp;
 
       %td
         - if lancamento.pode_excluir?
