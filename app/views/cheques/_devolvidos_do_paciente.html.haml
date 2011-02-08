@@ -10,6 +10,6 @@
       Data 2 devolução
   - @paciente.cheques_devolvidos.each do |cheque|
     %tr
-      %td= cheque.data_primeira_devolucao
+      %td= link_to cheque.data_primeira_devolucao, cheque, :target=>:blank
       %td= cheque.motivo_primeira_devolucao
       %td= cheque.data_segunda_devolucao

@@ -10,7 +10,7 @@
   - @paciente.cheques.each do |cheque|
     - if !cheque.excluido?
       %tr
-        %td= cheque.bom_para.to_s_br
+        %td= link_to cheque.bom_para.to_s_br, cheque, :target => :blank
         %td= cheque.valor.real
         %td= cheque.banco.nome
         %td= cheque.agencia
