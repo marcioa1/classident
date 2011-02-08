@@ -1,8 +1,9 @@
 class ProteticosController < ApplicationController
   layout "adm"
   before_filter :require_user
-  before_filter :busca_protetico, :only => [:edit, :abre, :show, :update, :destroy, 
-                  :busca_trabalhos_devolvidos, :busca_trabalhos_liberados]
+  before_filter :busca_protetico, :only => [:edit, :abre, :show, :update, 
+                  :destroy, :busca_trabalhos_devolvidos, 
+                  :busca_trabalhos_liberados, :pagamentos]
   before_filter :quinzena, :only => [:pagamentos_feitos]
   
   def index
@@ -74,7 +75,16 @@ class ProteticosController < ApplicationController
       @trabalhos_devolvidos = TrabalhoProtetico.do_protetico(@protetico.id).devolvidos.
              da_clinica(session[:clinica_id]).nao_pagos
     end
-    @pagamentos = Pagamento.ao_protetico(@protetico.id)
+    if !params[:data_inicial]
+      params[:data_inicial] = (Date.today - 15.days).to_s_br
+      params[:data_final] = Date.today.to_s_br
+    end
+    @pagamentos = Pagamento.ao_protetico(@protetico.id).entre_datas(params[:data_inicial], params[:data_final])
+  end
+  
+  def pagamentos
+    @pagamentos = Pagamento.ao_protetico(@protetico.id).entre_datas(params[:data_inicial], params[:data_final])
+    render :partial => 'pagamentos', :locals=>{:pagamentos => @pagamentos}
   end
   
   def busca_tabela

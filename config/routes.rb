@@ -43,7 +43,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :pagamentos, :collection=>{:pagamentos_de_hoje=>:get, :relatorio=>:get, :registra_pagamento_a_protetico=>:get},
                     :member => {:exclusao=>:get, :exclui=>:post}
   map.resources :precos
-  map.resources :proteticos, :member=>{:abre=>:get}, 
+  map.resources :proteticos, :member=>{:abre=>:get, :pagamentos=>:get}, 
         :collection=>{:busca_tabela=>:get, :relatorio=>:get, :trabalhos_por_clinica => :get, 
                       :busca_proteticos_da_clinica => :get, :pagamentos_feitos => :get,
                       :busca_trabalhos_devolvidos => :get, :busca_trabalhos_liberados => :get}

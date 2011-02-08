@@ -1,10 +1,17 @@
+<% form_tag pagamentos_protetico_path(@protetico), :method=>:get do %>
+  <%= label_tag :data_inicial %>
+  <%= text_field_tag :data_inicial, params[:data_inicial], :size=>10, :class=>'datepicker' %>
+  <%= label_tag :data_inicial %>
+  <%= text_field_tag :data_final, params[:data_final], :size=>10, :class=>'datepicker' %>
+  <%= submit_tag 'pesquisar'%>
+<% end %>
 <table class='tabela'>
   <tr>
     <th>Data</th>
     <th>Valor</th>
     <th>Cheques</th>
   </tr>
-  <% @protetico.pagamentos.each do |pg| %>
+  <% pagamentos.each do |pg| %>
     <tr>
       <td><%= pg.data_de_pagamento.to_s_br %></td>
       <td><%= pg.valor_pago.real %></td>
