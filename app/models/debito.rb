@@ -63,7 +63,7 @@ class Debito < ActiveRecord::Base
       pacientes.each do |paciente|
         Debito.create (:paciente_id => paciente.id, 
                        :valor       => paciente.mensalidade_de_ortodontia,
-                       :descricao   => "mensalidade orto #{Date.today.month} / #{Date.today.year}",
+                       :descricao   => "Ortodontia ref #{Date.today.month} / #{Date.today.year}",
                        :clinica_id  => clinica_id,
                        :data        => Date.today)
       end
