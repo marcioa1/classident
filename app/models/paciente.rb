@@ -18,6 +18,9 @@ class Paciente < ActiveRecord::Base
   #                        :message => 'Formato de email inválido.'
   validates_presence_of :inicio_tratamento, :only => [:create, :update], :message => "A data de início do tratamento é obrigatória."
   #validates_format_of :inicio_tratamento, :with => /^[\w\d]+$/, :on => :create, :message => "is invalid"
+ 
+ 
+  named_scope :cobranca_de_ortodontia_ativa, :conditions =>["data_da_suspensao_da_cobranca_de_orto IS NULL and ortodontia = TRUE"]
   named_scope :da_clinica, lambda{|clinica_id| {:conditions=>["clinica_id=?", clinica_id]}}
   named_scope :de_clinica, :conditions=>["ortodontia = ?", false]
   named_scope :de_ortodontia, :conditions=>["ortodontia = ?", true]
@@ -194,5 +197,6 @@ class Paciente < ActiveRecord::Base
     end
     result
   end
+  
   
 end

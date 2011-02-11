@@ -57,4 +57,18 @@ class Debito < ActiveRecord::Base
     errors.add(:data, 'Fora da quinzena') if !na_quinzena?
   end
   
+  def self.verifica_debitos_de_ortodontia(clinica_id)
+    if MensalidadeOrtodontia.mudou_de_mes(clinica_id)
+      pacientes = Paciente.da_clinica(clinica_id).cobranca_de_ortodontia_ativa
+      pacientes.each do |paciente|
+        Debito.create (:paciente_id => paciente.id, 
+                       :valor       => paciente.mensalidade_de_ortodontia,
+                       :descricao   => "mensalidade orto #{Date.today.month} / #{Date.today.year}",
+                       :clinica_id  => clinica_id,
+                       :data        => Date.today)
+      end
+      MensalidadeOrtodontia.registra_novo_mes(clinica_id)
+    end
+  end
+  
 end
