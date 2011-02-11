@@ -51,8 +51,8 @@
       <%= render :partial=>"tabela" %>
     </div>
     <div id='pagamentos'>
-      <%= render :partial=>'pagamentos' %>
-    </div
+      <%= render :partial=>'pagamentos', :locals=>{:pagamentos => @pagamentos}  %>
+    </div>
 </div>
 <% end %>
 <% if !@administracao %>

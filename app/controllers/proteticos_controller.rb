@@ -2,7 +2,7 @@ class ProteticosController < ApplicationController
   layout "adm"
   before_filter :require_user
   before_filter :busca_protetico, :only => [:edit, :abre, :show, :update, 
-                  :destroy, :busca_trabalhos_devolvidos, 
+                  :destroy, :busca_trabalhos_devolvidos,\
                   :busca_trabalhos_liberados, :pagamentos]
   before_filter :quinzena, :only => [:pagamentos_feitos]
   

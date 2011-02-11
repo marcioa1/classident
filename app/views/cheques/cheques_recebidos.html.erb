@@ -98,7 +98,7 @@
 </div>
 <script type="text/javascript">
   function reverte_cheque(id){
-     jQuery.ajax({
+     $.ajax({
      url : "/cheques/"+ id + "/reverte_cheque",
      type: 'POST',
      success: function(){
