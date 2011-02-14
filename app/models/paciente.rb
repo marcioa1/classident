@@ -19,6 +19,7 @@ class Paciente < ActiveRecord::Base
   validates_presence_of :inicio_tratamento, :only => [:create, :update], :message => "A data de início do tratamento é obrigatória."
   #validates_format_of :inicio_tratamento, :with => /^[\w\d]+$/, :on => :create, :message => "is invalid"
  
+  after_create :verifica_debito_de_ortodontia
  
   named_scope :cobranca_de_ortodontia_ativa, :conditions =>["data_da_suspensao_da_cobranca_de_orto IS NULL and ortodontia = TRUE"]
   named_scope :da_clinica, lambda{|clinica_id| {:conditions=>["clinica_id=?", clinica_id]}}
@@ -188,6 +189,16 @@ class Paciente < ActiveRecord::Base
 
   def de_ortodontia?
     self.ortodontia
+  end
+
+  def verifica_debito_de_ortodontia
+    if self.ortodontia?
+      Debito.create(:paciente_id => self.id, 
+                    :data        => Date.today, 
+                    :valor       => self.mensalidade_de_ortodontia,
+                    :descricao   => 'Primeira mensalidade de ortodontia',
+                    :clinica_id  => self.clinica_id)
+    end
   end
   
   def cheques
