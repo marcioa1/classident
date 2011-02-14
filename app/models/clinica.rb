@@ -13,8 +13,8 @@ class Clinica < ActiveRecord::Base
   has_many :pacientes
   has_many :tabelas
   
-  named_scope :por_nome, :order=>:nome
   named_scope :administracao, :conditions=>["sigla = 'ad'"]
+  named_scope :por_nome, :order=>:nome
   named_scope :todas, :conditions=>["sigla <> 'ad'"]
 
  ADMINISTRACAO_ID   = Clinica.administracao.first.id 

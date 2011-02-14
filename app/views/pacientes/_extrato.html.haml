@@ -14,6 +14,8 @@
     %th{ :width => "70px" } Saldo
     %th Bom para
     %th Detalhes
+    - if @paciente.ortodontia?
+      %th Percentual
     %th &nbsp;
   
   - saldo         = 0.0
@@ -29,16 +31,23 @@
             = lancamento.data.to_s_br
           - total_debito += lancamento.valor
         %td
-          - if lancamento.pode_alterar?
-            = link_to lancamento.descricao, edit_debito_path(lancamento)
-          - else
-            = lancamento.descricao
+          = lancamento.descricao
         %td{ :align => "right" }
           = lancamento.valor.real
-      
         %td
           &nbsp;
         - saldo -= lancamento.valor
+        %td{ :align => "right" }
+          = saldo.real
+        %td &nbsp;
+        %td &nbsp;
+        %td &nbsp;
+        - if lancamento.pode_excluir?
+          %td
+            = link_to 'Excluir', lancamento, :confirm => 'Tem certeza da exclusão deste débito ?', :method => :delete , :class=>'ui-icon ui-icon-trash', :title=>'excluir'
+        - else
+          %td &nbsp;
+     
       - else
         - total_credito += lancamento.valor
         %td{ :align => "center" }
@@ -46,8 +55,6 @@
             = link_to lancamento.data.to_s_br, edit_recebimento_path(lancamento)
           - else
             = lancamento.data.to_s_br
-          -# total_debito += lancamento.valor
-
         %td
           = lancamento.observacao_do_recebimento
         %td
@@ -55,10 +62,9 @@
         %td{ :align => "right" }
           = lancamento.valor.real
         - saldo += lancamento.valor
-      - cor =  saldo >= 0 ? "black" : "red"
-      %td{ :align => "right", :style => "color: #{cor}" }
-        = saldo.real
-      - if lancamento.class == Recebimento
+        - cor =  saldo >= 0 ? "black" : "red"
+        %td{ :align => "right", :style => "color: #{cor}" }
+          = saldo.real
         - if lancamento.formas_recebimento && lancamento.formas_recebimento.nome.downcase == 'dinheiro'
           %td
             &nbsp;
@@ -67,19 +73,14 @@
             = link_to lancamento.cheque.bom_para.to_s_br, lancamento.cheque, :target => :blank  if lancamento.cheque.present? && lancamento.cheque.bom_para.present?
         %td
           = lancamento.formas_recebimento.nome if lancamento.formas_recebimento
-      - else
-      
-        %td&nbsp;
-        %td&nbsp;
-
-      %td
+        - if @paciente.ortodontia?
+          %td{:align => "center"}= lancamento.percentual_dentista
+        
         - if lancamento.pode_excluir?
-          - if lancamento.class == Recebimento
+          %td
             = link_to 'Excluir', exclusao_recebimento_path(lancamento.id) , :class=> 'ui-icon ui-icon-trash', :title=>'excluir'
-          - else
-            %td
-              = link_to 'Excluir', lancamento, :confirm => 'Tem certeza da exclusão deste débito ?', :method => :delete , :class=>'ui-icon ui-icon-trash', :title=>'excluir'
         - else
+          %td &nbsp;
   %tr
     %td{ :align => "center", :colspan => "2" }
       Total
