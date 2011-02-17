@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110127081903) do
+ActiveRecord::Schema.define(:version => 20110215233132) do
 
   create_table "acompanhamento_cheques", :force => true do |t|
     t.integer  "cheque_id"
@@ -45,6 +45,7 @@ ActiveRecord::Schema.define(:version => 20110127081903) do
     t.integer  "version",        :default => 0
     t.string   "comment"
     t.datetime "created_at"
+    t.integer  "clinica_id"
   end
 
   add_index "audits", ["auditable_id", "auditable_type"], :name => "auditable_index"
@@ -101,9 +102,9 @@ ActiveRecord::Schema.define(:version => 20110127081903) do
   add_index "cheques", ["sequencial"], :name => "index_cheques_on_sequencial"
 
   create_table "clinicas", :force => true do |t|
-    t.string   "nome",            :limit => 20
-    t.string   "sigla",           :limit => 8
-    t.boolean  "e_administracao",               :default => false
+    t.string   "nome",          :limit => 20
+    t.string   "sigla",         :limit => 8
+    t.boolean  "administracao",               :default => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -254,6 +255,13 @@ ActiveRecord::Schema.define(:version => 20110127081903) do
   add_index "item_tabelas", ["id"], :name => "index_item_tabelas_on_id"
   add_index "item_tabelas", ["tabela_id"], :name => "index_item_tabelas_on_tabela_id"
 
+  create_table "mensalidade_ortodontias", :id => false, :force => true do |t|
+    t.date     "data"
+    t.integer  "clinica_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "orcamentos", :force => true do |t|
     t.integer  "paciente_id"
     t.integer  "numero"
@@ -403,6 +411,7 @@ ActiveRecord::Schema.define(:version => 20110127081903) do
     t.integer  "cheque_id"
     t.integer  "usuario_exclusao"
     t.integer  "percentual_dentista"
+    t.integer  "sequencial_cheque"
   end
 
   add_index "recebimentos", ["cheque_id"], :name => "index_recebimentos_on_cheque_id"
@@ -542,22 +551,22 @@ ActiveRecord::Schema.define(:version => 20110127081903) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean  "ativo",                            :default => true
-    t.datetime "hora_de_inicio_0",                 :default => '2011-01-05 10:00:00'
-    t.datetime "hora_de_termino_0",                :default => '2011-01-05 20:00:00'
-    t.datetime "hora_de_inicio_1",                 :default => '2011-01-05 10:00:00'
-    t.datetime "hora_de_termino_1",                :default => '2011-01-05 20:00:00'
-    t.datetime "hora_de_inicio_2",                 :default => '2011-01-05 10:00:00'
-    t.datetime "hora_de_termino_2",                :default => '2011-01-05 20:00:00'
-    t.datetime "hora_de_inicio_3",                 :default => '2011-01-05 10:00:00'
-    t.datetime "hora_de_termino_3",                :default => '2011-01-05 20:00:00'
-    t.datetime "hora_de_inicio_4",                 :default => '2011-01-05 10:00:00'
-    t.datetime "hora_de_termino_4",                :default => '2011-01-05 20:00:00'
-    t.datetime "hora_de_inicio_5",                 :default => '2011-01-05 10:00:00'
-    t.datetime "hora_de_termino_5",                :default => '2011-01-05 20:00:00'
-    t.datetime "hora_de_inicio_6",                 :default => '2011-01-05 10:00:00'
-    t.datetime "hora_de_termino_6",                :default => '2011-01-05 20:00:00'
-    t.datetime "hora_de_inicio_7",                 :default => '2011-01-05 10:00:00'
-    t.datetime "hora_de_termino_7",                :default => '2011-01-05 20:00:00'
+    t.datetime "hora_de_inicio_0",                 :default => '2011-02-16 10:00:00'
+    t.datetime "hora_de_termino_0",                :default => '2011-02-16 20:00:00'
+    t.datetime "hora_de_inicio_1",                 :default => '2011-02-16 10:00:00'
+    t.datetime "hora_de_termino_1",                :default => '2011-02-16 20:00:00'
+    t.datetime "hora_de_inicio_2",                 :default => '2011-02-16 10:00:00'
+    t.datetime "hora_de_termino_2",                :default => '2011-02-16 20:00:00'
+    t.datetime "hora_de_inicio_3",                 :default => '2011-02-16 10:00:00'
+    t.datetime "hora_de_termino_3",                :default => '2011-02-16 20:00:00'
+    t.datetime "hora_de_inicio_4",                 :default => '2011-02-16 10:00:00'
+    t.datetime "hora_de_termino_4",                :default => '2011-02-16 20:00:00'
+    t.datetime "hora_de_inicio_5",                 :default => '2011-02-16 10:00:00'
+    t.datetime "hora_de_termino_5",                :default => '2011-02-16 20:00:00'
+    t.datetime "hora_de_inicio_6",                 :default => '2011-02-16 10:00:00'
+    t.datetime "hora_de_termino_6",                :default => '2011-02-16 20:00:00'
+    t.datetime "hora_de_inicio_7",                 :default => '2011-02-16 10:00:00'
+    t.datetime "hora_de_termino_7",                :default => '2011-02-16 20:00:00'
     t.boolean  "dia_da_semana_0",                  :default => false
     t.boolean  "dia_da_semana_1",                  :default => true
     t.boolean  "dia_da_semana_2",                  :default => true
