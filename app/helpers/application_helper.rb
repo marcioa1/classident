@@ -42,6 +42,10 @@ module ApplicationHelper
     end
   end
   
+  def sim_nao(value)
+    value ? 'Sim' : 'Não'
+  end
+  
    # def alternate_row_class(cycle_name = :outer)
    #    { :class => cycle(:odd, :even, :name => cycle_name) }
    #  end

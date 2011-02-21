@@ -8,8 +8,9 @@
     %tr
       %th Data
       %th Clínica
-      %th Observação
-      %th Valor
+      %th{:width=>210} Observação
+      %th{:width=>80} Valor
+      %th Resolução<br/> de cheque
       %th Confirmação
     - total = 0
     - @entradas.each do |entrada|
@@ -22,6 +23,8 @@
           =entrada.observacao
         %td{:align=>'right'}
           =entrada.valor.abs.real
+        %td{:align=>'center'}
+          =sim_nao(entrada.resolucao_de_cheque)
         %td{:align=>'center'}
           - if entrada.confirmada?
             = entrada.data_confirmacao_da_entrada.to_s_br

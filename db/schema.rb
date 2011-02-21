@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110215233132) do
+ActiveRecord::Schema.define(:version => 20110221095358) do
 
   create_table "acompanhamento_cheques", :force => true do |t|
     t.integer  "cheque_id"
@@ -192,6 +192,7 @@ ActiveRecord::Schema.define(:version => 20110215233132) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.datetime "data_confirmacao_da_entrada"
+    t.boolean  "resolucao_de_cheque",                                                     :default => false
   end
 
   add_index "entradas", ["data"], :name => "index_entradas_on_data"

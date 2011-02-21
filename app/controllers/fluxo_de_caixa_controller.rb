@@ -35,7 +35,7 @@ class FluxoDeCaixaController < ApplicationController
     @lancamentos  = @recebimentos + @pagamentos + @entradas + @remessas + @cheques
     @entradas_adm = []
     if @administracao
-      @entradas_adm = Entrada.confirmado.do_dia(@fluxo.data)
+      @entradas_adm = Entrada.confirmado.do_dia(@fluxo.data).nao_e_resolucao_de_cheque
       @entradas_adm.each do |entrada| 
         entrada.valor *= -1
       end

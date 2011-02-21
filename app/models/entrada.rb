@@ -5,6 +5,7 @@ class Entrada < ActiveRecord::Base
   validates_numericality_of :valor, :message => "is not a number"
   validates_presence_of :observacao, :message => "não pode ser vazio"
   
+  named_scope :confirmado, :conditions=>['data_confirmacao_da_entrada IS NOT NULL']
   named_scope :da_clinica, lambda{|clinica_id| {:conditions=>["clinica_id = ?", clinica_id]}}
   named_scope :do_mes, lambda{|data| {:conditions=>["data between ? and ? ", 
     data.strftime("%Y-%m-01"),data.strftime("%Y-%m-31")], :order=>:data}}
@@ -12,8 +13,8 @@ class Entrada < ActiveRecord::Base
   named_scope :entre_datas, lambda{|data_inicial, data_final| {:conditions=>["data between ? and ? ", 
       data_inicial, data_final]}}
   named_scope :entrada, :conditions=>["valor > 0"]
+  named_scope :nao_e_resolucao_de_cheque, :conditions=>['resolucao_de_cheque IS FALSE']
   named_scope :remessa, :conditions=>["valor < 0"]
-  named_scope :confirmado, :conditions=>['data_confirmacao_da_entrada IS NOT NULL']
   
   attr_accessor :valor_br
   
