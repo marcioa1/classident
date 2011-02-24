@@ -15,5 +15,5 @@
       %td= item.tabela_protetico.descricao
       %td= l(item.data_de_devolucao)
       %td= l(item.data_liberacao_para_pagamento)
-      %td= item.dentista.nome
+      %td= item.dentista && item.dentista.nome
       %td= link_to_function 'cancelar liberação' ,"cancelar_liberacao(#{item.id})"
