@@ -33,6 +33,7 @@
       Selecionar
       %br
       p/ pagto
+  - total = 0.0
   - @trabalhos_devolvidos.each do |trab|
     %tr{:id=>"tr#{trab.id}"}
       %td= trab.paciente.nome
@@ -45,3 +46,8 @@
       %td{:align => "center"}= trab.data_de_devolucao.to_s_br
       %td= trab.dentista && trab.dentista.nome
       %td{:align => "center", :class => 'libera_pagamento'}= check_box_tag :pagar, trab.id, false 
+      - total += trab.valor
+  %tr
+    %td{:colspan=>5, :align=> 'center'} Total
+    %td{:align=>'right'}= total.real
+    %td{:colspan=>3} &nbsp;
