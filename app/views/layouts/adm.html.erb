@@ -21,6 +21,15 @@
 
   <%= stylesheet_link_tag 'adm', 'jquery.loading.1.6', 'jquery', 'jquery.ui.core' %>
   <%= stylesheet_link_tag 'jquery.ui.autocomplete', 'jquery.ui.tabs', 'jquery.ui.datepicker'%>
+
+  <script type='text/javascript'>
+  function selecionou_clinica(){
+    var url = "http://"+ window.location.host + "/clinicas/selecionou_clinica" +
+     "?clinica_id=" + $("#clinicas").val()
+    window.location = url;
+  }
+</script>
+  
 </head>
 <script>
 // $(document).ready(function() {
@@ -35,15 +44,14 @@
       <div id="header">
         <%= image_tag "logo2.jpg" %>
         <div id="login">
-          Usuário : <%= current_user.nome %> ( <%= current_user.tipo_usuario.nome %> ) | <span id="nome_da_clinica"><%= @clinica_atual.nome %></span>
+          Usuário : <%= current_user.nome %> ( <%= current_user.tipo_usuario.nome %> ) | <span id="nome_da_clinica"><%= select_tag :clinicas , options_for_select(Clinica.all.collect{|cl| [cl.nome, cl.id]}, session[:clinica_id]), :onChange=>'selecionou_clinica()' %></span>
           | <%= link_to "trocar senha", troca_senha_path %>
           | <%= link_to "logout", logout_path %>
         </div> <!-- login -->
         <div id="header-bottomm">
           <div id="seleciona_clinica">
-            <% current_user.clinicas.each do |cli| %>
-            <%= link_to cli.nome, selecionou_clinica_path(:clinica_id=>cli.id)  %> | 
-<% end %> 
+            
+           
           </div>
           <div class="menu">
             <% if @administracao %>
@@ -78,5 +86,7 @@
 
   <%= javascript_include_tag 'protetico.js' %>
   <%= javascript_include_tag 'jquery.cookies.2.2.0'%>
+
+
 
 </html>

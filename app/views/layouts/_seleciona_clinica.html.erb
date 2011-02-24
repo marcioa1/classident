@@ -1,5 +1,5 @@
 <% current_user.clinicas.each do |cli| %>
-  <%= link_to cli.nome, selecionou_clinica_path(:clinica_id=>cli.id)  %>
+  <%= link_to cli.sigla, selecionou_clinica_path(:clinica_id=>cli.id)  %>
   <br/>
 <% end %> 
   

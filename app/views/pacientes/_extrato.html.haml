@@ -51,6 +51,7 @@
       - else
         - total_credito += lancamento.valor
         %td{ :align => "center" }
+          = lancamento.id
           - if lancamento.pode_alterar?
             = link_to lancamento.data.to_s_br, edit_recebimento_path(lancamento)
           - else
