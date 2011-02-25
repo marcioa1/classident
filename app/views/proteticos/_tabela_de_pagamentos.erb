@@ -1,0 +1,20 @@
+  <table class='tabela'>
+    <tr>
+      <th width="120px">Data</th>
+      <th width="120px">Valor</th>
+      <th width="250px">Cheques</th>
+    </tr>
+    <% pagamentos.each do |pg| %>
+      <tr>
+        <td align='center'><%= pg.data_de_pagamento.to_s_br %></td>
+        <td align='right'><%= pg.valor_pago.real %></td>
+        <td>
+          <% cheques = "" %>
+          <% pg.cheques.each do |cq| %>
+            <% cheques = cheques + cq.banco.nome +  " | " + cq.numero + " | " + cq.recebimento.paciente.nome + " | " + cq.valor.real.to_s + "<br/>" %>
+          <% end %>
+          <%= cheques %>
+        </td>
+      </tr>
+    <% end %>
+  </table>
