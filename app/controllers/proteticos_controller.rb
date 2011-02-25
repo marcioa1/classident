@@ -2,7 +2,7 @@ class ProteticosController < ApplicationController
   layout "adm"
   before_filter :require_user
   before_filter :busca_protetico, :only => [:edit, :abre, :show, :update, 
-                  :destroy, :busca_trabalhos_devolvidos,\
+                  :destroy, :busca_trabalhos_devolvidos,
                   :busca_trabalhos_liberados, :pagamentos]
   before_filter :quinzena, :only => [:pagamentos_feitos]
   
@@ -83,8 +83,8 @@ class ProteticosController < ApplicationController
   end
   
   def pagamentos
-    @pagamentos = Pagamento.ao_protetico(@protetico.id).entre_datas(params[:data_inicial], params[:data_final])
-    render :partial => 'pagamentos', :locals=>{:pagamentos => @pagamentos}
+    @pagamentos = Pagamento.ao_protetico(@protetico.id).entre_datas(params[:data_inicial].to_date, params[:data_final].to_date)
+    render :partial => 'tabela_de_pagamentos', :locals=>{:pagamentos => @pagamentos}
   end
   
   def busca_tabela

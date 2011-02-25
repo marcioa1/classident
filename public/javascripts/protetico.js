@@ -37,7 +37,6 @@ function escolheu_item_da_tabela(){
 }
 
 
-
 function pagar(valor,id, id_protetico){
     anterior = $('#valor').text();
     valor_total = parseFloat(anterior);
@@ -46,6 +45,7 @@ function pagar(valor,id, id_protetico){
     else
       valor_total = valor_total - valor;
     $('#valor').text(valor_total);
+    formata_valor($('#valor'));
     var checkeds = $(":checkbox[name|='pagar']:checked");
     var ids = ''   ;
     for (id = 0; id<checkeds.size(); id++){

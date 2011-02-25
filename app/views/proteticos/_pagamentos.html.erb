@@ -4,34 +4,17 @@
   <%= text_field_tag :data_final, params[:data_final], :size=>10, :class=>'datepicker' %>
   <%= button_to_function 'pesquisar', "pagamento_do_protetico(#{@protetico.id})"%>
 <br/><br/>
-<table class='tabela'>
-  <tr>
-    <th width="120px">Data</th>
-    <th width="120px">Valor</th>
-    <th width="250px">Cheques</th>
-  </tr>
-  <% pagamentos.each do |pg| %>
-    <tr>
-      <td align='center'><%= pg.data_de_pagamento.to_s_br %></td>
-      <td align='right'><%= pg.valor_pago.real %></td>
-      <td>
-	      <% cheques = "" %>
-        <% pg.cheques.each do |cq| %>
-          <% cheques = cheques + cq.banco.nome +  " | " + cq.numero + " | " + cq.recebimento.paciente.nome + " | " + cq.valor.real.to_s + "<br/>" %>
-	      <% end %>
-	      <%= cheques %>
-	    </td>
-    </tr>
-  <% end %>
-</table>
+<div id='tabela_de_pagamentos'>
+</div>
 <script type="text/javascript">
   function pagamento_do_protetico(id){
     $.ajax({
       url: "pagamentos",
-      data:  {data_inicial: $("#data_inicial").val(), data_final: $("#data_final").val()},
+      data:  {id:809, 
+              data_inicial: $("#data_inicial").val(), 
+              data_final: $("#data_final").val()},
       success: function(data){
-        $("#pagamentos").empty();
-        $("#pagamentos").prepend(data);
+        $("#tabela_de_pagamentos").html(data);
       }
     });
   }
