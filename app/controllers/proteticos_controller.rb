@@ -68,7 +68,7 @@ class ProteticosController < ApplicationController
     if @administracao
       @trabalhos_pendentes  = TrabalhoProtetico.do_protetico(@protetico.id).pendentes
       @trabalhos_devolvidos = TrabalhoProtetico.do_protetico(@protetico.id).devolvidos.
-             nao_pagos.por_data_de_devolucao
+             nao_pagos.por_data_de_devolucao.a_partir_de('2011-02-01')
     else
       @trabalhos_pendentes  = TrabalhoProtetico.do_protetico(@protetico.id).pendentes.
              da_clinica(session[:clinica_id]).a_partir_de('2011-02-01')
