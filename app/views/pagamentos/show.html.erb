@@ -18,7 +18,7 @@ ID:<%=h @pagamento.id %>
   <b>Valor pago:</b>
   <%=h @pagamento.valor_pago.real %>
 </p>
-<% if @pagamento.valor_restante >0 %>
+<% if @pagamento.valor_restante && @pagamento.valor_restante > 0 %>
   <p>
     <b>Valor restante:</b>
     <%=h @pagamento.valor_restante.real %> - 

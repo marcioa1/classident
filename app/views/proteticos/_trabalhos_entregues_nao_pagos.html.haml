@@ -40,7 +40,7 @@
       %td= trab.paciente.nome
       %td= trab.dente if trab.dente.present?
       %td{:align => "center"}= trab.data_de_envio.to_s_br
-      %td= link_to trab.tabela_protetico.descricao, edit_trabalho_protetico_path(trab)
+      %td= link_to trab.tabela_protetico.descricao, edit_trabalho_protetico_path(trab) if trab.tabela_protetico
       %td= trab.observacoes
       - id = "valor_#{trab.valor}"
       %td{:align => "right"}= trab.valor.real
