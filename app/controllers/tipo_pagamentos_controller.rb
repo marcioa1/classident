@@ -10,6 +10,8 @@ class TipoPagamentosController < ApplicationController
     else
       @tipo_pagamentos = TipoPagamento.da_clinica(session[:clinica_id]).por_nome.inativos
     end
+    if params[:iniciais].present?
+      @tipo_pagamentos = @tipo_pagamentos.
   end
 
   def show

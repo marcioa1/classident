@@ -138,8 +138,17 @@ fieldset{
 }
 
 #notice{
-/*    color:green;*/
-}
+    color:green;
+    background-color: #A9EEBC;
+    width: 95%;
+    height: 120%;
+  	text-align: center;
+  	border-top: 2px solid #00B74A;
+  	border-bottom: 2px solid #00B74A;
+  	padding: 5px 20px 5px 20px;
+/*    padding-left: 5em;
+    padding-right: 5em;
+*/}
 .notice {
 	background: #ABF1DA;
 	border-top: 2px solid #00B74A;
@@ -326,7 +335,7 @@ color: #00008B; background-color: #ADD8E6; border: 1px outset #00008B;
   margin: 30px 40px 30px 40px;
 }
 #header{
-  height: 9em;
+  height: 8em;
   background-color :white;
 }
 #header-bottom { 
@@ -356,11 +365,17 @@ color: #00008B; background-color: #ADD8E6; border: 1px outset #00008B;
         margin-left: 5em;
         margin-right: 5em;
         padding-right: 7em;*/
-        padding-left: 3em;
-        padding-right: 3em;
+        padding-left: 0        margin-right: 5em;
+em;
+        padding-right: 2em;
+        margin-right: 1em;
+        margin-bottom: -2.2em;
     text-align: center;
     color: white;
+  margin: 2em 20px 0px 0px;
+
 }
+
 
 #seleciona_clinica{
   float: right;
@@ -377,7 +392,7 @@ color: #00008B; background-color: #ADD8E6; border: 1px outset #00008B;
   font-family:Verdana, Arial, Helvetica, sans-serif;
   font-style:normal;
   font-weight:normal;
-  font-size:8pt;
+  font-size:10pt;
   color: #FFFFFF;
   background-color: #455A79;
   text-decoration: none;

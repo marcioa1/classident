@@ -52,7 +52,7 @@
       %tr
         - case lancamento.class.name
           - when 'Cheque' :
-            %td= lancamento.nome_dos_pacientes
+            %td= lancamento.nome_dos_pacientes 
             %td &nbsp;
             %td &nbsp;
             %td &nbsp;
@@ -61,6 +61,7 @@
             -saldo_cheque += lancamento.valor
             %td{ :align => "right" }
               = #saldo_cheque.real
+            - total_de_credito_em_cheque += lancamento.valor
           - when "Recebimento" :
             - if lancamento.formas_recebimento.nome.downcase =="dinheiro"
               %td= lancamento.paciente && lancamento.paciente.nome
@@ -131,9 +132,8 @@
               %td &nbsp;
               %td &nbsp;
               %td{ :align => "right", :style => "color: red;" }
-                = lancamento.valor_pago.real
-              %td &nbsp;
-              %td &nbsp;
+                = lancamento.valor_pago.real 
+              - total_de_debito_em_cheque += lancamento.valor_pago
             %td{ :align => "right" }
               = saldo_cheque.real
         - when "Entrada"

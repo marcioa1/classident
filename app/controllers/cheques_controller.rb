@@ -193,7 +193,7 @@ class ChequesController < ApplicationController
     else
       @cheques = Cheque.da_clinica(session[:clinica_id]).disponiveis_na_clinica.por_valor.menores_ou_igual_a(params[:valor]);
     end
-    @cheques = @cheques.all(:limit => 50)
+    @cheques = @cheques.all(:limit => 11150)
     render :partial => 'cheques_disponiveis', :locals=>{:cheques => @cheques}
   end
   

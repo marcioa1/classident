@@ -49,20 +49,22 @@
           | <%= link_to "logout", logout_path %>
         </div> <!-- login -->
         <div id="header-bottomm">
-          <div id="seleciona_clinica">
-            
-           
-          </div>
+
           <div class="menu">
             <% if @administracao %>
               <%= render :partial=>"layouts/menu_adm" %>
             <% else %>
               <%= render :partial=>"layouts/menu_clinica" %>
             <% end %>
-        </div>
+          </div>
         </div> <!-- header-bottom -->
       </div> <!-- header -->
     <div id="main">
+      <% if !flash[:notice].blank? %>
+        <div id="notice">
+          <%= flash[:notice] %>
+        </div>
+      <% end %>
               <p>  
         <%= nome_paciente(@paciente) if @paciente && !@paciente.new_record? %>
         </p>

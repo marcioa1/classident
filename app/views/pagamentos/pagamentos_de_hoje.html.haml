@@ -1,6 +1,9 @@
 - content_for :main do
-  %h3 Pagamentos de hoje
+  %h3 
+    Pagamentos de hoje ( 
+    = Date.today.to_s_br
+    )
   #novo_pagamento
-    = link_to 'novo pagamento', new_pagamento_path
+    = button_to 'novo pagamento', new_pagamento_path
   = render :partial=>'pagamentos', :locals=>{:pagamentos => @pagamentos_no_livro_caixa, :titulo=>'No livro caixa'}
   = render :partial=>'pagamentos', :locals=>{:pagamentos => @pagamentos_fora_do_livro_caixa, :titulo=>'Fora do livro caixa'}
