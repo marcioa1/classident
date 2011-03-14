@@ -30,7 +30,7 @@ class Cheque < ActiveRecord::Base
                 data_spc IS NULL and data_solucao IS NULL and data_arquivo_morto IS NULL
                 and pagamento_id IS NULL
                 and destinacao_id IS NULL"]
-  named_scope :do_banco, lambda{|banco| {:conditions=>["banco_id=?", banco]}}
+  named_scope :do_banco, lambda{|banco| {:conditions=>["numero_do_banco = ?", banco]}}
   named_scope :do_valor, lambda{|valor| {:conditions=>["valor=?", valor]}}
   
   named_scope :entre_datas, lambda{|data_inicial, data_final| 

@@ -12,7 +12,7 @@
 
   <div>
      <%= f.label :banco %> : 
-     <%= f.select :banco_id, options_for_select(@bancos, @cheque.banco_id.to_i)  %>
+     <%= f.select :numero_do_banco, options_for_select(@bancos, @cheque.numero_do_banco)  %>
   </div>
   <div>
      <%= f.label :agencia %> : 

@@ -60,7 +60,7 @@ ActiveRecord::Schema.define(:version => 20110221095358) do
   end
 
   create_table "cheques", :force => true do |t|
-    t.integer  "banco_id"
+    t.integer  "numero_do_banco"
     t.string   "agencia",                            :limit => 10
     t.string   "conta_corrente",                     :limit => 10
     t.string   "numero",                             :limit => 12
@@ -93,7 +93,7 @@ ActiveRecord::Schema.define(:version => 20110221095358) do
     t.date     "data_caso_perdido"
   end
 
-  add_index "cheques", ["banco_id"], :name => "index_cheques_on_banco_id"
+  add_index "cheques", ["numero_do_banco"], :name => "index_cheques_on_numero_do_banco"
   add_index "cheques", ["clinica_id"], :name => "index_cheques_on_clinica_id"
   add_index "cheques", ["data_entrega_administracao"], :name => "index_cheques_on_data_entrega_administracao"
   add_index "cheques", ["data_recebimento_na_administracao"], :name => "index_cheques_on_data_recebimento_na_administracao"
