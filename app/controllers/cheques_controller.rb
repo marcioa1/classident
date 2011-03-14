@@ -198,18 +198,21 @@ class ChequesController < ApplicationController
   end
   
   def pesquisa
-    @bancos = Banco.por_nome.collect{|obj| [obj.nome, obj.id.to_s]}
+    @bancos = Banco.por_nome.collect{|obj| [obj.numero.to_s + '-'+ obj.nome, obj.numero.to_s]}
+    params[:ano] = Date.today.year if !params[:ano]
+    data_inicial = params[:ano] + '-01-01'
+    data_final   = params[:ano] + '-12-31'
     if @administracao
       if params[:banco] && !params[:banco].blank?
-        @cheques = Cheque.na_administracao.do_banco(params[:banco])
+        @cheques = Cheque.disponiveis_na_administracao.do_banco(params[:banco]).entre_datas(data_inicial, data_final)
       else
-        @cheques = Cheque.na_administracao
+        @cheques = Cheque.disponiveis_na_administracao.entre_datas(data_inicial, data_final)
       end
     else 
       if params[:banco] && !params[:banco].blank?
-        @cheques = Cheque.da_clinica(session[:clinica_id]).do_banco(params[:banco])
+        @cheques = Cheque.da_clinica(session[:clinica_id]).do_banco(params[:banco]).entre_datas(data_inicial, data_final)
       else
-        @cheques = Cheque.da_clinica(session[:clinica_id])
+        @cheques = Cheque.da_clinica(session[:clinica_id]).entre_datas(data_inicial, data_final)
       end
     end
     if params[:agencia] && !params[:agencia].blank?

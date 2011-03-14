@@ -7,6 +7,7 @@
         <td>Agência</td>
         <td>Número</td>
         <td>Valor</td>
+        <td>Ano</td>
         <td>&nbsp;</td>
       </tr>
       <tr>
@@ -14,6 +15,7 @@
         <td><%= text_field_tag :agencia, params[:agencia], :size=>10 %></td>
         <td><%= text_field_tag :numero, params[:numero], :size=>10 %></td>
         <td><%= text_field_tag :valor, params[:valor], :size=>10 %></td>
+        <td><%= text_field_tag :ano, params[:ano], :size => 6 %></td>
         <td><%= submit_tag "Pesquisar"%></td>
       </tr>
     </table>
@@ -23,23 +25,23 @@
   </p>
   <table class='tabela'>
     <th>seq</th>
-    <th>Banco</th>
+    <th width='140px'>Banco</th>
     <th>Agência</th>
     <th>Número</th>
-    <th>Bom para</th>
-    <th>Valor</th>
-    <th>Paciente</th>
-    <th>Estado</th>
+    <th width='90px'>Bom para</th>
+    <th width='70px'>Valor</th>
+    <th width='330px'>Paciente</th>
+    <th>Situação</th>
     <% if @administracao %>
       <th>Clínica</th>
     <% end %>
     <% @cheques.each do |cheque| %>
       <tr>
         <td><%= cheque.id %></td>
-        <td><%= cheque.banco.nome %></td>
-        <td><%=cheque.agencia %></td>
-        <td><%=cheque.numero %></td>
-        <td><%=cheque.bom_para.to_s_br%></td>
+        <td><%= cheque.banco.nome if cheque.banco.present?%></td>
+        <td><%= cheque.agencia %></td>
+        <td><%= cheque.numero %></td>
+        <td align='center'><%=cheque.bom_para.to_s_br%></td>
         <td align='right'><%=cheque.valor.real%></td>
         <td><%= cheque.nome_dos_pacientes  %></td>
         <td>
