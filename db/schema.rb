@@ -52,7 +52,7 @@ ActiveRecord::Schema.define(:version => 20110221095358) do
   add_index "audits", ["created_at"], :name => "index_audits_on_created_at"
   add_index "audits", ["user_id", "user_type"], :name => "user_index"
 
-  create_table "bancos", :id => false, :force => true do |t|
+  create_table "bancos", :force => true do |t|
     t.integer  "numero"
     t.string   "nome",       :limit => 25
     t.datetime "created_at"

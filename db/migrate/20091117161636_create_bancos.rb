@@ -1,6 +1,6 @@
 class CreateBancos < ActiveRecord::Migration
   def self.up
-    create_table :bancos, :id=>false do |t|
+    create_table :bancos do |t|
       t.integer :numero
       t.string  :nome,    :limit => 25
 
