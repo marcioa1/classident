@@ -88,7 +88,7 @@ class UsersController < ApplicationController
       redirect_to pesquisa_pacientes_path
     else
       flash[:error] = "senhas não conferem"
-      render "troca senha"
+      render troca_senha
     end
   end
   

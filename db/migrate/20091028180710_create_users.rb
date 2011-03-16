@@ -25,7 +25,13 @@ class CreateUsers < ActiveRecord::Migration
     :password_confirmation =>'1234', :nome=>'Margareth', :tipo_usuario_id => 3, :clinicas =>[ Clinica.find_by_sigla("SC")])
    User.create!(:login => 'cristina', :password=>'1234', :email=>'critina@ibest.com.br',
     :password_confirmation =>'1234', :nome=>'Izabel Cristina', :tipo_usuario_id => 3, :clinicas => [Clinica.find_by_sigla("VC")])
-   
+   User.create!(:login => 'lindalva', :password=>'1234', :email=>'lindalva@ibest.com.br',
+    :password_confirmation =>'1234', :nome=>'Lindalva', :tipo_usuario_id => 3, :clinicas => [Clinica.find_by_sigla("taqua")])
+   User.create!(:login => 'silvia', :password=>'1234', :email=>'silvia@ibest.com.br',
+    :password_confirmation =>'1234', :nome=>'Silvia', :tipo_usuario_id => 3, :clinicas => [Clinica.find_by_sigla("va")])
+   User.create!(:login => 'tania', :password=>'1234', :email=>'tania@ibest.com.br',
+    :password_confirmation =>'1234', :nome=>'Lindalva', :tipo_usuario_id => 3, :clinicas => [Clinica.find_by_sigla("centro")])
+
   end
 
   def self.down
