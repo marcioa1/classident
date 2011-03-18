@@ -12,7 +12,7 @@
       %tr
         %td= link_to cheque.bom_para.to_s_br, cheque, :target => :blank
         %td= cheque.valor.real
-        %td= cheque.banco.nome
+        %td= cheque.banco.nome if cheque.banco.present?
         %td= cheque.agencia
         %td= cheque.numero
         %td= cheque.status
