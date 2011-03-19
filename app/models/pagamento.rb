@@ -17,7 +17,10 @@ class Pagamento < ActiveRecord::Base
   
   named_scope :ao_protetico, lambda{|protetico_id| {:conditions=>["protetico_id = ?", protetico_id]}}
   named_scope :aos_proteticos, :conditions => 'protetico_id IS NOT NULL'
+  named_scope :com_cheque_da_classident, :conditions => 'forma_de_pagamento = "Cheque classident"'
+  named_scope :com_cheque_de_paciente, :conditions => 'forma_de_pagamento = "Cheque paciente"'
   named_scope :da_clinica, lambda{|clinica_id| {:conditions=>["clinica_id = ?", clinica_id]}}
+  named_scope :em_dinheiro, :conditions => 'forma_de_pagamento = "dinheiro"'
   named_scope :entre_datas, lambda{|inicio,fim| 
        {:conditions=>["data_de_pagamento between ? and ?", inicio,fim]}}
   named_scope :excluidos, :conditions=>["data_de_exclusao IS NOT NULL"]
