@@ -122,6 +122,7 @@ class PagamentosController < ApplicationController
   end
   
   def relatorio
+    params[:modo] = 'todos' if params[:modo].nil?
     session[:origem] = '/pagamentos/relatorio'
     @tipos_pagamento = TipoPagamento.da_clinica(session[:clinica_id]).por_nome.collect{|obj| [obj.nome, obj.id.to_s]}
     if params[:datepicker] && Date.valid?(params[:datepicker])
@@ -135,8 +136,8 @@ class PagamentosController < ApplicationController
       @data_final   = Date.today
     end
     @pagamentos = Pagamento.da_clinica(session[:clinica_id]).nao_excluidos.por_data.entre_datas(@data_inicial, @data_final).tipos(params[:tipo_pagamento_id])
-    if params[:modo] && params[:modo] != 'todos'
-      if parms[:modo] == 'dinheiro'
+    if params[:modo] != 'todos'
+      if params[:modo] == 'dinheiro'
         @pagamentos = @pagamentos.em_dinheiro 
       elsif params[:modo] == 'cheque classident'
         @pagamentos = @pagamentos.com_cheque_da_classident

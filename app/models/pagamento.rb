@@ -1,5 +1,5 @@
 class Pagamento < ActiveRecord::Base
-  acts_as_audited
+  # acts_as_audited
   belongs_to :clinica
   belongs_to :tipo_pagamento
   belongs_to :conta_bancaria
@@ -39,6 +39,12 @@ class Pagamento < ActiveRecord::Base
    OPCAO_RESTANTE_EM_DINHEIRO = 2
  
   include ApplicationHelper
+
+  before_save :atribui_forma_de_pagamento
+  
+  def atribui_forma_de_paramento
+    self.forma_de_pagamento = self.modo_de_pagamento
+  end
 
   attr_accessor :valor_pago_real, :data_de_pagamento_pt, :valor_dinheiro
   

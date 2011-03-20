@@ -18,16 +18,16 @@
       </tr>
     <% end %>
       <tr>
-        <td colspan='2'><%= radio_button_tag :modo, 'todos' %> Todas </td>
+        <td colspan='2'><%= radio_button_tag :modo, 'todos', params[:modo] == 'todos' %> Todas </td>
       </tr>
       <tr>
-        <td colspan='2'><%= radio_button_tag :modo, 'dinheiro' %> Dinheiro</td>
+        <td colspan='2'><%= radio_button_tag :modo, 'dinheiro', params[:modo] == 'dinheiro' %> Dinheiro</td>
       </tr>
       <tr>
-        <td colspan='2'><%= radio_button_tag :modo, 'cheque paciente' %> Cheque de pacientes</td>
+        <td colspan='2'><%= radio_button_tag :modo, 'cheque paciente', params[:modo] == 'cheque paciente' %> Cheque de pacientes</td>
       </tr>
       <tr>
-        <td colspan='2'><%= radio_button_tag :modo, 'cheque classident' %> Cheque da classident</td>
+        <td colspan='2'><%= radio_button_tag :modo, 'cheque classident', params[:modo] == 'cheque classident' %> Cheque da classident</td>
       </tr>
     </table>
     </td>
