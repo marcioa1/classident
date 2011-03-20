@@ -41,7 +41,6 @@
           = saldo.real
         %td &nbsp;
         %td &nbsp;
-        %td &nbsp;
         - if lancamento.pode_excluir?
           %td
             = link_to 'Excluir', lancamento, :confirm => 'Tem certeza da exclusão deste débito ?', :method => :delete , :class=>'ui-icon ui-icon-trash', :title=>'excluir'
@@ -51,7 +50,6 @@
       - else
         - total_credito += lancamento.valor
         %td{ :align => "center" }
-          = lancamento.id
           - if lancamento.pode_alterar?
             = link_to lancamento.data.to_s_br, edit_recebimento_path(lancamento)
           - else
