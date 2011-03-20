@@ -1,5 +1,5 @@
 class Pagamento < ActiveRecord::Base
-  # acts_as_audited
+  acts_as_audited
   belongs_to :clinica
   belongs_to :tipo_pagamento
   belongs_to :conta_bancaria
@@ -12,7 +12,6 @@ class Pagamento < ActiveRecord::Base
   
   validates_presence_of :data_de_pagamento, :message => " : obrigatória."
   validate :verifica_quinzena
-  #FIXME Retirar na conversão
   validates_numericality_of :valor_pago, :message => " : deve ser numérico"
   
   named_scope :ao_protetico, lambda{|protetico_id| {:conditions=>["protetico_id = ?", protetico_id]}}
@@ -42,10 +41,10 @@ class Pagamento < ActiveRecord::Base
 
   before_save :atribui_forma_de_pagamento
   
-  def atribui_forma_de_paramento
-    self.forma_de_pagamento = self.modo_de_pagamento
+  def atribui_forma_de_pagamento
+     self.forma_de_pagamento = self.modo_de_pagamento
   end
-
+ 
   attr_accessor :valor_pago_real, :data_de_pagamento_pt, :valor_dinheiro
   
   def valor_pago_real
@@ -106,7 +105,7 @@ class Pagamento < ActiveRecord::Base
   end
 
   def em_cheque_classident?
-    (self.conta_bancaria_id && self.conta_bancaria_id > 0)
+    (self.conta_bancaria_id && self.conta_bancaria_id > 0 && self.cheques.empty?)
   end
   
   def modo_de_pagamento
