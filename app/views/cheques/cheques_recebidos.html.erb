@@ -53,7 +53,7 @@
     </td>
     <td><%= cheque.nome_dos_pacientes %></td>
     <td align="right"><%= cheque.valor.real %></td>
-    <td align="center"><%= cheque.banco.numero + "-"+ cheque.banco.nome unless cheque.banco.nil? %></td>
+    <td align="center"><%= cheque.banco.numero.to_s + "-"+ cheque.banco.nome unless cheque.banco.nil? %></td>
     <td><%= cheque.agencia  %></td>
     
     <td><%= cheque.numero %></td>
