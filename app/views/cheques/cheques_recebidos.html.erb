@@ -58,7 +58,13 @@
     
     <td><%= cheque.numero %></td>
     <% if @administracao %>
-      <td><%= cheque.data_recebimento_na_administracao.to_s_br %></td>
+      <td>
+         <% if cheque.entregue_a_administracao? %>
+           <%= check_box_tag cheque.id.to_s %>
+         <% else %>
+          <%= cheque.data_recebimento_na_administracao.to_s_br %>
+         <% end %>
+      </td>
     <% else %>
       <td>
         <% if cheque.entregue_a_administracao?  %>
@@ -76,7 +82,7 @@
        else cheque.status_resumido
     end %>
   
-  </td>
+    </td>
     <td><%= cheque.data_recebimento_na_administracao.to_s_br %></td>
   </tr>
   <% total += cheque.valor %>
@@ -85,7 +91,12 @@
     <% if @administracao %>
       <td colspan="3" align="center">Total</td>
       <td align="right"><%= total.real%></td>
-      <td colspan="6" align="right">&nbsp;</td>
+      <td colspan="3" align="right">&nbsp;</td>
+      <td><% if params[:status] == 'enviados à administração' %>
+            <%= link_to_function "receber cheques", 'confirma_recebimento_de_cheque()' %>
+          <% end %>
+      </td>
+      <td colspan="2">&nbsp;</td>
     <% else %>
       <td colspan="2" align="center">Total</td>
       <td align="right"><%= total.real%></td>

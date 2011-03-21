@@ -189,7 +189,7 @@ class ChequesController < ApplicationController
   
   def busca_disponiveis
     if @administracao
-      @cheques = Cheque.disponiveis_na_administracao.por_valor.menores_que(params[:valor]);
+      @cheques = Cheque.disponiveis_na_administracao.por_valor.menores_ou_igual_a(params[:valor]);
     else
       @cheques = Cheque.da_clinica(session[:clinica_id]).disponiveis_na_clinica.por_valor.menores_ou_igual_a(params[:valor]);
     end
@@ -198,7 +198,7 @@ class ChequesController < ApplicationController
   end
   
   def pesquisa
-    @bancos = Banco.por_nome.collect{|obj| [obj.numero.to_s + '-'+ obj.nome, obj.numero.to_s]}
+    @bancos = Banco.por_nome.collect{|obj| [obj.numero.to_s + '-'+ obj.nome, obj.id.to_s]}
     params[:ano] = Date.today.year if !params[:ano]
     data_inicial = params[:ano].to_s + '-01-01'
     data_final   = params[:ano].to_s + '-12-31'
@@ -222,7 +222,7 @@ class ChequesController < ApplicationController
       @cheques = @cheques.com_numero(params[:numero])
     end
     @cheques = @cheques.do_valor(params[:valor].gsub(",",".")) if !params[:valor].blank?
-    
+    raise @cheques.inspect
   end
   
   def reverte_cheque

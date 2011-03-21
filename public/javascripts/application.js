@@ -180,7 +180,6 @@ function confirma_recebimento_de_cheque(){
                selecionados += item + ",";
              }
     }
-
     $.ajax({
       url: "registra_recebimento_de_cheques",
       data:  {cheques: selecionados},
