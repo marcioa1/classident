@@ -60,7 +60,7 @@
     <% if @administracao %>
       <td>
          <% if cheque.entregue_a_administracao? %>
-           <%= check_box_tag cheque.id.to_s %>
+           &nbsp;
          <% else %>
           <%= cheque.data_recebimento_na_administracao.to_s_br %>
          <% end %>
