@@ -38,10 +38,10 @@
   <% for cheque in @cheques do %>
     <tr class=<%=cheque.status_class%> id="tr_<%=cheque.id%>">
     <% if @administracao %>
-      <% dados += "#{cheque.clinica.nome};#{cheque.bom_para.to_s_br};#{cheque.nome_dos_pacientes}; #{cheque.valor.real};#{cheque.banco.nome};#{cheque.numero};#{cheque.status}>" %>
+      <% dados += "#{cheque.clinica.nome};#{cheque.bom_para.to_s_br};#{cheque.nome_dos_pacientes}; #{cheque.valor.real};#{cheque.banco && cheque.banco.nome};#{cheque.numero};#{cheque.status}>" %>
       <td><%= cheque.clinica.sigla %></td>
     <% else %>
-      <% dados += "#{cheque.bom_para.to_s_br};#{cheque.nome_dos_pacientes}; #{cheque.valor.real};#{cheque.banco.nome};#{cheque.numero};#{cheque.status}>" %>
+      <% dados += "#{cheque.bom_para.to_s_br};#{cheque.nome_dos_pacientes}; #{cheque.valor.real};#{cheque.banco && cheque.banco.nome};#{cheque.numero};#{cheque.status}>" %>
 
     <% end %>
     <td align="center">

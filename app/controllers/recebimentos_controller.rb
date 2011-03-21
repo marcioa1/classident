@@ -119,7 +119,7 @@ class RecebimentosController < ApplicationController
         redirect_to(abre_paciente_path(:id=>@recebimento.paciente_id)) 
       else
         @paciente = Paciente.find(session[:paciente_id])
-        @bancos   = Banco.all(:order=>:nome).collect{|obj| [obj.numero + " - " + obj.nome,obj.id.to_s]}
+        @bancos   = Banco.all(:order=>:nome).collect{|obj| [obj.numero.to_s + " - " + obj.nome,obj.id.to_s]}
         @formas_recebimentos = FormasRecebimento.por_nome.collect{|obj| [obj.nome,obj.id]}
         render :action => "new" 
       end
