@@ -288,10 +288,10 @@ class RecebimentosController < ApplicationController
     @cheque                 = Cheque.new
     @cheque.bom_para        = params[:datepicker2].to_date
     @cheque.clinica_id      = session[:clinica_id]
-    @cheque.numero_do_banco = params[:numero_do_banco]
+    @cheque.banco_id        = params[:banco].to_i
     @cheque.agencia         = params[:agencia]
     @cheque.numero          = params[:numero]
-    @cheque.conta_corrente  = params[:conta_corrente]
+    # @cheque.conta_corrente  = params[:conta_corrente]
     @cheque.valor           = params[:valor_do_cheque].gsub('.','').gsub(',','.')
     @cheque
   end

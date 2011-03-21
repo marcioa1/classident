@@ -113,7 +113,7 @@ class Cheque < ActiveRecord::Base
     data_primeira_devolucao.nil?
   end
   
-  # def destinacao?
+  # estinacao?
   #     destinacao_id.present?    
   #   end
   

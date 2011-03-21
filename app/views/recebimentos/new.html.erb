@@ -75,7 +75,7 @@ ortodontia : <%= @recebimento.paciente.de_ortodontia? %>
       <tr>
         <td align='right'><%= label_tag :banco %> : </td>
       
-        <td><%= select_tag :numero_do_banco, options_for_select(@bancos.insert(0, ''), params[:numero_do_banco])  %></td>
+        <td><%= select_tag :banco, options_for_select(@bancos.insert(0, ''), params[:banco])  %></td>
       </tr>
       <tr>
         <td align='right'><%= label_tag :agencia %> :</td>
