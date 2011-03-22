@@ -1,23 +1,24 @@
-%table{:class=>'tabela'}
-  %tr
-    %th Bom para
-    %th Valor
-    %th Paciente
-    %th &nbsp;
-    %th Banco
-    %th Agência
-    %th Número
-  - cheques.each do |cheque|
+%div{:class=>"tabela_scroll"}
+  %table{:class=>'tabela'}
     %tr
-      %td
-        = link_to_function cheque.bom_para.to_s_br, "abre_cheque(#{cheque.id})"
-      %td{:align=>'right'}
-        %span{:id=>"valor_#{cheque.id}" }
-          = cheque.valor.real.to_s 
-      %td
-        = cheque.nome_dos_pacientes
-      %td
-        = check_box_tag "cheque_#{cheque.id}", false ,false ,options={ :onclick=>"selecionou_cheque(#{cheque.id})"}
-      %td= cheque.banco.nome if cheque.banco
-      %td= cheque.agencia
-      %td= cheque.numero
+      %th Bom para
+      %th Valor
+      %th Paciente
+      %th &nbsp;
+      %th Banco
+      %th Agência
+      %th Número
+    - cheques.each do |cheque|
+      %tr
+        %td
+          = link_to_function cheque.bom_para.to_s_br, "abre_cheque(#{cheque.id})"
+        %td{:align=>'right'}
+          %span{:id=>"valor_#{cheque.id}" }
+            = cheque.valor.real.to_s 
+        %td
+          = cheque.nome_dos_pacientes
+        %td
+          = check_box_tag "cheque_#{cheque.id}", false ,false ,options={ :onclick=>"selecionou_cheque(#{cheque.id})"}
+        %td= cheque.banco.nome if cheque.banco
+        %td= cheque.agencia
+        %td= cheque.numero

@@ -219,7 +219,6 @@ table,td,th{
 .tabela{
   font-family: "Geneva";
   font-size: 11px;
-  
 }
 
 td,th{
@@ -410,3 +409,8 @@ em;
 .menu ul li ul li a:visited { background-color:#455A79;  color:#FFFFFF;} /*Color subcells normal mode*/
 .menu ul li a:hover ul li a {display:block; width:16em; height:1px; line-height:1.3em; padding:4px 16px 4px 16px; border-left:solid 1px #455A79; border-bottom: solid 1px #455A79; background-color:#455A79;  color:#FFFFFF;} 
 .menu ul li a:hover ul li a:hover {background-color:#90b7e5; text-decoration:none;color:#F5F5F5;} /*Color subcells hovering mode*/
+
+.tabela_scroll{
+  height   :20em;
+  overflow :auto;
+}
