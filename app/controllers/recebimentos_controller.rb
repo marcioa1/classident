@@ -135,7 +135,7 @@ class RecebimentosController < ApplicationController
       @recebimento.observacao             = params[:observacao]
       @cheque                             = @recebimento.cheque
       @cheque.bom_para        = params[:datepicker2].to_date
-      @cheque.numero_do_banco = params[:numero_do_banco]
+      @cheque.banco_id        = params[:banco]
       @cheque.agencia         = params[:agencia]
       @cheque.numero          = params[:numero]
       @cheque.conta_corrente  = params[:conta_corrente]

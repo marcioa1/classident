@@ -32,7 +32,7 @@ class Cheque < ActiveRecord::Base
                 and pagamento_id IS NULL
                 and destinacao_id IS NULL and
                 bom_para > '2011-01-01'"]
-  named_scope :do_banco, lambda{|banco| {:conditions=>["numero_do_banco = ?", banco]}}
+  named_scope :do_banco, lambda{|banco| {:conditions=>["banco_id = ?", banco]}}
   named_scope :do_valor, lambda{|valor| {:conditions=>["valor=?", valor]}}
   
   named_scope :entre_datas, lambda{|data_inicial, data_final| 

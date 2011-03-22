@@ -25,7 +25,7 @@ class AdiocionaIndicesAsTabelas < ActiveRecord::Migration
       add_index :pagamentos, :dentista_id
       add_index :pagamentos, :pagamento_id
       add_index :cheques, :destinacao_id
-      add_index :cheques, :numero_do_banco
+      add_index :cheques, :banco_id
       add_index :orcamentos, :dentista_id
       add_index :orcamentos, :paciente_id
    #   add_index :users, :alta_id
@@ -62,7 +62,7 @@ class AdiocionaIndicesAsTabelas < ActiveRecord::Migration
       remove_index :pagamentos, :pagamento_id
       remove_index :cheques, :clinica_id
       remove_index :cheques, :destinacao_id
-      remove_index :cheques, :numero_do_banco
+      remove_index :cheques, :banco_id
       remove_index :cheques, :pagamento_id
       remove_index :orcamentos, :dentista_id
       remove_index :orcamentos, :paciente_id

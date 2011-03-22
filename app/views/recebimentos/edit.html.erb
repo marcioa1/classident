@@ -46,7 +46,7 @@
     <tr>
       <td align='right'><%= label_tag :banco %> : </td>
       <td>
-        <%= select_tag :numero_do_banco, options_for_select(@bancos.insert(0, ''), @recebimento.cheque.numero_do_banco) %>
+        <%= select_tag :banco, options_for_select(@bancos.insert(0, ''), @recebimento.cheque.banco_id) %>
       </td>
     </tr>
     <tr>

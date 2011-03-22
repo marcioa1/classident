@@ -11,5 +11,5 @@
       %tr
         %td= cheque.nome_dos_pacientes 
         %td{:align=>"right"}= cheque.valor.real 
-        %td= cheque.banco.numero + "-" + cheque.banco.nome 
+        %td= cheque.banco.numero + "-" + cheque.banco.nome if cheque.banco
         %td= cheque.numero 

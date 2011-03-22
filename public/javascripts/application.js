@@ -306,11 +306,12 @@ function selecionou_cheque(elemento){
     total_de_cheques += valor;
   }
   $("#cheques_ids").val(selecionados);
-  var total_a_pagar = $("#pagamento_valor_pago_real").val();
+  var total_a_pagar = parseFloat($("#pagamento_valor_pago_real").val().replace(".", "").replace(",", "."));;
   //console.log(total_a_pagar);
   if (total_a_pagar < total_de_cheques){
     alert("A soma dos valores dos cheques selecionados é maior que o valor do pagamento.");
   }
+alert(parseInt((total_a_pagar - total_de_cheques) * 100));
   $("#pagamento_valor_restante").val(parseInt((total_a_pagar - total_de_cheques) * 100));
   formata_valor($("#pagamento_valor_restante"));
 }
