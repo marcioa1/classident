@@ -12,6 +12,7 @@ class Cheque < ActiveRecord::Base
   validates_presence_of :valor, :message => "can't be blank"
   validates_numericality_of :valor, :greater_then => 0, :message => "valor tem que ser maior que zero."
   
+  named_scope :ate_a_data, lambda {|data| {:conditions => ['bom_para <= ?', data]}}
   named_scope :por_bom_para, :order=>:bom_para
   named_scope :com_destinacao, :conditions=>["destinacao_id IS NOT NULL"]
   named_scope :com_numero, lambda{|numero| {:conditions=>["numero=?",numero ]}}

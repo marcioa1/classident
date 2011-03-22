@@ -189,9 +189,9 @@ class ChequesController < ApplicationController
   
   def busca_disponiveis
     if @administracao
-      @cheques = Cheque.disponiveis_na_administracao.por_valor.menores_ou_igual_a(params[:valor]);
+      @cheques = Cheque.disponiveis_na_administracao.por_valor.menores_ou_igual_a(params[:valor]).ate_a_data(Date.today);
     else
-      @cheques = Cheque.da_clinica(session[:clinica_id]).disponiveis_na_clinica.por_valor.menores_ou_igual_a(params[:valor]);
+      @cheques = Cheque.da_clinica(session[:clinica_id]).disponiveis_na_clinica.por_valor.menores_ou_igual_a(params[:valor]).ate_a_data(Date.today);
     end
     @cheques = @cheques.all(:limit => 11150)
     render :partial => 'cheques_disponiveis', :locals=>{:cheques => @cheques}
