@@ -44,7 +44,7 @@
       <div id="header">
         <%= image_tag "logo2.jpg" %>
         <div id="login">
-          Usuário : <%= current_user.nome %> ( <%= current_user.tipo_usuario.nome %> ) | <span id="nome_da_clinica"><%= select_tag :clinicas , options_for_select(Clinica.all.collect{|cl| [cl.nome, cl.id.to_s]}, session[:clinica_id]), :onChange=>'selecionou_clinica()' %></span>
+          Usuário : <%= current_user.nome %> ( <%= current_user.tipo_usuario.nome %> ) | <span id="nome_da_clinica"><%= select_tag :clinicas , options_for_select(current_user.clinicas.collect{|cl| [cl.nome, cl.id.to_s]}, session[:clinica_id]), :onChange=>'selecionou_clinica()' %></span>
           | <%= link_to "trocar senha", troca_senha_path %>
           | <%= link_to "logout", logout_path %>
         </div> <!-- login -->
