@@ -23,6 +23,8 @@ class UsersController < ApplicationController
 
   def create
     @user = User.new(params[:user])
+    @user.password = '1234'
+    @user.password_confirmation = '1234'
     (1..10).each do |id|
       if params[("clinica_" + id.to_s).to_sym]
         @user.clinicas << Clinica.find(id)
@@ -69,6 +71,7 @@ class UsersController < ApplicationController
       flash[:notice] = "Usuário alterado!"
       redirect_to users_path
     else
+       @clinicas = busca_clinicas #Clinica.all
        @tipos_usuario = TipoUsuario.all(:order=>:nome).collect{|obj| [obj.nome,obj.id]}
        @tipos_usuario = @tipos_usuario - TipoUsuario.master if !current_user.master?
       render :action => :edit

@@ -3,14 +3,6 @@
   <%= form.text_field :login , :size=>10%>
 </div>
 <div>
-<%= form.label :senha, form.object.new_record? ? nil : "Nova senha" %> :
-<%= form.password_field :password, :size=>8 %>
-</div>
-<div>
-<%= form.label :confirmação_da_senha %> :
-<%= form.password_field :password_confirmation, :size=>8 %>
-</div>
-<div>
 <%= form.label :nome %> :
 <%= form.text_field :nome%>
 </div>
@@ -23,11 +15,13 @@
 <%= form.select :tipo_usuario_id, @tipos_usuario %>
 </div>
 <div>
-<%= form.label :clinicas %> : <br/>
+  <fieldset class = 'fieldset_50'>
+  <legend>Clínicas :</legend>
 <% @clinicas.each do |clinica| %>
   <%= check_box_tag "clinica_#{clinica.id}", false, checked = @user.clinicas.map(&:id).include?(clinica.id) %>
   <%= clinica.nome %>
 <% end %>
+  </fieldset>
 </div>
 
 <br/><br/>
