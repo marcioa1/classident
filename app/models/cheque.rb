@@ -57,7 +57,14 @@ class Cheque < ActiveRecord::Base
   named_scope :usados_para_pagamento, :conditions=>["pagamento_id IS NOT NULL"]
   named_scope :vindo_da_clinica, lambda{|clinicas| {:conditions=>["clinica_id in (?)", clinicas]}}
   
-  attr_accessor :valor_real
+  attr_accessor :valor_real, :bom_para_br
+  
+  def bom_para_br
+    self.bom_para.to_s_br
+  end
+  def bom_para_br=(valor)
+    self.bom_para = valor.to_date if Date.valid?(valor)  
+  end
   
   def valor_real
     self.valor.real

@@ -37,7 +37,7 @@ class ChequesController < ApplicationController
     else
       @cheque.data_segunda_devolucao = params[:datepicker4].to_date
     end
-
+    # raise params[:cheque].inspect
     if @cheque.update_attributes(params[:cheque])
       if valor_anterior != @cheque.valor
         @cheque.recebimentos.first.update_attribute(:valor, @cheque.valor)
