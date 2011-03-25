@@ -12,17 +12,19 @@
       <th width="250px">Paciente</th>
       <th>Bom para</th>
       <th>Banco</th>
+      <th>Núm Cheque</th>
       <th width="90px">Valor</th>
       <th>selecionar</th>
     </tr>
   
-    <% total = 0%>
+    <% total = 0 %>
     <% @cheques.each() do |cheque| %>
     <tr>
       <td><%= cheque.clinica.nome %></td>
       <td><%= cheque.nome_dos_pacientes %></td>
       <td align="center"><%= cheque.bom_para.to_s_br %></td>
       <td><%= cheque.banco && cheque.banco.nome %></td>
+      <td><%= cheque.numero %> </td>
       <td align="right"><%= cheque.valor.real %></td>
       <td align="center"><%= check_box_tag cheque.id.to_s %></td>
     </tr>
