@@ -270,6 +270,9 @@ class RecebimentosController < ApplicationController
       @devolvidos_de_novo.each do |chq|
         @devolvido_duas_vezes[chq.data_segunda_devolucao.day] += chq.valor
       end
+    else
+      @inicio = Date.today - Date.today.days + 1.day
+      @fim    = Date.today
     end
   end
 
