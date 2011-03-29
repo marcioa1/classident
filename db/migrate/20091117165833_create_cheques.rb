@@ -2,7 +2,6 @@ class CreateCheques < ActiveRecord::Migration
   def self.up
     create_table :cheques do |t|
       t.references :banco
-      # t.integer :numero_do_banco
       t.string :agencia, :limit => 10
       t.string :conta_corrente, :limit => 10
       t.string :numero, :limit => 12
