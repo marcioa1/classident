@@ -23,6 +23,15 @@ class RecebimentosController < ApplicationController
     @recebimento.formas_recebimento_id = FormasRecebimento.cheque_id
     @paciente                = Paciente.find(params[:paciente_id])
     @recebimento.paciente    = @paciente
+    if @paciente.ortodontia?
+      if @paciente.recebimentos.empty?
+        @recebimento.percentual_dentista = 100
+      else
+        @recebimento.percentual_dentista = 50
+      end
+    else
+      @recebimento.percentual_dentista = 0
+    end
     @recebimento.clinica_id  = @paciente.clinica_id
   end
 
