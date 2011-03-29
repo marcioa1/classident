@@ -11,7 +11,7 @@ class TipoPagamentosController < ApplicationController
       @tipo_pagamentos = TipoPagamento.da_clinica(session[:clinica_id]).por_nome.inativos
     end
     if params[:iniciais].present?
-         @tipo_pagamentos = @tipo_pagamentos.que_inicia_com(params[:iniciais])
+         @tipo_pagamentos = @tipo_pagamentos.que_iniciam_com(params[:iniciais])
     end
   end
 
