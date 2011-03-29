@@ -9,7 +9,7 @@
       %th Agência
       %th Número
     - cheques.each do |cheque|
-      %tr
+      %tr{:id=>"tr_"+ cheque.id.to_s }
         %td
           = link_to_function cheque.bom_para.to_s_br, "abre_cheque(#{cheque.id})"
         %td{:align=>'right'}
