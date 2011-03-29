@@ -313,8 +313,11 @@ function selecionou_cheque(elemento){
   }
   $("#pagamento_valor_restante").val(parseInt((total_a_pagar - total_de_cheques) * 100));
   formata_valor($("#pagamento_valor_restante"));
-  alert($("#tr_"+elemento).html());
-  $("#selecionados table tbody").append("<tr id='tr2_" + elemento + "'>" + $("#tr_"+elemento).html() + "</tr>");
+  if ($("#tr2_" + elemento)[0]) {
+    $("#tr2_" + elemento).remove();
+  } else {
+    $("#selecionados table tbody").append("<tr id='tr2_" + elemento + "'>" + $("#tr_"+elemento).html() + "</tr>");
+  }
 }
 
 function producao(){
