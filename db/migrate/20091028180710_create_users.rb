@@ -23,19 +23,19 @@ class CreateUsers < ActiveRecord::Migration
     :password_confirmation =>'1234', :nome=>'Fabiana Felix', :tipo_usuario_id => 2, :clinicas => Clinica.all)
    User.create!(:login => 'margareth', :password=>'1234', :email=>'margo@ibest.com.br',
     :password_confirmation =>'1234', :nome=>'Margareth', :tipo_usuario_id => 3, :clinicas =>[ Clinica.find_by_sigla("SC")])
-   User.create!(:login => 'cristina', :password=>'1234', :email=>'critina@ibest.com.br',
+   User.create!(:login => 'cristina', :password=>'1234', :email=>'cristina@ibest.com.br',
     :password_confirmation =>'1234', :nome=>'Izabel Cristina', :tipo_usuario_id => 3, :clinicas => [Clinica.find_by_sigla("VC")])
    User.create!(:login => 'shirlene', :password=>'1234', :email=>'shirlene@ibest.com.br',
              :password_confirmation =>'1234', :nome=>'Shirlene Krasnowolski', :tipo_usuario_id => 3, :clinicas => [Clinica.find_by_sigla("VC")])
    User.create!(:login => 'lindalva', :password=>'1234', :email=>'lindalva@ibest.com.br',
     :password_confirmation =>'1234', :nome=>'Lindalva', :tipo_usuario_id => 3, :clinicas => [Clinica.find_by_sigla("taqua")])
-   User.create!(:login => 'celia', :password=>'1234', :email=>'lindalva@ibest.com.br',
+   User.create!(:login => 'celia', :password=>'1234', :email=>'celia@ibest.com.br',
     :password_confirmation =>'1234', :nome=>'Celia Silva', :tipo_usuario_id => 3, :clinicas => [Clinica.find_by_sigla("taqua")])
    User.create!(:login => 'silvia', :password=>'1234', :email=>'silvia@ibest.com.br',
     :password_confirmation =>'1234', :nome=>'Silvia', :tipo_usuario_id => 3, :clinicas => [Clinica.find_by_sigla("va")])
    User.create!(:login => 'tania', :password=>'1234', :email=>'tania@ibest.com.br',
     :password_confirmation =>'1234', :nome=>'Lindalva', :tipo_usuario_id => 3, :clinicas => [Clinica.find_by_sigla("centro")])
-   User.create!(:login => 'thuani', :password=>'1234', :email=>'tania@ibest.com.br',
+   User.create!(:login => 'thuani', :password=>'1234', :email=>'thuani@ibest.com.br',
     :password_confirmation =>'1234', :nome=>'Thuani', :tipo_usuario_id => 3, :clinicas => [Clinica.find_by_sigla("centro")])
 
   end
