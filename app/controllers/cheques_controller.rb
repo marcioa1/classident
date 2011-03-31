@@ -222,7 +222,7 @@ class ChequesController < ApplicationController
       @cheques = @cheques.com_numero(params[:numero])
     end
     @cheques = @cheques.do_valor(params[:valor].gsub(",",".")) if !params[:valor].blank?
-    raise @cheques.inspect
+   # raise @cheques.inspect
   end
   
   def reverte_cheque
