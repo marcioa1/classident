@@ -149,9 +149,9 @@ class RecebimentosController < ApplicationController
       @cheque.numero          = params[:numero]
       @cheque.conta_corrente  = params[:conta_corrente]
       @cheque.valor           = params[:valor_cheque].gsub('.','').gsub(',','.')
-      @cheque.add(:banco, 'não pode ser branco') if !@recebimento.cheque.banco.present?
-      @cheque.add(:numero, 'do cheque não pode ser branco') if !@recebimento.cheque.numero.present?
-      @cheque.add(:valor, ' do cheque não pode ser branco') if !@recebimento.cheque.valor.present?
+      @cheque.errors.add(:banco, 'não pode ser branco') if !@recebimento.cheque.banco.present?
+      @cheque.errors.add(:numero, 'do cheque não pode ser branco') if !@recebimento.cheque.numero.present?
+      @cheque.errors.add(:valor, ' do cheque não pode ser branco') if !@recebimento.cheque.valor.present?
     else
       @recebimento.cheque = nil
     end
