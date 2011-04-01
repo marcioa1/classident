@@ -307,11 +307,13 @@ function selecionou_cheque(elemento){
   }
   $("#cheques_ids").val(selecionados);
   var total_a_pagar = parseFloat($("#pagamento_valor_pago_real").val().replace(".", "").replace(",", "."));;
-  //console.log(total_a_pagar);
+  console.log('total_a_pagar : '+ total_a_pagar);
+  console.log('total_de_cheques : '+ total_de_cheques);
   if (total_a_pagar < total_de_cheques){
     alert("A soma dos valores dos cheques selecionados é maior que o valor do pagamento.");
   }
   $("#pagamento_valor_restante").val(parseInt((total_a_pagar - total_de_cheques) * 100));
+  console.log($("#pagamento_valor_restante").val());
   formata_valor($("#pagamento_valor_restante"));
   if ($("#tr2_" + elemento)[0]) {
     $("#tr2_" + elemento).remove();
