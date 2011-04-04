@@ -13,7 +13,6 @@ class Cheque < ActiveRecord::Base
   validates_numericality_of :valor, :greater_then => 0, :message => "valor tem que ser maior que zero."
   
   named_scope :ate_a_data, lambda {|data| {:conditions => ['bom_para <= ?', data]}}
-  named_scope :por_bom_para, :order=>:bom_para
   named_scope :com_destinacao, :conditions=>["destinacao_id IS NOT NULL"]
   named_scope :com_numero, lambda{|numero| {:conditions=>["numero=?",numero ]}}
   named_scope :da_agencia, lambda{|agencia| {:conditions=>["agencia=?",agencia]}}
@@ -47,7 +46,8 @@ class Cheque < ActiveRecord::Base
       {:conditions=>["data_reapresentacao between ? and ?", data_inicial, data_final]}}
   named_scope :recebidos_na_administracao, lambda{|data_inicial, data_final| 
           {:conditions=>["data_recebimento_na_administracao between ? and ?", data_inicial, data_final]}}
-  named_scope :por_valor, :order=>"valor asc"
+  named_scope :por_bom_para, :order=>:bom_para
+  named_scope :por_valor, :order=>:valor
   named_scope :menores_ou_igual_a, lambda{|valor| {:conditions=>["valor<=?", valor]}}
   named_scope :menores_que, lambda{|valor| {:conditions=>["valor<?", valor]}}
   named_scope :sem_segunda_devolucao, :conditions=>["data_segunda_devolucao IS NULL"]
