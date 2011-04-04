@@ -89,7 +89,7 @@ class ProteticosController < ApplicationController
   
   def busca_tabela
     @protetico = Protetico.find(params[:protetico_id])
-    render :json=> @protetico.tabela_proteticos.por_descricao.collect{|obj| [obj.descricao + "   ( R$#{obj.valor.real})",obj.id]}.to_json
+    render :json=> @protetico.tabela_proteticos.por_descricao.collect{|obj| [obj.descricao.to_s + "   ( R$#{obj.valor.real})",obj.id] }.to_json
   end
   
   def relatorio
