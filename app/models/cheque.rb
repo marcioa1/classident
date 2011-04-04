@@ -47,7 +47,7 @@ class Cheque < ActiveRecord::Base
       {:conditions=>["data_reapresentacao between ? and ?", data_inicial, data_final]}}
   named_scope :recebidos_na_administracao, lambda{|data_inicial, data_final| 
           {:conditions=>["data_recebimento_na_administracao between ? and ?", data_inicial, data_final]}}
-  named_scope :por_valor, :order=>"valor desc"
+  named_scope :por_valor, :order=>"valor asc"
   named_scope :menores_ou_igual_a, lambda{|valor| {:conditions=>["valor<=?", valor]}}
   named_scope :menores_que, lambda{|valor| {:conditions=>["valor<?", valor]}}
   named_scope :sem_segunda_devolucao, :conditions=>["data_segunda_devolucao IS NULL"]

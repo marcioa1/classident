@@ -13,6 +13,10 @@
     <%= label_tag :data_final %> : <%= text_field_tag :datepicker2, @data_final.to_s_br, :size=>10  %>
     <%= label_tag :situação %> : 
     <%= select_tag :status, options_for_select(@status, params[:status]) %>
+    <%= radio_button_tag :ordem, :por_data , params[:ordem]%>
+    <%= label_tag :por_data%>
+    <%= radio_button_tag :ordem, :por_valor , params[:ordem]  %>
+    <%= label_tag :por_valor %>
     <%= submit_tag "pesquisar"%>  
   </p>
 <% end %>
