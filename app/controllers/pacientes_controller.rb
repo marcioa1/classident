@@ -28,7 +28,7 @@ class PacientesController < ApplicationController
     @paciente.nome              = params[:paciente][:nome].nome_proprio
     @paciente.clinica_id        = session[:clinica_id]
     @paciente.codigo            = @paciente.gera_codigo(session[:clinica_id])
-    @paciente.data_da_suspensao_da_cobranca_de_orto = parasm[:datepicker3].to_date unless params[:datepicker3].blank?
+    @paciente.data_da_suspensao_da_cobranca_de_orto = params[:datepicker3].to_date unless params[:datepicker3].blank?
     @paciente.data_da_saida_da_lista_de_debitos     = params[:datepicker4].to_date unless params[:datepicker4].blank?
     if @paciente.save
       Rails.cache.write(@paciente.id.to_s, @paciente, :expires_in => 2.minutes) 
