@@ -87,11 +87,11 @@ class PacientesController < ApplicationController
       nomes = Paciente.all(:select=>'nome,clinica_id', :conditions=>["nome like ? and clinica_id = ? ", "#{params[:term].nome_proprio}%", session[:clinica_id] ])  
     end
     result = []
-    nomes.each do |nome|
+    nomes.each do |pac|
       if @administracao
-        result << nome.nome + ', ' + Clinica.find(nome.clinica_id).sigla
+        result << pac.nome + ', ' + Clinica.find(pac.clinica_id).sigla
       else
-        result << nome.nome 
+        result << pac.nome 
       end      
     end
     render :json => result.to_json
@@ -100,7 +100,7 @@ class PacientesController < ApplicationController
   def abre
     if params[:nome]
       nome_sem_clinica = params[:nome].split(',')[0].strip
-      @paciente = Paciente.find_by_nome(nome_sem_clinica)
+      @paciente = Paciente.find_by_nome_and_clinica_id(nome_sem_clinica, session[:clinica_id])
       Rails.cache.write(@paciente.id.to_s, @paciente, :expires_in => 2.minutes) 
     else
       @paciente =  Paciente.busca_paciente(params[:id])
