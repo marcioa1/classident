@@ -26,7 +26,7 @@
           </span>
         <% end %>
     </td>
-    <td><%= link_to trab.protetico.nome, abre_protetico_path(trab.protetico.id) %></td>
+    <td><%= link_to trab.protetico.nome, abre_protetico_path(trab.protetico.id) if trab.protetico.present? %></td>
     <td><%= trab.dentista.nome unless trab.dentista.nil?%></td>
     <td><%= link_to 'excluir', trab, :confirm => 'Tem certeza ?', :method => :delete, :class=>'ui-icon ui-icon-trash', :title=>'excluir' %></td>
   </tr>
