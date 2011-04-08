@@ -18,6 +18,7 @@ set :scm_username , "marcioa1"
 set :scm_password, Proc.new { CLI.password_prompt "GIT Password: "}
 
 
+set :keep_releases, 3
 
 # Your repository type, by default we use subversion. 
 
