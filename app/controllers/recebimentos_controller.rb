@@ -45,11 +45,9 @@ class RecebimentosController < ApplicationController
     #FIXME reescrever, método muito grande
     @recebimento      = Recebimento.new(params[:recebimento])
     @recebimento.percentual_dentista = 0 if @recebimento.percentual_dentista.nil?
-    if !na_quinzena?(@recebimento.data)
-      @recebimento.errors.add(:data, " : não pode ser anterior à quinzena")
-    elsif @recebimento.em_cheque?
+    if @recebimento.em_cheque?
       if !Recebimento::FORMATO_VALIDO_BR.match(params[:valor_do_cheque])
-        @recebimento.errors.add("Formato do cheque inválido!")
+        @recebimento.errors.add("Formato do valor cheque inválido!")
       else
         @cheque                 = monta_cheque
         @recebimento.cheque     = @cheque
@@ -92,9 +90,8 @@ class RecebimentosController < ApplicationController
     end
     
     Recebimento.transaction do
-      if (@recebimento.errors.size==0) && ((@recebimento.em_cheque? && @cheque.valid?) || (!@recebimento.em_cheque?))
-        @cheque.save if @cheque
-        debugger
+      if (@recebimento.valid?) && ((@recebimento.em_cheque? && @cheque.valid?) || (!@recebimento.em_cheque?))
+        @cheque.save if @recebimento.em_cheque?
         @recebimento.save 
         @recebimento2.save if @recebimento2
         @recebimento3.save if @recebimento3

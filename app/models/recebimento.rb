@@ -33,8 +33,7 @@ class Recebimento < ActiveRecord::Base
   validates_numericality_of :valor, :greater_than => 0, :message => " tem que ser numérico maior que zero."
   validates_numericality_of :percentual_dentista, :message => "deve ser um número."
 
-  validate :verifica_quinzena
-  # FIXME Retirar em producao
+  validate :verifica_quinzena, :verifica_data_do_cheque
   
   # validates_numericality_of :valor_segundo_paciente, :only => [:create, :update] , :message => "não é numérico"
   #   validates_numericality_of :valor_terceiro_paciente, :only => [:create, :update] , :message => "não é numérico"
@@ -43,15 +42,26 @@ class Recebimento < ActiveRecord::Base
   def na_quinzena?
     primeira = Date.new(Date.today.year,Date.today.month,1)
     segunda  = Date.new(Date.today.year,Date.today.month,16)
-    return false if self.data < primeira
-    return false if self.data < segunda && Date.today >= segunda
-    return true if self.data < segunda && Date.today < segunda
-    return true if self.data >= segunda && Date.today >= segunda
-    return true
+    if Date.today >= segunda
+      self.data < segunda ? false : true
+    else
+      self.data < primeira ? false : true
+    end
+    
+    # return false if self.data < segunda && Date.today >= segunda
+    # return true if self.data < segunda && Date.today < segunda
+    # return true if self.data >= segunda && Date.today >= segunda
+    # return true
+
   end
   
   def verifica_quinzena
     errors.add(:data, "Fora da quinzena : anterior ao dia #{@data_inicial.to_s_br}") if !na_quinzena?
+  end
+  
+  def verifica_data_do_cheque
+    errors.add(:data, " do cheque anterior à data do recebimento") if self.em_cheque? and self.cheque.bom_para < self.data
+    
   end
   
   def valor_real
@@ -90,11 +100,8 @@ class Recebimento < ActiveRecord::Base
   def em_cheque?
     return false if self.formas_recebimento_id.nil?
     forma = FormasRecebimento.find(self.formas_recebimento_id)
-    if forma.nil?
-      return false
-    else
-      return forma.nome.downcase=="cheque"
-    end
+    return false if forma.nil?
+    forma.nome.downcase=="cheque" ? true : false
   end
   
   def excluido?
@@ -107,16 +114,6 @@ class Recebimento < ActiveRecord::Base
   
   def pode_excluir?
     self.na_quinzena?
-  end
-  
-  def na_quinzena?
-    primeira = Date.new(Date.today.year,Date.today.month,1)
-    segunda  = Date.new(Date.today.year,Date.today.month,16)
-    return false if self.data < primeira
-    return false if self.data < segunda && Date.today >= segunda
-    return true if self.data < segunda && Date.today < segunda
-    return true if self.data >= segunda && Date.today >= segunda
-    return true
   end
   
   def observacao_do_recebimento
@@ -147,9 +144,6 @@ class Recebimento < ActiveRecord::Base
     end
   end
   
-# def cheque
-#    cheque = Cheque.find_by_recebimento_id(id)
-#  end
   def method_missing(symbol, *params)
      if (symbol.to_s =~ /^(.*)_before_type_cast$/)
        send $1
