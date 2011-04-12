@@ -54,6 +54,7 @@ class ApplicationController < ActionController::Base
   
   def administracao
     @administracao = session[:clinica_id].to_i == Clinica::ADMINISTRACAO_ID
+    @clinica_atual = Clinica.find session[:clinica_id].to_i
   end
 
   def administracao?

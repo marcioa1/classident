@@ -9,8 +9,13 @@ class EntradasController < ApplicationController
     else
       @data = Date.today
     end  
-    @entradas = Entrada.entrada.do_mes(@data).da_clinica(session[:clinica_id])
-    @remessas = Entrada.remessa.do_mes(@data).da_clinica(session[:clinica_id])
+    if @clinica_atual.administracao?
+      @entradas = Entrada.entrada_na_administracao.do_mes(@data)
+      @remessas = Entrada.entrada_na_clinica.do_mes(@data)
+    else
+      @entradas = Entrada.entrada_na_clinica.do_mes(@data).para_clinica(session[:clinica_id])
+      @remessas = Entrada.entrada_na_administracao.do_mes(@data).da_clinica(session[:clinica_id])
+    end
   end
 
   def show
@@ -18,8 +23,9 @@ class EntradasController < ApplicationController
   end
 
   def new
-    @entrada = Entrada.new
+    @entrada      = Entrada.new
     @entrada.data = Date.today
+    @clinicas     = (Clinica.all - Clinica.administracao.first(1)).collect{|c| [c.nome, c.id] }
   end
 
   def edit
@@ -32,8 +38,10 @@ class EntradasController < ApplicationController
     @entrada = Entrada.new(params[:entrada])
     @entrada.data       = params[:datepicker].to_date
     @entrada.clinica_id = session[:clinica_id]
-    if tipo=="Remessa"
-      @entrada.valor = @entrada.valor * -1
+    if @clinica_atual.administracao?
+      @entrada.clinica_destino = params[:clinia_id]
+    else
+      @entrada.clinica_destico = Clinica.administracao.first(1).id
     end
 
     if @entrada.save
@@ -63,7 +71,7 @@ class EntradasController < ApplicationController
   end
   
   def na_administracao
-    @entradas = Entrada.remessa.entre_datas(@data_inicial, @data_final)
+    @entradas = Entrada.entrada_na_administracao.entre_datas(@data_inicial, @data_final)
   end
   
   def registra_confirmacao_de_entrada
@@ -71,7 +79,7 @@ class EntradasController < ApplicationController
     entrada_ids.each do |id|
       Entrada.update(id, :data_confirmacao_da_entrada => Time.now)
     end
-    head :ok
+    render :json => Time.now.to_s_br.to_json
   end
   
 end

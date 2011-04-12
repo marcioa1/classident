@@ -1,20 +1,22 @@
 class Entrada < ActiveRecord::Base
   acts_as_audited  
   belongs_to :clinica
+  belongs_to :clinica_destino, :class_name => 'Clinica', :foreign_key => :clinica_destino
   
   validates_numericality_of :valor, :message => "is not a number"
   validates_presence_of :observacao, :message => "não pode ser vazio"
   
   named_scope :confirmado, :conditions=>['data_confirmacao_da_entrada IS NOT NULL']
   named_scope :da_clinica, lambda{|clinica_id| {:conditions=>["clinica_id = ?", clinica_id]}}
+  named_scope :para_clinica, lambda{|clinica_destino| {:conditions=>["clinica_destino = ?", clinica_destino]}}
   named_scope :do_mes, lambda{|data| {:conditions=>["data between ? and ? ", 
     data.strftime("%Y-%m-01"),data.strftime("%Y-%m-31")], :order=>:data}}
   named_scope :do_dia, lambda{|dia| {:conditions=>["data = ?",dia]}}
   named_scope :entre_datas, lambda{|data_inicial, data_final| {:conditions=>["data between ? and ? ", 
       data_inicial, data_final]}}
-  named_scope :entrada, :conditions=>["valor > 0"]
+  named_scope :entrada_na_clinica,        :conditions=>["clinica_destino <> ? ",Clinica::ADMINISTRACAO_ID]
+  named_scope :entrada_na_administracao,  :conditions=>["clinica_destino = ?", Clinica::ADMINISTRACAO_ID]
   named_scope :nao_e_resolucao_de_cheque, :conditions=>['resolucao_de_cheque IS FALSE']
-  named_scope :remessa, :conditions=>["valor < 0"]
   
   attr_accessor :valor_br
   
@@ -32,5 +34,9 @@ class Entrada < ActiveRecord::Base
   
   def remessa?
     self.valor < 0
+  end
+  
+  def nome_clinica_destino
+    
   end
 end

@@ -13,5 +13,6 @@
 <%= render :partial =>"movimentacao", :locals=>{:movimentacao=>@entradas, :titulo=>"Entrada"} %>
 <p/>
 <%= render :partial =>"movimentacao", :locals=>{:movimentacao=>@remessas, :titulo=>"Remessa"} %>
+<%= link_to 'Nova remessa' , new_entrada_path(:tipo=>'entrada') %>
 
 <% end %>

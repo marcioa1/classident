@@ -239,6 +239,17 @@ function registra_confirmacao_de_entrada(){
   });
 }
 
+function registra_confirmacao_de_movimentacao(id){
+  jQuery.ajax({
+     url : "/entradas/registra_confirmacao_de_entrada",
+     type: 'POST',
+     data: {data: id},
+     success: function(data){
+       $("#td_" + id).html(data);
+     }
+  });
+}
+
 function busca_proteticos_da_clinica(){
   $.ajax({
     url    : "/proteticos/busca_proteticos_da_clinica",

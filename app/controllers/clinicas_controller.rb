@@ -8,6 +8,7 @@ class ClinicasController < ApplicationController
     Debito.verifica_debitos_de_ortodontia(session[:clinica_id]) unless @clinica_atual.administracao?
     expire_fragment "cabecalho_#{current_user.id}"
     if @clinica_atual.administracao?
+      @administracao = true
       redirect_to administracao_path
     else  
       redirect_to pesquisa_pacientes_path

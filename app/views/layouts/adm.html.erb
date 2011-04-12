@@ -35,7 +35,7 @@
 // $(document).ready(function() {
 //   $("#tabela").tablesorter();
 // });
-</script><% if @administracao %>
+</script><% if @clinica_atual.administracao? %>
   <body style='background-color: #F6FDB8;'>
 <% else %>
   <body style='background-color: #E6EDF8;'>
@@ -51,7 +51,7 @@
         <div id="header-bottomm">
 
           <div class="menu">
-            <% if @administracao %>
+            <% if @clinica_atual.administracao? %>
               <%= render :partial=>"layouts/menu_adm" %>
             <% else %>
               <%= render :partial=>"layouts/menu_clinica" %>

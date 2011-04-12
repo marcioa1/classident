@@ -21,17 +21,21 @@ class FluxoDeCaixaController < ApplicationController
              params[:saldo_dinheiro], params[:saldo_cheque]) if params[:saldo_dinheiro]
       end
     end
-    if @administracao
+
+    if @clinica_atual.administracao?
       @recebimentos = []
       @cheques      = Cheque.por_bom_para.na_administracao.
                entre_datas(@fluxo.data,@fluxo.data).nao_excluidos
+      @entradas     = Entrada.entrada_na_administracao.do_mes(@data)
+      @remessas     = Entrada.entrada_na_clinica.do_mes(@data)
     else
+      @entradas     = Entrada.entrada_na_clinica.do_mes(@data).da_clinica(session[:clinica_id])
+      @remessas     = Entrada.entrada_na_administracao.do_mes(@data).da_clinica(session[:clinica_id])
       @recebimentos = Recebimento.da_clinica(session[:clinica_id]).no_dia(@fluxo.data).nao_excluidos.nas_formas(FormasRecebimento.dinheiro_ou_cheque)
       @cheques      = []
     end
+
     @pagamentos   = Pagamento.da_clinica(session[:clinica_id]).no_dia(@fluxo.data).no_livro_caixa.nao_excluidos
-    @entradas     = Entrada.entrada.da_clinica(session[:clinica_id]).do_dia(@fluxo.data)
-    @remessas     = Entrada.remessa.da_clinica(session[:clinica_id]).do_dia(@fluxo.data)
     @lancamentos  = @recebimentos + @pagamentos + @entradas + @remessas + @cheques
     @entradas_adm = []
     if @administracao

@@ -1,26 +1,50 @@
 <Fieldset class='fieldset_50'>
-<legend><%= titulo %> de dinheiro <%= titulo=="Entrada" ? ' ( da administração para a clínica )' : ' ( da clínica para a administraçao ) '%></legend>
+<legend>
+  <% if titulo=="Entrada" %>
+    <% if @clinica_atual.administracao? %>
+       <%= ' Entrada das clínicas para a administração ' %>
+    <% else %>
+       <%=  ' Entrada da administração para a clínica  ' %>
+    <% end %>
+  <% else %>
+    <% if @clinica_atual.administracao? %>
+       <%= ' Remessa da administração para a clínica ' %>
+    <% else %>
+       <%= ' Remessa da clínica para a administração' %>
+    <% end %>
+  <% end %>
+</legend>
 
 <table class='tabela'>
   <tr>
+    <th width='120px'>Clínica</th>
     <th width="100px">Data</th>
     <th width="100px">Valor</th>
     <th width="200px">Observação</th>
-    <% if titulo.downcase == 'remessa'%>
-      <th width='200px'>Confirmado</th>
-    <% end %>
+    <th width='200px'>Confirmado</th>
     <th>&nbsp;</th>
     <th>&nbsp;</th>
   </tr>
 
 <% movimentacao.each do |mov| %>
   <tr>
+    <td>
+      <% if titulo.downcase == 'remessa'%>
+        <%= mov.clinica_destino.nome %>
+      <% else %>
+        <%= mov.clinica.nome %>
+      <% end %>
+    </td>
     <td align="center"><%=h mov.data.to_s_br %></td>
     <td align="right"><%=h mov.valor.abs.real %></td>
     <td><%=h mov.observacao %></td>
-    <% if titulo.downcase == 'remessa'%>
-      <td align='center'><%=h mov.data_confirmacao_da_entrada.to_s_br if mov.data_confirmacao_da_entrada %></td>
-    <% end %>
+    <td id="td_<%= mov.id %>" align='center'>
+      <% if mov.data_confirmacao_da_entrada %>
+        <%=h mov.data_confirmacao_da_entrada.to_s_br %>
+      <% else %>
+        <%= link_to_function "confirma", "registra_confirmacao_de_movimentacao(#{mov.id});" if titulo.downcase != 'remessa'%>
+      <% end %>
+    </td>
     <td><%= link_to 'editar', edit_entrada_path(mov), :class=>'ui-icon ui-icon-pencil' , :title=>'editar' if !mov.confirmada? %></td>
     <td><%= link_to 'excluir', mov, :confirm => 'Tem certeza ?', :method => :delete , :class=>'ui-icon ui-icon-trash' , :title=>'excluir'if !mov.confirmada?%></td>
   </tr>
@@ -29,5 +53,4 @@
 
 <br />
 
-<%= link_to 'Nova ' + titulo, new_entrada_path(:tipo=>titulo) %>
 </fieldset>

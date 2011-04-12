@@ -10,14 +10,22 @@
     <%= f.label :data %> :
     <%= text_field_tag :datepicker, @entrada.data.to_s_br,  :size=>10, :class=> 'txt' %>
   </div>
+  <% if @clinica_atual.administracao? %>
+  <div>
+    <%= f.label :clinica %> :
+    <%= select_tag :clinica_id, options_for_select(@clinicas)%>
+  </div>
+  <% end %>
   <div>
     <%= f.label :valor %> :
     <%= f.text_field :valor_br, :size=>10, :class=> 'txt' %>
   </div>
-  <div>
-    <%= f.check_box :resolucao_de_cheque %>
-    <%= f.label 'Resolução de cheque'%>
-  </div>
+  <% if !@clinica_atual.administracao? %>
+    <div>
+      <%= f.check_box :resolucao_de_cheque %>
+      <%= f.label 'Resolução de cheque'%>
+    </div>
+  <% end %>
   <div>
     <%= f.label :observação %> :
     <%= f.text_field :observacao, :size=>30, :class=> 'txt' %>
