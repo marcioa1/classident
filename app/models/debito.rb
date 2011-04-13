@@ -8,7 +8,7 @@ class Debito < ActiveRecord::Base
   validate :verifica_quinzena
   #FIXME retirar em producao
   
-  attr_accessor :data_br
+  attr_accessor :data_br, :valor_real
   
   def data_br
     self.data = Date.today if self.data.nil?
@@ -19,6 +19,14 @@ class Debito < ActiveRecord::Base
     self.data = data.to_date if Date.valid?(data)
   end
   
+  def valor_real
+    self.valor.real
+  end
+  
+  def valor_real=(valor)
+    self.valor = valor.gsub('.','').gsub(',', '.')
+  end
+
   def self.cria_debitos_do_orcamento(orcamento_id)
     orcamento = Orcamento.find(orcamento_id)
     (1..orcamento.numero_de_parcelas).each do |par|

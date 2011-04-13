@@ -87,10 +87,7 @@ class TratamentosController < ApplicationController
   def destroy
     paciente  = @tratamento.paciente
     if @tratamento.pode_excluir?
-      if @tratamento.data
-        debito = Debito.find_by_tratamento_id(@tratamento.id)
-        debito.destroy if debito
-      end
+      Debito.find_by_tratamento_id(@tratamento.id).try(:destroy) if @tratamento.data
       @tratamento.destroy
     end
     redirect_to(abre_paciente_path(paciente) )
