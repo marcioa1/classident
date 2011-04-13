@@ -14,6 +14,7 @@ class FluxoDeCaixaController < ApplicationController
       @fluxo = FluxoDeCaixa.da_clinica(session[:clinica_id]).first
     end
     if params[:data]
+      @data = params[:data].to_date
       if @fluxo.data > params[:data].to_date
         @fluxo = FluxoDeCaixa.voltar_para_a_data(params[:data].to_date, session[:clinica_id])
       else
@@ -21,10 +22,10 @@ class FluxoDeCaixaController < ApplicationController
              params[:saldo_dinheiro], params[:saldo_cheque]) if params[:saldo_dinheiro]
       end
     end
-    if @data.nil?
-       @data = Date.today
-    end
-# raise @data.inspect
+    # if @data.nil?
+    #    @data = Date.today
+    # end
+
     if @clinica_atual.administracao?
       @recebimentos = []
       @cheques      = Cheque.por_bom_para.na_administracao.
@@ -32,8 +33,8 @@ class FluxoDeCaixaController < ApplicationController
       @entradas     = Entrada.entrada_na_administracao.do_dia(@data)
       @remessas     = Entrada.entrada_na_clinica.do_dia(@data)
     else
-      @entradas     = Entrada.entrada_na_clinica.do_dia(@data).da_clinica(session[:clinica_id])
-      @remessas     = Entrada.entrada_na_administracao.do_dia(@data).da_clinica(session[:clinica_id])
+      @entradas     = Entrada.entrada_na_clinica(session[:clinica_id]).do_dia(@data)#.da_clinica(session[:clinica_id])
+      @remessas     = Entrada.entrada_na_administracao.do_dia(@data)#.da_clinica(session[:clinica_id])
       @recebimentos = Recebimento.da_clinica(session[:clinica_id]).no_dia(@fluxo.data).nao_excluidos.nas_formas(FormasRecebimento.dinheiro_ou_cheque)
       @cheques      = []
     end

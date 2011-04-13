@@ -14,7 +14,7 @@ class Entrada < ActiveRecord::Base
   named_scope :do_dia, lambda{|dia| {:conditions=>["data = ?",dia]}}
   named_scope :entre_datas, lambda{|data_inicial, data_final| {:conditions=>["data between ? and ? ", 
       data_inicial, data_final]}}
-  named_scope :entrada_na_clinica,        :conditions=>["clinica_destino <> ? ",Clinica::ADMINISTRACAO_ID]
+  named_scope :entrada_na_clinica, lambda{|clinica_id| {:conditions=>["clinica_destino = ? ",clinica_id]}}
   named_scope :entrada_na_administracao,  :conditions=>["clinica_destino = ?", Clinica::ADMINISTRACAO_ID]
   named_scope :nao_e_resolucao_de_cheque, :conditions=>['resolucao_de_cheque IS FALSE']
   
@@ -32,8 +32,8 @@ class Entrada < ActiveRecord::Base
     data_confirmacao_da_entrada.present?  
   end
   
-  def remessa?
-    self.valor < 0
+  def remessa?(clinica_id)
+    Clinica.find(clinica_id).administracao? ?  self.clinica_id == 1 : self.clinica_id > 1 
   end
   
   def nome_clinica_destino

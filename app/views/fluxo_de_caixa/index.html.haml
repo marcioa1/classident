@@ -137,15 +137,18 @@
             %td{ :align => "right" }
               = saldo_cheque.real
         - when "Entrada"
-          - saldo_dinheiro += lancamento.valor
-          - if lancamento.remessa?
+          - if lancamento.remessa?(session[:clinica_id])
             %td= "Remessa, " +lancamento.observacao
             %td &nbsp
             %td{ :align => "right", :style => 'color: red;'}= lancamento.valor.real * (-1)
+            - saldo_dinheiro -= lancamento.valor
+            - total_de_debito_em_dinheiro -= lancamento.valor
           - else
             %td= "Entrada, " +lancamento.observacao
             %td{ :align => "right"}= lancamento.valor.real
             %td &nbsp;
+            - saldo_dinheiro += lancamento.valor
+            - total_de_credito_em_dinheiro += lancamento.valor
           %td &nbsp;
           %td &nbsp;
           %td &nbsp;
