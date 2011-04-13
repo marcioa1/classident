@@ -7,7 +7,7 @@ class ApplicationController < ActionController::Base
   filter_parameter_logging :password, :password_confirmation
   helper_method :current_user_session, :current_user
   before_filter :administracao
-  before_filter :busca_clinica_atual
+  before_filter :busca_clinica_atual, :busca_clinicas
   
 
   def quinzena
@@ -54,7 +54,7 @@ class ApplicationController < ActionController::Base
   
   def administracao
     @administracao = session[:clinica_id].to_i == Clinica::ADMINISTRACAO_ID
-    @clinica_atual = Clinica.find session[:clinica_id].to_i
+    @clinica_atual = Clinica.find session[:clinica_id].to_i if session[:clinica_id]
   end
 
   def administracao?
@@ -127,16 +127,16 @@ class ApplicationController < ActionController::Base
     end
 
     def busca_clinicas
-      clinicas = []
+      @clinicas = []
       if !Rails.cache.read(Clinica::ADMINISTRACAO_ID.to_s)
         Clinica.all.each do |clinica|
-          clinicas << clinica
+          @clinicas << clinica
           Rails.cache.write("clinica_#{clinica.id}",clinica, :expires_in => 14.hours) 
         end
       else
         (1..Clinica::NUMERO_DE_CLINICAS).each { |ind| clinicas << Rails.cache.read("clinica_#{ind}") }
       end
-      clinicas
+      @clinicas
     end
     
     def verifica_horario_de_trabalho

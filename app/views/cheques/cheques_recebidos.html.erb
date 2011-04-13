@@ -4,7 +4,7 @@
   <h3>Cheques recebidos</h3>
   <%= @cheques.size %> Cheques recebidos
 <% form_tag cheques_recebidos_cheques_path do %>
-  <% if @administracao %>
+  <% if @clinica_atual.administracao? %>
     <p><%= render :partial =>'clinicas/opcoes', :locals => {:clinicas => @clinicas} %></p>
   <% end %>
   <p>

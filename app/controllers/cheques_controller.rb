@@ -79,7 +79,7 @@ class ChequesController < ApplicationController
       @status << ["recebidos pela administração", "recebidos pela administração"]
     # end
     @cheques = []
-    if @administracao
+    if @clinica_atual.administracao?
       selecionadas = []
       @clinicas.each do |clinica|
         selecionadas << clinica.id if params["clinica_#{clinica.id}".to_sym]
