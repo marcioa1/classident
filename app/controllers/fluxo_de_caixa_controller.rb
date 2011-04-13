@@ -21,16 +21,19 @@ class FluxoDeCaixaController < ApplicationController
              params[:saldo_dinheiro], params[:saldo_cheque]) if params[:saldo_dinheiro]
       end
     end
-
+    if @data.nil?
+       @data = Date.today
+    end
+# raise @data.inspect
     if @clinica_atual.administracao?
       @recebimentos = []
       @cheques      = Cheque.por_bom_para.na_administracao.
                entre_datas(@fluxo.data,@fluxo.data).nao_excluidos
-      @entradas     = Entrada.entrada_na_administracao.do_mes(@data)
-      @remessas     = Entrada.entrada_na_clinica.do_mes(@data)
+      @entradas     = Entrada.entrada_na_administracao.do_dia(@data)
+      @remessas     = Entrada.entrada_na_clinica.do_dia(@data)
     else
-      @entradas     = Entrada.entrada_na_clinica.do_mes(@data).da_clinica(session[:clinica_id])
-      @remessas     = Entrada.entrada_na_administracao.do_mes(@data).da_clinica(session[:clinica_id])
+      @entradas     = Entrada.entrada_na_clinica.do_dia(@data).da_clinica(session[:clinica_id])
+      @remessas     = Entrada.entrada_na_administracao.do_dia(@data).da_clinica(session[:clinica_id])
       @recebimentos = Recebimento.da_clinica(session[:clinica_id]).no_dia(@fluxo.data).nao_excluidos.nas_formas(FormasRecebimento.dinheiro_ou_cheque)
       @cheques      = []
     end
