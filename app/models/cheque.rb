@@ -10,6 +10,7 @@ class Cheque < ActiveRecord::Base
   validates_presence_of :banco, :on => :create, :message => "Não pode ser vazio"
   validates_presence_of :numero, :on => :create, :message => "Não pode ser vazio"
   validates_presence_of :valor, :message => "can't be blank"
+  validates_presence_of :bom_para,  :message => "Não pode ser vazio"
   validates_numericality_of :valor, :greater_then => 0, :message => "valor tem que ser maior que zero."
   
   named_scope :ate_a_data, lambda {|data| {:conditions => ['bom_para <= ?', data]}}

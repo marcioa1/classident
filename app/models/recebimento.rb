@@ -60,8 +60,8 @@ class Recebimento < ActiveRecord::Base
   end
   
   def verifica_data_do_cheque
-    errors.add(:data, " do cheque anterior à data do recebimento") if self.em_cheque? and self.cheque.bom_para < self.data
-    
+    errors.add(:data, " data do cheque não pode ser vazia") if self.em_cheque? && self.cheque.bom_para.nil?
+    errors.add(:data, " do cheque anterior à data do recebimento") if self.em_cheque? && self.cheque.bom_para && self.cheque.bom_para < self.data
   end
   
   def valor_real

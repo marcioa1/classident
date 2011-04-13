@@ -295,7 +295,7 @@ class RecebimentosController < ApplicationController
   
   def monta_cheque
     @cheque                 = Cheque.new
-    @cheque.bom_para        = params[:datepicker2].to_date
+    @cheque.bom_para        = params[:bom_para_br].to_date if params[:bom_para_br] && Date.valid?(params[:bom_para_br])
     @cheque.clinica_id      = session[:clinica_id]
     @cheque.banco_id        = params[:banco].to_i
     @cheque.agencia         = params[:agencia]
