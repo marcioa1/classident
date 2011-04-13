@@ -41,6 +41,8 @@
           = saldo.real
         %td &nbsp;
         %td &nbsp;
+        - if @paciente.ortodontia?
+          %td &nbsp;
         - if lancamento.pode_excluir?
           %td
             = link_to 'Excluir', lancamento, :confirm => 'Tem certeza da exclusão deste débito ?', :method => :delete , :class=>'ui-icon ui-icon-trash', :title=>'excluir'
@@ -90,7 +92,7 @@
     - cor =  saldo >= 0 ? "black" : "red"
     %td{ :align => "right", :style => "color: #{cor}" }
       = saldo.real
-    %td{ :colspan => "3" }
+    %td{ :colspan => "4" }
       &nbsp;
 = render :partial => 'cheques/cheques_do_paciente' if !@paciente.cheques.empty?
 = render :partial => 'cheques/devolvidos_do_paciente' if !@paciente.cheques_devolvidos.empty?
