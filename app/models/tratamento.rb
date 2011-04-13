@@ -6,6 +6,7 @@ class Tratamento < ActiveRecord::Base
   belongs_to :clinica
   belongs_to :orcamento
   has_many   :trabalho_proteticos
+  has_one    :debito
   
   named_scope :da_clinica, lambda{|clinicas| {:conditions=>["clinica_id in (?)",clinicas]}}
   named_scope :dentistas_entre_datas, 
@@ -89,7 +90,7 @@ class Tratamento < ActiveRecord::Base
   end
   
   def pode_excluir?
-    pode_alterar? && self.data.nil?
+    pode_alterar? #&& self.data.nil?
   end
   
   def pode_alterar?
