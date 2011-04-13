@@ -32,7 +32,7 @@
     <%= f.text_field :bom_para_br,  :size=>10, :class => 'datepicker' %>
   </div>
  <p>
-    <%= check_box_tag :uma_devolucao, 1, checked=@cheque.devolvido_uma_vez? , options={ :onclick=>"abre_uma_devolucao();", :disabled=>!@administracao }%> devolvido uma vez
+    <%= check_box_tag :uma_devolucao, 1, checked=@cheque.devolvido_uma_vez? , options={ :onclick=>"abre_uma_devolucao();", :disabled=>!@clinica_atual.administracao? }%> devolvido uma vez
  </p>
  <%# @cheque.data_primeira_devolucao = Date.today %>
   <% if @cheque.devolvido_uma_vez? %>
@@ -53,7 +53,7 @@
     </fieldset>
   </div>
     <p>
-        <%= check_box_tag :reapresentacao, 'reapresentado', checked=@cheque.reapresentado? , options={ :onclick=>"abre_reapresentacao();", :disabled=>!@administracao }%> reapresentado
+        <%= check_box_tag :reapresentacao, 'reapresentado', checked=@cheque.reapresentado? , options={ :onclick=>"abre_reapresentacao();", :disabled=>!@clinica_atual.administracao? }%> reapresentado
      </p>
     <% if @cheque.reapresentado? %>
       <div id="reapresentado" >
@@ -68,7 +68,7 @@
       </div>
       </fieldset>
         <p>
-            <%= check_box_tag :segunda_devolucao, 1, checked=@cheque.devolvido_duas_vezes? , options={ :onclick=>"abre_segunda_devolucao();", :disabled=>!@administracao }%> segunda devolução
+            <%= check_box_tag :segunda_devolucao, 1, checked=@cheque.devolvido_duas_vezes? , options={ :onclick=>"abre_segunda_devolucao();", :disabled=>!@clinica_atual.administracao? }%> segunda devolução
          </p>
         <% if @cheque.devolvido_duas_vezes? %>
           <div id="devolvido_duas_vezes" >
@@ -87,13 +87,13 @@
   <% if @cheque.entregue_a_administracao? %>
   <p>Entregue à Administração em <%= @cheque.data_entrega_administracao.to_s_br %></p>
   <% end %>
-  <% if @cheque.recebimentos.size == 1 &&  (!@cheque.entregue_a_administracao? || @administracao) && !@cheque.para_mais_de_um_paciente? %>
+  <% if @cheque.recebimentos.size == 1 &&  (!@cheque.entregue_a_administracao? || @clinica_atual.administracao?) && !@cheque.para_mais_de_um_paciente? %>
     <p>
       Ao alterar o valor deste cheque, o valor de respectivo recebimento também será alterado, juntamente com o extrato do paciente
     </p>
   <% end %>
   <p>
-    <%= f.submit 'Update' unless (@cheque.entregue_a_administracao? && !@administracao) || @cheque.para_mais_de_um_paciente? %>
+    <%= f.submit 'Update' unless (@cheque.entregue_a_administracao? && !@clinica_atual.administracao?) || @cheque.para_mais_de_um_paciente? %>
   </p>
 <% end %>
 <%= link_to 'adiciona observação', new_acompanhamento_cheque_path(:cheque_id => @cheque.id) %>

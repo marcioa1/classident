@@ -18,7 +18,7 @@
   <% end %>
   <%= stylesheet_link_merged :base %>
 </head>
-<% if @administracao %>
+<% if @clinica_atual.administracao? %>
   <body style='background-color: #F6FDB8;'>
 <% else %>
   <body style='background-color: #E6EDF8;'>
@@ -35,7 +35,7 @@
     
     <div id="principal">
         <div class="pd_menu_01">
-            <% if @administracao %>
+            <% if @clinica_atual.administracao? %>
               <%= render :partial=>"layouts/menu_adm" %>
             <% else %>
               <%= render :partial=>"layouts/menu_clinica" %>

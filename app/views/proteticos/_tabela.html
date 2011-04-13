@@ -8,7 +8,7 @@
   </tr> 
 <% @protetico.tabela_proteticos.each do |item| %>
   <tr>
-    <td><% if @administracao %>
+    <td><% if @clinica_atual.administracao? %>
           <%= link_to item.descricao, edit_tabela_protetico_path(item) %>
         <% else %>
           <%= link_to item.descricao, edit_tabela_protetico_path(item) %>
@@ -20,4 +20,4 @@
 <% end %>
 </table>
 <br/>
-<%= link_to "novo item", new_tabela_protetico_path(:protetico_id=>@protetico.id) if @administracao%>
+<%= link_to "novo item", new_tabela_protetico_path(:protetico_id=>@protetico.id) if @clinica_atual.administracao?%>

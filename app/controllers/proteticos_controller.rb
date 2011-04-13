@@ -9,7 +9,7 @@ class ProteticosController < ApplicationController
   def index
     params[:ativo] = 'true' if params[:ativo].nil?
     
-    if @administracao
+    if @clinica_atual.administracao?
       if params[:ativo] == 'true'
         @proteticos = Protetico.por_nome.ativos
       else
@@ -65,7 +65,7 @@ class ProteticosController < ApplicationController
     session[:reload] = false
     session[:origem] = abre_protetico_path(@protetico.id)
     @clinicas = Clinica.por_nome - Clinica.administracao
-    if @administracao
+    if @clinica_atual.administracao?
       @trabalhos_pendentes  = TrabalhoProtetico.do_protetico(@protetico.id).pendentes
       @trabalhos_devolvidos = TrabalhoProtetico.do_protetico(@protetico.id).devolvidos.
              nao_pagos.por_data_de_devolucao.a_partir_de('2011-02-01')

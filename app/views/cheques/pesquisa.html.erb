@@ -32,7 +32,7 @@
     <th width='70px'>Valor</th>
     <th width='330px'>Paciente</th>
     <th>Situação</th>
-    <% if @administracao %>
+    <% if @clinica_atual.administracao? %>
       <th>Clínica</th>
     <% end %>
     <% @cheques.each do |cheque| %>
@@ -51,7 +51,7 @@
             <%=  cheque.status %>
           <% end %>
         </td>
-        <% if @administracao %>
+        <% if @clinica_atual.administracao? %>
           <td><%= cheque.clinica.nome %></td>
         <% end %>
       </tr>

@@ -1,7 +1,7 @@
-- if !@administracao
+- if !@clinica_atual.administracao?
   = link_to "Novo recebimento", new_recebimento_path(:paciente_id=>@paciente.id)
   | 
-  = link_to "Novo débito", new_debito_path(:paciente_id=>@paciente.id) if !@administracao
+  = link_to "Novo débito", new_debito_path(:paciente_id=>@paciente.id) if !@clinica_atual.administracao?
   |
   = link_to "Imprime", "#", :onclick=>"imprime_extrato(#{@paciente.id}, #{@paciente.clinica_id})", :class => 'ui-icon ui-icon-print', :style=>'display: inline-block;'
 %p

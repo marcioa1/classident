@@ -1,4 +1,4 @@
-<% if @administracao %>
+<% if @clinica_atual.administracao? %>
   <br/>
   Clínicas :  
   <% @dentista.clinicas.each() do |clinica| %>

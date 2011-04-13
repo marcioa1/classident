@@ -12,7 +12,7 @@ class PacientesController < ApplicationController
   end
 
   def new
-    if @administracao
+    if @clinica_atual.administracao?
       redirect_to administracao_path
     else
       @paciente      = Paciente.new(:inicio_tratamento => Date.current)
@@ -63,7 +63,7 @@ class PacientesController < ApplicationController
     session[:paciente_id] = nil
     @pacientes = []
     if !params[:codigo].blank?
-      if @administracao
+      if @clinica_atual.administracao?
         @pacientes = Paciente.all(:conditions=>["codigo=?", params[:codigo]], :order=>:nome)
       else
         @pacientes = Paciente.all(:conditions=>["clinica_id=? and codigo=?", session[:clinica_id].to_i, params[:codigo].to_i],:order=>:nome)
@@ -81,14 +81,14 @@ class PacientesController < ApplicationController
   
   
   def pesquisa_nomes
-    if @administracao
+    if @clinica_atual.administracao?
       nomes = Paciente.all(:select=>'nome,clinica_id', :conditions=>["nome like ?", "#{params[:term].nome_proprio}%" ])  
     else
       nomes = Paciente.all(:select=>'nome,clinica_id', :conditions=>["nome like ? and clinica_id = ? ", "#{params[:term].nome_proprio}%", session[:clinica_id] ])  
     end
     result = []
     nomes.each do |pac|
-      if @administracao
+      if @clinica_atual.administracao?
         result << pac.nome + ', ' + Clinica.find(pac.clinica_id).sigla
       else
         result << pac.nome 
@@ -98,9 +98,15 @@ class PacientesController < ApplicationController
   end
   
   def abre
+    # raise params.inspect
     if params[:nome]
       nome_sem_clinica = params[:nome].split(',')[0].strip
-      @paciente = Paciente.find_by_nome_and_clinica_id(nome_sem_clinica, session[:clinica_id])
+      if @clinica_atual.administracao?
+        clinica_id = Clinica.find_by_sigla(params[:nome].split(',')[1].strip)
+      else
+        clinica_id = session[:clinica_id]
+      end
+      @paciente = Paciente.find_by_nome_and_clinica_id(nome_sem_clinica, clinica_id)
       Rails.cache.write(@paciente.id.to_s, @paciente, :expires_in => 2.minutes) 
     else
       @paciente =  Paciente.busca_paciente(params[:id])
@@ -121,7 +127,7 @@ class PacientesController < ApplicationController
   
   def nomes_que_iniciam_com
     if params[:nome]
-      if @administracao
+      if @clinica_atual.administracao?
         @pacientes = Paciente.all(:conditions=>["nome like ?", params[:nome] + '%'],:order=>:nome)
       else
         @pacientes = Paciente.all(:conditions=>["clinica_id= ? and nome like ?", session[:clinica_id].to_i, params[:nome] + '%'],:order=>:nome)

@@ -47,13 +47,7 @@ class ApplicationController < ActionController::Base
     session[:action] = params[:controller]+','+params[:action]
   end 
   
-  
-  # def @administracao
-  #     session[:clinica_id].to_i == 10
-  #   end
-  
   def administracao
-    @administracao = session[:clinica_id].to_i == Clinica::ADMINISTRACAO_ID
     @clinica_atual = Clinica.find session[:clinica_id].to_i if session[:clinica_id]
   end
 

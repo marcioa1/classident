@@ -16,7 +16,7 @@
         Dentista
       %th{:width=>'90px;'}
         Clínica
-      - if @administracao
+      - if @clinica_atual.administracao?
         %th{:width=>'90px;'}
           Selecionar
           %br
@@ -34,7 +34,7 @@
         %td{:align=>'right'}=tratamento.custo.real.to_s
         %td{:align=>'right'}=tratamento.valor_dentista.real.to_s
         %td{:align=>'right'}=tratamento.valor_clinica.real.to_s
-        - if @administracao
+        - if @clinica_atual.administracao?
           %td{:align=>'center'}
             ="<input type='checkbox' id='pagar_dentista_" + tratamento.id.to_s + "' onclick= 'pagar_dentista("+tratamento.valor_dentista.to_s+ "," + tratamento.id.to_s + "," +  tratamento.dentista.id.to_s + ")'"
 

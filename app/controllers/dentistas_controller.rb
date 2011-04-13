@@ -6,7 +6,7 @@ class DentistasController < ApplicationController
 
   def index
     params[:ativo] = "true" if params[:ativo].nil?
-    if @administracao 
+    if @clinica_atual.administracao? 
       if params[:ativo]=="true"
         @dentistas = Dentista.por_nome.ativos
       else
@@ -130,7 +130,7 @@ class DentistasController < ApplicationController
   
   def pesquisar
     params[:ativo] = "true" if params[:ativo].nil?
-     if @administracao 
+     if @clinica_atual.administracao? 
        @dentistas = Dentista.por_nome
     else
        if params[:ativo]=="true"

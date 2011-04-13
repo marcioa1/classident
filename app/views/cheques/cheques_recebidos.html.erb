@@ -25,7 +25,7 @@
 
 <table id='table' class='tabela'>
   <tr>
-    <% if @administracao %>
+    <% if @clinica_atual.administracao? %>
       <th>Clí.</th>
     <% end %>
     <th>Bom para</th>
@@ -41,7 +41,7 @@
   <% total = 0 %>
   <% for cheque in @cheques do %>
     <tr class=<%=cheque.status_class%> id="tr_<%=cheque.id%>">
-    <% if @administracao %>
+    <% if @clinica_atual.administracao? %>
       <% dados += "#{cheque.clinica.nome};#{cheque.bom_para.to_s_br};#{cheque.nome_dos_pacientes}; #{cheque.valor.real};#{cheque.banco && cheque.banco.nome};#{cheque.numero};#{cheque.status}>" %>
       <td><%= cheque.clinica.sigla %></td>
     <% else %>
@@ -49,7 +49,7 @@
 
     <% end %>
     <td align="center">
-      <% if  @administracao %>
+      <% if  @clinica_atual.administracao? %>
         <%= link_to cheque.bom_para.to_s_br, edit_cheque_path(cheque) %>
       <% else %>
         <%= link_to cheque.bom_para.to_s_br, edit_cheque_path(cheque) %>
@@ -61,7 +61,7 @@
     <td><%= cheque.agencia  %></td>
     
     <td><%= cheque.numero %></td>
-    <% if @administracao %>
+    <% if @clinica_atual.administracao? %>
       <td>
          <% if cheque.entregue_a_administracao? %>
            &nbsp;
@@ -92,7 +92,7 @@
   <% total += cheque.valor %>
   <% end %>
   <tr>
-    <% if @administracao %>
+    <% if @clinica_atual.administracao? %>
       <td colspan="3" align="center">Total</td>
       <td align="right"><%= total.real%></td>
       <td colspan="3" align="right">&nbsp;</td>
@@ -104,7 +104,7 @@
     <% else %>
       <td colspan="2" align="center">Total</td>
       <td align="right"><%= total.real%></td>
-      <td colspan="6" align="right"><%= link_to_function "enviar cheques selecionados p/ administração" , "enviar_administracao();"  if params[:status]=="disponíveis" && !@administracao %></td>
+      <td colspan="6" align="right"><%= link_to_function "enviar cheques selecionados p/ administração" , "enviar_administracao();"  if params[:status]=="disponíveis" && !@clinica_atual.administracao? %></td>
     <% end %>
     
   </tr>

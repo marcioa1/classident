@@ -1,7 +1,7 @@
 <% content_for :main do %>
 <h3>Listando dentistas</h3>
 <p>
-<%= link_to 'Novo dentista', new_dentista_path if @administracao%>
+<%= link_to 'Novo dentista', new_dentista_path if @clinica_atual.administracao?%>
 </p>
 <% form_tag dentistas_path, :method=>:get do %>
   <p>
@@ -48,6 +48,6 @@
 
 <br />
 
-<%= link_to 'Novo dentista', new_dentista_path if @administracao %>
+<%= link_to 'Novo dentista', new_dentista_path if @clinica_atual.administracao? %>
 
 <% end %>

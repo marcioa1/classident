@@ -41,7 +41,7 @@
     <% end %>
   </fieldset>
   <p>
-    <%= f.submit 'alterar' if @administracao %>
+    <%= f.submit 'alterar' if @clinica_atual.administracao? %>
   </p>
 <% end %>
 </fieldset><br/>

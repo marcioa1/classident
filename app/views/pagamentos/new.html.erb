@@ -52,7 +52,7 @@
         <%= f.text_field :valor_cheque, :size=>8 %>
       </fieldset>
     </div>
-    <% if @administracao && @dentista.present? %>
+    <% if @clinica_atual.administracao? && @dentista.present? %>
     <div id="custo_das_clinicas" style="display:true">
       <fieldset>
         <legend>Custos das clínicas</legend>
