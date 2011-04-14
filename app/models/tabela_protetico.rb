@@ -8,6 +8,7 @@ class TabelaProtetico < ActiveRecord::Base
   
   attr_accessor :valor_br
 
+  validates_presence_of :descricao, :message => "A descrição é obrigatória"
   # validates_numericality_of :valor_br, :only => [:create, :update], :message => "não numérico"
   
   
