@@ -176,7 +176,7 @@ class Cheque < ActiveRecord::Base
     return false if devolvido_duas_vezes? and !solucionado?
     return false if spc?
     return false if arquivo_morto?
-    return false if devolvido_uma_vez? and reapresentado? and !devolvido_duas_vezes?
+    return false if devolvido_uma_vez? and reapresentado? and devolvido_duas_vezes?
     return true
   end
   

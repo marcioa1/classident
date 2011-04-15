@@ -18,11 +18,11 @@
   </p>
   <p>
     <%= f.label :data_de_envio %><br />
-    <%= text_field_tag :datepicker, @trabalho_protetico.data_de_envio.to_s_br, :size=>10 %>
+    <%= f.text_field :data_envio_pt, :size=>10, :class=>'datepicker txt' %>
   </p>
   <p>
     <%= f.label :data_prevista_de_devolução %><br />
-    <%= text_field_tag :datepicker2, @trabalho_protetico.data_prevista_de_devolucao.to_s_br, :size=>10 %>
+    <%= f.text_field :data_prevista_de_devolucao_pt, :size=>10, :class=>'datepicker txt' %>
   </p>
   <p>
     <%= f.label :data_de_devolução %><br />
