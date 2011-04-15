@@ -1,7 +1,7 @@
 class TabelasController < ApplicationController
   layout "adm"
   before_filter :require_user
-  before_filter :find_tabela, :only => [:show, :edit, :update, :destroy, :reativar]
+  before_filter :find_tabela, :only => [:show, :edit, :update, :destroy, :reativar, :desativar]
 
   def index
     if params[:ativa] == 'nao'
@@ -54,6 +54,11 @@ class TabelasController < ApplicationController
     @tabela.ativa = true
     @tabela.save
     redirect_to(tabelas_url) 
+  end
+  
+  def desativar
+    @tabela.update_attribute('ativa',false)
+    head :ok
   end
   
   def print

@@ -43,7 +43,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :pagamentos, :collection=>{:pagamentos_de_hoje=>:get, :relatorio=>:get, :registra_pagamento_a_protetico=>:get},
                     :member => {:exclusao=>:get, :exclui=>:post}
   map.resources :precos
-  map.resources :proteticos, :member=>{:abre=>:get, :pagamentos=>:get}, 
+  map.resources :proteticos, :member=>{:abre=>:get, :pagamentos=>:get, :desativar=>:get}, 
         :collection=>{:busca_tabela=>:get, :relatorio=>:get, :trabalhos_por_clinica => :get, 
                       :busca_proteticos_da_clinica => :get, :pagamentos_feitos => :get,
                       :busca_trabalhos_devolvidos => :get, :busca_trabalhos_liberados => :get}
@@ -56,7 +56,7 @@ ActionController::Routing::Routes.draw do |map|
   map.cadastra_senha '/cadastra_senha', :controller=>'senhas', :action=>'cadastra' 
   map.salva_senha '/salva_senha', :controller => 'senhas', :action => 'salva'
   map.resources :tabelas, :collection=>{:print=>:get },
-                  :member => {:reativar => :get}
+                  :member => {:reativar => :get, :desativar=>:get}
 
   map.resources :tabelas do |item|
      item.resources :item_tabelas

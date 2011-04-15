@@ -16,12 +16,20 @@
     <th>Ativa</th>
     <th>&nbsp;</th>
     <th>&nbsp;</th>
+    <th>&nbsp;</th>
   </tr>
 <% @tabelas.each do |tabela| %>
-  <tr>
+  <tr id = <%= "tr_#{tabela.id}" %>>
     <td><%= link_to tabela.nome, item_tabelas_path(:tabela_id=>tabela.id) %></td>
     <td><%= tabela.clinica.nome %></td>
     <td><%= tabela.ativa ? "sim" : "não" %></td>
+    <td>
+      <% if tabela.ativa %>
+        <%= link_to_function 'desativar' , "desativar_tabela(#{tabela.id})" %>
+      <% else %>
+        &nbsp;
+      <% end %>
+    </td>
     <td><%= link_to 'Editar', edit_tabela_path(tabela)  %></td>
     <td><% if params[:ativa] == 'nao'%>
 	        <%= link_to 'Reativar', reativar_tabela_path(tabela), :confirm => 'Tem certeza ?' %>
@@ -37,4 +45,14 @@
 <br />
 
 <%= link_to 'Nova tabela', new_tabela_path  %>
+<script type="text/javascript">
+  function desativar_tabela(id){
+    $.ajax({
+      url: "/tabelas/" + id + "/desativar",
+      success: function(data){
+        $("#tr_"+id).remove();
+      },
+    })
+  }
+</script>
 <% end %>

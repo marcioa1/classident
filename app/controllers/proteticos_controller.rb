@@ -3,7 +3,7 @@ class ProteticosController < ApplicationController
   before_filter :require_user
   before_filter :busca_protetico, :only => [:edit, :abre, :show, :update, 
                   :destroy, :busca_trabalhos_devolvidos,
-                  :busca_trabalhos_liberados, :pagamentos]
+                  :busca_trabalhos_liberados, :pagamentos, :desativar]
   before_filter :quinzena, :only => [:pagamentos_feitos]
   
   def index
@@ -149,4 +149,8 @@ class ProteticosController < ApplicationController
     render :partial => 'itens_liberados_para_pagamento', :locals => { :itens => @itens }
   end
 
+  def desativar
+    @protetico.update_attribute('ativo',false)
+    head :ok
+  end
 end

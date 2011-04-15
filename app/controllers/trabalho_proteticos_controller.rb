@@ -29,7 +29,6 @@ class TrabalhoProteticosController < ApplicationController
   end
 
   def create
-    raise params.inspect
     @trabalho_protetico                            = TrabalhoProtetico.new(params[:trabalho_protetico])
     # @trabalho_protetico.data_de_envio              = params[:datepicker].to_date if params[:datepicker]
     # @trabalho_protetico.data_prevista_de_devolucao = params[:datepicker2].to_date if params[:datepicker2]

@@ -18,14 +18,22 @@
     <th width="150px">Telefone</th>
     <th width="150px">Celular</th>
     <th width="180px">Email</th>
+    <th>&nbsp;</th>
   </tr>
 
 <% @proteticos.each do |protetico| %>
-  <tr>
+  <tr id = <%= "tr_#{protetico.id}"%> >
     <td><%= link_to protetico.nome, abre_protetico_path(protetico) %></td>
     <td><%=h protetico.telefone %></td>
     <td><%=h protetico.celular %></td>
     <td><%=h protetico.email %></td>
+    <td>
+      <% if protetico.ativo %>
+        <%= link_to_function 'desativar' , "desativar_protetico(#{protetico.id})" %>
+      <% else %>
+        &nbsp;
+      <% end %>
+    </td>
   </tr>
 <% end %>
 </table>
@@ -33,4 +41,14 @@
 <br />
 
 <%= link_to 'Novo protético', new_protetico_path %>
+<script type="text/javascript">
+  function desativar_protetico(id){
+    $.ajax({
+      url: "/proteticos/" + id + "/desativar",
+      success: function(data){
+        $("#tr_"+id).remove();
+      },
+    })
+  }
+</script>
 <% end %>
