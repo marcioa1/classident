@@ -104,6 +104,17 @@ class Recebimento < ActiveRecord::Base
     forma.nome.downcase=="cheque" ? true : false
   end
   
+  def em_dinheiro?
+    return false if self.formas_recebimento_id.nil?
+    forma = FormasRecebimento.find(self.formas_recebimento_id)
+    return false if forma.nil?
+    forma.nome.downcase=="dinheiro" ? false : true
+  end  
+  
+  def em_cartao?
+    !self.em_dinheiro? && !self.em_cheque?
+  end
+  
   def excluido?
     !data_de_exclusao.nil?
   end

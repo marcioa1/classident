@@ -3,6 +3,8 @@
   - total_de_debito_em_cheque    = 0.0
   - total_de_credito_em_cheque   = 0.0
   - total_de_credito_em_dinheiro = 0.0
+  - total_de_credito_em_cartao   = 0.0
+
   = render :partial => '/layouts/include_senha'
   = link_to 'novo pagamento', new_pagamento_path
   %h3{ :style => "padding-left: 10em;" }
@@ -21,14 +23,15 @@
         = @fluxo.saldo_em_cheque.real
   %table{:class=>'tabela'}
     %tr
-      %th{ :width => "350px" }
+      %th{ :width => "250px" }
         Observação
-      %th{ :width => "90px" } Crédito Dinheiro
-      %th{ :width => "90px" } Débito Dinheiro
-      %th{ :width => "90px" } Saldo Dinheiro
-      %th{ :width => "90px" } Crédito Cheque
-      %th{ :width => "90px" } Débito Cheque
-      %th{ :width => "90px" } Saldo Cheque
+      %th{ :width => "80px" } Crédito Dinheiro
+      %th{ :width => "80px" } Débito Dinheiro
+      %th{ :width => "80px" } Saldo Dinheiro
+      %th{ :width => "80px" } Crédito Cheque
+      %th{ :width => "80px" } Débito Cheque
+      %th{ :width => "80px" } Saldo Cheque
+      %th{ :width => "80px" } Cartão
     %tr
       %td
         Saldo de abertura
@@ -44,6 +47,8 @@
         \&nbsp;
       %td{ :align => "right" }
         = @fluxo.saldo_em_cheque.real
+      %td
+        \&nbsp;
     - saldo_dinheiro = @fluxo.saldo_em_dinheiro
     - saldo_dinheiro = 0.0 if saldo_dinheiro.nil?
     - saldo_cheque   = @fluxo.saldo_em_cheque
@@ -62,6 +67,7 @@
             %td{ :align => "right" }
               = #saldo_cheque.real
             - total_de_credito_em_cheque += lancamento.valor
+            %td &nbsp;
           - when "Recebimento" :
             - if lancamento.formas_recebimento.nome.downcase =="dinheiro"
               %td= lancamento.paciente && lancamento.paciente.nome
@@ -76,6 +82,7 @@
               %td{ :align => "right" }
                 = saldo_cheque.real
               - total_de_credito_em_dinheiro += lancamento.valor
+              %td &nbsp;
             - elsif lancamento.formas_recebimento.nome.downcase =="cheque"
               %td= lancamento.paciente && lancamento.paciente.nome
               %td &nbsp;
@@ -97,6 +104,23 @@
                 - total_de_credito_em_cheque += lancamento.valor
               %td{ :align => "right" }
                 = saldo_cheque.real
+              %td &nbsp;
+
+            - else
+              %td= lancamento.paciente && lancamento.paciente.nome
+              %td &nbsp;
+              %td &nbsp;
+              - saldo_dinheiro += lancamento.valor
+              %td{ :align => "right" }
+                = saldo_dinheiro.real
+              %td &nbsp;
+              %td &nbsp;
+              %td{ :align => "right" }
+                = saldo_cheque.real
+              %td{ :align => "right" }
+                = lancamento.valor.real
+              - total_de_credito_em_cartao += lancamento.valor
+            
           - when "Pagamento"
             %td
               - if lancamento.observacao && lancamento.tipo_pagamento
@@ -136,6 +160,8 @@
               - total_de_debito_em_cheque += lancamento.valor_pago
             %td{ :align => "right" }
               = saldo_cheque.real
+            %td &nbsp;
+
         - when "Entrada"
           - if lancamento.remessa?(session[:clinica_id])
             %td= "Remessa, " +lancamento.observacao
@@ -149,6 +175,7 @@
             %td &nbsp;
             - saldo_dinheiro += lancamento.valor
             - total_de_credito_em_dinheiro += lancamento.valor
+          %td &nbsp;
           %td &nbsp;
           %td &nbsp;
           %td &nbsp;
@@ -174,6 +201,7 @@
             %td &nbsp;
             %td{ :align => "right" }
               =# saldo_cheque.real
+            %td &nbsp;
     %tr
       %td= 'Saldo de fechamento'
       %td{ :align=>'right' }= total_de_credito_em_dinheiro.real
@@ -184,6 +212,8 @@
       %td{ :align=>'right', :style => 'color: red;' }= total_de_debito_em_cheque.real
       %td{ :align=>'right' }
         %strong= saldo_cheque.real
+      %td{ :align=>'right' }
+        %strong= total_de_credito_em_cartao.real
 
   %p
     = link_to "anterior", fluxo_de_caixa_path(:data=>@fluxo.data - 1.day)
