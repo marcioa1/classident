@@ -41,7 +41,7 @@ class EntradasController < ApplicationController
     if @clinica_atual.administracao?
       @entrada.clinica_destino = params[:clinia_id]
     else
-      @entrada.clinica_destico = Clinica.administracao.first(1).id
+      @entrada.clinica_destino = Clinica.administracao.first(1).id
     end
 
     if @entrada.save
