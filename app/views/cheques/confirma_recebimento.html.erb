@@ -8,12 +8,12 @@
   <%= @cheques.size %> cheques
   <table width="95%">
     <tr>
-      <th>Clínica</th>
+      <th width='130px'>Clínica</th>
       <th width="250px">Paciente</th>
       <th>Bom para</th>
       <th>Banco</th>
       <th>Núm Cheque</th>
-      <th width="90px">Valor</th>
+      <th width="80px">Valor</th>
       <th>selecionar</th>
     </tr>
   
@@ -32,7 +32,7 @@
     <% end %>
     <% if total > 0%>
       <tr>
-        <td colspan="4" align= "center">Total</td>
+        <td colspan="5" align= "center">Total</td>
         <td align="right"><%= total.real %></td>
         <td align='center'><%= button_to_function "confirmar", "confirma_recebimento_de_cheque();"%></td>
       </tr>
