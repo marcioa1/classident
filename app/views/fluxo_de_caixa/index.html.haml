@@ -57,7 +57,9 @@
       %tr
         - case lancamento.class.name
           - when 'Cheque' :
-            %td= lancamento.nome_dos_pacientes 
+            %td
+              = lancamento.nome_dos_pacientes 
+              = " ( " + lancamento.recebimentos[0].paciente.clinica.sigla + " ) " if @clinica_atual.administracao?
             %td &nbsp;
             %td &nbsp;
             %td &nbsp;
