@@ -6,15 +6,14 @@ class TratamentosController < ApplicationController
   
   def new
     @paciente               = Paciente.find(params[:paciente_id])
-    @tratamento             = Tratamento.new
+    @tratamento             = Tratamento.new(:dentista_id => params[:dentista_id])
     @tratamento.paciente_id = @paciente.id
     if @paciente.tabela
-      @items                  = @paciente.tabela.item_tabelas.
+      @items                = @paciente.tabela.item_tabelas.
         collect{|obj| [obj.codigo + " - " + obj.descricao,obj.id]}.insert(0,"")
     else
       @items = []
     end
-    # @dentistas              = @clinica_atual.dentistas.ativos.collect{|obj| [obj.nome,obj.id]}.sort
     @dentistas = Dentista.busca_dentistas(session[:clinica_id])
   end
   
@@ -42,7 +41,11 @@ class TratamentosController < ApplicationController
 
       render :action => "new"
     else
-      redirect_to(abre_paciente_path(:id=>session[:paciente_id])) 
+      if params[:commit] == 'salvar e novo'
+        redirect_to new_tratamento_path(:paciente_id => @tratamento.paciente_id, :dentista_id=>@tratamento.dentista.id)
+      else
+        redirect_to(abre_paciente_path(:id=>session[:paciente_id])) 
+      end
     end
   end
   
