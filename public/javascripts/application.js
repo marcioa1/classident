@@ -406,8 +406,8 @@ function selecionou_tratamento(){
 }
 
 function calcula_valor_orcamento(){
-    total = parseFloat($('#orcamento_valor_pt').val());
-    desconto = parseFloat($('#orcamento_desconto').val());
+    total = parseFloat($('#orcamento_valor_pt').val().replace('.','').replace(',','.'));
+    desconto = parseFloat($('#orcamento_desconto').val().replace('.','').replace(',','.'));
     valor_do_desconto = (total - (total * desconto / 100 ) )* 100;
     $('#orcamento_valor_com_desconto_pt').val(valor_do_desconto);
     formata_valor($('#orcamento_valor_com_desconto_pt'));
@@ -415,13 +415,12 @@ function calcula_valor_orcamento(){
 }
 
 function calcula_valor_da_parcela(){
-	  valor_com_desconto = $('#orcamento_valor_com_desconto_pt').val().replace(',','.');
-    valor = parseFloat(valor_com_desconto);
-    numero = $('#orcamento_numero_de_parcelas').val();
-    valor_da_parcela = parseInt((valor / numero) * 100) / 100;
+	  valor_com_desconto = $('#orcamento_valor_com_desconto_pt').val().replace('.','').replace(',','.');
+    valor              = parseFloat(valor_com_desconto);
+    numero             = $('#orcamento_numero_de_parcelas').val();
+    valor_da_parcela   = parseInt((valor / numero) * 100) / 100;
     $('#orcamento_valor_da_parcela_pt').val(valor_da_parcela * 100);
     formata_valor($('#orcamento_valor_da_parcela_pt'));
-//# FIXME escrever este ajax de outra maneira
   $.ajax({
     url  : '/orcamentos/monta_tabela_de_parcelas',
     type :'GET', 
@@ -430,11 +429,6 @@ function calcula_valor_da_parcela(){
       $('#parcelas').replaceWith(data);
     }
   });
-  // $.getJSON('monta_tabela_de_parcelas?numero_de_parcelas='+numero + '&valor_da_parcela=' + valor +
-  //        '&data_primeira_parcela=' + $('#orcamento_vencimento_primeira_parcela').val(),
-  //    function(data){
-  //      $('#parcelas').replaceWith(data);
-  //    });
 }
 
 function definir_valor(){

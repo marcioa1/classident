@@ -19,7 +19,7 @@ class OrcamentosController < ApplicationController
     @orcamento.numero   = Orcamento.proximo_numero(session[:paciente_id])
     @orcamento.valor    = Tratamento.valor_a_fazer(session[:paciente_id])
     @orcamento.desconto = 0
-    @orcamento.valor_com_desconto = @orcamento.valor
+    @orcamento.valor_com_desconto  = @orcamento.valor
     @dentistas   = Dentista.busca_dentistas(session[:clinica_id])
     @tratamentos = Tratamento.do_paciente(@paciente.id).nao_excluido.nao_feito.sem_orcamento
   end

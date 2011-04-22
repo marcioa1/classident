@@ -1,3 +1,5 @@
+  <%= javascript_include_tag 'jquery.price_format.1.0.js' %>
+
 <div>
   <%= f.hidden_field :paciente_id  %>
   <%= hidden_field_tag :tratamento_ids , params[:tratamento_ids]%>
@@ -52,3 +54,6 @@
 <div>
   <%= f.submit 'salvar' %>
 </div>
+<script type='text/javascript'>
+  $(calcula_valor_da_parcela());
+</script>
