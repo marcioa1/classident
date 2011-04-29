@@ -63,7 +63,7 @@
     </tr>
     <tr>
       <td align='right'><%= f.label :bom_para %> : </td>
-      <td><%= text_field_tag :bom_para_br, Date.today.to_s_br, :size=>10, :class => 'datepicker' %></td>
+      <td><%= text_field_tag :bom_para_br, @cheque.bom_para_br, :size=>10, :class => 'datepicker' %></td>
     </tr>
     <tr>
       <td colspan="2"><hr></td>
