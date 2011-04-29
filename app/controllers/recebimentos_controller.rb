@@ -163,6 +163,10 @@ class RecebimentosController < ApplicationController
       # redirect_to :back
       redirect_to(abre_paciente_path(:id=>@recebimento.paciente_id)) 
     else
+        @cheque    = @recebimento.cheque
+        @paciente  = @recebimento.paciente
+        @recebimento.cheque = Cheque.new if @recebimento.cheque.nil?
+        busca_bancos_e_forma_de_recebimento
       render :action => "edit" 
     end
   end
