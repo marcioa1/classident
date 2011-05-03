@@ -22,6 +22,7 @@ class OrcamentosController < ApplicationController
     @orcamento.valor_com_desconto  = @orcamento.valor
     @dentistas   = Dentista.busca_dentistas(session[:clinica_id])
     @tratamentos = Tratamento.do_paciente(@paciente.id).nao_excluido.nao_feito.sem_orcamento
+    @orcamento.dentista_id = @tratamentos[0].dentista_id if !@tratamentos.empty?
   end
 
   def edit
