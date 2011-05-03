@@ -10,7 +10,7 @@
   </p>
   <p>
     <%= f.label :dentista_id %><br />
-    <%= f.select :dentista_id, @dentistas %>
+    <%= f.select :dentista_id, options_for_select(@dentistas, @trabalho_protetico.dentista_id) %>
   </p>
   <p>
     <%= f.label :dente %><br />

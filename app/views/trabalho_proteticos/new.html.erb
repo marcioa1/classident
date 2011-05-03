@@ -19,7 +19,7 @@
     <% end %>
     <div>
       <%= f.label 'dentista :' %>
-      <%= f.select :dentista_id , options_for_select(@dentistas) %>
+      <%= f.select :dentista_id , options_for_select(@dentistas, @tratamento.dentista_id) %>
     
     </div>
     <div>
