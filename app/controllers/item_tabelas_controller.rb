@@ -34,13 +34,13 @@ class ItemTabelasController < ApplicationController
   end
 
   def edit
-    if !current_user.pode_incluir_tabela
-      redirect_to item_tabelas_path(:tabela_id=>params[:tabela_id])
-    else
+    # if !current_user.pode_incluir_tabela
+      # redirect_to item_tabelas_path(:tabela_id=>params[:tabela_id])
+    # else
       @item_tabela = ItemTabela.find(params[:id])
-      @tabela = @item_tabela.tabela
+      @tabela      = @item_tabela.tabela
       @descricao_condutas = DescricaoConduta.all.collect{|obj| [obj.descricao, obj.id]}
-    end  
+    # end  
   end
 
   def create
