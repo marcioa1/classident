@@ -125,7 +125,7 @@ class OrcamentosController < ApplicationController
     Prawn::Document.generate("public/relatorios/orcamento_#{params[:clinica_id]}.pdf") do |pdf|
 
       pdf.font "Times-Roman"
-      imprime_cabecalho(pdf)
+      imprime_cabecalho(pdf, 'Orçamento')
       pdf.text "Orçamento", :size=>22, :align=>:center
       pdf.move_down 10
       pdf.text "Paciente : #{@orcamento.paciente.nome}", :size=>14
@@ -165,6 +165,14 @@ class OrcamentosController < ApplicationController
       head :ok
     end
     
+  end
+
+  def imprime_cabecalho(pdf, titulo)
+    pdf.image "public/images/logo-print.jpg", :align => :left
+    pdf.text "#{Time.current.to_s_br}", :align => :right, :size=>8
+    pdf.move_down 20
+    pdf.text titulo, :align => :center, :size => 14
+    pdf.move_down 20
   end
 
   def find_current
