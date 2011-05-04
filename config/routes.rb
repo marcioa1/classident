@@ -14,8 +14,10 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :conta_bancarias
   map.resources :conversao, :collection=>{:cheque_adm => :get, :teste=>:get}
   map.resources :debitos, :collection=>{:pacientes_em_debito=>:get, :pacientes_fora_da_lista=>:get}
-  map.resources :dentistas, :member=>{:abre=>:get, :producao=>:get, :pagamento=>:get,:orcamentos=>:get, :reativar=>:get}, 
-                    :collection=>{:pesquisar=>:get, :producao_geral=>:get, 
+  map.resources :dentistas, 
+                  :member=>{:abre=>:get, :producao=>:get, :pagamento=>:get,
+                            :orcamentos=>:get, :reativar=>:get, :troca_ortodontista => :post}, 
+                  :collection=>{:pesquisar=>:get, :producao_geral=>:get, 
                     :producao_geral => :get }
   map.resources :descricao_condutas
   map.resources :destinacaos

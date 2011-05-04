@@ -2,7 +2,8 @@ class DentistasController < ApplicationController
   layout "adm"
   before_filter :require_user
   before_filter :quinzena, :on=>:producao_geral
-  before_filter :busca_dentista, :only=>[:abre, :desativar, :update, :destroy, :show, :edit]
+  before_filter :busca_dentista, :only=>[:abre, :desativar, :update, 
+                   :destroy, :show, :edit, :troca_ortodontista]
 
   def index
     params[:ativo] = "true" if params[:ativo].nil?
@@ -83,6 +84,17 @@ class DentistasController < ApplicationController
     @dentista.ativo = true
     @dentista.save
     redirect_to(dentistas_path())
+  end
+
+  def troca_ortodontista
+    if @dentista.ortodontista?
+      @dentista.ortodontista = false
+    else
+      @dentista.ortodontista = true
+    end
+    @dentista.save
+    # redirect_to(dentistas_path())
+    head :ok
   end
 
   def abre

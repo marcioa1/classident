@@ -609,3 +609,13 @@ function transfere_paciente(id){
     }
   });
 }
+
+function troca_para_ortodontista(dentista_id){
+    $.ajax({
+    url  : "/dentistas/" + dentista_id + "/troca_ortodontista",
+    data : {},
+    type : "POST",
+    success :function(data){
+    }
+  });
+}
