@@ -22,7 +22,7 @@ class AdicionaHoraAUser < ActiveRecord::Migration
     add_column :users, :dia_da_semana_3, :boolean, :default => true
     add_column :users, :dia_da_semana_4, :boolean, :default => true
     add_column :users, :dia_da_semana_5, :boolean, :default => true
-    add_column :users, :dia_da_semana_6, :boolean, :default => false
+    add_column :users, :dia_da_semana_6, :boolean, :default => true
   end
 
   def self.down

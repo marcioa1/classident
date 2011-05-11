@@ -141,6 +141,7 @@ class Tratamento < ActiveRecord::Base
       result += "O" if oclusal
       result += 'L' if lingual
       result += 'V' if vestibular
+      result += 'P' if palatina
     else
       result = estado
     end
