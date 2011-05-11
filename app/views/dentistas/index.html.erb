@@ -30,7 +30,7 @@
     <td><%= link_to dentista.nome, abre_dentista_path(:id=>dentista.id) %></td>
     <td><%=h dentista.telefone %></td>
     <td><%=h dentista.celular %></td>
-    <td align='center'><%= link_to_function dentista.ortodontista ? 'sim' : 'não', "troca_para_ortodontista(#{dentista.id})" %></td>
+    <td id="<%= dentista.id %>" align='center'><%= link_to_function dentista.ortodontista ? 'sim' : 'não', "troca_para_ortodontista(#{dentista.id})" %></td>
     <td align='center'><%=h dentista.ativo  ? "sim" : "não"  %></td>
     <td align="center"><%= dentista.percentual %></td>
     <td><%=h dentista.sigla_das_clinicas %></td>

@@ -616,6 +616,12 @@ function troca_para_ortodontista(dentista_id){
     data : {},
     type : "POST",
     success :function(data){
+      status = $("#" + dentista_id + " a").html();
+      if (status == 'não'){
+        $("#" + dentista_id + " a").html('sim');
+      }else{
+        $("#" + dentista_id + " a").html('não');
+      }
     }
   });
 }
