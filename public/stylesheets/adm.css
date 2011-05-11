@@ -22,6 +22,9 @@ fieldset{
 .fieldset_30{
   width: 30em;
 }
+.fieldset_25{
+  width: 25em;
+}
 .fieldset_20{
   width: 20em;
 }
@@ -29,7 +32,7 @@ fieldset{
   width: 35em;
 }
 #estado{
-  padding-left: 23em;
+  padding-left: 28em;
   margin-top: -7.2em;
   //float :right;
 }

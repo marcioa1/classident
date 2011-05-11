@@ -1,21 +1,23 @@
 #disponiveis
-  %fieldset
+  %fieldset.fieldset_50
     %legend
       Cheques disponíveis
     = button_to "pesquisar", "javascript:pesquisa_disponiveis();" 
     %br
     %span#lista_de_cheques
 #selecionados
-  %fieldset
+  %fieldset.fieldset_50
     %legend Cheques utilizados
     %table{:class=>'tabela'}
       %thead
         %tr
+          - if @clinica_atual.administracao?
+            %th Clínica
           %th Bom para
-          %th Valor
-          %th Paciente
+          %th{:width=>"80px"} Valor
+          %th{:width=>"200px"} Paciente
           %th &nbsp;
-          %th Banco
+          %th{:width=>"80px"} Banco
           %th Agência
           %th Número
       %tbody

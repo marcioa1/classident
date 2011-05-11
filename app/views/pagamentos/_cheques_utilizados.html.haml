@@ -3,12 +3,16 @@
   %br
   %table{:celpadding=>0, :cellspacing=>0, :border=>1}
     %tr{:style=>'background-color: #455A79; color: white;'}
+      - if @clinica_atual.administracao?
+        %td Clínica
       %th{:width=>"220px"}Paciente
       %th{:width=>"90px"}Valor
       %th{:width=>"120px"}Banco
       %th Número
     - @pagamento.cheques.each() do |cheque|
       %tr
+        - if @clinica_atual.administracao?
+          %td= cheque.clinica.sigla
         %td= cheque.nome_dos_pacientes 
         %td{:align=>"right"}= cheque.valor.real 
         %td= cheque.banco.numero.to_s + "-" + cheque.banco.nome if cheque.banco
