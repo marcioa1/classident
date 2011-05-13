@@ -74,6 +74,15 @@ class ApplicationController < ActionController::Base
 
   private
   
+    def require_master_user
+      unless current_user && current_user.master?
+        store_location
+        flash[:notice] = "Você precisa estar logado como usuário 'master' para ter acesso à esta página."
+        redirect_to new_user_sessions_url
+        return false
+      end
+    end
+    
     def require_user
       unless current_user 
         store_location

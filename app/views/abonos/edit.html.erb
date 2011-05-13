@@ -1,0 +1,15 @@
+<% content_for :main do %>
+
+<h1>Editando abono</h1>
+
+<% form_for(@abono) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.submit 'gravar' %>
+  </p>
+<% end %>
+
+<%= link_to 'voltar', abonos_path %>
+
+<% end %>

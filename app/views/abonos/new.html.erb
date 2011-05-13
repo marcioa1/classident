@@ -1,0 +1,49 @@
+<% content_for :main do %>
+
+ <script type="text/javascript">
+    $(function() {
+        $("#paciente").autocomplete({
+          source: "pesquisa_nomes",
+          minLength: 6,
+          maxRows: 5,
+          select: function(event,ui){
+            nome = ui.item.value;
+            $("#paciente").val(nome);
+          }
+        });
+      });
+
+</script>
+
+<fieldset class="fieldset_40">
+  <legend>Novo abono</legend>
+<% form_for(@abono) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+      <%= label_tag :Paciente %> : <br/>
+      <input id="paciente" size="40" class="ui-autocomplete-input" >
+  </p>
+        
+
+
+  <p>
+    <%= f.label :data %> :<br />
+    <%= f.text_field :data_pt_br, :size=>10, :class => 'datepicker' %>
+  </p>
+  <p>
+    <%= f.label :valor %> :<br />
+    <%= f.text_field :valor_real, :size=>10 %>
+  </p>
+  <p>
+    <%= f.label :observação %> :<br />
+    <%= f.text_field :observacao, :size=>40 %>
+  </p>
+  <p>
+    <%= f.submit 'gravar' %>
+  </p>
+<% end %>
+
+<%= link_to 'voltar', abonos_path %>
+</fieldset>
+<% end %>

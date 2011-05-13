@@ -1,4 +1,5 @@
 ActionController::Routing::Routes.draw do |map|
+
   map.events 'events', :controller =>'services', :action=>'events'
   map.resources :acompanhamento_cheques
   map.resources :altas
@@ -39,6 +40,7 @@ ActionController::Routing::Routes.draw do |map|
                                 :busca_id_do_paciente=>:get, :transfere_paciente => :get},
                   :member => {:abre=>:get, 
                               :verifica_nome_do_paciente => :get, :extrato_pdf => :get}
+  map.resources :abonos, :collection=> {:pesquisa_nomes => :get}
 
   map.administracao "administracao", :controller=>"administracao", :action=>"index"
   map.salva_tab_do_paciente "salva_tab_do_paciente", :controller=>"administracao", :action=>"salva_tab_do_paciente"

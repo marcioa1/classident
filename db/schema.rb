@@ -9,7 +9,17 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110412190224) do
+ActiveRecord::Schema.define(:version => 20110512234036) do
+
+  create_table "abonos", :force => true do |t|
+    t.date     "data"
+    t.integer  "user_id"
+    t.integer  "paciente_id"
+    t.decimal  "valor",                     :precision => 8, :scale => 2
+    t.string   "observacao",  :limit => 64
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "acompanhamento_cheques", :force => true do |t|
     t.integer  "cheque_id"
@@ -528,6 +538,7 @@ ActiveRecord::Schema.define(:version => 20110412190224) do
     t.boolean  "lingual"
     t.string   "estado",         :limit => 30
     t.integer  "pagamento_id"
+    t.boolean  "palatina"
   end
 
   add_index "tratamentos", ["clinica_id"], :name => "index_tratamentos_on_clinica_id"
@@ -554,22 +565,22 @@ ActiveRecord::Schema.define(:version => 20110412190224) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean  "ativo",                            :default => true
-    t.datetime "hora_de_inicio_0",                 :default => '2011-05-03 11:00:00'
-    t.datetime "hora_de_termino_0",                :default => '2011-05-03 21:00:00'
-    t.datetime "hora_de_inicio_1",                 :default => '2011-05-03 11:00:00'
-    t.datetime "hora_de_termino_1",                :default => '2011-05-03 21:00:00'
-    t.datetime "hora_de_inicio_2",                 :default => '2011-05-03 11:00:00'
-    t.datetime "hora_de_termino_2",                :default => '2011-05-03 21:00:00'
-    t.datetime "hora_de_inicio_3",                 :default => '2011-05-03 11:00:00'
-    t.datetime "hora_de_termino_3",                :default => '2011-05-03 21:00:00'
-    t.datetime "hora_de_inicio_4",                 :default => '2011-05-03 11:00:00'
-    t.datetime "hora_de_termino_4",                :default => '2011-05-03 21:00:00'
-    t.datetime "hora_de_inicio_5",                 :default => '2011-05-03 11:00:00'
-    t.datetime "hora_de_termino_5",                :default => '2011-05-03 21:00:00'
-    t.datetime "hora_de_inicio_6",                 :default => '2011-05-03 11:00:00'
-    t.datetime "hora_de_termino_6",                :default => '2011-05-03 21:00:00'
-    t.datetime "hora_de_inicio_7",                 :default => '2011-05-03 11:00:00'
-    t.datetime "hora_de_termino_7",                :default => '2011-05-03 21:00:00'
+    t.datetime "hora_de_inicio_0",                 :default => '2011-04-24 11:00:00'
+    t.datetime "hora_de_termino_0",                :default => '2011-04-24 21:00:00'
+    t.datetime "hora_de_inicio_1",                 :default => '2011-04-24 11:00:00'
+    t.datetime "hora_de_termino_1",                :default => '2011-04-24 21:00:00'
+    t.datetime "hora_de_inicio_2",                 :default => '2011-04-24 11:00:00'
+    t.datetime "hora_de_termino_2",                :default => '2011-04-24 21:00:00'
+    t.datetime "hora_de_inicio_3",                 :default => '2011-04-24 11:00:00'
+    t.datetime "hora_de_termino_3",                :default => '2011-04-24 21:00:00'
+    t.datetime "hora_de_inicio_4",                 :default => '2011-04-24 11:00:00'
+    t.datetime "hora_de_termino_4",                :default => '2011-04-24 21:00:00'
+    t.datetime "hora_de_inicio_5",                 :default => '2011-04-24 11:00:00'
+    t.datetime "hora_de_termino_5",                :default => '2011-04-24 21:00:00'
+    t.datetime "hora_de_inicio_6",                 :default => '2011-04-24 11:00:00'
+    t.datetime "hora_de_termino_6",                :default => '2011-04-24 21:00:00'
+    t.datetime "hora_de_inicio_7",                 :default => '2011-04-24 11:00:00'
+    t.datetime "hora_de_termino_7",                :default => '2011-04-24 21:00:00'
     t.boolean  "dia_da_semana_0",                  :default => false
     t.boolean  "dia_da_semana_1",                  :default => true
     t.boolean  "dia_da_semana_2",                  :default => true

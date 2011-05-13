@@ -1,0 +1,20 @@
+<% content_for :main do %>
+
+<h2>Listando abonos</h2>
+
+<table>
+  <tr>
+  </tr>
+
+<% @abonos.each do |abono| %>
+  <tr>
+    <td><%= link_to 'Editar', edit_abono_path(abono) %></td>
+    <td><%= link_to 'Apagar', abono, :confirm => 'Tem certeza?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'Novo abono', new_abono_path %>
+<% end %>
