@@ -1,6 +1,9 @@
 class Abono < ActiveRecord::Base
   
-  validates_length_of :obs, :maximum => 20, :message => "must be present"
+  
+  belongs_to :paciente
+  
+  validates_length_of :observacao, :maximum => 20, :message => "Escreva a observação."
   
   attr_accessor :data_br, :valor_real
   
@@ -19,5 +22,9 @@ class Abono < ActiveRecord::Base
   
   def data_pt_br=(data)
     self.data = data.to_date if Date.valid?(data)
+  end
+  
+  def pode_alterar?(current_user)
+    current_user.master?
   end
 end

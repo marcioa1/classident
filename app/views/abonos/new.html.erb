@@ -19,31 +19,9 @@
   <legend>Novo abono</legend>
 <% form_for(@abono) do |f| %>
   <%= f.error_messages %>
-
-  <p>
-      <%= label_tag :Paciente %> : <br/>
-      <input id="paciente" size="40" class="ui-autocomplete-input" >
-  </p>
-        
-
-
-  <p>
-    <%= f.label :data %> :<br />
-    <%= f.text_field :data_pt_br, :size=>10, :class => 'datepicker' %>
-  </p>
-  <p>
-    <%= f.label :valor %> :<br />
-    <%= f.text_field :valor_real, :size=>10 %>
-  </p>
-  <p>
-    <%= f.label :observação %> :<br />
-    <%= f.text_field :observacao, :size=>40 %>
-  </p>
-  <p>
-    <%= f.submit 'gravar' %>
-  </p>
+  <%= render :partial => 'form' , :locals => {:f => f}%>
 <% end %>
 
-<%= link_to 'voltar', abonos_path %>
+<%= link_to 'voltar', :back %>
 </fieldset>
 <% end %>

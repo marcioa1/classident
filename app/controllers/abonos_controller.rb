@@ -29,8 +29,10 @@ class AbonosController < ApplicationController
   # GET /abonos/new
   # GET /abonos/new.xml
   def new
-    @abono = Abono.new
-
+    @abono          = Abono.new
+    @paciente       = Paciente.find(params[:paciente_id])
+    @abono.paciente = @paciente
+    @abono.valor    = @paciente.mensalidade_de_ortodontia
     respond_to do |format|
       format.html # new.html.erb
       format.xml  { render :xml => @abono }
@@ -39,7 +41,8 @@ class AbonosController < ApplicationController
 
   # GET /abonos/1/edit
   def edit
-    @abono = Abono.find(params[:id])
+    @abono    = Abono.find(params[:id])
+    @paciente = @abono.paciente
   end
 
   # POST /abonos
@@ -49,8 +52,8 @@ class AbonosController < ApplicationController
 
     respond_to do |format|
       if @abono.save
-        flash[:notice] = 'Abono was successfully created.'
-        format.html { redirect_to(@abono) }
+        flash[:notice] = 'Abono alterado com sucesso.'
+        format.html { redirect_to(:back) }
         format.xml  { render :xml => @abono, :status => :created, :location => @abono }
       else
         format.html { render :action => "new" }
@@ -66,8 +69,8 @@ class AbonosController < ApplicationController
 
     respond_to do |format|
       if @abono.update_attributes(params[:abono])
-        flash[:notice] = 'Abono was successfully updated.'
-        format.html { redirect_to(@abono) }
+        flash[:notice] = 'Abono alterado com sucesso.'
+        format.html { redirect_to(abonos_path) }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }

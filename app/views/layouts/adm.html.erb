@@ -65,9 +65,9 @@
           <%= flash[:notice] %>
         </div>
       <% end %>
-              <p>  
+      <p>  
         <%= nome_paciente(@paciente) if @paciente && !@paciente.new_record? %>
-        </p>
+      </p>
 
         <%= yield :main %>
     </div> <!-- main-- >

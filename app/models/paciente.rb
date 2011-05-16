@@ -8,6 +8,7 @@ class Paciente < ActiveRecord::Base
   has_many :trabalho_proteticos
   belongs_to :indicacao
   has_many :orcamentos
+  has_many :abonos
   belongs_to :ortodontista, :class_name=>"Dentista", :foreign_key=>'ortodontista_id'
   belongs_to :clinica
   belongs_to :dentista
@@ -65,7 +66,7 @@ class Paciente < ActiveRecord::Base
     recebimentos.each do |recebimento|
       result << recebimento unless (recebimento.excluido? or (recebimento.em_cheque? && recebimento.cheque && recebimento.cheque.com_problema?))
     end
-    result = (result + debitos_nao_excluidos).sort { |a,b| a.data<=>b.data }
+    result = (result + debitos_nao_excluidos + abonos).sort { |a,b| a.data<=>b.data }
   end
   
   
