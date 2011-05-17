@@ -10,7 +10,7 @@
   </tr>
   <% @pacientes.each do |pac| %>
     <tr>
-      <td><%= pac.nome %></td>
+      <td><%= link_to pac.nome, abre_paciente_path(pac.id) %></td>
       <td><%= pac.ortodontista.nome unless pac.ortodontista.nil?%></td>
       <td align='right'><%= pac.mensalidade_de_ortodontia.real %></td>
       <td><%= pac.data_da_suspensao_da_cobranca_de_orto.to_s_br unless pac.data_da_suspensao_da_cobranca_de_orto.nil? %></td>
