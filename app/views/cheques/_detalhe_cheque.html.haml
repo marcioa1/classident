@@ -23,6 +23,13 @@
   %tr
     %td Status :
     %td= cheque.status  
+  - if cheque.data_solucao
+    %tr
+      %td Solução :
+      %td= cheque.data_solucao.to_s_br
+    %tr
+      %td Descrição da solução :
+      %td= cheque.descricao_solucao
   %tr
     %td Acompanhamento :
     %td= cheque.acompanhamentos

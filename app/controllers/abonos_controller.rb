@@ -7,7 +7,7 @@ class AbonosController < ApplicationController
   # GET /abonos
   # GET /abonos.xml
   def index
-    @abonos = Abono.all
+    @abonos = Abono.last(30)
 
     respond_to do |format|
       format.html # index.html.erb

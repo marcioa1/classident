@@ -76,6 +76,7 @@ class Cheque < ActiveRecord::Base
   end
   
   def status
+    return "solucionado" unless !solucionado?
     return "arquivo morto" unless !arquivo_morto?
     return "SPC" unless !spc?
     return "devolvido duas vezes em " + data_segunda_devolucao.to_s_br unless !devolvido_duas_vezes? 
@@ -87,7 +88,6 @@ class Cheque < ActiveRecord::Base
     return "recebido pela adm" if recebido_pela_administracao?
     return "entregue à adm" if entregue_a_administracao?
     return "disponível" unless !sem_devolucao? 
-    return "solucionado" unless !solucionado?
   end
   
   def status_resumido
@@ -173,6 +173,7 @@ class Cheque < ActiveRecord::Base
   end
     
   def limpo?
+    return true if solucionado?
     return false if devolvido_duas_vezes? and !solucionado?
     return false if spc?
     return false if arquivo_morto?
