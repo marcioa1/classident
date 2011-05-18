@@ -21,7 +21,7 @@
     - @trabalhos.each do |trab|
       %tr
         %td=trab.protetico.nome
-        %td=trab.paciente.nome
+        %td=trab.paciente && trab.paciente.nome
         %td=trab.dente
         %td=trab.tabela_protetico.descricao
         %td{:align=>"right"}

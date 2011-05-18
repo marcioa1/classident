@@ -9,9 +9,9 @@ class TrabalhoProtetico < ActiveRecord::Base
   belongs_to :tratamento
   
   validates_presence_of :tabela_protetico_id, :on => :create, :message => "can't be blank"
-  validates_presence_of :dentista, :on => :create, :message => "can't be blank"
-  validates_presence_of :paciente, :on => :create, :message => "can't be blank"
-  validates_presence_of :clinica, :on => :create, :message => "can't be blank"
+  validates_presence_of :dentista, :message => "can't be blank"
+  validates_presence_of :paciente, :message => "can't be blank"
+  validates_presence_of :clinica, :message => "can't be blank"
   
   named_scope :da_clinica, lambda {|clinica_id| 
             {:conditions=>["trabalho_proteticos.clinica_id = ? ", clinica_id]}}
