@@ -38,10 +38,11 @@ Rails::Initializer.run do |config|
   # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
   # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}')]
   config.i18n.default_locale = 'pt-BR'
-  config.gem 'haml'
-  config.gem "authlogic"
-  config.gem "brazilian-rails"
-  config.gem 'hoptoad_notifier', :source => 'http://gems.github.com'
-  config.gem 'prawn'
+  config.gem 'haml', :version => '3.0.4'
+  config.gem "authlogic", :version => '2.1.3'
+  # config.gem "brazilian-rails", :version => '2.1.10'
+  config.gem 'brdinheiro'
+  config.gem 'hoptoad_notifier' #, :source => 'http://gems.github.com'
+  config.gem 'prawn', :version => '>=0.4.8'
 
 end
