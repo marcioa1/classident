@@ -54,10 +54,13 @@ class PagamentosController < ApplicationController
     @pagamento.dentista_id       = session[:dentista_id] unless session[:dentista_id].nil?
     Pagamento.transaction do
       ids = params[:cheques_ids].split(",")
+      total_cheque = 0.0
       ids.each do |id|
         cheque = Cheque.find(id)
         @pagamento.cheques << cheque unless cheque.nil?
+        total_cheque += cheque.valor
       end
+      @pagamento.valor_terceiros = total_cheque
       if @pagamento.save
         @pagamento.verifica_fluxo_de_caixa
         if !session[:trabalho_protetico_id].nil?
