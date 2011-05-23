@@ -47,7 +47,7 @@ class TrabalhoProtetico < ActiveRecord::Base
   end
   
   def data_prevista_de_devolucao_pt
-    self.data_prevista_de_devolucao.nil? ? (Date.today + 5.days).to_s_br : self.data_prevista_de_devolucao
+    self.data_prevista_de_devolucao.nil? ? (Date.today + 5.days).to_s_br : self.data_prevista_de_devolucao.to_s_br
   end
 
   def data_prevista_de_devolucao_pt=(data)
@@ -59,7 +59,11 @@ class TrabalhoProtetico < ActiveRecord::Base
   end
 
   def data_de_devolucao_pt=(data)
-    self.data_de_devolucao = data.to_date if Date.valid?(data)
+    if (Date.valid?(data))
+      self.data_de_devolucao = data.to_date 
+    elsif (data == '')
+      self.data_de_devolucao = nil
+    end
   end
 
   def data_de_repeticao_pt
