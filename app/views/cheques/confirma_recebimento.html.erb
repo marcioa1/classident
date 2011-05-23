@@ -1,9 +1,14 @@
 <% content_for :main do %>
 <h4>Confirma recebimento de cheques 	(cheques enviados à administração mas com recebimento não confirmado)</h4>
 <% form_tag do |f| %>
-<%= render :partial=>'clinicas/radio' , :locals=>{:clinicas => @clinicas}%>
-<%= submit_tag "Pesquisar" %>
+  <%= render :partial=>'clinicas/radio' , :locals=>{:clinicas => @clinicas}%>
+  <%= radio_button_tag :ordem, :por_data , params[:ordem] == 'por_data' %>
+  <%= label_tag :por_data%>
+  <%= radio_button_tag :ordem, :por_valor , params[:ordem] == 'por_valor'  %>
+  <%= label_tag :por_valor %>
+  <%= submit_tag "Pesquisar" %>
 <% end %>
+
 <% if @cheques.size > 0 %>
   <%= @cheques.size %> cheques
   <table width="95%">
