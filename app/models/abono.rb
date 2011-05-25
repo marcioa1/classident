@@ -1,9 +1,9 @@
 class Abono < ActiveRecord::Base
   
-  
   belongs_to :paciente
   
   validates_length_of :observacao, :maximum => 20, :message => "Escreva a observação."
+  validates_presence_of :data, :valor, :paciente_id
   
   attr_accessor :data_br, :valor_real
   
@@ -27,4 +27,6 @@ class Abono < ActiveRecord::Base
   def pode_alterar?(current_user)
     current_user.master?
   end
+  
+ 
 end
