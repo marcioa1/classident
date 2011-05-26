@@ -45,6 +45,8 @@
       <% if current_user.master? %>
         <li><%= link_to "Saldo fluxo de caixa" , conserta_saldo_path %></li>
       <% end %>
+      <li><%= link_to "Fechamento de mês", fechamento_mes_clinicas_path %></li>
+
     </ul>
   </li>
 </ul>
