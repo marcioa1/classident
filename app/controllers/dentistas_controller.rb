@@ -174,8 +174,14 @@ class DentistasController < ApplicationController
       @data_inicial = params[:datepicker].to_date if Date.valid?(params[:datepicker])
       @data_final   = params[:datepicker2].to_date if Date.valid?(params[:datepicker2])
     end
+    @clinicas    = Clinica.all
+    clinicas_da_pesquisa = []
     if Date.valid?(params[:datepicker]) && Date.valid?(params[:datepicker2])
-      all = Tratamento.dentistas_entre_datas(@data_inicial,@data_final)
+      @clinicas.each do |clinica|
+        clinicas_da_pesquisa<< clinica.id if params["clinica_"+clinica.id.to_s]
+      end
+      debugger
+      all = Tratamento.da_clinica(clinicas_da_pesquisa).dentistas_entre_datas(@data_inicial,@data_final)
       @todos = []
       all.each do |den|
         @todos << Dentista.find (den.dentista.id)

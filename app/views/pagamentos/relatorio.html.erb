@@ -70,7 +70,13 @@
     <td><%=h pagamento.observacao %></td>
     <td align="center"><%=h pagamento.data_de_pagamento.to_s_br %></td>
     <td align="right"><%= pagamento.valor_terceiros.real %></td>
-    <td align="right"><%= pagamento.valor_restante.real %></td>
+    <td align="right">
+      <% if pagamento.modo_de_pagamento.downcase == 'dinheiro' %>
+        <%= pagamento.valor_pago.real %>
+      <% else %>
+        <%= pagamento.valor_restante.real %>
+      <% end %>
+    </td>
     <td align="right"><%= pagamento.valor_cheque.real %></td>
     <td><%=h pagamento.modo_de_pagamento %></td>
     <td align="center"><%=h pagamento.nao_lancar_no_livro_caixa ? "não" : "sim" %></td>

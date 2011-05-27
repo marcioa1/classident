@@ -6,6 +6,7 @@
     <%= text_field_tag :datepicker, @data_inicial.to_s_br, :size=>10 %>
     <%= label_tag " e : " %>
     <%= text_field_tag :datepicker2, @data_final.to_s_br, :size=>10 %>
+      <%= render :partial => 'clinicas/opcoes' , :locals => {:clinicas => @clinicas }%>
     <%= submit_tag "pesquisar"%>
   <% end %>
   <p/>
