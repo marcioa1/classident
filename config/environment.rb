@@ -43,6 +43,7 @@ Rails::Initializer.run do |config|
   # config.gem "brazilian-rails", :version => '2.1.10'
   config.gem 'brdinheiro'
   config.gem 'brdata'
+  config.gem 'brstring'
   config.gem 'hoptoad_notifier' #, :source => 'http://gems.github.com'
   config.gem 'prawn', :version => '>=0.4.8'
 
