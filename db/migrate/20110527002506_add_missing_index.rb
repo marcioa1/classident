@@ -5,7 +5,7 @@ class AddMissingIndex < ActiveRecord::Migration
     add_index :pacientes, :ortodontista_id
     add_index :trabalho_proteticos, :paciente_id
     add_index :trabalho_proteticos, :protetico_id
-    add_index :trabalho_proteticos, :cheque_id
+    # add_index :trabalho_proteticos, :cheque_id
     add_index :tabelas, :clinica_id
     add_index :tabela_proteticos, :protetico_id
     # add_index :acompanhamento_cheques, :user_id
@@ -31,7 +31,7 @@ class AddMissingIndex < ActiveRecord::Migration
     remove_index :pacientes, :ortodontista_id
     remove_index :trabalho_proteticos, :paciente_id
     remove_index :trabalho_proteticos, :protetico_id
-    remove_index :trabalho_proteticos, :cheque_id
+    # remove_index :trabalho_proteticos, :cheque_id
     remove_index :tabelas, :clinica_id
     remove_index :tabela_proteticos, :protetico_id
     # remove_index :acompanhamento_cheques, :user_id
