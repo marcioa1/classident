@@ -3,7 +3,6 @@ class RelatoriosController < ApplicationController
   def imprime
     require "prawn/layout"
     require "prawn/core"
-
     items     = []
     tr        = params[:tabela].split(">")
     cabecalho = tr[0].split(';')
@@ -14,7 +13,7 @@ class RelatoriosController < ApplicationController
         items << linha
       end
     end
-
+debugger
     Prawn::Document.generate("public/relatorios/relatorio.pdf") do |pdf|
 
       pdf.font "Times-Roman"
