@@ -13,18 +13,19 @@ class RelatoriosController < ApplicationController
         items << linha
       end
     end
+      alinhamento = Hash.new
+      tr[2].split(';').each_with_index do |elem, index|
+        alinhamento.merge!({index => elem.to_sym})
+      end
+
 debugger
     Prawn::Document.generate("public/relatorios/relatorio.pdf") do |pdf|
 
       pdf.font "Times-Roman"
       imprime_cabecalho(pdf, titulo)
-      alinhamento = Hash.new
-      tr[2].split(';').each_with_index do |elem, index|
-        alinhamento.merge!({index => elem.to_sym})
-      end
       pdf.table(items,
             :row_colors =>['FFFFFF', 'DDDDDD'],
-            :header_color => 'AAAAAA',
+            # :header_color => 'AAAAAA',
             :headers => tr[1].split(';'),
             :font_size => 8,
             :align => alinhamento,
