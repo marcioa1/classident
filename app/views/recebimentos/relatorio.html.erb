@@ -43,14 +43,13 @@
           <%= link_to_function "cheque", "abre_cheque(#{recebimento.cheque.id})" if recebimento.cheque %>
           <td><%= recebimento.cheque && recebimento.cheque.observacao%></td>
         <% else %> 
-          <%= recebimento.formas_recebimento.nome %>
           <td>&nbsp;</td>
+          <%= recebimento.formas_recebimento.nome %>
         <% end %></td>
         <td><%= link_to 'editar', edit_recebimento_path(recebimento), :class=>'ui-icon ui-icon-pencil', :title=>'editar' %></td>
         <td><%= link_to 'excluir', exclui_recebimento_path(recebimento), :class=>'ui-icon ui-icon-trash', :title=>'excluir' %></td>
     </tr>
-    <% dados += "#{recebimento.data.to_s_br};#{recebimento.paciente.nome};#{recebimento.valor.real},#{recebimento.formas_recebimento.nome}; #{recebimento.cheque && recebimento.cheque.observacao};>" %>
-
+    <% dados += "#{recebimento.data.to_s_br};#{recebimento.paciente.nome};#{recebimento.valor.real.to_s};#{recebimento.observacao} ;#{recebimento.formas_recebimento.nome}; #{recebimento.cheque && recebimento.cheque.observacao};>" %>
     <% total += recebimento.valor %>
     <% end %>
       </tbody>
@@ -83,7 +82,7 @@
       </tr>
     </table>
     <% end %>
-    <%= link_to "imprime", "#", :onclick=>"gera_pdf('#{dados}')"%>
+    <%= link_to "imprime", "#", :onclick=>"gera_pdf('#{dados}', '#{session[:clinica_id]}')"%>
 
   </div>
   <% end %>

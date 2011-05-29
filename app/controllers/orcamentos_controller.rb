@@ -120,50 +120,72 @@ class OrcamentosController < ApplicationController
   end
   
   def imprime
-    require "prawn/layout"
-    require "prawn/core"
-    Prawn::Document.generate("public/relatorios/orcamento_#{params[:clinica_id]}.pdf") do |pdf|
+    # require "prawn/core"
+    #  require "prawn/layout"
+    #  require "prawn/format"
+    #  
+     require 'rubygems'
+require 'prawn'
+require 'prawn/security'
+require "prawn/layout"
 
-      pdf.font "Times-Roman"
-      imprime_cabecalho(pdf, 'Orçamento')
-      pdf.text "Orçamento", :size=>22, :align=>:center
-      pdf.move_down 10
-      pdf.text "Paciente : #{@orcamento.paciente.nome}", :size=>14
-      pdf.move_down 8
-      corpo = [
-                ['Número :', @orcamento.numero],
-                ['Data :', @orcamento.data.to_s_br],
-                ['Dentista :', @orcamento.dentista.nome],
-                ['Valor :', @orcamento.valor.real.to_s],
-                ['Desconto :', @orcamento.desconto.to_s + '%'],
-                ['Valor c/ desc.', @orcamento.valor_com_desconto.real],
-                ['Forma pgto :', @orcamento.forma_de_pagamento],
-                ['Núm. parcelas :', @orcamento.numero_de_parcelas],
-                ['Vencto primeira parc.:', @orcamento.vencimento_primeira_parcela.to_s_br],
-                ['Valor parcela :', @orcamento.valor_da_parcela.real.to_s]
-              ]
-      pdf.table(corpo, 
-               :align => {0=>:right, 1=>:left},
-               :cell_border => 0)
-      pdf.move_down 15
-      
-      data = @orcamento.vencimento_primeira_parcela - 1.month
-      parcelas = (1..@orcamento.numero_de_parcelas).each.map do |par|
-        data = data + 1.month
-        [par, data.to_s_br, @orcamento.valor_da_parcela.real]
-      end
-      
-      pdf.table(parcelas,
-                :row_colors =>['FFFFFF', 'DDDDDD'],
-                :header_color => 'AAAAAA',
-                :headers=> ['Parcela', 'Data', 'Valor'],
-                :align => {0=>:right, 1=>:center, 2=>:right},
-                :cell_style => { :padding => 12 }, 
-                :width => 300)
-      
-      
+Prawn::Document.generate("public/relatorios/inline_format_table.pdf") do
+
+  header = %w[Name Occupation]
+  data = ["Bender Bending Rodriguez", "Bender"]
+
+  table([header] + [data] * 50, :header => true) do
+    row(0).style(:font_style => :bold, :background_color => 'cccccc')
+  end
+end
+
+    # Prawn::Document.generate("public/relatorios/orcamento_#{params[:clinica_id]}.pdf") do |pdf|
+    # 
+    #   pdf.font "Times-Roman"
+    #   imprime_cabecalho(pdf, 'Orçamento')
+    #   pdf.text "Orçamento", :size=>22, :align=>:center
+    #   pdf.move_down 10
+    #   pdf.text "Paciente : #{@orcamento.paciente.nome}", :size=>14
+    #   pdf.move_down 8
+    #   corpo = [
+    #             ['Número :', @orcamento.numero],
+    #             ['Data :', @orcamento.data.to_s_br],
+    #             ['Dentista :', @orcamento.dentista.nome],
+    #             ['Valor :', @orcamento.valor.real.to_s],
+    #             ['Desconto :', @orcamento.desconto.to_s + '%'],
+    #             ['Valor c/ desc.', @orcamento.valor_com_desconto.real.to_s],
+    #             ['Forma pgto :', @orcamento.forma_de_pagamento],
+    #             ['Núm. parcelas :', @orcamento.numero_de_parcelas],
+    #             ['Vencto primeira parc.:', @orcamento.vencimento_primeira_parcela.to_s_br],
+    #             ['Valor parcela :', @orcamento.valor_da_parcela.real.to_s]
+    #           ]
+    # debugger
+    #   pdf.table(corpo) do
+    #     column(0).align = 'right'
+    #     column(1).align = 'center'
+    #     end
+    #     # , 
+    #     #        :align => {0=>:right, 1=>:left},
+    #     #        :cell_border => 0)
+    #   pdf.move_down 15
+    #   
+    #   data = @orcamento.vencimento_primeira_parcela - 1.month
+    #   parcelas = (1..@orcamento.numero_de_parcelas).each.map do |par|
+    #     data = data + 1.month
+    #     [par, data.to_s_br, @orcamento.valor_da_parcela.real]
+    #   end
+    #   
+    #   pdf.table(parcelas,
+    #             :row_colors =>['FFFFFF', 'DDDDDD'],
+    #             :header_color => 'AAAAAA',
+    #             :headers=> ['Parcela', 'Data', 'Valor'],
+    #             :align => {0=>:right, 1=>:center, 2=>:right},
+    #             :cell_style => { :padding => 12 }, 
+    #             :width => 300)
+    #   
+    #   
       head :ok
-    end
+    # end
     
   end
 

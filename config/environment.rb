@@ -45,6 +45,6 @@ Rails::Initializer.run do |config|
   config.gem 'brdata'
   config.gem 'brstring'
   config.gem 'hoptoad_notifier' #, :source => 'http://gems.github.com'
-  config.gem 'prawn', :version => '>=0.4.8'
+  config.gem 'prawn', :version => '>=0.11.1'
 
 end

@@ -18,19 +18,20 @@ class RelatoriosController < ApplicationController
         alinhamento.merge!({index => elem.to_sym})
       end
 
-debugger
-    Prawn::Document.generate("public/relatorios/relatorio.pdf") do |pdf|
-
-      pdf.font "Times-Roman"
-      imprime_cabecalho(pdf, titulo)
-      pdf.table(items,
-            :row_colors =>['FFFFFF', 'DDDDDD'],
-            # :header_color => 'AAAAAA',
-            :headers => tr[1].split(';'),
-            :font_size => 8,
-            :align => alinhamento,
-            :cell_style => { :padding => 6 }, :width => 550)
+    Prawn::Document.generate("public/relatorios/#{session[:clinica_id]}/relatorio.pdf", :page_layout => :landscape) do 
+      repeat :all do
+        draw_text titulo, :at => bounds.top_left
+        move_down 5
+      end
+     
+      self.font_size = 10
+      header = tr[1].split(';')
+      data = items.flatten
+      table([header] + items , :header => true) do
+        row(0).style(:font_style => :bold, :background_color => 'cccccc')
+      end
     end
+    
     head :ok
   end
   
