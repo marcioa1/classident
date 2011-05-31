@@ -98,7 +98,7 @@ class RecebimentosController < ApplicationController
         @recebimento.verifica_fluxo_de_caixa
         (2..params[:numero_de_cheques].to_i).each do |num|
           outro_cheque             = @cheque.clone
-          outro_cheque.bom_para    = @recebimento.data + (num-1).month
+          outro_cheque.bom_para    = @cheque.bom_para + (num-1).month
           outro_cheque.numero      = @cheque.numero
           (1..num-1).each do |suc|
             outro_cheque.numero    = outro_cheque.numero.succ

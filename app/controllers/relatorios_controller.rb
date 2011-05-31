@@ -20,7 +20,9 @@ class RelatoriosController < ApplicationController
 
     Prawn::Document.generate("public/relatorios/#{session[:clinica_id]}/relatorio.pdf", :page_layout => :landscape) do 
       repeat :all do
+        image "public/images/logo-print.jpg", :align => :left
         draw_text titulo, :at => bounds.top_left
+        bounds.height = 100
         move_down 5
       end
      
@@ -28,6 +30,7 @@ class RelatoriosController < ApplicationController
       header = tr[1].split(';')
       data = items.flatten
       table([header] + items , :header => true) do
+          # style(row(0), :background_color => 'ff00ff')
         row(0).style(:font_style => :bold, :background_color => 'cccccc')
       end
     end
@@ -35,7 +38,7 @@ class RelatoriosController < ApplicationController
     head :ok
   end
   
-  protected
+  # protected
   
   def imprime_cabecalho(pdf, titulo)
     pdf.image "public/images/logo-print.jpg", :align => :left

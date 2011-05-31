@@ -8,6 +8,8 @@
   <title>Classident
     </title>
 
+  <%= stylesheet_link_tag 'jquery.ui.autocomplete', 'jquery.ui.tabs', 'jquery.ui.datepicker'%>
+
   <% if RAILS_ENV == "development"%>
     <%= javascript_include_tag 'jquery-1.4.js' %>
     <%= javascript_include_tag 'jquery-ui-1.8.custom.min' %>
@@ -20,7 +22,6 @@
   <%= javascript_include_tag 'ui.datepicker-pt-BR.js'%>
 
   <%= stylesheet_link_tag 'adm', 'jquery.loading.1.6', 'jquery', 'jquery.ui.core' %>
-  <%= stylesheet_link_tag 'jquery.ui.autocomplete', 'jquery.ui.tabs', 'jquery.ui.datepicker'%>
 
   <script type='text/javascript'>
   function selecionou_clinica(){
