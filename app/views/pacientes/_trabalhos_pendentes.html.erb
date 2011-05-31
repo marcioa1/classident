@@ -9,12 +9,13 @@
     <th><br/>Data de devolução</th>
     <th><br/>Protético</th>
     <th><br/>Dentista</th>
-    <th><br/>&nbsp;</th>
+    <th><br/>editar</th>
+    <th><br/>excluir</th>
   </tr>
 <% trabalhos_pendentes.each do |trab| %>
   <tr>
     <td><%= trab.data_de_envio.to_s_br%></td>
-    <td><%= link_to trab.tabela_protetico.descricao, edit_trabalho_protetico_path(trab) unless trab.tabela_protetico.nil? %></td>
+    <td><%= trab.tabela_protetico.descricao %></td>
     <td><%= trab.observacoes %></td>
     <td><%= trab.valor.real %></td>
     <td><%= trab.data_prevista_de_devolucao.to_s_br%></td>
@@ -28,7 +29,9 @@
     </td>
     <td><%= link_to trab.protetico.nome, abre_protetico_path(trab.protetico.id) if trab.protetico.present? %></td>
     <td><%= trab.dentista.nome unless trab.dentista.nil?%></td>
-    <td><%= link_to 'excluir', trab, :confirm => 'Tem certeza ?', :method => :delete, :class=>'ui-icon ui-icon-trash', :title=>'excluir' %></td>
+    <td align='center'><%= link_to trab.tabela_protetico.descricao, edit_trabalho_protetico_path(trab), :class=>'ui-icon ui-icon-pencil' , :title=>'editar' unless trab.tabela_protetico.nil? %></td>
+
+    <td align='center'><%= link_to 'excluir', trab, :confirm => 'Tem certeza ?', :method => :delete, :class=>'ui-icon ui-icon-trash', :title=>'excluir' %></td>
   </tr>
 <% end %>
 </table>
