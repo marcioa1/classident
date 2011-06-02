@@ -531,7 +531,6 @@ ActiveRecord::Schema.define(:version => 20110527002506) do
   add_index "trabalho_proteticos", ["paciente_id"], :name => "index_trabalho_proteticos_on_paciente_id"
   add_index "trabalho_proteticos", ["protetico_id"], :name => "index_trabalho_proteticos_on_protetico_id"
   add_index "trabalho_proteticos", ["tabela_protetico_id"], :name => "index_trabalho_proteticos_on_tabela_protetico_id"
-  add_index "trabalho_proteticos", ["tratamento_id"], :name => "tratamento_id"
 
   create_table "tratamentos", :force => true do |t|
     t.integer  "paciente_id"
@@ -584,22 +583,22 @@ ActiveRecord::Schema.define(:version => 20110527002506) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean  "ativo",                            :default => true
-    t.datetime "hora_de_inicio_0",                 :default => '2011-05-18 11:00:00'
-    t.datetime "hora_de_termino_0",                :default => '2011-05-18 21:00:00'
-    t.datetime "hora_de_inicio_1",                 :default => '2011-05-18 11:00:00'
-    t.datetime "hora_de_termino_1",                :default => '2011-05-18 21:00:00'
-    t.datetime "hora_de_inicio_2",                 :default => '2011-05-18 11:00:00'
-    t.datetime "hora_de_termino_2",                :default => '2011-05-18 21:00:00'
-    t.datetime "hora_de_inicio_3",                 :default => '2011-05-18 11:00:00'
-    t.datetime "hora_de_termino_3",                :default => '2011-05-18 21:00:00'
-    t.datetime "hora_de_inicio_4",                 :default => '2011-05-18 11:00:00'
-    t.datetime "hora_de_termino_4",                :default => '2011-05-18 21:00:00'
-    t.datetime "hora_de_inicio_5",                 :default => '2011-05-18 11:00:00'
-    t.datetime "hora_de_termino_5",                :default => '2011-05-18 21:00:00'
-    t.datetime "hora_de_inicio_6",                 :default => '2011-05-18 11:00:00'
-    t.datetime "hora_de_termino_6",                :default => '2011-05-18 21:00:00'
-    t.datetime "hora_de_inicio_7",                 :default => '2011-05-18 11:00:00'
-    t.datetime "hora_de_termino_7",                :default => '2011-05-18 21:00:00'
+    t.datetime "hora_de_inicio_0",                 :default => '2011-06-01 11:00:00'
+    t.datetime "hora_de_termino_0",                :default => '2011-06-01 21:00:00'
+    t.datetime "hora_de_inicio_1",                 :default => '2011-06-01 11:00:00'
+    t.datetime "hora_de_termino_1",                :default => '2011-06-01 21:00:00'
+    t.datetime "hora_de_inicio_2",                 :default => '2011-06-01 11:00:00'
+    t.datetime "hora_de_termino_2",                :default => '2011-06-01 21:00:00'
+    t.datetime "hora_de_inicio_3",                 :default => '2011-06-01 11:00:00'
+    t.datetime "hora_de_termino_3",                :default => '2011-06-01 21:00:00'
+    t.datetime "hora_de_inicio_4",                 :default => '2011-06-01 11:00:00'
+    t.datetime "hora_de_termino_4",                :default => '2011-06-01 21:00:00'
+    t.datetime "hora_de_inicio_5",                 :default => '2011-06-01 11:00:00'
+    t.datetime "hora_de_termino_5",                :default => '2011-06-01 21:00:00'
+    t.datetime "hora_de_inicio_6",                 :default => '2011-06-01 11:00:00'
+    t.datetime "hora_de_termino_6",                :default => '2011-06-01 21:00:00'
+    t.datetime "hora_de_inicio_7",                 :default => '2011-06-01 11:00:00'
+    t.datetime "hora_de_termino_7",                :default => '2011-06-01 21:00:00'
     t.boolean  "dia_da_semana_0",                  :default => false
     t.boolean  "dia_da_semana_1",                  :default => true
     t.boolean  "dia_da_semana_2",                  :default => true
