@@ -99,8 +99,9 @@ class ProteticosController < ApplicationController
     else
       quinzena
     end
-    @trabalhos_pendentes  = TrabalhoProtetico.pendentes.entre_datas(@inicio,@fim).da_clinica(session[:clinica_id])
-    @trabalhos_devolvidos = TrabalhoProtetico.devolvidos.entre_datas(@inicio,@fim).da_clinica(session[:clinica_id])
+    debugger
+    @trabalhos_pendentes  = TrabalhoProtetico.pendentes.entre_datas(@data_inicial,@data_final).da_clinica(session[:clinica_id])
+    @trabalhos_devolvidos = TrabalhoProtetico.devolvidos.entre_datas(@data_inicial,@data_final).da_clinica(session[:clinica_id])
     if params[:protetico].to_i > 0
       @trabalhos_pendentes  = @trabalhos_pendentes.do_protetico(params[:protetico]) 
       @trabalhos_devolvidos = @trabalhos_devolvidos.do_protetico(params[:protetico]) 
