@@ -210,5 +210,8 @@ class Paciente < ActiveRecord::Base
     result
   end
   
+  def rua
+    self.logradouro + ' ' + self.numero + ', ' + self.complemento
+  end
   
 end

@@ -1,0 +1,13 @@
+- content_for :main do
+  Mala-direta
+  = @pacientes.size
+  %table
+    - @pacientes.each do |pac|
+      %tr
+        %td= check_box_tag "paciente_#{pac.id}", true,true
+        %td= pac.nome
+        %td= pac.rua        
+        %td= pac.bairro        
+        %td= pac.cidade + "/" + pac.uf
+        %td= pac.cep  
+        %td= pac.email
