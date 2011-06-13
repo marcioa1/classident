@@ -2,14 +2,14 @@
 %p
 %table{:class=>'tabela'}
   %tr
-    %th
-      Data 1 devolução
+    %th{ :width => "120px" }
+      Data 1ª devolução
     %th{ :width => "200px" }
       Motivo
-    %th{ :width => "70px" }
-      Data 2 devolução
+    %th{ :width => "120px" }
+      Data 2ª devolução
   - @paciente.cheques_devolvidos.each do |cheque|
     %tr
-      %td= link_to cheque.data_primeira_devolucao, cheque, :target=>:blank
+      %td{:align=>'center'}= link_to cheque.data_primeira_devolucao.to_s_br, cheque, :target=>:blank
       %td= cheque.motivo_primeira_devolucao
-      %td= cheque.data_segunda_devolucao
+      %td{:align=>'center'}= cheque.data_segunda_devolucao.to_s_br

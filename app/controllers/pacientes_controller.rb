@@ -81,8 +81,9 @@ class PacientesController < ApplicationController
   
   
   def pesquisa_nomes
+    debugger
     if @clinica_atual.administracao?
-      nomes = Paciente.all(:select=>'nome,clinica_id', :conditions=>["nome like ?", "#{params[:term].nome_proprio}%" ])  
+      nomes = Paciente.all(:select=>'nome,clinica_id', :conditions=>["nome like ?", "#{params[:term]}%" ])  
     else
       nomes = Paciente.all(:select=>'nome,clinica_id', :conditions=>["nome like ? and clinica_id = ? ", "#{params[:term].nome_proprio}%", session[:clinica_id] ])  
     end
