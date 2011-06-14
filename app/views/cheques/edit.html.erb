@@ -88,15 +88,15 @@
         </div>
       </div>
       <div>
-        <p>
+        <div>
             <%= check_box_tag :spc, 1, checked=@cheque.spc? , options={:onclick=>"abre_spc();",   :disabled=>!@clinica_atual.administracao? }%> SPC
-         </p>
+         </div>
        <fieldset>
 
        <% if @cheque.spc? %>
-          <div id="spc" >
+          <div id="spc_fields" >
         <% else %>
-          <div id="spc" style="<%= @cheque.spc? ? '' : 'display:nonee;'%>">
+          <div id="spc_fields" style="<%= @cheque.spc? ? '' : 'display:none;'%>">
         <% end %>
           <div>
           <%= f.label 'Data SPC' %>

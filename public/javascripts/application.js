@@ -94,7 +94,7 @@ function abre_segunda_devolucao(){
     $("#devolvido_duas_vezes").toggle('blind', { percent: 0 },500);
 }
 function abre_spc(){
-    // $("#spc").toggle('blind', { percent: 0 },500);
+    $("#spc_fields").toggle('blind', { percent: 0 },500);
 }
 function enviar_administracao(){
     var selecionados = "";
