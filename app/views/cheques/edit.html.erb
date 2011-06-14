@@ -70,19 +70,41 @@
         <p>
             <%= check_box_tag :segunda_devolucao, 1, checked=@cheque.devolvido_duas_vezes? , options={ :onclick=>"abre_segunda_devolucao();", :disabled=>!@clinica_atual.administracao? }%> segunda devolução
          </p>
+         <fieldset>
         <% if @cheque.devolvido_duas_vezes? %>
           <div id="devolvido_duas_vezes" >
         <% else %>
           <div id="devolvido_duas_vezes" style="<%= @cheque.devolvido_duas_vezes? ? '' : 'display:none;'%>">
         <% end %>
-        <p class="borda_dupla">
+        <div>
           <%= f.label :data_da_segunda_devolução %>
-        <%= text_field_tag :datepicker4, @cheque.data_segunda_devolucao, :size=>10%>
+        <%= text_field_tag :data_segunda_devolucao_br, @cheque.data_segunda_devolucao_br, :size=>10%>
+        </div>
+        <div>
 		<%= f.label :motivo %>    
         <%= f.text_field :motivo_segunda_devolucao, :size=>10 %>
-        </p>
+        </div>
+        </fieldset>
         </div>
       </div>
+      <div>
+        <p>
+            <%= check_box_tag :spc, 1, checked=@cheque.spc? , options={:onclick=>"abre_spc();",   :disabled=>!@clinica_atual.administracao? }%> SPC
+         </p>
+       <fieldset>
+
+       <% if @cheque.spc? %>
+          <div id="spc" >
+        <% else %>
+          <div id="spc" style="<%= @cheque.spc? ? '' : 'display:nonee;'%>">
+        <% end %>
+          <div>
+          <%= f.label 'Data SPC' %>
+          <%= f.text_field :data_spc_br , :size => 10, :class => 'datepicker'%>
+          </div>
+        </div>
+          </fieldset>
+       </div>
   </div>
   <% if @cheque.entregue_a_administracao? %>
   <p>Entregue à Administração em <%= @cheque.data_entrega_administracao.to_s_br %></p>

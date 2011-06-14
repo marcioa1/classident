@@ -37,7 +37,7 @@
     <% end %>
     <% @cheques.each do |cheque| %>
       <tr>
-        <td><%= cheque.id %></td>
+        <td><%= link_to cheque.id, edit_cheque_path(cheque.id) %></td>
         <td><%= cheque.banco.nome if cheque.banco.present?%></td>
         <td><%= cheque.agencia %></td>
         <td><%= cheque.numero %></td>
