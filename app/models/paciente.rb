@@ -23,13 +23,18 @@ class Paciente < ActiveRecord::Base
   after_create :verifica_debito_de_ortodontia
  
   named_scope :cobranca_de_ortodontia_ativa, :conditions =>["data_da_suspensao_da_cobranca_de_orto IS NULL and ortodontia = TRUE"]
-  named_scope :da_clinica, lambda{|clinica_id| {:conditions=>["clinica_id=?", clinica_id]}}
+  named_scope :da_clinica, lambda{|clinica_id| {:conditions=>["pacientes.clinica_id=?", clinica_id]}}
   named_scope :de_clinica, :conditions=>["ortodontia = ?", false]
   named_scope :de_ortodontia, :conditions=>["ortodontia = ?", true]
   named_scope :fora_da_lista_de_debito, :conditions=>["sair_da_lista_de_debitos = ? ", true]
   named_scope :fora_da_lista_de_debito_entre, lambda{|inicio,fim| {:conditions=>["sair_da_lista_de_debitos = ? 
     and data_da_saida_da_lista_de_debitos between ? and ?", true, inicio,fim]}}
   named_scope :por_nome, :order=>:nome
+  named_scope :recentes, 
+              :joins => :recebimentos,
+              :conditions=>(['recebimentos.data > ? AND recebimentos.data_de_exclusao IS NULL', Date.today - 5.years]),
+              :select => 'pacientes.id, pacientes.nome, pacientes.email, pacientes.logradouro, pacientes.numero, pacientes.complemento, pacientes.bairro, pacientes.cidade, pacientes.cep, pacientes.uf, recebimentos.data',
+              :group => 'pacientes.id'
   
   
   attr_accessor :inicio_tratamento_br, :data_suspensao_da_cobranca_de_orto_br,
@@ -212,6 +217,10 @@ class Paciente < ActiveRecord::Base
   
   def rua
     self.logradouro + ' ' + self.numero + ', ' + self.complemento
+  end
+  
+  def ultimo_lancamento
+    Recebimento.first(:select=>'data', :conditions=>['paciente_id = ? AND data_de_exclusao IS NULL', self.id], :order=>'data desc')
   end
   
 end

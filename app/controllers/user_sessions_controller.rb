@@ -22,6 +22,7 @@ class UserSessionsController < ApplicationController
             session[:clinica_id] = Clinica::ADMINISTRACAO_ID
           else
             session[:clinica_id] = current_user.clinicas.first.id
+            @clinica_atual = Clinica.find(session[:clinica_id])
             Debito.verifica_debitos_de_ortodontia(session[:clinica_id]) unless @clinica_atual.administracao?
           end
           redirect_to pesquisa_pacientes_path

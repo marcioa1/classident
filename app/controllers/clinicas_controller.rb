@@ -142,7 +142,7 @@ class ClinicasController < ApplicationController
 
   def mala_direta
     @clinica_atual  = Clinica.busca_clinica(session[:clinica_id])
-    @pacientes      = Paciente.da_clinica(session[:clinica_id])
+    @pacientes      = Paciente.da_clinica(session[:clinica_id]).recentes
   end
   
 end
