@@ -81,7 +81,6 @@ class PacientesController < ApplicationController
   
   
   def pesquisa_nomes
-    debugger
     if @clinica_atual.administracao?
       nomes = Paciente.all(:select=>'nome,clinica_id', :conditions=>["nome like ?", "#{params[:term]}%" ])  
     else

@@ -16,7 +16,6 @@
       %td= rec.formas_recebimento.nome
       %td= rec.observacao_exclusao
       - if rec.usuario_exclusao
-        - debugger
         - user = User.find(rec.usuario_exclusao)
       %td= user && user.nome
       %td

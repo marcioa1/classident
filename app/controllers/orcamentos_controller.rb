@@ -159,7 +159,6 @@ end
     #             ['Vencto primeira parc.:', @orcamento.vencimento_primeira_parcela.to_s_br],
     #             ['Valor parcela :', @orcamento.valor_da_parcela.real.to_s]
     #           ]
-    # debugger
     #   pdf.table(corpo) do
     #     column(0).align = 'right'
     #     column(1).align = 'center'

@@ -180,7 +180,6 @@ class DentistasController < ApplicationController
       @clinicas.each do |clinica|
         clinicas_da_pesquisa<< clinica.id if params["clinica_"+clinica.id.to_s]
       end
-      debugger
       all = Tratamento.da_clinica(clinicas_da_pesquisa).dentistas_entre_datas(@data_inicial,@data_final)
       @todos = []
       all.each do |den|

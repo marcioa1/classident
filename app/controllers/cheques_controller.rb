@@ -216,7 +216,6 @@ class ChequesController < ApplicationController
   end
 
   def confirma_recebimento
-    debugger
     if params[:ordem] == 'por_data'
       @cheques  = Cheque.vindo_da_clinica(params[:clinica]).entregues_a_administracao.nao_recebidos.por_bom_para
     else

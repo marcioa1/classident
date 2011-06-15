@@ -44,7 +44,7 @@ class User < ActiveRecord::Base
       when 3: self.dia_da_semana_3 && Time.current.strftime('%H:%M') >= self.hora_de_inicio_3.strftime('%H:%M') && Time.current.strftime('%H:%M') <= self.hora_de_termino_3.strftime('%H:%M')
       when 4: self.dia_da_semana_4 && Time.current.strftime('%H:%M') >= self.hora_de_inicio_4.strftime('%H:%M') && Time.current.strftime('%H:%M') <= self.hora_de_termino_4.strftime('%H:%M')
       when 5: self.dia_da_semana_5 && Time.current.strftime('%H:%M') >= self.hora_de_inicio_5.strftime('%H:%M') && Time.current.strftime('%H:%M') <= self.hora_de_termino_5.strftime('%H:%M')
-      when 5: self.dia_da_semana_6 && Time.current.strftime('%H:%M') >= self.hora_de_inicio_6.strftime('%H:%M') && Time.current.strftime('%H:%M') <= self.hora_de_termino_6.strftime('%H:%M')
+      when 6: self.dia_da_semana_6 && Time.current.strftime('%H:%M') >= self.hora_de_inicio_6.strftime('%H:%M') && Time.current.strftime('%H:%M') <= self.hora_de_termino_6.strftime('%H:%M')
     end
   end
 

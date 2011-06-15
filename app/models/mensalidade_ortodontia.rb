@@ -5,7 +5,7 @@ class MensalidadeOrtodontia < ActiveRecord::Base
     if ultima.present?
       ultima[0].data.year >= Date.today.year && ultima[0].data.month < Date.today.month
     else
-      false
+      true  # primeira geração
     end
   end
   
