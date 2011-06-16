@@ -13,12 +13,13 @@
 <% trabalhos_devolvidos.each do |trab| %>
   <tr>
     <td><%= trab.data_de_envio.to_s_br%></td>
-    <td><%= link_to trab.tabela_protetico.descricao, edit_trabalho_protetico_path(trab) if trab.tabela_protetico %></td>
+    <td><%= trab.tabela_protetico.descricao if trab.tabela_protetico %></td>
     <td><%= trab.observacoes %></td>
     <td><%= trab.valor.real %></td>
     <td align="center"><%= trab.data_de_devolucao.to_s_br %></td>
     <td><%= link_to trab.protetico.nome, abre_protetico_path(trab.protetico.id)  %></td>
     <td><%= trab.dentista.nome if trab.dentista %></td>
+     <td><%= link_to 'editar', edit_trabalho_protetico_path(trab), :class=>'ui-icon ui-icon-pencil' , :title=>'editar' %></td>
     <td align='center'><%= link_to 'excluir', trab, :confirm => 'Tem certeza ?', :method => :delete, :class=>'ui-icon ui-icon-trash', :title=>'excluir' %></td>
 
   </tr>
