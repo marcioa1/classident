@@ -8,6 +8,7 @@
     <th>Data de devolução</th>
     <th>Protético</th>
     <th>Dentista</th>
+    <th>&nbsp;</th>
   </tr>
 <% trabalhos_devolvidos.each do |trab| %>
   <tr>
@@ -18,6 +19,7 @@
     <td align="center"><%= trab.data_de_devolucao.to_s_br %></td>
     <td><%= link_to trab.protetico.nome, abre_protetico_path(trab.protetico.id)  %></td>
     <td><%= trab.dentista.nome if trab.dentista %></td>
+    <td align='center'><%= link_to 'excluir', trab, :confirm => 'Tem certeza ?', :method => :delete, :class=>'ui-icon ui-icon-trash', :title=>'excluir' %></td>
 
   </tr>
 
