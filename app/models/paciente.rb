@@ -35,7 +35,7 @@ class Paciente < ActiveRecord::Base
               :conditions=>(['recebimentos.data > ? AND recebimentos.data_de_exclusao IS NULL', Date.today - 5.years]),
               :select => 'pacientes.id, pacientes.nome, pacientes.email, pacientes.logradouro, pacientes.numero, pacientes.complemento, pacientes.bairro, pacientes.cidade, pacientes.cep, pacientes.uf, recebimentos.data',
               :group => 'pacientes.id'
-  
+  named_scope :com_endereco_completo, :conditions=>["cep IS NOT NULL"]
   
   attr_accessor :inicio_tratamento_br, :data_suspensao_da_cobranca_de_orto_br,
                 :data_da_saida_da_lista_de_debitos_br

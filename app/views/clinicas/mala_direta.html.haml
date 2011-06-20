@@ -1,10 +1,20 @@
 - content_for :main do
-  Mala-direta
-  = @pacientes.size
+  %h2
+    Mala-direta
   %table
-    - @pacientes.each do |pac|
+    %tr
+      %th= 'Nº'
+      %th= "Selec"
+      %th= "Nome"
+      %th= "Rua"
+      %th= "Bairro"
+      %th= "Cidade/UF"
+      %th= "Cep"
+      %th= "email"
+    - @pacientes.each_with_index do |pac, index|
       - if pac.present?
         %tr
+          %td= index + 1
           %td= check_box_tag "paciente_#{pac.id}", true,true
           %td= pac.nome
           %td= pac.logradouro
