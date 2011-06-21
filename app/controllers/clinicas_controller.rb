@@ -147,7 +147,7 @@ class ClinicasController < ApplicationController
 
   def gera_arquivo_de_mala_direta
     @clinica_atual  = Clinica.busca_clinica(session[:clinica_id])
-    @pacientes      = Paciente.da_clinica(session[:clinica_id]).recentes.com_endereco_completo
+    @pacientes      = Paciente.da_clinica(session[:clinica_id]).recentes#.com_endereco_completo
     arquivo = File.open("doc/mala_direta_#{@clinica_atual.id}.txt", 'a')  
     @pacientes.each do |pac|
       arquivo.puts "#{pac.nome};#{pac.logradouro};#{pac.bairro};#{pac.cidade};#{pac.uf};#{pac.cep}"
