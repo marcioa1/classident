@@ -246,4 +246,23 @@ class Cheque < ActiveRecord::Base
     end
     result
   end
+  
+  def nome_dos_outros_pacientes(nome_paciente)
+    nome = ""
+    recebimentos = self.recebimentos
+    recebimentos.each do |rec|
+      nome += rec.paciente.nome + " , " if rec.paciente.nome != nome_paciente
+    end
+    nome
+  end
+  
+  def nome_dos_pacientes
+    nome = ""
+    recebimentos = self.recebimentos
+    recebimentos.each do |rec|
+      nome += rec.paciente.nome + ", "
+    end
+    nome
+  end
+  
 end

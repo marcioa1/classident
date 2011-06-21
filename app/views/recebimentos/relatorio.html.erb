@@ -47,7 +47,7 @@
           <%= recebimento.formas_recebimento.nome %>
         <% end %></td>
         <td><%= link_to 'editar', edit_recebimento_path(recebimento), :class=>'ui-icon ui-icon-pencil', :title=>'editar' %></td>
-        <td><%= link_to 'excluir', exclui_recebimento_path(recebimento), :class=>'ui-icon ui-icon-trash', :title=>'excluir' %></td>
+        <td><%= link_to 'excluir', exclusao_recebimento_path(recebimento.id), :class=>'ui-icon ui-icon-trash', :title=>'excluir' if recebimento.pode_excluir? %></td>
     </tr>
     <% dados += "#{recebimento.data.to_s_br};#{recebimento.paciente.nome};#{recebimento.valor.real.to_s};#{recebimento.observacao} ;#{recebimento.formas_recebimento.nome}; #{recebimento.cheque && recebimento.cheque.observacao};>" %>
     <% total += recebimento.valor %>

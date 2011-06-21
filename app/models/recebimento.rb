@@ -134,8 +134,6 @@ class Recebimento < ActiveRecord::Base
   end
   
   def exclui(user, obs)
-    # self.data_de_exclusao    = Time.current
-    # self.usuario_exclusao    = user
     if self.cheque
       self.cheque.update_attribute(:data_de_exclusao, Time.current)
       todos = self.cheque.recebimentos

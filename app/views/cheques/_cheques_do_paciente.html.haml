@@ -7,6 +7,7 @@
     %th Agência
     %th Número
     %th Status
+    %th Outros pacientes
   - @paciente.cheques.each do |cheque|
     - if !cheque.excluido?
       %tr
@@ -16,4 +17,5 @@
         %td= cheque.agencia
         %td= cheque.numero
         %td= cheque.status
+        %td= cheque.nome_dos_outros_pacientes(@paciente.nome)
   
