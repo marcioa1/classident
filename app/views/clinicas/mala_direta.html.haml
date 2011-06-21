@@ -1,6 +1,7 @@
 - content_for :main do
   %h2
     Mala-direta
+  = link_to_function 'Imprime', "window.location = '/clinicas/gera_arquivo_de_mala_direta'"
   %table
     %tr
       %th= 'Nº'
