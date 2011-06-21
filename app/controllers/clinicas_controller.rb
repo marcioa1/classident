@@ -142,7 +142,7 @@ class ClinicasController < ApplicationController
 
   def mala_direta
     @clinica_atual  = Clinica.busca_clinica(session[:clinica_id])
-    @pacientes      = Paciente.da_clinica(session[:clinica_id]).recentes.com_endereco_completo
+    @pacientes      = Paciente.da_clinica(session[:clinica_id]).recentes#.com_endereco_completo
   end
 
   def gera_arquivo_de_mala_direta
