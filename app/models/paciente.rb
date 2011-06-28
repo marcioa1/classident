@@ -32,6 +32,7 @@ class Paciente < ActiveRecord::Base
   named_scope :por_nome, :order=>:nome
   named_scope :recentes, 
               :joins => :recebimentos,
+              :limit => 5,
               :conditions=>(['recebimentos.data > ? AND recebimentos.data_de_exclusao IS NULL ', Date.today - 5.years]),
               :select => 'pacientes.id, pacientes.nome, pacientes.email, pacientes.logradouro, pacientes.numero, pacientes.complemento, pacientes.bairro, pacientes.cidade, pacientes.cep, pacientes.uf, recebimentos.data',
               :group => 'pacientes.id'
