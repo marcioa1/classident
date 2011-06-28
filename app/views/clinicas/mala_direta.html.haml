@@ -1,4 +1,5 @@
 - content_for :main do
+
   %h2
     Mala-direta
   = link_to_function 'Imprime', "window.location = '/clinicas/gera_arquivo_de_mala_direta'"
@@ -18,8 +19,14 @@
           %td= index + 1
           %td= check_box_tag "paciente_#{pac.id}", true,true
           %td= pac.nome
-          %td= pac.logradouro
+          %td{:id=>pac.id}= pac.logradouro
           %td= pac.bairro 
           %td= pac.cidade + "/" + pac.uf if pac.cidade && pac.uf
-          %td= pac.cep  
+          %td
+            = pac.cep 
+            = button_to_function "busca", "busca_cep(#{pac.id});" 
           %td= pac.email
+:javascript
+  function busca_cep(id){
+    alert($("#td_"+id).val(););
+  }
