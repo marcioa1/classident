@@ -1,7 +1,8 @@
 class AcompanhamentoChequesController < ApplicationController
   
   layout "adm"
-  
+  before_filter :require_user
+
   def new
     @acompanhamento_cheque = AcompanhamentoCheque.new()
     @cheque                = Cheque.find(params[:cheque_id])
