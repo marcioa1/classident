@@ -96,6 +96,9 @@ function abre_segunda_devolucao(){
 function abre_spc(){
     $("#spc_fields").toggle('blind', { percent: 0 },500);
 }
+function abre_solucionado(){
+    $("#solucao_fields").toggle('blind', { percent: 0 },500);
+}
 function enviar_administracao(){
     var selecionados = "";
     var chk = $('input:checkbox');

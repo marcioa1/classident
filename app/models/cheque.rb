@@ -53,12 +53,14 @@ class Cheque < ActiveRecord::Base
   named_scope :menores_que, lambda{|valor| {:conditions=>["valor<?", valor]}}
   named_scope :sem_segunda_devolucao, :conditions=>["data_segunda_devolucao IS NULL"]
   named_scope :sem_solucao, :conditions=>['data_solucao IS NULL']
+  named_scope :solucionado, :conditions=>['data_solucao IS NOT NULL']
   named_scope :spc, lambda{|data_inicial, data_final| 
       {:conditions=>["data_spc between ? and ?", data_inicial, data_final]}}
   named_scope :usados_para_pagamento, :conditions=>["pagamento_id IS NOT NULL"]
   named_scope :vindo_da_clinica, lambda{|clinicas| {:conditions=>["clinica_id in (?)", clinicas]}}
   
-  attr_accessor :valor_real, :bom_para_br, :data_segunda_devolucao_br, :data_spc_br
+  attr_accessor :valor_real, :bom_para_br, :data_segunda_devolucao_br, 
+                :data_spc_br, :data_solucao_br
   
   def bom_para_br
     self.bom_para.to_s_br
@@ -89,6 +91,14 @@ class Cheque < ActiveRecord::Base
     self.valor = valor.gsub(".", "").sub(",",".")
   end
   
+  def data_solucao_br
+    self.data_solucao.to_s_br
+  end
+  def data_solucao_br=(valor)
+    self.data_solucao = valor.to_date if Date.valid?(valor)  
+  end
+
+  
   def status
     return "solucionado" unless !solucionado?
     return "arquivo morto" unless !arquivo_morto?
@@ -106,6 +116,7 @@ class Cheque < ActiveRecord::Base
   
   def status_resumido
     return "arq morto" unless !arquivo_morto?
+    return "solucionado" unless !solucionado?
     return "SPC" unless !spc?
     return "devol 2X:" + data_segunda_devolucao.to_s_br unless !devolvido_duas_vezes? 
     return "reapr. :" + data_reapresentacao.to_s_br unless !reapresentado?
@@ -116,7 +127,6 @@ class Cheque < ActiveRecord::Base
     return "receb. adm" if recebido_pela_administracao?
     return "enviado adm" if entregue_a_administracao?
     return "disponível" unless !sem_devolucao? 
-    return "solucionado" unless !solucionado?
   end
   
   def status_class

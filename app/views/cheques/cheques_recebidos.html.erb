@@ -26,7 +26,7 @@
 <table id='table' class='tabela'>
   <tr>
     <% if @clinica_atual.administracao? %>
-      <th>Clí.</th>
+      <th>Clínica</th>
     <% end %>
     <th>Bom para</th>
     <th width="170px">Paciente</th>
@@ -37,6 +37,7 @@
     <th>Adm</th>
     <th width='120px'>Situação</th>
     <th>Data recebimento</th>
+    <th>&nbsp;</th>
   </tr>
   <% total = 0 %>
   <% for cheque in @cheques do %>
@@ -49,11 +50,7 @@
 
     <% end %>
     <td align="center">
-      <% if  @clinica_atual.administracao? %>
-        <%= link_to cheque.bom_para.to_s_br, edit_cheque_path(cheque) %>
-      <% else %>
-        <%= link_to cheque.bom_para.to_s_br, edit_cheque_path(cheque) %>
-      <% end %>
+      <%= cheque.bom_para.to_s_br %>
     </td>
     <td><%= cheque.nome_dos_pacientes %></td>
     <td align="right"><%= cheque.valor.real %></td>
@@ -88,6 +85,8 @@
   
     </td>
     <td><%= cheque.data_recebimento_na_administracao.to_s_br %></td>
+    <td><%= link_to 'alterar', edit_cheque_path(cheque), :class=>'ui-icon ui-icon-pencil' , :title=>'alterar'  %></td>
+
   </tr>
   <% total += cheque.valor %>
   <% end %>
@@ -100,7 +99,7 @@
             <%= link_to_function "receber cheques", 'confirma_recebimento_de_cheque()' %>
           <% end %>
       </td>
-      <td colspan="2">&nbsp;</td>
+      <td colspan="4">&nbsp;</td>
     <% else %>
       <td colspan="2" align="center">Total</td>
       <td align="right"><%= total.real%></td>

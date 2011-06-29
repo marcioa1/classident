@@ -86,8 +86,6 @@
         </div>
         </fieldset>
         </div>
-      </div>
-      <div>
         <div>
             <%= check_box_tag :spc, 1, checked=@cheque.spc? , options={:onclick=>"abre_spc();",   :disabled=>!@clinica_atual.administracao? }%> SPC
          </div>
@@ -98,14 +96,36 @@
         <% else %>
           <div id="spc_fields" style="<%= @cheque.spc? ? '' : 'display:none;'%>">
         <% end %>
-          <div>
-          <%= f.label 'Data SPC' %>
-          <%= f.text_field :data_spc_br , :size => 10, :class => 'datepicker'%>
+            <div>
+              <%= f.label 'Data SPC' %>
+              <%= f.text_field :data_spc_br , :size => 10, :class => 'datepicker'%>
+            </div>
           </div>
-        </div>
-          </fieldset>
+        </fieldset>
+
+        <div>
+            <%= check_box_tag :solucao, 1, checked=@cheque.solucionado? , options={:onclick=>"abre_solucionado();",   :disabled=>!@clinica_atual.administracao? }%> Solução
+         </div>
+       <fieldset>
+
+       <% if @cheque.solucionado? %>
+          <div id="solucao_fields" >
+        <% else %>
+          <div id="solucao_fields" style="<%= @cheque.solucionado? ? '' : 'display:none;'%>">
+        <% end %>
+            <div>
+              <%= f.label 'Data solução' %> :
+              <%= f.text_field :data_solucao_br , :size => 10, :class => 'datepicker'%>
+            </div>
+            <div>
+              <%= f.label 'Descrição solução' %> :
+              <%= f.text_field :descricao_solucao , :size => 40%>
+            </div>
+          </div>
+        </fieldset>
        </div>
-  </div>
+
+
   <% if @cheque.entregue_a_administracao? %>
   <p>Entregue à Administração em <%= @cheque.data_entrega_administracao.to_s_br %></p>
   <% end %>
@@ -122,4 +142,5 @@
 <%= link_to 'voltar', :back %>
 <% #TODO volta via javascript para voltar a página com pesquisa %>
 </fieldset>
+</div>
 <% end %>

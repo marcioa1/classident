@@ -73,7 +73,7 @@ class ChequesController < ApplicationController
         ["devolvido 2 vezes","devolvido 2 vezes"],
         ["usados para pagamento","usados para pagamento"],
         ["destinação", "destinação"], ["devolvido","devolvido"],
-        ["reapresentado","reapresentado"], ["spc", "spc"]].sort!
+        ["reapresentado","reapresentado"], ["spc", "spc"], ["solucionado", "solucionado"]].sort!
     # if !administracao
       @status << ["enviados à administração","enviados à administração"]
       @status << ["recebidos pela administração", "recebidos pela administração"]
@@ -145,6 +145,12 @@ class ChequesController < ApplicationController
             das_clinicas(selecionadas).por_bom_para
         when params[:status]=="spc" && params[:ordem] == 'por_valor' 
           @cheques = Cheque.na_administracao.spc(@data_inicial,@data_final).
+            das_clinicas(selecionadas).por_valor
+        when params[:status]=="solucionado" && params[:ordem] == 'por_data' 
+          @cheques = Cheque.na_administracao.solucionado(@data_inicial,@data_final).
+            das_clinicas(selecionadas).por_bom_para
+        when params[:status]=="solucionado" && params[:ordem] == 'por_valor' 
+          @cheques = Cheque.na_administracao.solucionado(@data_inicial,@data_final).
             das_clinicas(selecionadas).por_valor
       end
     else
