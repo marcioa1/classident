@@ -1,5 +1,9 @@
 class Paciente < ActiveRecord::Base
   acts_as_audited
+  
+  cattr_reader :per_page
+  @@per_page = 16
+  
   belongs_to :tabela
   has_many :altas
   has_many :tratamentos

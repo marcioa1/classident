@@ -14,15 +14,3 @@
       %td= link_to_function 'selecionar', "selecionar_cep('#{cep.cep}')"
 
 :javascript
-  function selecionar_cep(id){
-    $("#"+ cep_id).html(id);
-    $("#partial").html('');
-    $.ajax({
-          url  : "/pacientes/" +  $("#paciente_id").html() + "/altera_cep",
-          data : {cep: id},
-          type : "GET",
-          success :function(data){
-            alert('cep alterado com sucesso');
-          }
-        });    
-  }
