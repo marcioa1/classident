@@ -116,7 +116,7 @@ class Recebimento < ActiveRecord::Base
   end
   
   def excluido?
-    !data_de_exclusao.nil?
+    data_de_exclusao.present?
   end
   
   def pode_alterar?

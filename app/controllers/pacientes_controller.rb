@@ -142,7 +142,7 @@ class PacientesController < ApplicationController
   end
 
   def busca_id_do_paciente
-    paciente_id = Paciente.find_by_nome(params[:nome]).id
+    paciente_id = Paciente.find_by_nome_and_clinica_id(params[:nome], session[:clinica_id]).id
     render :json => paciente_id.to_json
   end
 
