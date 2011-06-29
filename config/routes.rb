@@ -39,7 +39,7 @@ ActionController::Routing::Routes.draw do |map|
                   :collection=>{:pesquisa=>:get,:nomes_que_iniciam_com=>:get, 
                                 :pesquisa_nomes=> :get, :retorna_paciente_por_nome=>:get,
                                 :busca_id_do_paciente=>:get, :transfere_paciente => :get},
-                  :member => {:abre=>:get, 
+                  :member => {:abre=>:get, :altera_cep=>:get, 
                               :verifica_nome_do_paciente => :get, :extrato_pdf => :get}
   map.resources :abonos, :collection=> {:pesquisa_nomes => :get}
 

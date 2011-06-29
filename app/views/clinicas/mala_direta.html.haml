@@ -1,14 +1,16 @@
 - content_for :main do
   
   :javascript
+    var cep_id = '';
     function busca_cep(id){
-      alert($("#termo").html());
+      $("#paciente_id").html(id);
+      cep_id = 'cep_' + id;
       $.ajax({
           url  : "/busca_pelo_logradouro",
           data : {logradouro: $("#termo").html()},
           type : "GET",
           success :function(data){
-            alert(data);
+            $("#partial").html(data);
           }
         });
     }
@@ -44,20 +46,22 @@
       $(document).bind("mouseup", Kolich.Selector.mouseup);
     });
   
-  
-  #termo
+  #paciente_id{:style=>'display:none;'}
+  #termo{:style=>'display:none;'}
+  #partial
   %h2
     Mala-direta
   = link_to_function 'Imprime', "window.location = '/clinicas/gera_arquivo_de_mala_direta'"
   %table
     %tr
-      %th= 'Nº'
-      %th= "Selec"
+      %th{:width=>'22px'}= 'Nº'
+      %th{:width=>'22px'}= "Sel."
       %th= "Nome"
       %th= "Rua"
-      %th= "Bairro"
+      %th{:width=>'120px'}= "Bairro"
       %th= "Cidade/UF"
       %th= "Cep"
+      %th &nbsp;
     - @pacientes.each_with_index do |pac, index|
       - if pac.present?
         %tr
@@ -67,6 +71,7 @@
           %td{:id=>"td_#{pac.id}"}= pac.logradouro
           %td= pac.bairro 
           %td= pac.cidade + "/" + pac.uf if pac.cidade && pac.uf
-          %td
+          %td{:id=>"cep_#{pac.id}"}
             = pac.cep 
+          %td
             = button_to_function "busca", "busca_cep(#{pac.id});" 

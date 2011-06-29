@@ -211,5 +211,9 @@ class PacientesController < ApplicationController
       head :bad_request
     end
   end
-  
+
+  def altera_cep
+    Paciente.find(params[:id]).update_attribute('cep', params[:cep])
+    head :ok
+  end  
 end

@@ -1,0 +1,28 @@
+%table{:id=>'cep'}
+  %tr
+    %th Logradouro
+    %th= "Bairro"
+    %th= "Cidade"
+    %th= "cep"
+    %th &nbsp;
+  -ceps.each do |cep|
+    %tr
+      %td= cep.logradouro
+      %td= cep.bairro
+      %td= cep.cidade
+      %td= cep.cep
+      %td= link_to_function 'selecionar', "selecionar_cep('#{cep.cep}')"
+
+:javascript
+  function selecionar_cep(id){
+    $("#"+ cep_id).html(id);
+    $("#partial").html('');
+    $.ajax({
+          url  : "/pacientes/" +  $("#paciente_id").html() + "/altera_cep",
+          data : {cep: id},
+          type : "GET",
+          success :function(data){
+            alert('cep alterado com sucesso');
+          }
+        });    
+  }
