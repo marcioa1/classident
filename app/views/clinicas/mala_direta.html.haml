@@ -7,9 +7,8 @@
   %h2
     Mala-direta
   = link_to_function 'Imprime', "window.location = '/clinicas/gera_arquivo_de_mala_direta'"
-  %table
+  %table{:class=>'tabela'}
     %tr
-      %th{:width=>'22px'}= 'Nº'
       %th{:width=>'22px'}= "Sel."
       %th= "Nome"
       %th= "Rua"
@@ -17,50 +16,48 @@
       %th= "Cidade/UF"
       %th= "Cep"
       %th &nbsp;
-    - @pacientes.each_with_index do |pac, index|
-      - if pac.present?
-        %tr
-          %td= index + 1
-          %td= check_box_tag "paciente_#{pac.id}", true,true
-          %td= pac.nome
-          %td{:id=>"td_#{pac.id}"}= pac.logradouro
-          %td= pac.bairro 
-          %td= pac.cidade + "/" + pac.uf if pac.cidade && pac.uf
-          %td{:id=>"cep_#{pac.id}"}
-            = pac.cep 
-          %td
-            = button_to_function "busca", "busca_cep(#{pac.id});" 
+    - @pacientes.each do |pac|
+      %tr
+        %td= check_box_tag "paciente_#{pac.id}", true,true
+        %td= link_to pac.nome, abre_paciente_path(pac)
+        %td{:id=>"td_#{pac.id}"}= pac.logradouro
+        %td= pac.bairro 
+        %td= pac.cidade + "/" + pac.uf if pac.cidade && pac.uf
+        %td{:id=>"cep_#{pac.id}"}= pac.cep
+        %td= button_to_function "busca", "busca_cep(#{pac.id});" 
+
   %br
-    = #will_paginate @pacientes
+    = will_paginate @pacientes
       
   :javascript
   
     function selecionar_cep(id){
-    $("#"+ cep_id).html(id);
-    $("#partial").html('');
-    $.ajax({
-          url  : "/pacientes/" +  $("#paciente_id").html() + "/altera_cep",
-          data : {cep: id},
-          type : "GET",
-          success :function(data){
-            alert('cep alterado com sucesso');
-          }
-        });    
+      $("#"+ cep_id).html(id);
+      $("#partial").html('');
+      $.ajax({
+        url  : "/pacientes/" +  $("#paciente_id").html() + "/altera_cep",
+        data : {cep: id},
+        type : "GET",
+        success :function(data){
+          alert('cep alterado com sucesso');
+        }
+      });    
     }
-  
-    var cep_id = '';
+
     function busca_cep(id){
       $("#paciente_id").html(id);
       cep_id = 'cep_' + id;
       $.ajax({
-          url  : "/busca_pelo_logradouro",
-          data : {logradouro: $("#termo").html()},
-          type : "GET",
-          success :function(data){
-            $("#partial").html(data);
-          }
-        });
+        url  : "/busca_pelo_logradouro",
+        data : {logradouro: $("#termo").html()},
+        type : "GET",
+        success :function(data){
+          $("#partial").html(data);
+        }
+      });
     }
+
+    var cep_id = '';
     
   
     if(!window.Kolich){

@@ -142,12 +142,12 @@ class ClinicasController < ApplicationController
 
   def mala_direta
     @clinica_atual  = Clinica.busca_clinica(session[:clinica_id])
-    @pacientes      = Paciente.da_clinica(session[:clinica_id]).recentes.paginate :page => params[:page]
+    @pacientes      = Paciente.da_clinica(session[:clinica_id]).recentes.com_logradouro.paginate :page => params[:page]
   end
 
   def gera_arquivo_de_mala_direta
     @clinica_atual  = Clinica.busca_clinica(session[:clinica_id])
-    @pacientes      = Paciente.da_clinica(session[:clinica_id]).recentes#.com_endereco_completo
+    @pacientes      = Paciente.da_clinica(session[:clinica_id]).recentes.com_logradouro#.com_endereco_completo
     fileName = RAILS_ROOT + "/tmp/mala_direta_#{@clinica_atual.id}.csv"
     arquivo = File.open(fileName, 'wb')  
     @pacientes.each do |pac|

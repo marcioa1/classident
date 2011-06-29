@@ -23,7 +23,7 @@ class Paciente < ActiveRecord::Base
   #                        :message => 'Formato de email inválido.'
   validates_presence_of :inicio_tratamento, :only => [:create, :update], :message => "A data de início do tratamento é obrigatória."
   #validates_format_of :inicio_tratamento, :with => /^[\w\d]+$/, :on => :create, :message => "is invalid"
- 
+ validates_length_of :cep, :maximum => 9
   after_create :verifica_debito_de_ortodontia
  
   named_scope :cobranca_de_ortodontia_ativa, :conditions =>["data_da_suspensao_da_cobranca_de_orto IS NULL and ortodontia = TRUE"]
@@ -41,6 +41,7 @@ class Paciente < ActiveRecord::Base
               :select => 'pacientes.id, pacientes.nome, pacientes.email, pacientes.logradouro, pacientes.numero, pacientes.complemento, pacientes.bairro, pacientes.cidade, pacientes.cep, pacientes.uf, recebimentos.data',
               :group => 'pacientes.id'
   named_scope :com_endereco_completo, :conditions=>["cep IS NOT NULL"]
+  named_scope :com_logradouro, :conditions=>['logradouro IS NOT NULL']
   
   attr_accessor :inicio_tratamento_br, :data_suspensao_da_cobranca_de_orto_br,
                 :data_da_saida_da_lista_de_debitos_br
