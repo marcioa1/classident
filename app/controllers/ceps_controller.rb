@@ -2,7 +2,7 @@ class CepsController < ApplicationController
 
   def busca_pelo_logradouro
     cep = Cep.find(:all, 
-                   :conditions=>['logradouro LIKE ?', params[:logradouro] + '%' ],
+                   :conditions=>['logradouro LIKE ?', params[:logradouro].strip! + '%' ],
                    :order => 'cidade, bairro'
     )
     # if cep.size == 1
