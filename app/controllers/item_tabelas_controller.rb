@@ -47,7 +47,7 @@ class ItemTabelasController < ApplicationController
     @item_tabela = ItemTabela.new(params[:item_tabela])
 
     if @item_tabela.save
-      flash[:notice] = 'ItemTabela was successfully created.'
+      flash[:notice] = 'ItemTabela criado com sucesso.'
       redirect_to(item_tabelas_path(:tabela_id=>@item_tabela.tabela_id)) 
     else
       @tabela = Tabela.find(params[:tabela_id])

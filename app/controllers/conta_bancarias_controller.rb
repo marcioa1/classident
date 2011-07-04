@@ -26,7 +26,7 @@ class ContaBancariasController < ApplicationController
     @conta_bancaria = ContaBancaria.new(params[:conta_bancaria])
 
     if @conta_bancaria.save
-      flash[:notice] = 'ContaBancaria was successfully created.'
+      flash[:notice] = 'ContaBancaria criado com sucesso.'
       redirect_to(conta_bancarias_path) 
     else
       @clinicas = Clinica.por_nome.collect{|cl| [cl.nome, cl.id]}

@@ -33,7 +33,7 @@ class TipoPagamentosController < ApplicationController
     @tipo_pagamento = TipoPagamento.new(params[:tipo_pagamento])
 
     if @tipo_pagamento.save
-      flash[:notice] = 'TipoPagamento was successfully created.'
+      flash[:notice] = 'TipoPagamento criado com sucesso.'
       redirect_to(tipo_pagamentos_path) 
     else
       render :action => "new" 
