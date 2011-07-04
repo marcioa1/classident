@@ -7,6 +7,6 @@
       %th{:width=>"90px"}Número
       %th{:width=>"120px"}Valor
     %tr
-      %td= @pagamento.conta_bancaria
+      %td= @pagamento.conta_bancaria.nome
       %td= @pagamento.numero_do_cheque 
-      %td{:align=>"right"}= @pagamento.valor.real 
+      %td{:align=>"right"}= @pagamento.valor_cheque.real 

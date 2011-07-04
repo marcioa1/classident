@@ -35,6 +35,22 @@ class Pagamento < ActiveRecord::Base
   named_scope :por_data, :order=>:data_de_pagamento
 #  named_scope :total,  :sum('valor_pago') #conditions=>['sum valor_pago where data between ? and ? ', '2009-01-01', '2009-01-31']
        
+  attr_accessor :valor_restante_br, :valor_cheque_br
+  
+  def valor_restante_br()
+    self.valor_restante.real
+  end 
+  def valor_restante_br=(valor)
+    self.valor_restante = valor.gsub('.','').gsub(',', '.')
+  end
+
+  def valor_cheque_br()
+    self.valor_cheque.real
+  end 
+  def valor_cheque_br=(valor)
+    self.valor_cheque = valor.gsub('.','').gsub(',', '.')
+  end
+      
    OPCAO_RESTANTE_EM_DINHEIRO = 2
  
   include ApplicationHelper
@@ -105,7 +121,6 @@ class Pagamento < ActiveRecord::Base
   end
 
   def em_cheque_classident?
-    debugger
     (self.conta_bancaria_id && self.conta_bancaria_id > 0 && self.cheques.empty?)
   end
   

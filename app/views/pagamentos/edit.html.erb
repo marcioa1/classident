@@ -6,7 +6,7 @@
   <%= f.error_messages %>
 <div id="valor_restante" class="direita">
 <p><%= f.label :valor_restante %>
-	<%= f.text_field :valor_restante, :size=>9 %></p>
+	<%= f.text_field :valor_restante_br, :size=>9 %></p>
 	<p>
 	  <%= f.radio_button :opcao_restante,  0, :onclick=>"cheque(0);"%> sem restante<br/>
 	  <%= f.radio_button :opcao_restante,  1, :onclick=>"cheque(1);" %> pago em cheque<br/>
@@ -37,7 +37,7 @@
     <%= f.check_box :nao_lancar_no_livro_caixa %>
     <%= f.label :não_lançar_no_livro_caixa %>
   </p>
-  <div id="cheque_classident" style="display:none">
+  <div id="cheque_classident" style="display:nonee">
 	<fieldset>
 	  <legend>Cheque da classident</legend>
 	  <div>
@@ -50,7 +50,7 @@
           </div>
           <div>
             <%= f.label :valor %> : 
-            <%= f.text_field :valor_cheque, :size=>8 %>
+            <%= f.text_field :valor_cheque_br, :size=>8 %>
           </div>
 	</fieldset>
   </div>

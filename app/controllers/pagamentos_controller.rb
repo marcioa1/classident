@@ -48,9 +48,7 @@ class PagamentosController < ApplicationController
 
   def create
     @pagamento                   = Pagamento.new(params[:pagamento])
-    debugger
     @pagamento.clinica_id        = session[:clinica_id]
-    # @pagamento.conta_bancaria_id = nil if params[:opcao_restante]  !=" pago_em_cheque"
     @pagamento.protetico_id      = session[:protetico_id] unless session[:protetico_id].nil?
     @pagamento.dentista_id       = session[:dentista_id] unless session[:dentista_id].nil?
     Pagamento.transaction do
