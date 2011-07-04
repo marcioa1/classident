@@ -105,6 +105,7 @@ class Pagamento < ActiveRecord::Base
   end
 
   def em_cheque_classident?
+    debugger
     (self.conta_bancaria_id && self.conta_bancaria_id > 0 && self.cheques.empty?)
   end
   

@@ -40,12 +40,18 @@
   <div id="cheque_classident" style="display:none">
 	<fieldset>
 	  <legend>Cheque da classident</legend>
-	  <%= f.label :conta %> : 
-	  <%= f.select :conta_bancaria_id, @contas_bancarias %>
-	  <%= f.label :n_cheque %> : 
-	  <%= f.text_field :numero_do_cheque, :size=>7 %>
-	  <%= f.label :valor %> : 
-	  <%= f.text_field :valor_cheque, :size=>8 %>
+	  <div>
+            <%= f.label :conta %> : 
+            <%= f.select :conta_bancaria_id, @contas_bancarias %>
+          </div>
+          <div>
+            <%= f.label :n_cheque %> : 
+            <%= f.text_field :numero_do_cheque, :size=>7 %>
+          </div>
+          <div>
+            <%= f.label :valor %> : 
+            <%= f.text_field :valor_cheque, :size=>8 %>
+          </div>
 	</fieldset>
   </div>
   <%= hidden_field_tag :cheques_ids %>
@@ -54,7 +60,6 @@
     <%= f.submit 'alterar' %>
   </p>
 <% end %>
-<%= render :partial=>"cheques_utilizados" %>
 
 <%= render :partial=>"cheques/disponiveis" %>
 

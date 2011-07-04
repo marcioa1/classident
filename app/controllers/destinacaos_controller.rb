@@ -20,7 +20,7 @@ class DestinacaosController < ApplicationController
     @destinacao = Destinacao.new(params[:destinacao])
 
     if @destinacao.save
-      flash[:notice] = 'Destinacao criado com sucesso successfully created.'
+      flash[:notice] = 'Destinacao criado com sucesso.'
       redirect_to(@destinacao) 
     else
       render :action => "new" 
