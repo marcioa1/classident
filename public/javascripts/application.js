@@ -310,7 +310,7 @@ function limpa_codigo(){
     $("#codigo").val('');
 }
 
-function selecionou_cheque(elemento){
+function verifica_valor_restante(){
   var total_de_cheques = 0.0;
   var todos = $("#lista_de_cheques :checked");
   var selecionados = "";
@@ -330,14 +330,16 @@ function selecionou_cheque(elemento){
   console.log($("#pagamento_valor_restante").val());
   formata_valor($("#pagamento_valor_restante"));
   if (total_a_pagar < total_de_cheques){
-    alert("A soma dos valores dos cheques selecionados é maior que o valor do pagamento.");
     sem_sinal = $("#pagamento_valor_restante").val();
     $("#pagamento_valor_restante").val('-' + sem_sinal);
     $("#pagamento_valor_restante").css('color', 'red');
+    alert("A soma dos valores dos cheques selecionados é maior que o valor do pagamento.");
   }else {
         $("#pagamento_valor_restante").css('color', 'black');
   }
-  
+}
+function selecionou_cheque(elemento){
+  verifica_valor_restante();
   if ($("#tr2_" + elemento)[0]) {
     $("#tr2_" + elemento).remove();
   } else {
