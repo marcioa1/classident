@@ -37,13 +37,13 @@ class PagamentosController < ApplicationController
     if params[:valor]
       @pagamento.valor_pago = params[:valor]
     end
-    @contas_bancarias = ContaBancaria.all.collect{|obj| [obj.nome, obj.id]}
+    @contas_bancarias = ContaBancaria.all.collect{|obj| [obj.nome, obj.id]}.insert(0,'')
   end
 
   def edit
     @tipos_pagamento  = TipoPagamento.ativos.por_nome.collect{|obj| [obj.nome, obj.id]}
     @pagamento        = Pagamento.find(params[:id])
-    @contas_bancarias = ContaBancaria.all.collect{|obj| [obj.nome, obj.id]}
+    @contas_bancarias = ContaBancaria.all.collect{|obj| [obj.nome, obj.id]}.insert(0,'')
   end
 
   def create
@@ -83,7 +83,7 @@ class PagamentosController < ApplicationController
         redirect_to(session[:origem] || relatorio_pagamentos_path) #TODO retornar para tela anterio
       else
         @tipos_pagamento  = TipoPagamento.da_clinica(session[:clinica_id]).ativos.por_nome.collect{|obj| [obj.nome, obj.id]}
-        @contas_bancarias = ContaBancaria.all.collect{|obj| [obj.nome, obj.id]}
+        @contas_bancarias = ContaBancaria.all.collect{|obj| [obj.nome, obj.id]}.insert(0,'')
 
         render :action => "new" 
       end
