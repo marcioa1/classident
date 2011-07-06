@@ -9,7 +9,7 @@
       %th{:width=>"90px"}Valor
       %th{:width=>"120px"}Banco
       %th Número
-    - @pagamento.cheques.each() do |cheque|
+    - pagamento.cheques.each() do |cheque|
       %tr
         - if @clinica_atual.administracao?
           %td= cheque.clinica.sigla

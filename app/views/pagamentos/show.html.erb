@@ -48,7 +48,7 @@ ID:<%=h @pagamento.id %>
   </p>
 <% end %>
 
-<%= render :partial=>"pagamentos/cheques_utilizados" if @pagamento.em_cheque_pacientes? %>
+<%= render :partial=>"pagamentos/cheques_utilizados", :locals=>{:pagamento=>@pagamento} if @pagamento.em_cheque_pacientes? %>
 <%= render :partial=>"pagamentos/cheque_classident" if @pagamento.em_cheque_classident? %>
 <%= render :partial=>"trabalho_proteticos/trabalho_pagamento"%>
 
