@@ -8,6 +8,7 @@
       %th{:width=>"220px"}Observação
       %th{:width=>"120px"} Tipo
       %th{:width=>"120px"} Modo pgto
+      %th Detalhes
       %th &nbsp;
       %th &nbsp;
       %th &nbsp;
@@ -19,6 +20,11 @@
       %td=h pagamento.observacao 
       %td=h pagamento.tipo_pagamento.nome 
       %td=h pagamento.modo_de_pagamento 
+      %td
+        - if pagamento.em_cheque_classident? 
+          = pagamento.conta_bancaria && pagamento.conta_bancaria.nome 
+          = ' / ' 
+          = pagamento.numero_do_cheque 
       %td= link_to 'editar', edit_pagamento_path(pagamento), :class=>'ui-icon ui-icon-pencil', :title=>'editar' if pagamento.pode_alterar? 
       %td= link_to 'excluir', exclusao_pagamento_path(pagamento), :class=>'ui-icon ui-icon-trash', :title=>'excluir'  if pagamento.pode_alterar?
       %td= link_to 'mostrar', '#', :onclick=>'javascript:abre_pagamento('+ pagamento.id.to_s + ')' , :class=>'ui-icon ui-icon-info', :title=>'ver detalhes'
