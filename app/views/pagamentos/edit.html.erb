@@ -62,7 +62,7 @@
 <% end %>
 <%= @pagamento%>
 <%= render :partial=>"cheques/disponiveis" %>
-<%= render :partial=>"pagamentos/cheques_utilizados", :locals=>{:pagamento=>@pagamento.cheques} %>
+<%= render :partial=>"pagamentos/cheques_utilizados", :locals=>{:pagamento=>@pagamento} %>
 
 <%= link_to 'voltar', session[:origem] %>
 </fieldset>
