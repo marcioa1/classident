@@ -53,6 +53,7 @@
     <th>Dinheiro</th>
     <th>Cheque</th>
     <th>Modo pgto</th>
+    <th>Detalhes</th>
     <th>Livro caixa</th>
     <th>&nbsp;</th>
     <th>&nbsp;</th>
@@ -79,6 +80,13 @@
     </td>
     <td align="right"><%= pagamento.valor_cheque.real %></td>
     <td><%=h pagamento.modo_de_pagamento %></td>
+    <td>
+      <% if pagamento.em_cheque_classident? %>
+        <%= pagamento.conta_bancaria && pagamento.conta_bancaria.nome %>
+        <%= ' - '%>
+        <%= pagamento.numero_do_cheque %>
+      <% end %>
+    </td>
     <td align="center"><%=h pagamento.nao_lancar_no_livro_caixa ? "não" : "sim" %></td>
     <td><%= link_to 'editar', edit_pagamento_path(pagamento), :class=>'ui-icon ui-icon-pencil', :title=>'editar' if pagamento.pode_alterar? %></td>
     <td><%= link_to 'excluir', exclusao_pagamento_path(pagamento), :class=>'ui-icon ui-icon-trash', :title=>'excluir'  if pagamento.pode_alterar?%></td>
