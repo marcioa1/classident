@@ -39,7 +39,7 @@ class EntradasController < ApplicationController
     @entrada.data       = params[:datepicker].to_date
     @entrada.clinica_id = session[:clinica_id]
     if @clinica_atual.administracao?
-      @entrada.clinica_destino = params[:clinia_id]
+      @entrada.clinica_destino = params[:clinica_id]
     else
       @entrada.clinica_destino = Clinica.administracao.first(1).id
     end
