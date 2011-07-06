@@ -78,7 +78,7 @@
     <% end %>
     <td><%= status = case 
         when cheque.status=~/usado pgto/ then 
-          link_to cheque.status + ' / ' + cheque.pagamento.tipo_pagamento.nome, '#', :onclick=>'javascript:abre_pagamento('+ cheque.pagamento_id.to_s + ')'
+          link_to cheque.pagamento.tipo_pagamento.nome, '#', :onclick=>'javascript:abre_pagamento('+ cheque.pagamento_id.to_s + ')'
         when cheque.status=~/destinação/ then
            cheque.destinacao.nome
         when cheque.entregue_a_administracao? then 
