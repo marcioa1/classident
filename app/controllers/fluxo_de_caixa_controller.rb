@@ -22,10 +22,6 @@ class FluxoDeCaixaController < ApplicationController
              params[:saldo_dinheiro], params[:saldo_cheque]) if params[:saldo_dinheiro]
       end
     end
-    # if @data.nil?
-    #    @data = Date.today
-    # end
-
     if @clinica_atual.administracao?
       @recebimentos = []
       @cheques      = Cheque.por_bom_para.na_administracao.
