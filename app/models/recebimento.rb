@@ -67,7 +67,6 @@ class Recebimento < ActiveRecord::Base
   def valor_real
     self.valor.real
   end
-  
   def valor_real=(valor)
     self.valor = valor.gsub('.','').gsub(',', '.')
   end

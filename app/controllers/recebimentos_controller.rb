@@ -54,25 +54,31 @@ class RecebimentosController < ApplicationController
         @recebimento.errors.add(:banco, 'não pode ser branco') if !@cheque.banco.present?
         @recebimento.errors.add(:numero, 'do cheque não pode ser branco') if !@cheque.numero.present?
         @recebimento.errors.add(:valor, ' do cheque não pode ser branco') if !@cheque.valor.present?
+        if !@cheque.valid?
+          @recebimento.errors.add(:banco, "Cheque com dados inválidos")
+        end
       end
       if params[:paciente_id_2].present?
         if !Recebimento::FORMATO_VALIDO_BR.match(params[:valor_segundo_paciente])
           @recebimento.errors.add("Formato do valor do segundo paciente ")
-       else
-         @recebimento2                       = Recebimento.new
-         @recebimento2.percentual_dentista   = @recebimento.percentual_dentista
-         @recebimento2.paciente_id           = params[:paciente_id_2]
-         @recebimento2.valor                 = params[:valor_segundo_paciente].gsub('.','').gsub(',','.')
-         @recebimento2.observacao            = params[:observacao_paciente_2]
-         @recebimento2.formas_recebimento_id = @recebimento.formas_recebimento_id
-         @recebimento2.data                  = @recebimento.data
-         @recebimento2.clinica_id            = session[:clinica_id]
-         @recebimento2.cheque                = @cheque
-       end
-     end
+        else
+          @recebimento2                       = Recebimento.new
+          @recebimento2.percentual_dentista   = @recebimento.percentual_dentista
+          @recebimento2.paciente_id           = params[:paciente_id_2]
+          @recebimento2.valor                 = params[:valor_segundo_paciente].gsub('.','').gsub(',','.')
+          @recebimento2.observacao            = params[:observacao_paciente_2]
+          @recebimento2.formas_recebimento_id = @recebimento.formas_recebimento_id
+          @recebimento2.data                  = @recebimento.data
+          @recebimento2.clinica_id            = params[:clinica_id].to_i
+          @recebimento2.cheque                = @cheque
+          if !@recebimento2.valid?
+            @recebimento.errors.add("Dados do segundo paciente estão inválidos.")
+          end
+        end
+      end
       if params[:paciente_id_3].present?
         if !Recebimento::FORMATO_VALIDO_BR.match(params[:valor_terceiro_paciente])
-          @recebimento.errors.add("Formato do valor do segundo paciente ")
+          @recebimento.errors.add(:data, "Formato do valor do terceiro paciente ")
         else
           @recebimento3                       = Recebimento.new
           @recebimento3.percentual_dentista   = @recebimento.percentual_dentista
@@ -81,8 +87,11 @@ class RecebimentosController < ApplicationController
           @recebimento3.observacao            = params[:observacao_paciente_3]
           @recebimento3.formas_recebimento_id = @recebimento.formas_recebimento_id
           @recebimento3.data                  = @recebimento.data
-          @recebimento3.clinica_id            = session[:clinica_id]
+          @recebimento3.clinica_id            = params[:clinica_id].to_i
           @recebimento3.cheque                = @cheque
+          if !@recebimento3.valid?
+            @recebimento.errors.add(:data, "Dados do terceiro paciente estão inválidos.")
+          end
         end
       end
     else
