@@ -111,7 +111,8 @@
     
   </tr>
 </table>
-<%= link_to "imprime", "#", :onclick=>"gera_pdf('#{dados}')"%>
+  <%= link_to "imprime", "#", :onclick=>"gera_pdf('#{dados}', '#{session[:clinica_id]}')"%>
+
 </div>
 <script type="text/javascript">
   function reverte_cheque(id){
