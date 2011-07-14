@@ -225,6 +225,7 @@ class RecebimentosController < ApplicationController
       @recebimentos           = []
       @recebimentos_excluidos = []
     end
+    @titulo = "Relatório de recebimentos entre #{@data_inicial.to_s_br} e #{@data_final.to_s_br} da clínica #{@clinica_atual.nome}"
     # if formas_selecionadas.include?(forma_cheque_id.to_s)
     #   @recebimentos_devolvidos = Recebimento.em_cheque.com_problema.entre_datas(@data_inicial,@data_final)
     #   @recebimentos = @recebimentos - @recebimentos_devolvidos 

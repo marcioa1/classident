@@ -1,7 +1,7 @@
 <% content_for :main do %>
 
   <%= render :partial => '/layouts/include_senha' %>
-
+<%= @titulo %>
   <fieldset class="fieldset_50">
     <legend>Relatório de recebimentos</legend>
     <% form_tag relatorio_recebimentos_path do %>
@@ -15,7 +15,7 @@
     <% end %>
   </fieldset>
   <br/>
-    <% dados = "Relatório de Recebimento;>Data;Paciente;Valor;Observação;Tipo;Dados do Cheque>center;left;right;left;left;left>" %>
+    <% dados = "#{@titulo};>Data;Paciente;Valor;Observação;Tipo;Dados do Cheque>center;left;right;left;left;left>" %>
 
   <table id="tabela" class="tabela">
     <thead>
