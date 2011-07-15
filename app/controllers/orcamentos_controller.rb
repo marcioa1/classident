@@ -77,6 +77,7 @@ class OrcamentosController < ApplicationController
     else
       flash[:error] = 'Data inválida.'
     end
+    @titulo = "Orçamentos elaborados entre #{params[:datepicker].to_date} e #{params[:datepicker2].to_date} da clinica #{@clinica_atual.nome}"
   end
 
   def aproveitamento

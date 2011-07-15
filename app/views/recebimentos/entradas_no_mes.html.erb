@@ -51,7 +51,7 @@
       <% dados += "Total;#{total[0].real};#{total[1].real};#{total[2].real};#{total[3].real};#{(total[0] - total[1] + total[2] - total[3]).real};>"%>
     </tr>
   </table>
-  <%= link_to "imprime", "#", :onclick=>"gera_pdf('#{dados}', '#{session[:clinica_id]}')"%>
+  <%= link_de_impressao(dados) %>
 
 </div>
 </div>
