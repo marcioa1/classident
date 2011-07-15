@@ -151,6 +151,7 @@ class PagamentosController < ApplicationController
       @pela_administracao = Pagamento.pela_administracao.entre_datas(@data_inicial, @data_final).da_clinica(session[:clinica_id])
       @pagamentos += @pela_administracao
     end
+    @titulo = "Pagamento entre #{@data_inicial.to_s_br} e #{@data_final.to_s_br} da clínica #{@clinica_atual.nome}"
   end
    
   def registra_pagamento_a_protetico

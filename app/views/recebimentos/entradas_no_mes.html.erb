@@ -2,6 +2,8 @@
 
   <%= render :partial => '/layouts/include_senha' %>
 
+  <% dados = "#{@titulo};>Dia;Valor;Devolvidos;Reapresentados;Devolvidos 2 vezes;Saldo>center;right;right;right;right;right>" %>
+
   <h3>Entrada no mês</h3>
   <p>
   <% form_tag :url=>entradas_no_mes_recebimentos_path do %>
@@ -30,12 +32,14 @@
         <td align='right'><%= @devolvidos[dia].real %></td>
         <td align='right'><%= @reapresentados[dia].real %></td>
         <td align='right'><%= @devolvido_duas_vezes[dia].real %></td>
-        <td align='right'><%= (@entradas[dia] - @devolvidos[dia] + @reapresentados[dia] - @devolvido_duas_vezes[dia]).real %></td>
+        <% saldo = (@entradas[dia] - @devolvidos[dia] + @reapresentados[dia] - @devolvido_duas_vezes[dia]).real%>
+        <td align='right'><%= saldo %></td>
       </tr>
       <% total[0] += @entradas[dia].real %>
       <% total[1] += @devolvidos[dia].real %>
       <% total[2] += @reapresentados[dia].real %>
       <% total[3] += @devolvido_duas_vezes[dia].real %>
+      <% dados += "#{dia};#{@entradas[dia].real};#{@devolvidos[dia].real};#{@reapresentados[dia].real};#{@devolvido_duas_vezes[dia].real};#{saldo};>"%>
     <% end %>
     <tr>
       <td>Total</td>
@@ -44,8 +48,11 @@
       <td align='right'><%= total[2].real %></td>
       <td align='right'><%= total[3].real %></td>
       <td align='right'><%= (total[0] - total[1] + total[2] - total[3]).real %></td>
+      <% dados += "Total;#{total[0].real};#{total[1].real};#{total[2].real};#{total[3].real};#{(total[0] - total[1] + total[2] - total[3]).real};>"%>
     </tr>
   </table>
+  <%= link_to "imprime", "#", :onclick=>"gera_pdf('#{dados}', '#{session[:clinica_id]}')"%>
+
 </div>
 </div>
 <% end %>

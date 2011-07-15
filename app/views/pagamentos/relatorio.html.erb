@@ -59,6 +59,7 @@
     <th>&nbsp;</th>
     <th>&nbsp;</th>
   </tr></thead>
+<% dados = "#{@titulo};>Tipo;Valor;Observações;Pago em;Terceiros;Dinheiro;Cheque;modo pgto;Detalhes;Livro  Caixa>center;right;right;right;right;right;right;right;right;right;>" %>
 <% total = 0 %>
 <% total_terceiros = 0 %>
 <% total_cheque = 0 %>
@@ -71,23 +72,31 @@
     <td><%=h pagamento.observacao %></td>
     <td align="center"><%=h pagamento.data_de_pagamento.to_s_br %></td>
     <td align="right"><%= pagamento.valor_terceiros.real %></td>
+    <% dados += "#{pagamento.tipo_pagamento.nome};#{pagamento.valor_pago.real};#{pagamento.observacao};#{pagamento.data_de_pagamento.to_s_br};#{pagamento.valor_terceiros.real};"%>
     <td align="right">
       <% if pagamento.modo_de_pagamento.downcase == 'dinheiro' %>
         <%= pagamento.valor_pago.real %>
+        <% dados += "#{pagamento.valor_pago.real};"%>
       <% else %>
+        <% dados += "#{pagamento.valor_restante.real};"%>
         <%= pagamento.valor_restante.real %>
       <% end %>
     </td>
     <td align="right"><%= pagamento.valor_cheque.real %></td>
     <td><%=h pagamento.modo_de_pagamento %></td>
+    <% dados += "#{pagamento.valor_cheque.real};#{pagamento.modo_de_pagamento};"%>
     <td>
       <% if pagamento.em_cheque_classident? %>
         <%= pagamento.conta_bancaria && pagamento.conta_bancaria.nome %>
         <%= ' - '%>
         <%= pagamento.numero_do_cheque %>
+        <% dados += "#{pagamento.numero_do_cheque};" %>
+      <% else %>
+        <% dados += ";"%>
       <% end %>
     </td>
     <td align="center"><%=h pagamento.nao_lancar_no_livro_caixa ? "não" : "sim" %></td>
+    <% dados += "#{pagamento.nao_lancar_no_livro_caixa ? 'não' : 'sim'};>"%>
     <td><%= link_to 'editar', edit_pagamento_path(pagamento), :class=>'ui-icon ui-icon-pencil', :title=>'editar' if pagamento.pode_alterar? %></td>
     <td><%= link_to 'excluir', exclusao_pagamento_path(pagamento), :class=>'ui-icon ui-icon-trash', :title=>'excluir'  if pagamento.pode_alterar?%></td>
     <td><%= link_to 'mostrar', '#', :onclick=>'javascript:abre_pagamento('+ pagamento.id.to_s + ')' , :class=>'ui-icon ui-icon-info', :title=>'ver detalhes'%></td>
@@ -107,9 +116,11 @@
     <td align="right"><%= total_cheque.real %></td>
     <td colspan="5">&nbsp;</td>
   </tr>
+  <% dados += "Total;#{total.real};;;#{total_terceiros.real};#{total_dinheiro.real};#{total_cheque.real};;;;>"%>
 </table>
 
 <br />
 
-<%= link_to 'novo pagamento', new_pagamento_path %>
+<%= link_to 'novo pagamento', new_pagamento_path %> |   <%= link_to "imprime", "#", :onclick=>"gera_pdf('#{dados}', '#{session[:clinica_id]}')"%>
+
 <% end %>

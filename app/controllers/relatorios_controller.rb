@@ -35,7 +35,7 @@ class RelatoriosController < ApplicationController
       end
     end
      
-      self.font_size = 10
+      self.font_size = 9
       header = tr[1].split(';')
       data = items.flatten
       bounding_box [2, 500], :width  => bounds.width do
