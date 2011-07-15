@@ -29,6 +29,7 @@ class ClinicasController < ApplicationController
         @valores << (mensal + "/" + den.nome + '/' + den.id.to_s)
       end
     end
+    @titulo = "Produção entre datas : #{@data_inicial.to_s_br} e #{@data_final.to_s_br} da clinica #{@clinica_atual.nome}"
   end
   
   def producao_anual

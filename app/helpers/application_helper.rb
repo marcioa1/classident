@@ -54,4 +54,7 @@ module ApplicationHelper
    #     return "<p class='identifica_paciente'>Ficha do paciente (#{paciente.sequencial}) : <b>#{paciente.nome}</b> &nbsp;&nbsp;&nbsp;&nbsp; ( Tel.: #{paciente.telefones} )</p> "
    #   end
   
+  def link_de_impressao(dados)
+    link_to "imprime", "#", :onclick=>"gera_pdf('#{dados}', '#{session[:clinica_id]}')"
+  end
 end
