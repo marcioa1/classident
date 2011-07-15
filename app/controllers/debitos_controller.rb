@@ -55,13 +55,13 @@ class DebitosController < ApplicationController
       @pacientes = Paciente.da_clinica(session[:clinica_id]).por_nome.de_clinica
     end
     @em_debito = []
-    @tabelas   = Tabela.ativas.por_nome
+    @tabelas   = Tabela.ativas.por_nome.da_clinica(session[:clinica_id])
     @pacientes.each do |pac|
       if params['tabela_' + pac.tabela_id.to_s]
-        puts pac.nome + " > " + pac.saldo.real.to_s
         @em_debito << pac if pac.em_debito?
       end
     end
+    @titulo = "Pacientes em débito da clínica #{@clinica_atual.nome}"
   end
   
   def pacientes_fora_da_lista
@@ -73,6 +73,8 @@ class DebitosController < ApplicationController
       @data_final = Date.today
     end
     @pacientes = Paciente.fora_da_lista_de_debito_entre(@data_inicial, @data_final).da_clinica(session[:clinica_id])
+    @titulo = "Pacientes fora da lista de débito entre #{@data_inicial.to_s_br} e #{@data_final.to_s_br} da clínica #{@clinica_atual.nome}"
+
   end
   
   private

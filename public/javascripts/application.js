@@ -572,10 +572,11 @@ function imprime_orcamento(orcamento_id,clinica_id){
   });
 }
 
-function gera_pdf(dados, clinica){
+function gera_pdf(dados, clinica, orientation){
   $.ajax({
     url  : "/gera_pdf",
-    data : {tabela: dados},
+    data : {tabela: dados,
+            orientation: orientation},
     type : "POST",
     success :function(data){
         window.open("http://" + location.host + "/relatorios/" + clinica + "/relatorio.pdf");

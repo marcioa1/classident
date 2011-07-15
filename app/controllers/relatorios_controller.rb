@@ -3,6 +3,11 @@ class RelatoriosController < ApplicationController
   def imprime
     require "prawn/layout"
     require "prawn/core"
+    if ( landscape = params[:orientation].downcase == 'landscape')
+      devy = 550
+    else
+      devy = 650
+    end
     items     = []
     tr        = params[:tabela].split(">")
     cabecalho = tr[0].split(';')
@@ -18,7 +23,7 @@ class RelatoriosController < ApplicationController
         alinhamento.merge!({index => elem.to_sym})
       end
 
-    Prawn::Document.generate("public/relatorios/#{session[:clinica_id]}/relatorio.pdf", :page_layout => :landscape) do 
+    Prawn::Document.generate("public/relatorios/#{session[:clinica_id]}/relatorio.pdf", :page_layout => params[:orientation].to_sym) do 
       # repeat :all do
       #   image "public/images/logo-print.jpg", :align => :left
       #   draw_text titulo, :at => bounds.top_left
@@ -27,18 +32,23 @@ class RelatoriosController < ApplicationController
       # end
     repeat :all do
       image "public/images/logo-print.jpg", :align => :left, :vposition => -20
-      bounding_box [50, 550], :width  => bounds.width do
-        font "Helvetica"
-        text titulo, :align => :center, :size => 12, :vposition => -20
-          # stroke_horizontal_rule
-          # move_down 25
+      if landscape == 'landscape'
+        bounding_box [50, devy], :width  => bounds.width do
+          font "Helvetica"
+          text titulo, :align => :center, :size => 12, :vposition => -20
+        end
+      else
+        bounding_box [10, devy], :width  => bounds.width do
+          font "Helvetica"
+          text titulo, :align => :center, :size => 12, :vposition => -20
+        end
       end
     end
      
       self.font_size = 9
       header = tr[1].split(';')
       data = items.flatten
-      bounding_box [2, 500], :width  => bounds.width do
+      bounding_box [2, 600], :width  => bounds.width do
         table([header] + items , :header => true) do
             # style(row(0), :background_color => 'ff00ff')
           row(0).style(:font_style => :bold, :background_color => 'cccccc')

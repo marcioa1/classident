@@ -14,13 +14,15 @@
     <th>Data de saída da lista</th>
     <th>Motivo da saída</th>
   </tr>
+<% dados = "#{@titulo}"%>
 <% @pacientes.each do |pac| %>
   <tr>
     <td><%= pac.nome %></td>
     <td align='center'><%= pac.data_da_saida_da_lista_de_debitos.to_s_br %></td>
     <td><%= pac.motivo_sair_da_lista_de_debitos %></td>
   </tr>
+  <% dados += "#{pac.nome};#{pac.data_da_saida_da_lista_de_debitos.to_s_br};#{ pac.motivo_sair_da_lista_de_debitos};>"%>
 <% end %>
 </table>
-
+<%= link_de_impressao(dados) %>
 <% end %>
