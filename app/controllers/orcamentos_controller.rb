@@ -121,13 +121,11 @@ class OrcamentosController < ApplicationController
   end
   
   def imprime
-    # require "prawn/core"
-    #  require "prawn/layout"
-    #  require "prawn/format"
-    #  
+
   require 'prawn/core'
   require "prawn/layout"
-  Prawn::Document.generate("public/relatorios//#{session[:clinica_id]}/orcamento.pdf") do |pdf|
+
+  Prawn::Document.generate("public/relatorios/#{session[:clinica_id]}/orcamento.pdf") do |pdf|
     pdf.repeat :all do
       pdf.image "public/images/logo-print.jpg", :align => :left, :vposition => -20
       pdf.bounding_box [10, 700], :width  => pdf.bounds.width do
@@ -135,44 +133,34 @@ class OrcamentosController < ApplicationController
         pdf.text 'Orçamento', :align => :center, :size => 14, :vposition => -20
       end
     end
+    
     pdf.move_down 20
     pdf.text "Paciente : #{@orcamento.paciente.nome}", :size=>14
-    pdf.move_down 6
+    pdf.move_down 36
     pdf.text "Elaborado em : #{@orcamento.data.to_s_br}"
     pdf.move_down 4
-    pdf.text "Valor total : #{@orcamento.valor.real}"
+    pdf.text "Elaborado em : #{@orcamento.dentista.nome}"
+    pdf.move_down 4
+    pdf.text "Valor total : R$ #{@orcamento.valor.real.to_s}"
+    if @orcamento.desconto > 0
+      pdf.move_down 4
+      pdf.text "Desconto :#{ @orcamento.desconto.to_s} + '%'"
+      pdf.move_down 4
+      pdf.text "Valor final :#{ @orcamento.valor_com_desconto.real.to_s}"
+    end
     pdf.move_down 4
     pdf.text "Número de parcelas : #{@orcamento.numero_de_parcelas}"
     pdf.move_down 4
-    pdf.text "Valor da parcela : #{@orcamento.valor_da_parcela.real}"
+    pdf.text "Valor da parcela : R$ #{@orcamento.valor_da_parcela.real}"
     pdf.move_down 4
     pdf.text "Forma de pagamento : #{@orcamento.forma_de_pagamento}"
 
-    if @orcamento.desconto > 0
-      corpo = [
-              ['Número :', @orcamento.numero],
-              ['Data :', @orcamento.data.to_s_br],
-              ['Dentista :', @orcamento.dentista.nome],
-              ['Valor :', @orcamento.valor.real.to_s],
-              ['Desconto :', @orcamento.desconto.to_s + '%'],
-              ['Valor c/ desc.', @orcamento.valor_com_desconto.real.to_s],
-              ['Forma pgto :', @orcamento.forma_de_pagamento],
-              ['Núm. parcelas :', @orcamento.numero_de_parcelas],
-              ['Vencto primeira parc.:', @orcamento.vencimento_primeira_parcela.to_s_br],
-              ['Valor parcela :', @orcamento.valor_da_parcela.real.to_s]
-            ]
-          else
-          corpo = [
-              ['Número :', @orcamento.numero],
-              ['Data :', @orcamento.data.to_s_br],
-              ['Dentista :', @orcamento.dentista.nome],
-              ['Valor :', @orcamento.valor.real.to_s],
-              ['Forma pgto :', @orcamento.forma_de_pagamento],
-              ['Núm. parcelas :', @orcamento.numero_de_parcelas],
-              ['Vencto primeira parc.:', @orcamento.vencimento_primeira_parcela.to_s_br],
-              ['Valor parcela :', @orcamento.valor_da_parcela.real.to_s]
-            ]
-          end
+    pdf.move_down 8
+    pdf.text "Parcelas"
+    corpo = [['nº','data', 'valor']]
+    [1..@orcamento.numero_de_parcelas].each_with_index do |parcela,index|
+      corpo << [(index+1).to_s, @orcamento.vencimento_primeira_parcela.to_s_br , @orcamento.valor_da_parcela.real.to_s]
+    end
     # pdf.table(corpo) do
       # column(0).align = 'right'
       # column(1).align = 'center'
@@ -181,17 +169,26 @@ class OrcamentosController < ApplicationController
     # header = %w[Name Occupation]
     # data = ["Bender Bending Rodriguez", "Bender"]
   
-    pdf.table( corpo, :header => false) do
+    pdf.table( corpo) do
       row(0).style(:font_style => :bold, :background_color => 'cccccc')
+      column(2).style(:align=>:right)
     end
+    # pdf.table corpo
     
-    data = []
-    @orcamento.tratamentos.each do |trat|
-      data << [trat.dente, trat.face, trat.descricao, trat.valor.real.to_s]
+    data = @orcamento.tratamentos.map do |trat|
+      [
+        trat.dente,
+        trat.face,
+        trat.descricao,
+        trat.valor.real.to_s
+      ]
     end
     cabe = [['dente','face', 'descrição', 'valor']]
+    pdf.move_down 18
+    pdf.text "Procedimentos"
     pdf.table( cabe + data, :header => false) do
       row(0).style(:font_style => :bold, :background_color => 'cccccc')
+      column(3).style(:align=>:right)
     end
 
   end

@@ -46,6 +46,10 @@ class RelatoriosController < ApplicationController
         table([header] + items , :header => true) do
             # style(row(0), :background_color => 'ff00ff')
           row(0).style(:font_style => :bold, :background_color => 'cccccc')
+          tr[2].split(';').each_with_index do |al,index|
+            debugger
+            column(index).style(:align=>al.to_sym)
+          end
         end
       end
     end
