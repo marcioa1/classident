@@ -1,7 +1,7 @@
 class OrcamentosController < ApplicationController
   layout "adm"
   before_filter :require_user
-  before_filter :find_current, :only=>[:show, :edit, :update, :imprime, :destroy]
+  before_filter :find_current, :only=>[:show, :edit, :imprime, :update, :destroy]
   before_filter :quinzena, :only=>:aproveitamento
   
   def index
@@ -125,20 +125,76 @@ class OrcamentosController < ApplicationController
     #  require "prawn/layout"
     #  require "prawn/format"
     #  
-     require 'rubygems'
-require 'prawn'
-require 'prawn/security'
-require "prawn/layout"
+  require 'prawn/core'
+  require "prawn/layout"
+  Prawn::Document.generate("public/relatorios//#{session[:clinica_id]}/orcamento.pdf") do |pdf|
+    pdf.repeat :all do
+      pdf.image "public/images/logo-print.jpg", :align => :left, :vposition => -20
+      pdf.bounding_box [10, 700], :width  => pdf.bounds.width do
+        pdf.font "Helvetica"
+        pdf.text 'Orçamento', :align => :center, :size => 14, :vposition => -20
+      end
+    end
+    pdf.move_down 20
+    pdf.text "Paciente : #{@orcamento.paciente.nome}", :size=>14
+    pdf.move_down 6
+    pdf.text "Elaborado em : #{@orcamento.data.to_s_br}"
+    pdf.move_down 4
+    pdf.text "Valor total : #{@orcamento.valor.real}"
+    pdf.move_down 4
+    pdf.text "Número de parcelas : #{@orcamento.numero_de_parcelas}"
+    pdf.move_down 4
+    pdf.text "Valor da parcela : #{@orcamento.valor_da_parcela.real}"
+    pdf.move_down 4
+    pdf.text "Forma de pagamento : #{@orcamento.forma_de_pagamento}"
 
-Prawn::Document.generate("public/relatorios/inline_format_table.pdf") do
+    if @orcamento.desconto > 0
+      corpo = [
+              ['Número :', @orcamento.numero],
+              ['Data :', @orcamento.data.to_s_br],
+              ['Dentista :', @orcamento.dentista.nome],
+              ['Valor :', @orcamento.valor.real.to_s],
+              ['Desconto :', @orcamento.desconto.to_s + '%'],
+              ['Valor c/ desc.', @orcamento.valor_com_desconto.real.to_s],
+              ['Forma pgto :', @orcamento.forma_de_pagamento],
+              ['Núm. parcelas :', @orcamento.numero_de_parcelas],
+              ['Vencto primeira parc.:', @orcamento.vencimento_primeira_parcela.to_s_br],
+              ['Valor parcela :', @orcamento.valor_da_parcela.real.to_s]
+            ]
+          else
+          corpo = [
+              ['Número :', @orcamento.numero],
+              ['Data :', @orcamento.data.to_s_br],
+              ['Dentista :', @orcamento.dentista.nome],
+              ['Valor :', @orcamento.valor.real.to_s],
+              ['Forma pgto :', @orcamento.forma_de_pagamento],
+              ['Núm. parcelas :', @orcamento.numero_de_parcelas],
+              ['Vencto primeira parc.:', @orcamento.vencimento_primeira_parcela.to_s_br],
+              ['Valor parcela :', @orcamento.valor_da_parcela.real.to_s]
+            ]
+          end
+    # pdf.table(corpo) do
+      # column(0).align = 'right'
+      # column(1).align = 'center'
+    # end
 
-  header = %w[Name Occupation]
-  data = ["Bender Bending Rodriguez", "Bender"]
+    # header = %w[Name Occupation]
+    # data = ["Bender Bending Rodriguez", "Bender"]
+  
+    pdf.table( corpo, :header => false) do
+      row(0).style(:font_style => :bold, :background_color => 'cccccc')
+    end
+    
+    data = []
+    @orcamento.tratamentos.each do |trat|
+      data << [trat.dente, trat.face, trat.descricao, trat.valor.real.to_s]
+    end
+    cabe = [['dente','face', 'descrição', 'valor']]
+    pdf.table( cabe + data, :header => false) do
+      row(0).style(:font_style => :bold, :background_color => 'cccccc')
+    end
 
-  table([header] + [data] * 50, :header => true) do
-    row(0).style(:font_style => :bold, :background_color => 'cccccc')
   end
-end
 
     # Prawn::Document.generate("public/relatorios/orcamento_#{params[:clinica_id]}.pdf") do |pdf|
     # 

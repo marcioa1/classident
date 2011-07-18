@@ -24,12 +24,6 @@ class RelatoriosController < ApplicationController
       end
 
     Prawn::Document.generate("public/relatorios/#{session[:clinica_id]}/relatorio.pdf", :page_layout => params[:orientation].to_sym) do 
-      # repeat :all do
-      #   image "public/images/logo-print.jpg", :align => :left
-      #   draw_text titulo, :at => bounds.top_left
-      #   # bounds.height = 100
-      #   move_down 5
-      # end
     repeat :all do
       image "public/images/logo-print.jpg", :align => :left, :vposition => -20
       if landscape == 'landscape'
