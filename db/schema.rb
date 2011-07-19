@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110527002506) do
+ActiveRecord::Schema.define(:version => 20110629082222) do
 
   create_table "abonos", :force => true do |t|
     t.date     "data"
@@ -69,6 +69,11 @@ ActiveRecord::Schema.define(:version => 20110527002506) do
   create_table "bancos", :force => true do |t|
     t.integer  "numero"
     t.string   "nome",       :limit => 25
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "ceps", :force => true do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -583,22 +588,22 @@ ActiveRecord::Schema.define(:version => 20110527002506) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean  "ativo",                            :default => true
-    t.datetime "hora_de_inicio_0",                 :default => '2011-06-01 11:00:00'
-    t.datetime "hora_de_termino_0",                :default => '2011-06-01 21:00:00'
-    t.datetime "hora_de_inicio_1",                 :default => '2011-06-01 11:00:00'
-    t.datetime "hora_de_termino_1",                :default => '2011-06-01 21:00:00'
-    t.datetime "hora_de_inicio_2",                 :default => '2011-06-01 11:00:00'
-    t.datetime "hora_de_termino_2",                :default => '2011-06-01 21:00:00'
-    t.datetime "hora_de_inicio_3",                 :default => '2011-06-01 11:00:00'
-    t.datetime "hora_de_termino_3",                :default => '2011-06-01 21:00:00'
-    t.datetime "hora_de_inicio_4",                 :default => '2011-06-01 11:00:00'
-    t.datetime "hora_de_termino_4",                :default => '2011-06-01 21:00:00'
-    t.datetime "hora_de_inicio_5",                 :default => '2011-06-01 11:00:00'
-    t.datetime "hora_de_termino_5",                :default => '2011-06-01 21:00:00'
-    t.datetime "hora_de_inicio_6",                 :default => '2011-06-01 11:00:00'
-    t.datetime "hora_de_termino_6",                :default => '2011-06-01 21:00:00'
-    t.datetime "hora_de_inicio_7",                 :default => '2011-06-01 11:00:00'
-    t.datetime "hora_de_termino_7",                :default => '2011-06-01 21:00:00'
+    t.datetime "hora_de_inicio_0",                 :default => '2011-07-18 11:00:00'
+    t.datetime "hora_de_termino_0",                :default => '2011-07-18 21:00:00'
+    t.datetime "hora_de_inicio_1",                 :default => '2011-07-18 11:00:00'
+    t.datetime "hora_de_termino_1",                :default => '2011-07-18 21:00:00'
+    t.datetime "hora_de_inicio_2",                 :default => '2011-07-18 11:00:00'
+    t.datetime "hora_de_termino_2",                :default => '2011-07-18 21:00:00'
+    t.datetime "hora_de_inicio_3",                 :default => '2011-07-18 11:00:00'
+    t.datetime "hora_de_termino_3",                :default => '2011-07-18 21:00:00'
+    t.datetime "hora_de_inicio_4",                 :default => '2011-07-18 11:00:00'
+    t.datetime "hora_de_termino_4",                :default => '2011-07-18 21:00:00'
+    t.datetime "hora_de_inicio_5",                 :default => '2011-07-18 11:00:00'
+    t.datetime "hora_de_termino_5",                :default => '2011-07-18 21:00:00'
+    t.datetime "hora_de_inicio_6",                 :default => '2011-07-18 11:00:00'
+    t.datetime "hora_de_termino_6",                :default => '2011-07-18 21:00:00'
+    t.datetime "hora_de_inicio_7",                 :default => '2011-07-18 11:00:00'
+    t.datetime "hora_de_termino_7",                :default => '2011-07-18 21:00:00'
     t.boolean  "dia_da_semana_0",                  :default => false
     t.boolean  "dia_da_semana_1",                  :default => true
     t.boolean  "dia_da_semana_2",                  :default => true
