@@ -23,9 +23,15 @@
 	  <th width="65px">Forma</th>
 	  <th width="145px">Clínica</th>
 	</tr>
+	<% dados = "#{@titulo};>Data;Paciente;Valor;Forma;Clínica>center;left;right;left;left;>" %>
+
 	<% @total = 0 %>
 	<% @por_clinica = Array.new(12,0) %>
-	  <%= render :partial=>"recebimento" , :collection=>@recebimentos %>
+  <%= render :partial=>"recebimento" , :collection=>@recebimentos, :locals =>{:dados =>dados} %>
+  <% @recebimentos.each do |recebimento| %>
+    <% dados+= "#{recebimento.data.to_s_br};#{recebimento.paciente.nome};#{recebimento.valor.real};#{recebimento.formas_recebimento.nome};#{recebimento.clinica.nome};>"%>
+  <% end %>
+  <% dados += ";Total;#{@total}; ; ;>"%>
 	<tr>
 	  <td colspan="2" align="center">Total : </td>
 	  <td align= "right"><%= @total.real %></td>
@@ -46,4 +52,6 @@
     
   </div>
   </div>
+    <%= link_de_impressao(dados, session[:clinica_id], 'portrait') %>
+
 <% end %>

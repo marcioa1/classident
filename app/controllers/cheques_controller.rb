@@ -208,7 +208,7 @@ class ChequesController < ApplicationController
           @cheques = Cheque.da_clinica(session[:clinica_id]).spc(@data_inicial,@data_final).por_valor
       end
     end
-    @titulo = "Lista de cheques entre #{@data_inicial.to_s_br}e #{@data_final.to_s_br} , #{params[:status]}  da clínica #{@clinica_atual.nome}"
+    @titulo = "Lista de cheques entre #{@data_inicial.to_s_br}e #{@data_final.to_s_br} , #{params[:status]}"
   end
   
   def recebe_cheques

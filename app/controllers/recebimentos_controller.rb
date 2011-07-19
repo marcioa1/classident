@@ -261,6 +261,7 @@ class RecebimentosController < ApplicationController
        entre_datas(inicio,fim).
        nas_formas(formas_selecionadas.split(",").to_a).
        nao_excluidos
+    @titulo = "Recebimento das clínicas entre #{inicio.to_s_br} e #{fim.to_s_br}"
   end
   
   def entradas_no_mes

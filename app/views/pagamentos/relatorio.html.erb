@@ -121,6 +121,8 @@
 
 <br />
 
-<%= link_to 'novo pagamento', new_pagamento_path %> |   <%= link_to "imprime", "#", :onclick=>"gera_pdf('#{dados}', '#{session[:clinica_id]}')"%>
+<%= link_to 'novo pagamento', new_pagamento_path %> |  
+  <%= link_de_impressao(dados, session[:clinica_id], 'landscape') %>
+
 
 <% end %>

@@ -21,7 +21,7 @@
   </p>
 <% end %>
 <br/>
-<% dados = "#{@titulo};>Bom para;Paciente;Valor;Banco;Número;Estado>center;left;right;left;left;left>" %>
+<% dados = "#{@titulo};>Clínica;Bom para;Paciente;Valor;Banco;Número;Estado>center;center;left;right;left;left;>" %>
 
 <table id='table' class='tabela'>
   <tr>
@@ -111,8 +111,7 @@
     
   </tr>
 </table>
-  <%= link_to "imprime", "#", :onclick=>"gera_pdf('#{dados}', '#{session[:clinica_id]}')"%>
-
+  <%= link_de_impressao(dados, session[:clinica_id], 'landscape') %>
 </div>
 <script type="text/javascript">
   function reverte_cheque(id){

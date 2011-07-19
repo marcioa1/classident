@@ -3,10 +3,11 @@ class RelatoriosController < ApplicationController
   def imprime
     require "prawn/layout"
     require "prawn/core"
+    params[:orientation] = 'landscape' if params[:orientation].nil?
     if ( landscape = params[:orientation].downcase == 'landscape')
       devy = 550
     else
-      devy = 650
+      devy = 690
     end
     items     = []
     tr        = params[:tabela].split(">")
@@ -42,12 +43,11 @@ class RelatoriosController < ApplicationController
       self.font_size = 9
       header = tr[1].split(';')
       data = items.flatten
-      bounding_box [2, 600], :width  => bounds.width do
+      bounding_box [2, devy - 20], :width  => bounds.width do
         table([header] + items , :header => true) do
             # style(row(0), :background_color => 'ff00ff')
           row(0).style(:font_style => :bold, :background_color => 'cccccc')
           tr[2].split(';').each_with_index do |al,index|
-            debugger
             column(index).style(:align=>al.to_sym)
           end
         end
