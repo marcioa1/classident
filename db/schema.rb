@@ -74,9 +74,13 @@ ActiveRecord::Schema.define(:version => 20110629082222) do
   end
 
   create_table "ceps", :force => true do |t|
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.string "logradouro"
+    t.string "cep"
+    t.string "bairro"
+    t.string "cidade"
   end
+
+  add_index "ceps", ["logradouro"], :name => "index_ceps_on_logradouro"
 
   create_table "cheques", :force => true do |t|
     t.integer  "banco_id"
