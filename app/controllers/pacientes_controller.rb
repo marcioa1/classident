@@ -242,21 +242,20 @@ class PacientesController < ApplicationController
           t.dente,
           t.face,
           t.item_tabela && t.item_tabela.codigo ,
-          Iconv.conv('latin1', 'utf8', t.descricao),
+          t.descricao,
           t.valor.real.to_s,
           t.dentista.nome,
           t.data.to_s_br,
-          t.orcamento.numero.to_s
+          t.orcamento && t.orcamento.numero.to_s
         ]
       end
-debugger
     pdf.table(  dados, :header => false) do
       row(0).style(:font_style => :bold, :background_color => 'cccccc')
     end
 
 
     end
-    
+    head :ok
   end
   
 end
