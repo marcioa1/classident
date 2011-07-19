@@ -84,14 +84,13 @@ class ChequesController < ApplicationController
       @clinicas.each do |clinica|
         selecionadas << clinica.id if params["clinica_#{clinica.id}".to_sym]
       end
-      # raise selecionadas.inspect
       case
         when params[:status] == 'todos' && params[:ordem] == 'por_data' 
-          @cheques = Cheque.na_administracao.
-            entre_datas(@data_inicial,@data_final).nao_excluidos.das_clinicas(selecionadas).por_bom_para
+          @cheques = Cheque.na_administracao.entre_datas(@data_inicial,@data_final).
+            nao_excluidos.das_clinicas(selecionadas).por_bom_para
         when params[:status] == 'todos' && params[:ordem] == 'por_valor' 
-          @cheques = Cheque.na_administracao.
-            entre_datas(@data_inicial,@data_final).nao_excluidos.das_clinicas(selecionadas).por_valor
+          @cheques = Cheque.na_administracao.entre_datas(@data_inicial,@data_final).
+            nao_excluidos.das_clinicas(selecionadas).por_valor
         when params[:status] == 'disponíveis' && params[:ordem] == 'por_data' 
           @cheques = Cheque.entre_datas(@data_inicial,@data_final).
             disponiveis_na_administracao.nao_excluidos.das_clinicas(selecionadas).por_bom_para

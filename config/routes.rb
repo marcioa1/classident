@@ -40,7 +40,9 @@ ActionController::Routing::Routes.draw do |map|
                                 :pesquisa_nomes=> :get, :retorna_paciente_por_nome=>:get,
                                 :busca_id_do_paciente=>:get, :transfere_paciente => :get},
                   :member => {:abre=>:get, :altera_cep=>:get, 
-                              :verifica_nome_do_paciente => :get, :extrato_pdf => :get}
+                              :verifica_nome_do_paciente => :get, 
+                              :extrato_pdf => :get, 
+                              :imprime_tratamento => :get}
   map.resources :abonos, :collection=> {:pesquisa_nomes => :get}
 
   map.busca_pelo_logradouro "busca_pelo_logradouro", :controller => 'ceps', :action => 'busca_pelo_logradouro'

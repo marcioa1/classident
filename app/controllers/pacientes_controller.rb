@@ -1,7 +1,7 @@
 class PacientesController < ApplicationController
   layout "adm"
   before_filter :require_user
-  before_filter :busca_paciente, :only =>[:edit, :show, :update]
+  before_filter :busca_paciente, :only =>[:edit, :show, :update, :imprime_tratamento]
   before_filter :busca_tabelas
   
   def index
@@ -216,4 +216,47 @@ class PacientesController < ApplicationController
     Paciente.find(params[:id]).update_attribute('cep', params[:cep])
     head :ok
   end  
+  
+  def imprime_tratamento
+    require 'prawn/core'
+    require "prawn/layout"
+    require 'iconv'
+
+    Prawn::Document.generate("public/relatorios/#{session[:clinica_id]}/tratamento.pdf") do |pdf|
+      pdf.repeat :all do
+        pdf.image "public/images/logo-print.jpg", :align => :left, :vposition => -20
+        pdf.bounding_box [10, 700], :width  => pdf.bounds.width do
+          pdf.font "Helvetica"
+          pdf.text 'Orçamento', :align => :center, :size => 14, :vposition => -20
+        end
+      end
+    
+      pdf.move_down 20
+      pdf.text "Paciente : #{@paciente.nome}", :size=>14
+      pdf.move_down 36
+      # dados = Array.new()
+      dados = 'dente,face,código,descrição,valor,dentista,data,orçamento'.split(',')
+      # pdf.text Iconv.conv('latin1','utf8','áéíóú')      
+      dados = @paciente.tratamentos.map do |t|
+        [
+          t.dente,
+          t.face,
+          t.item_tabela && t.item_tabela.codigo ,
+          Iconv.conv('latin1', 'utf8', t.descricao),
+          t.valor.real.to_s,
+          t.dentista.nome,
+          t.data.to_s_br,
+          t.orcamento.numero.to_s
+        ]
+      end
+debugger
+    pdf.table(  dados, :header => false) do
+      row(0).style(:font_style => :bold, :background_color => 'cccccc')
+    end
+
+
+    end
+    
+  end
+  
 end
