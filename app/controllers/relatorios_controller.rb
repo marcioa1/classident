@@ -5,7 +5,7 @@ class RelatoriosController < ApplicationController
     require "prawn/core"
     params[:orientation] = 'landscape' if params[:orientation].nil?
     if ( landscape = params[:orientation].downcase == 'landscape')
-      devy = 550
+      devy = 520
     else
       devy = 690
     end

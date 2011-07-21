@@ -4,20 +4,17 @@
   <fieldset class="fieldset_50">
     <legend>Relatório de recebimentos</legend>
     <% form_tag relatorio_recebimentos_path do %>
-    <p class='mensagem_de_erro'><%= @erros %>
-    </p>
-    Início : <%= text_field_tag :datepicker ,params[:datepicker], :size=>10  %> 
-    &nbsp;Fim : <%= text_field_tag :datepicker2, params[:datepicker2], :size=>10 %>
-    <%= submit_tag "pesquisar"%>
-
-    <p><%= render :partial => "formas_recebimentos/opcoes", :locals=>{:formas=>@formas_recebimento}%></p>
+      <p class='mensagem_de_erro'><%= @erros %></p>
+      Início : <%= text_field_tag :datepicker ,params[:datepicker], :size=>10  %> 
+      &nbsp;Fim : <%= text_field_tag :datepicker2, params[:datepicker2], :size=>10 %>
+      <%= submit_tag "pesquisar"%>
+      <div>
+        <%= render :partial => "formas_recebimentos/opcoes", :locals=>{:formas=>@formas_recebimento}%>
+      </div>
     <% end %>
   </fieldset>
-  <br/>
-    <% dados = "#{@titulo};>Data;Paciente;Valor;Observação;Tipo;Dados do Cheque>center;left;right;left;left;left>" %>
-
-  <table id="tabela" class="tabela">
-    <thead>
+  <% dados = "#{@titulo};>Data;Paciente;Valor;Observação;Tipo;Dados do Cheque>center;left;right;left;left;left;>" %>
+<table id="tabela" class="tabela">
     <tr>
       <th>Data</th>
       <th width="230px">Paciente</th>
@@ -28,8 +25,6 @@
       <th>&nbsp;</th>
       <th>&nbsp;</th>
     </tr>
-    </thead>
-    <tbody>
     <% total = 0 %>
     <% @recebimentos.each do |recebimento| %>
     <tr >
@@ -51,7 +46,6 @@
     <% dados += "#{recebimento.data.to_s_br};#{recebimento.paciente.nome};#{recebimento.valor.real.to_s};#{recebimento.observacao} ;#{recebimento.formas_recebimento.nome}; #{recebimento.cheque && recebimento.cheque.observacao};>" %>
     <% total += recebimento.valor %>
     <% end %>
-      </tbody>
       <tr>
         <td colspan="2" align="center">Total</td>
         <td align="right"><%= total.real %></td>
@@ -83,5 +77,4 @@
     <% end %>
     <%= link_de_impressao(dados, session[:clinica_id], 'landscape')%>
 
-  </div>
   <% end %>
