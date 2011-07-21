@@ -227,7 +227,7 @@ class PacientesController < ApplicationController
         pdf.image "public/images/logo-print.jpg", :align => :left, :vposition => -20
         pdf.bounding_box [10, 700], :width  => pdf.bounds.width do
           pdf.font "Helvetica"
-          pdf.text 'Orçamento', :align => :center, :size => 14, :vposition => -20
+          pdf.text 'Tratamento', :align => :center, :size => 14, :vposition => -20
         end
       end
     
@@ -235,7 +235,7 @@ class PacientesController < ApplicationController
       pdf.text "Paciente : #{@paciente.nome}", :size=>14
       pdf.move_down 36
       # dados = Array.new()
-      dados = 'dente,face,código,descrição,valor,dentista,data,orçamento'.split(',')
+      cabecalho = ['dente,face,código,descrição,valor,dentista,data,orçamento'.split(',')]
       # pdf.text Iconv.conv('latin1','utf8','áéíóú')      
       dados = @paciente.tratamentos.map do |t|
         [
@@ -246,16 +246,18 @@ class PacientesController < ApplicationController
           t.valor.real.to_s,
           t.dentista.nome,
           t.data.to_s_br,
-          t.orcamento && t.orcamento.numero.to_s
+          t.orcamento.present? ? t.orcamento.numero.to_s : ''
         ]
       end
-    pdf.table(  dados, :header => false) do
+    pdf.font_size = 9
+    pdf.table(  cabecalho + dados, :header => false) do
       row(0).style(:font_style => :bold, :background_color => 'cccccc')
     end
 
 
     end
-    head :ok
+    send_file RAILS_ROOT + "/public/relatorios/#{session[:clinica_id]}/tratamento.pdf"
+    # head :ok
   end
   
 end
