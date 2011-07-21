@@ -81,7 +81,7 @@
       </tr>
     </table>
     <% end %>
-    <%= link_to "imprime", "#", :onclick=>"gera_pdf('#{dados}', '#{session[:clinica_id]}', 'portrait')"%>
+    <%= link_de_impressao(dados, session[:clinica_id], 'landscape')%>
 
   </div>
   <% end %>
