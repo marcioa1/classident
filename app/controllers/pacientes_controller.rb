@@ -222,7 +222,7 @@ class PacientesController < ApplicationController
     require "prawn/layout"
     require 'iconv'
 
-    Prawn::Document.generate("public/relatorios/#{session[:clinica_id]}/tratamento.pdf") do |pdf|
+    Prawn::Document.generate(File.join(Rails.root , "/impressoes/#{session[:clinica_id]}/tratamento.pdf")) do |pdf|
       pdf.repeat :all do
         pdf.image "public/images/logo-print.jpg", :align => :left, :vposition => -20
         pdf.bounding_box [10, 700], :width  => pdf.bounds.width do
@@ -234,9 +234,7 @@ class PacientesController < ApplicationController
       pdf.move_down 20
       pdf.text "Paciente : #{@paciente.nome}", :size=>14
       pdf.move_down 36
-      # dados = Array.new()
       cabecalho = ['dente,face,código,descrição,valor,dentista,data,orçamento'.split(',')]
-      # pdf.text Iconv.conv('latin1','utf8','áéíóú')      
       dados = @paciente.tratamentos.map do |t|
         [
           t.dente,
@@ -256,7 +254,7 @@ class PacientesController < ApplicationController
 
 
     end
-    send_file RAILS_ROOT + "/public/relatorios/#{session[:clinica_id]}/tratamento.pdf"
+    send_file File.join(RAILS_ROOT + "/impressoes/#{session[:clinica_id]}/tratamento.pdf")
     # head :ok
   end
   
