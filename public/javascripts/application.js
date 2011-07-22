@@ -564,7 +564,7 @@ function imprime_orcamento(orcamento_id,clinica_id){
     data : {clinica_id: clinica_id},
     type : "GET",
     success :function(data){
-        window.open("http://" + location.host + "/relatorios/" +  clinica_id + "/orcamento.pdf");
+        window.open("http://" + location.host + "/public/relatorios/" +  clinica_id + "/orcamento.pdf");
       }, 
     error : function(){
       alert("Não foi possível gerar o relatório.");

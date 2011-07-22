@@ -125,7 +125,7 @@ class OrcamentosController < ApplicationController
   require 'prawn/core'
   require "prawn/layout"
 
-  Prawn::Document.generate(File.join(Rails.root , "relatorios/#{session[:clinica_id]}/orcamento.pdf")) do |pdf|
+  Prawn::Document.generate(File.join(Rails.root , "impressoes/#{session[:clinica_id]}/orcamento.pdf")) do |pdf|
     pdf.repeat :all do
       pdf.image "public/images/logo-print.jpg", :align => :left, :vposition => -20
       pdf.bounding_box [10, 700], :width  => pdf.bounds.width do
@@ -184,9 +184,7 @@ class OrcamentosController < ApplicationController
         end
 
   end
-
-      head :ok
-    
+    send_file File.join(RAILS_ROOT , "impressoes/#{session[:clinica_id]}/orcamento.pdf")
   end
 
   def imprime_cabecalho(pdf, titulo)
