@@ -60,7 +60,7 @@ ActionController::Routing::Routes.draw do |map|
                   :member => {:exclui => :post, :exclusao=>:get},
                   :collection=>{:relatorio=>:get, :das_clinicas=>:get, :entradas_no_mes=>:get, :pesquisa_nomes=> :get}
   map.valida_senha "valida_senha", :controller=> 'senhas', :action=>'valida_senha', :method=>:get
-  map.gera_pdf "gera_pdf", :controller => :relatorios, :action => :imprime, :method => :post
+  # map.gera_pdf "gera_pdf", :controller => :relatorios, :action => :imprime, :method => :post
   map.resources :senhas
   map.cadastra_senha '/cadastra_senha', :controller=>'senhas', :action=>'cadastra' 
   map.salva_senha '/salva_senha', :controller => 'senhas', :action => 'salva'
@@ -90,6 +90,8 @@ ActionController::Routing::Routes.draw do |map|
   map.logout "logout", :controller=>:user_sessions, :action=>:destroy
   map.troca_senha "troca_senha", :controller=>:users, :action=>:troca_senha
   map.grava_precos "grava_precos", :controller => "item_tabelas", :action=>"grava_precos"
+  
+  map.imprime '/relatorios/imprime', :controller=>:relatorios, :action=>:imprime, :method => :get
 #  map.resource :account, :controller => "users"
   
   # The priority is based upon order of creation: first created -> highest priority.
