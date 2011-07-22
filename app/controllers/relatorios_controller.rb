@@ -54,9 +54,9 @@ class RelatoriosController < ApplicationController
       end
     end
 
-    send_file RAILS_ROOT + "/relatorios/#{session[:clinica_id]}/relatorio.pdf"
+    # send_file RAILS_ROOT + "/relatorios/#{session[:clinica_id]}/relatorio.pdf"
 
-    # head :ok
+     head :ok
   end
   
   # protected
