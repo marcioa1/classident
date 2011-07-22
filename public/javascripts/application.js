@@ -579,7 +579,7 @@ function gera_pdf(dados, clinica, orientation){
             orientation: orientation},
     type : "POST",
     success :function(data){
-        window.open("http://" + location.host + "/relatorios/" + clinica + "/relatorio.pdf");
+     //   window.open("http://" + location.host + "/relatorios/" + clinica + "/relatorio.pdf");
       }, 
     error : function(){
       alert("Não foi possível gerar o relatório.");
