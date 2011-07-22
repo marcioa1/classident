@@ -24,7 +24,7 @@ class RelatoriosController < ApplicationController
         alinhamento.merge!({index => elem.to_sym})
       end
 
-    Prawn::Document.generate(File.join(Rails.root,"public/relatorios/#{session[:clinica_id]}/relatorio.pdf"), :page_layout => params[:orientation].to_sym) do 
+    Prawn::Document.generate(File.join(Rails.root,"relatorios/#{session[:clinica_id]}/relatorio.pdf"), :page_layout => params[:orientation].to_sym) do 
     repeat :all do
       image "public/images/logo-print.jpg", :align => :left, :vposition => -20
       if landscape == 'landscape'
