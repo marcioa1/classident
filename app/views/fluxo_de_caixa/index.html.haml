@@ -158,7 +158,6 @@
               %td &nbsp;
               %td{ :align => "right", :style => "color: red;" }
                 = lancamento.valor_pago.real 
-              - debugger
               - saldo_cheque -= lancamento.valor_pago - lancamento. valor_restante.real
               - total_de_debito_em_cheque += lancamento.valor_pago
             %td{ :align => "right" }
