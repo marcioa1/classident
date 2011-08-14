@@ -30,10 +30,10 @@
     <% end %>
     <th>Bom para</th>
     <th width="170px">Paciente</th>
-    <th width="60px">Valor</th>
     <th width="100px">Banco</th>
     <th>Agência</th>
     <th>Número</th>
+    <th width="60px">Valor</th>
     <th>Adm</th>
     <th width='120px'>Situação</th>
     <th>Data recebimento</th>
@@ -43,7 +43,7 @@
   <% for cheque in @cheques do %>
     <tr class=<%=cheque.status_class%> id="tr_<%=cheque.id%>">
     <% if @clinica_atual.administracao? %>
-      <% dados += "#{cheque.clinica.nome};#{cheque.bom_para.to_s_br};#{cheque.nome_dos_pacientes}; #{cheque.valor.real};#{cheque.banco && cheque.banco.nome};#{cheque.numero};#{cheque.status}>" %>
+      <% dados += "#{cheque.clinica.nome};#{cheque.bom_para.to_s_br};#{cheque.nome_dos_pacientes};#{cheque.banco && cheque.banco.nome};#{cheque.numero}; #{cheque.valor.real};#{cheque.status}>" %>
       <td><%= cheque.clinica.sigla %></td>
     <% else %>
       <% dados += "#{cheque.bom_para.to_s_br};#{cheque.nome_dos_pacientes}; #{cheque.valor.real};#{cheque.banco && cheque.banco.nome};#{cheque.numero};#{cheque.status}>" %>
@@ -53,11 +53,11 @@
       <%= cheque.bom_para.to_s_br %>
     </td>
     <td><%= cheque.nome_dos_pacientes %></td>
-    <td align="right"><%= cheque.valor.real %></td>
     <td align="center"><%= cheque.banco.numero.to_s + "-"+ cheque.banco.nome unless cheque.banco.nil? %></td>
     <td><%= cheque.agencia  %></td>
     
     <td><%= cheque.numero %></td>
+    <td align="right"><%= cheque.valor.real %></td>
     <% if @clinica_atual.administracao? %>
       <td>
          <% if cheque.entregue_a_administracao? %>
