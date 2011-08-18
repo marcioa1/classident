@@ -150,7 +150,8 @@ class Cheque < ActiveRecord::Base
         cheque.pagamento.tipo_pagamento.nome
       when self.status=~/destinação/ then
          cheque.destinacao.nome
-     else self.status_resumido
+      else self.status_resumido
+    end
   end
   
   def sem_devolucao?
