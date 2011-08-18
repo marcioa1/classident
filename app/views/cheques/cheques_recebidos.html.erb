@@ -21,7 +21,7 @@
   </p>
 <% end %>
 <br/>
-<% dados = "#{@titulo};>Clínica;Bom para;Paciente;Valor;Banco;Número;Estado>center;center;left;right;left;left;>" %>
+<% dados = "#{@titulo};>Clínica;Bom para;Paciente;Banco;Número;Valor;Estado>center;center;left;right;left;left;>" %>
 
 <table id='table' class='tabela'>
   <tr>
@@ -43,10 +43,10 @@
   <% for cheque in @cheques do %>
     <tr class=<%=cheque.status_class%> id="tr_<%=cheque.id%>">
     <% if @clinica_atual.administracao? %>
-      <% dados += "#{cheque.clinica.nome};#{cheque.bom_para.to_s_br};#{cheque.nome_dos_pacientes};#{cheque.banco && cheque.banco.nome};#{cheque.numero}; #{cheque.valor.real};#{cheque.status}>" %>
+      <% dados += "#{cheque.clinica.nome};#{cheque.bom_para.to_s_br};#{cheque.nome_dos_pacientes};#{cheque.banco && cheque.banco.numero};#{cheque.numero}; #{cheque.valor.real};#{cheque.status}>" %>
       <td><%= cheque.clinica.sigla %></td>
     <% else %>
-      <% dados += "#{cheque.bom_para.to_s_br};#{cheque.nome_dos_pacientes}; #{cheque.valor.real};#{cheque.banco && cheque.banco.nome};#{cheque.numero};#{cheque.status}>" %>
+      <% dados += "#{cheque.bom_para.to_s_br};#{cheque.nome_dos_pacientes} ;#{cheque.banco && cheque.banco.nome};#{cheque.numero};#{cheque.valor.real};#{cheque.nome_do_Destino}>" %>
 
     <% end %>
     <td align="center">
@@ -110,8 +110,9 @@
     <% end %>
     
   </tr>
+  <% dados += ";;;;#{total.real.to_s};>"%>
 </table>
-  <%= link_de_impressao(dados, session[:clinica_id], 'landscape') %>
+  <%= link_de_impressao(dados, session[:clinica_id], 'portrait') %>
 </div>
 <script type="text/javascript">
   function reverte_cheque(id){

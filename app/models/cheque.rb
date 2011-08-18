@@ -144,6 +144,15 @@ class Cheque < ActiveRecord::Base
     return "solucionado" unless !solucionado?
  end
   
+  def nome_do_destino
+    case 
+      when self.status=~/usado pgto/ then 
+        cheque.pagamento.tipo_pagamento.nome
+      when self.status=~/destinação/ then
+         cheque.destinacao.nome
+     else self.status_resumido
+  end
+  
   def sem_devolucao?
     data_primeira_devolucao.nil?
   end
