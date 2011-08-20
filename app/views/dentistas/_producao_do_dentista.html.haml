@@ -1,5 +1,6 @@
 #lista
 
+  - dados = "Produção de #{@dentista.nome};>Data;Paciente;Procedimento;Valor;Custo;Dentista;Clínica>center;left;left;right;right;right;right;>" 
   %table{:class=>'tabela'}
     %tr
       %th{:width=>'105px;'}
@@ -42,7 +43,7 @@
       - total_custo += tratamento.custo unless tratamento.custo.nil?
       - total_clinica += tratamento.valor_clinica unless tratamento.valor_clinica.nil?
       - total += tratamento.valor
-
+      - dados += "#{tratamento.data.to_s_br};#{tratamento.paciente.nome};#{tratamento.descricao};#{tratamento.valor.real.to_s};#{tratamento.custo.real.to_s};#{tratamento.valor_dentista.real.to_s};#{tratamento.valor_clinica.real.to_s}>"
     %tr
       %td{:colspan=>'3', :align=>'center'}
         Total
@@ -50,3 +51,5 @@
       %td{:align=>'right'}=total_custo.real.to_s
       %td{:align=>'right'}=total_dentista.real.to_s
       %td{:align=>'right'}=total_clinica.real.to_s
+      - dados += ";;Total;#{total.real.to_s};#{total_custo.real.to_s};#{total_dentista.real.to_s};#{total_clinica.real.to_s}>"
+  = link_de_impressao(dados)

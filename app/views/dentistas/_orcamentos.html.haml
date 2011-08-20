@@ -1,4 +1,5 @@
 #lista_orcamento
+  - dados = "Orçamentos;>Data;Paciente;Valor;Desconto;Valor c/ desconto; N. parcelas;Valor parcela;Estado>center;left;right;right;right;right;right;center;>"
   %table{:class=>'tabela'}
     %tr
       %th
@@ -37,3 +38,5 @@
         %td{:align=>'right'}=orca.numero_de_parcelas.to_s
         %td{:align=>'right'}=orca.valor_da_parcela.real.to_s
         %td=orca.estado
+      - dados += "#{orca.data.to_s_br};#{orca.paciente.nome};#{orca.valor.real.to_s};#{orca.desconto.to_s};#{orca.valor_com_desconto.real.to_s};#{orca.numero_de_parcelas.to_s};#{orca.valor_da_parcela.real.to_s};#{orca.estado}>"
+  = link_de_impressao(dados,session[:clinica_id],'landscape')

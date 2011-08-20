@@ -107,7 +107,7 @@ class DentistasController < ApplicationController
   end
   
   def producao
-    dentista = Dentista.find(params[:id])
+    @dentista = Dentista.find(params[:id])
     if !params[:datepicker]
       quinzena
       params[:datepicker]  = @data_inicial.to_s_br
@@ -121,8 +121,8 @@ class DentistasController < ApplicationController
     if Date.valid?(params[:datepicker]) && Date.valid?(params[:datepicker2])
       inicio      = params[:datepicker].to_date if Date.valid?(params[:datepicker])
       fim         = params[:datepicker2].to_date if Date.valid?(params[:datepicker2])
-      @producao   = dentista.busca_producao(inicio,fim,clinicas)
-      @ortodontia = dentista.busca_producao_de_ortodontia(inicio,fim)
+      @producao   = @dentista.busca_producao(inicio,fim,clinicas)
+      @ortodontia = @dentista.busca_producao_de_ortodontia(inicio,fim)
       render :partial=>'dentistas/producao_do_dentista', :locals=>{:producao=>@producao} 
     else
       @erros = ''
