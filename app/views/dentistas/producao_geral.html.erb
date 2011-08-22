@@ -10,6 +10,7 @@
     <%= submit_tag "pesquisar"%>
   <% end %>
   <p/>
+  <% dados = "Produção dos dentistas entre #{@data_inicial.to_s_br} e #{@data_final.to_s_br};>Dentista;Percent;Valor;Custo;Do dentista;Da clínica;>left;right;right;right;right;right>" %>
   <table class='tabela'>
     <tr>
       <th>Dentista</th>
@@ -25,21 +26,28 @@
 		  <% if val[1].to_f != 0.0 %>
 	      <tr>
 	        <td><%= link_to dentista.nome, abre_dentista_path(dentista.id) %></td>
+	        <% dados += "#{dentista.nome};" %>
 	        <% ind = 0 %>
 	        <% val.each do |valor| %>
 	          <td align='right'><%= valor.to_f.real %></td>
+            <% dados += "#{valor.to_f.real};" %>
 	          <% total[ind] += valor.to_f %>
 	          <% ind += 1 %>
 	        <% end %>
+	        <% dados += ">" %>
 	      </tr>
       <% end %>
     <% end %>
     <tr>
       <td colspan="2" align='right'>Total : </td>
+      <% dados +="Total;;" %>
       <% (1..4).each do |ind| %>
         <td align='right'><%= total[ind].real %></td>
+        <% dados += "#{total[ind].real};" %>
       <% end %>
+      <% dados += ">"%>
     </tr>
     
   </table>
+  <%= link_de_impressao(dados) %>
 <% end %>

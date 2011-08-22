@@ -26,7 +26,9 @@ class RelatoriosController < ApplicationController
 
     Prawn::Document.generate(File.join(Rails.root,"/impressoes/#{session[:clinica_id]}/relatorio.pdf"), :page_layout => params[:orientation].to_sym) do 
     repeat :all do
+      text "#{Time.current.to_s_br}", :align => :right, :size=>8
       image "public/images/logo-print.jpg", :align => :left, :vposition => -20
+
       if landscape == 'landscape'
         bounding_box [50, devy], :width  => bounds.width do
           font "Helvetica"

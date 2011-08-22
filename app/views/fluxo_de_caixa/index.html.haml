@@ -21,10 +21,11 @@
         Saldo anterior em cheque :
       %td{ :align => "right" }
         = @fluxo.saldo_em_cheque.real
+  - dados = "Livro Caixa;>Descrição;>Crédit din;Déb din;Saldo din;Crédit chq;Déb chq;Saldo chq;Cartão>left;right;right;right;right;right;right;right;>"
   %table{:class=>'tabela'}
     %tr
       %th{ :width => "250px" }
-        Observação
+        Descrição
       %th{ :width => "80px" } Crédito Dinheiro
       %th{ :width => "80px" } Débito Dinheiro
       %th{ :width => "80px" } Saldo Dinheiro

@@ -147,9 +147,9 @@ class Cheque < ActiveRecord::Base
   def nome_do_destino
     case 
       when self.status=~/usado pgto/ then 
-        cheque.pagamento.tipo_pagamento.nome
+        self.pagamento.tipo_pagamento.nome
       when self.status=~/destinação/ then
-         cheque.destinacao.nome
+         self.destinacao.nome
       else self.status_resumido
     end
   end
