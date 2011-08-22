@@ -56,6 +56,6 @@ module ApplicationHelper
   
   def link_de_impressao(dados, clinica=session[:clinica_id], orientation='portrait')
     # link_to "imprime", "#", :onclick=>"gera_pdf('#{dados}', '#{session[:clinica_id]}', '#{orientation}')"
-    link_to "imprime", imprime_path (:tabela=>dados,:clinica=>clinica,:orientation=>orientation)
+    link_to "imprime", imprime_path(:tabela=>dados,:clinica=>clinica,:orientation=>orientation)
   end
 end

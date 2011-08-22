@@ -45,6 +45,12 @@ class RelatoriosController < ApplicationController
       self.font_size = 9
       header = tr[1].split(';')
       data = items.flatten
+      items.each do |it|
+        it.each_with_index do |st,index|
+          debugger
+          it[index] = st.gsub(/[^a-z0-9.:,$ ]/i,'.')
+        end
+      end
       bounding_box [2, devy - 20], :width  => bounds.width do
         table([header] + items , :header => true) do
             # style(row(0), :background_color => 'ff00ff')

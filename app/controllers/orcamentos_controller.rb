@@ -167,14 +167,13 @@ class OrcamentosController < ApplicationController
       column(2).style(:align=>:right)
     end
 
-    require 'iconv'
+    # @orcamento.tratamentos.
 
-     # pdf.text Iconv.conv('latin1','utf8','áéíóú') 
      data = @orcamento.tratamentos.map do |trat|
       [
         trat.dente,
         trat.face,
-        Iconv.conv('latin1','utf8',trat.descricao),
+        trat.descricao.gsub(/[^a-z0-9.:,$ ]/i,'.'),
         trat.valor.real.to_s
       ]
     end
