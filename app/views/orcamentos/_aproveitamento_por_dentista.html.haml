@@ -1,4 +1,6 @@
 %p
+- dados = "Aproveitamento de orçamento entre #{@data_inicial.to_s_br} e #{@data_final.to_s_br} - Por Dentista>Dentista;Em aberto;Aprovado;Total aberto;Total aprovado;% de aproveitamento;>left;right;right;right;right;right;>"
+
 %table{:class=>'tabela'}
   %tr
     %th 
@@ -28,4 +30,7 @@
         %td{:align=>'right'}  
           = @total_iniciado_por_dentista[dentista.id].real
         %td{:align=>'right'}  
-          =   (@iniciado_por_dentista[dentista.id] * 100) / (@aberto_por_dentista[dentista.id] + @iniciado_por_dentista[dentista.id] )
+          - percentual = (@iniciado_por_dentista[dentista.id] * 100) / (@aberto_por_dentista[dentista.id] + @iniciado_por_dentista[dentista.id] )
+          = percentual
+        - dados += "#{dentista.nome};#{@aberto_por_dentista[dentista.id]};#{@iniciado_por_dentista[dentista.id]};#{@total_aberto_por_dentista[dentista.id].real};#{@total_iniciado_por_dentista[dentista.id].real};#{percentual}>"
+= link_de_impressao(dados)

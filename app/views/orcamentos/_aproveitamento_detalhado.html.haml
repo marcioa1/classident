@@ -1,4 +1,5 @@
 %p
+- dados = "Aproveitamento de orçamento entre #{@data_inicial.to_s_br} e #{@data_final.to_s_br} - Detalhado>Dentista;Clínica;Data;Paciente;Valor;N. parc.;Estado;>left;left;center;left;right;right;left;>"
 %table{:class=>'tabela'}
   %tr
     %th Dentista
@@ -7,7 +8,7 @@
     %th Paciente
     %th Valor
     %th N. parc.
-    %th Status
+    %th Estado
   - @orcamentos.each do |orca| 
     %tr
       %td= orca.dentista.nome if orca.dentista.present? 
@@ -17,3 +18,6 @@
       %td{:align=>'right'}= orca.valor.real 
       %td{:align=>'center'}= orca.numero_de_parcelas
       %td= link_to orca.estado , orca, :target => :blank
+      - dados += "#{orca.dentista.nome};" if orca.dentista.present?
+      - dados += "#{orca.paciente.clinica.sigla};#{orca.data.to_s_br};#{orca.paciente.nome};#{orca.valor.real};#{orca.numero_de_parcelas};#{orca.estado};>"
+= link_de_impressao(dados)
