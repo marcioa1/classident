@@ -3,6 +3,8 @@ class RelatoriosController < ApplicationController
   def imprime
     require "prawn/layout"
     require "prawn/core"
+    clinica_atual = Clinica.find(params[:clinica_id])
+    nome_da_clinica = clinica_atual.nome
     params[:orientation] = 'landscape' if params[:orientation].nil?
     if ( landscape = params[:orientation].downcase == 'landscape')
       devy = 520
@@ -19,14 +21,14 @@ class RelatoriosController < ApplicationController
         items << linha
       end
     end
-      alinhamento = Hash.new
-      tr[2].split(';').each_with_index do |elem, index|
-        alinhamento.merge!({index => elem.to_sym})
-      end
+    alinhamento = Hash.new
+    tr[2].split(';').each_with_index do |elem, index|
+      alinhamento.merge!({index => elem.to_sym})
+    end
 
     Prawn::Document.generate(File.join(Rails.root,"/impressoes/#{session[:clinica_id]}/relatorio.pdf"), :page_layout => params[:orientation].to_sym) do 
     repeat :all do
-      text "#{Time.current.to_s_br}", :align => :right, :size=>8
+      text "#{Time.current.to_s_br} - #{nome_da_clinica}", :align => :right, :size=>8
       image "public/images/logo-print.jpg", :align => :left, :vposition => -20
 
       if landscape == 'landscape'
@@ -47,7 +49,6 @@ class RelatoriosController < ApplicationController
       data = items.flatten
       items.each do |it|
         it.each_with_index do |st,index|
-          debugger
           it[index] = st.gsub(/[^a-z0-9.:,$ ]/i,'.')
         end
       end

@@ -21,7 +21,7 @@
     <th>Valor final</th>
     <th>Estado</th>
   </tr>
-  <% dados = "#{@titulo};>Data;Paciente;Telefones;Dentista;Valor final;Estado>center;right;right;right;right;right>" %>
+  <% dados = "#{@titulo};>Data;Paciente;Telefones;Dentista;Valor final;Estado>center;left;left;left;right;center>" %>
 
 <% @orcamentos.each do |orca| %>
   <tr>
@@ -35,5 +35,5 @@
   <% dados += "#{orca.data.to_s_br};#{orca.paciente.nome};#{orca.paciente.telefones};#{orca.dentista.nome};#{orca.valor_com_desconto.real};#{orca.estado}>"%>
 <% end %>
 </table>
-<%= link_de_impressao(dados) %>
+<%= link_de_impressao(dados,session[:clinica_id],'landscape') %>
 <% end %>

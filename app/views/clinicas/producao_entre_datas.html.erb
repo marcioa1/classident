@@ -2,7 +2,7 @@
   <%= render :partial => '/layouts/include_senha' %>
 
 <div id="titulo">
-Produção mensal
+Produção entre datas
 </div>
 
 <% form_tag :url=>producao_entre_datas_clinicas_path do |f| %>
@@ -22,7 +22,7 @@ Produção mensal
 		<th width="100px">Dentista</th>
 		<th width="100px">Clínica</th>
 	</tr>
-<% dados = "#{@titulo};>Nome;Percentual;Valor;Custo;Dentista;Clínica>left;left;left;left;left>"%>
+<% dados = "#{@titulo};>Nome;Percentual;Valor;Custo;Dentista;Clínica>left;right;right;right;right>"%>
 <% @valores.each do |v| %>
 	<tr>
 		<% valores = v .split("/")%>

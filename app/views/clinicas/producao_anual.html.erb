@@ -8,6 +8,7 @@
   <%= submit_tag "pesquisar" %><br/>
   </p>
 <% end %>
+<% dados = "#{@titulo};>Nome;Jan;Fev;Mar;Abr;Mai;Jun;Jul;Ago;Set;Out;Nov;Dez;Total>left;right;right;right;right;right;right;right;right;right;right;right;right;right>"%>
 <table class='tabela'>
   <tr>
     <th>Nome</th>
@@ -30,19 +31,26 @@
   <tr>
     <% total_dentista = 0 %>
     <td><%= val[0] %></td>
+    <% dados += val[0] + ';' %>
     <% (1..12).each do |mes| %>
       <td align='right'><%= val[mes].real %></td>
+      <% dados += val[mes].real.to_s + ';' %>
       <% total[mes] += val[mes] %>
       <% total_dentista += val[mes] %>
     <% end %>
     <td align='right'><%= total_dentista.real %></td>
+    <% dados += total_dentista.real.to_s + '>'%>
   </tr>
 <% end %>
 <tr>
   <td>Total</td>
-  <% (1..12).each do |mes| %>
+  <% dados += 'Total;'%>
+  <% (1..13).each do |mes| %>
     <td><%= total[mes].real %></td>
+    <% dados += total[mes].real.to_s + ';' %>
   <% end %>
+  <% dados += '>' %>
 </tr>
 </table>
+<%= link_de_impressao(dados,session[:clinica_id], 'landscape') %>
 <% end %>
