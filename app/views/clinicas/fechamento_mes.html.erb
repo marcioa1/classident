@@ -1,6 +1,6 @@
 <% content_for :main do %>
   <%= render :partial => '/layouts/include_senha' %>
-
+  <% dados = "#{@titulo}>Mês;Abertura;Pagamento;Recebimento;Remessa;Saldo>center;right;right;right;right;right>"%>
   <h3>Fechamento de mês</h3>
   <% form_tag :url=>fechamento_mes_clinicas_path do %>
     Ano : 
@@ -26,6 +26,8 @@
         <td align='right'><%= @remessa[mes].real %></td>
         <td align='right'><%= @abertura[mes].real - @pagamento[mes].real + @recebimento[mes].real - @remessa[mes].real %></td>
       </tr>
+      <% dados += "#{mes};#{@abertura[mes].real};#{@pagamento[mes].real};#{@recebimento[mes].real};#{@remessa[mes].real};#{@abertura[mes].real - @pagamento[mes].real + @recebimento[mes].real - @remessa[mes].real}>"%>
     <% end %>
   </table>
+  <%= link_de_impressao(dados)%>
 <% end %>

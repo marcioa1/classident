@@ -125,6 +125,7 @@ class ClinicasController < ApplicationController
     else
       @data = Date.today
     end
+    @titulo = "Fechamento de mês de #{params[:date][:year]}"
   end
   
   def relatorio_de_exclusao

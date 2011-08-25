@@ -49,7 +49,7 @@ class RelatoriosController < ApplicationController
       data = items.flatten
       items.each do |it|
         it.each_with_index do |st,index|
-          it[index] = st.gsub(/[^a-z0-9.:,$áéíóúãõ˜eç\/ ]/i,'.')
+          it[index] = st.gsub(/[^a-z0-9.:,$áéíóúãõ˜eç\/\- ]/i,'.')
         end
       end
       bounding_box [2, devy - 20], :width  => bounds.width do

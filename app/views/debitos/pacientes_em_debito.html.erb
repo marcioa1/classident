@@ -29,7 +29,7 @@
     <th>Celular</th>
     <th>Saldo devedor</th>
   </tr>
-  <% dados = "#{@titulo};>Paciente;Telefone;Celular;Saldo devedor;>center;right;right;right;>"%>
+  <% dados = "#{@titulo};>Paciente;Telefone;Celular;Saldo devedor;>left;left;left;right;>"%>
   <% total = 0.0 %>
   <% @em_debito.each() do |pac| %>
     <tr>
@@ -45,7 +45,7 @@
   <td>Total</td>
   <td colspan="3"align="right" style="color:red;"><%= total.real %></td>
   </tr>
-  <% dados += "Total;#{total.real}>"%>
+  <% dados += "Total;;;#{total.real}>"%>
   </table>
   <%= link_de_impressao(dados) %>
 <% end %>
