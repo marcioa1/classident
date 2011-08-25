@@ -21,7 +21,7 @@
   </p>
 <% end %>
 <br/>
-<% dados = "#{@titulo};>Clínica;Bom para;Paciente;Banco;Número;Valor;Estado>center;center;left;right;left;left;>" %>
+<% dados = "#{@titulo};>Clínica;Bom para;Paciente;Banco;Número;Valor;Estado>center;center;left;left;left;right;>" %>
 
 <table id='table' class='tabela'>
   <tr>
@@ -46,7 +46,7 @@
       <% dados += "#{cheque.clinica.nome};#{cheque.bom_para.to_s_br};#{cheque.nome_dos_pacientes};#{cheque.banco && cheque.banco.numero};#{cheque.numero}; #{cheque.valor.real};#{cheque.status}>" %>
       <td><%= cheque.clinica.sigla %></td>
     <% else %>
-      <% dados += "#{cheque.bom_para.to_s_br};#{cheque.nome_dos_pacientes} ;#{cheque.banco && cheque.banco.nome};#{cheque.numero};#{cheque.valor.real};#{cheque.nome_do_Destino}>" %>
+      <% dados += "#{cheque.clinica.nome};#{cheque.bom_para.to_s_br};#{cheque.nome_dos_pacientes} ;#{cheque.banco && cheque.banco.nome};#{cheque.numero};#{cheque.valor.real};#{cheque.nome_do_destino}>" %>
 
     <% end %>
     <td align="center">
@@ -67,7 +67,7 @@
          <% end %>
       </td>
     <% else %>
-      <td>
+      <td align='center'>
         <% if cheque.entregue_a_administracao?  %>
           <%= image_tag "ok.png" %>
           <%= cheque.data_entrega_administracao.to_s_br %>
