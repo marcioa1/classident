@@ -8,6 +8,7 @@
   = link_to "Novo débito", new_debito_path(:paciente_id=>@paciente.id) if !@clinica_atual.administracao?
   | 
   = link_to "Imprime", "#", :onclick=>"imprime_extrato(#{@paciente.id}, #{@paciente.clinica_id})", :class => 'ui-icon ui-icon-print', :style=>'display: inline-block;'
+- dados = "Extrato do paciente #{@paciente.nome}>Data;Descrição;Débito;Crédito;Saldo>center;left;right;right;right>"
 %p
 %table{:class=>'tabela'}
   %tr
@@ -34,16 +35,20 @@
             = link_to lancamento.data.to_s_br, edit_abono_path(lancamento)
           - else
             = lancamento.data.to_s_br
+        - dados += "#{lancamento.data.to_s_br};"
         %td
           = lancamento.observacao
+        - dados += "#{lancamento.observacao};"
         %td
           &nbsp;
         %td{ :align => "right" }
           = lancamento.valor.real
+        - dados += "#{lancamento.valor.real};"
         - saldo += lancamento.valor
         - cor =  saldo >= 0 ? "black" : "red"
         %td{ :align => "right", :style => "color: #{cor}" }
           = saldo.real
+        - dados += "#{saldo.real};>"
         - 4.times do
           %td &nbsp;
       - elsif lancamento.class == Debito
@@ -52,16 +57,20 @@
             = link_to lancamento.data.to_s_br, edit_debito_path(lancamento)
           - else
             = lancamento.data.to_s_br
+          - dados += "#{lancamento.data.to_s_br};"
           - total_debito += lancamento.valor
         %td
           = lancamento.descricao
+        - dados += "#{lancamento.descricao};"
         %td{ :align => "right" }
           = lancamento.valor.real
+        - dados += "#{lancamento.valor.real};"
         %td
           &nbsp;
         - saldo -= lancamento.valor
         %td{ :align => "right" }
           = saldo.real
+        - dados += ";#{saldo.real}>"
         %td &nbsp;
         %td &nbsp;
         - if @paciente.ortodontia?
@@ -79,16 +88,20 @@
             = link_to lancamento.data.to_s_br, edit_recebimento_path(lancamento)
           - else
             = lancamento.data.to_s_br
+        - dados += "#{lancamento.data.to_s_br};"
         %td
           = lancamento.observacao_do_recebimento
+        - dados += "#{lancamento.observacao_do_recebimento};"
         %td
           &nbsp;
         %td{ :align => "right" }
           = lancamento.valor.real
+        - dados += ";#{lancamento.valor.real};"
         - saldo += lancamento.valor
         - cor =  saldo >= 0 ? "black" : "red"
         %td{ :align => "right", :style => "color: #{cor}" }
           = saldo.real
+        - dados += "#{saldo.real}>"
         - if lancamento.formas_recebimento && lancamento.formas_recebimento.nome.downcase == 'dinheiro'
           %td
             &nbsp;
@@ -117,6 +130,8 @@
       = saldo.real
     %td{ :colspan => "4" }
       &nbsp;
+    - dados += ";Total;#{total_debito.real};#{total_credito.real};#{saldo.real}>"
+= link_de_impressao(dados)
 = render :partial => 'cheques/cheques_do_paciente' if !@paciente.cheques.empty?
 = render :partial => 'cheques/devolvidos_do_paciente' if !@paciente.cheques_devolvidos.empty?
 = render :partial=>"recebimentos/recebimentos_excluidos", :locals=>{:paciente => @paciente} if !@paciente.recebimentos_excluidos.empty?
