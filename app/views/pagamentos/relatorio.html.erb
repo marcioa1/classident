@@ -59,7 +59,7 @@
     <th>&nbsp;</th>
     <th>&nbsp;</th>
   </tr></thead>
-<% dados = "#{@titulo};>Tipo;Valor;Observações;Pago em;Terceiros;Dinheiro;Cheque;modo pgto;Detalhes;Livro  Caixa>center;right;right;right;right;right;right;right;right;right;>" %>
+<% dados = "#{@titulo};>Tipo;Valor;Observações;Pago em;Terceiros;Dinheiro;Cheque;modo pgto;Detalhes;Livro  Caixa>center;right;left;right;right;right;right;right;right;right;>" %>
 <% total = 0 %>
 <% total_terceiros = 0 %>
 <% total_cheque = 0 %>
@@ -96,7 +96,7 @@
       <% end %>
     </td>
     <td align="center"><%=h pagamento.nao_lancar_no_livro_caixa ? "não" : "sim" %></td>
-    <% dados += "#{pagamento.nao_lancar_no_livro_caixa ? 'não' : 'sim'};>"%>
+    <% dados += "#{pagamento.nao_lancar_no_livro_caixa ? 'nao' : 'sim'};>"%>
     <td><%= link_to 'editar', edit_pagamento_path(pagamento), :class=>'ui-icon ui-icon-pencil', :title=>'editar' if pagamento.pode_alterar? %></td>
     <td><%= link_to 'excluir', exclusao_pagamento_path(pagamento), :class=>'ui-icon ui-icon-trash', :title=>'excluir'  if pagamento.pode_alterar?%></td>
     <td><%= link_to 'mostrar', '#', :onclick=>'javascript:abre_pagamento('+ pagamento.id.to_s + ')' , :class=>'ui-icon ui-icon-info', :title=>'ver detalhes'%></td>

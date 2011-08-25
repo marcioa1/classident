@@ -1,4 +1,5 @@
 <% content_for :main do %>
+<% dados = "#{@titulo}>Nome;Ortodontista;Mensalidade;Data suspenção cobr.;Motivo>"%>
 <h3>Pacientes de ortodontia</h3>
 <table class='tabela'>
   <tr>
@@ -16,6 +17,8 @@
       <td><%= pac.data_da_suspensao_da_cobranca_de_orto.to_s_br unless pac.data_da_suspensao_da_cobranca_de_orto.nil? %></td>
       <td><%= pac.motivo_suspensao_cobranca_orto unless pac.motivo_suspensao_cobranca_orto.nil?%></td>
     </tr>
+    <% dados += "#{pac.nome};#{pac.ortodontista.nome  unless pac.ortodontista.nil?};#{pac.mensalidade_de_ortodontia.real.to_s};#{pac.data_da_suspensao_da_cobranca_de_orto.to_s_br unless  pac.data_da_suspensao_da_cobranca_de_orto.nil?};#{pac.motivo_suspensao_cobranca_orto unless pac.motivo_suspensao_cobranca_orto.nil?}>" %>
   <% end %>
 </table>
+<%= link_de_impressao(dados)%>
 <% end %>

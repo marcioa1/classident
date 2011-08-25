@@ -91,10 +91,12 @@ class ClinicasController < ApplicationController
                        :ultima_intervencao => ultimo_tratamento.first.data, :telefone => paciente.telefones }
       end
     end
+    @titulo = "Abandono de tratamento "
   end
   
   def pacientes_de_ortodontia
     @pacientes = Paciente.da_clinica(session[:clinica_id]).de_ortodontia.por_nome
+    @titulo    = "Pacientes de ortodontia"
   end
   
   def fechamento_mes

@@ -1,5 +1,6 @@
 <% content_for :main do %>
 <h3>Abandono de tratamento</h3>
+<% dados = "#{@titulo}>Nome;Telefone;Último registro>left;left;center>"%>
 <p>
 <% form_tag :url=>abandono_de_tratamento_clinicas_path do %>
   Com tratamento há 
@@ -23,6 +24,9 @@
     <td><%= abandono[:telefone] %></td>
     <td align='center'><%= abandono[:ultima_intervencao].to_s_br %></td>
   </tr>
+  <% dados += "#{abandono[:nome]};#{abandono[:telefone]};#{abandono[:ultima_intervencao].to_s_br}>"%>
+
 <% end %>
 </table>
+<%= link_de_impressao(dados) %>
 <% end %>

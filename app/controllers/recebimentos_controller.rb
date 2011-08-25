@@ -296,7 +296,7 @@ class RecebimentosController < ApplicationController
       @inicio = Date.today - Date.today.day + 1.day
       @fim    = Date.today
     end
-    @titulo = "Entradas no mês #{@inicio.month} / #{@inicio.year} da clínica #{@clinica_atual.nome}"
+    @titulo = "Entradas no mês #{@inicio.month} / #{@inicio.year} "
   end
 
   def pesquisa_nomes
