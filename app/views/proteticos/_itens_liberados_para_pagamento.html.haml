@@ -1,3 +1,4 @@
+-dados = "Itens liberados para pagamento do protético #{@protetico.nome}>Paciente;Dente;Descrição;Dt devolução;Dt liberação pgto;Dentista>left;center;left;center;center;left>"
 %h2 Itens liberados para pagamento ( ainda não pagos )
 %table.tabela
   %tr
@@ -17,3 +18,5 @@
       %td= l(item.data_liberacao_para_pagamento)
       %td= item.dentista && item.dentista.nome
       %td= link_to_function 'cancelar liberação' ,"cancelar_liberacao(#{item.id})"
+      - dados += "#{item.paciente.nome};#{item.dente};#{item.tabela_protetico.descricao};#{l(item.data_de_devolucao)};#{item.data_liberacao_para_pagamento.to_s_br};#{item.dentista && item.dentista.nome};>"
+= link_de_impressao(dados,session[:clinica_id], 'landscape')
