@@ -124,6 +124,8 @@ class PagamentosController < ApplicationController
   end
   
   def relatorio
+    # raise params.inspect
+    params[:livro_caixa] = 'ambos' if params[:livro_caixa].nil?
     params[:modo] = 'todos' if params[:modo].nil?
     session[:origem] = '/pagamentos/relatorio'
     @tipos_pagamento = TipoPagamento.da_clinica(session[:clinica_id]).por_nome.collect{|obj| [obj.nome, obj.id.to_s]}
@@ -138,20 +140,33 @@ class PagamentosController < ApplicationController
       @data_final   = Date.today
     end
     @pagamentos = Pagamento.da_clinica(session[:clinica_id]).nao_excluidos.por_data.entre_datas(@data_inicial, @data_final).tipos(params[:tipo_pagamento_id])
+    @titulo = "Pagamento entre #{@data_inicial.to_s_br} e #{@data_final.to_s_br} "
+
     if params[:modo] != 'todos'
       if params[:modo] == 'dinheiro'
         @pagamentos = @pagamentos.em_dinheiro 
+        @titulo+= " em dinheiro"
       elsif params[:modo] == 'cheque classident'
         @pagamentos = @pagamentos.com_cheque_da_classident
+        @titulo += "em cheque da classident"
       elsif params[:modo] == 'cheque paciente'
         @pagamentos = @pagamentos.com_cheque_de_paciente 
+        @titulo += " com cheque de paciente"
       end
     end
     if params[:pela_adm]
       @pela_administracao = Pagamento.pela_administracao.entre_datas(@data_inicial, @data_final).da_clinica(session[:clinica_id])
       @pagamentos += @pela_administracao
+      @titulo += " pela adm"
     end
-    @titulo = "Pagamento entre #{@data_inicial.to_s_br} e #{@data_final.to_s_br} "
+    # raise params[:livro_caixa].inspect
+    if params[:livro_caixa] == 'sim'
+      @pagamentos = @pagamentos.no_livro_caixa
+      @titulo += " no livro caixa"
+    elsif params[:livro_caixa] == 'não'
+      @pagamentos = @pagamentos.fora_do_livro_caixa
+      @titulo += " fora do livro caixa"
+    end
   end
    
   def registra_pagamento_a_protetico

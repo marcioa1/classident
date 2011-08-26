@@ -24,10 +24,10 @@ class Pagamento < ActiveRecord::Base
        {:conditions=>["data_de_pagamento between ? and ?", inicio,fim]}}
   named_scope :excluidos, :conditions=>["data_de_exclusao IS NOT NULL"]
   named_scope :filhos, lambda{|pagamento_id| {:conditions=>["pagamento_id = ?", pagamento_id]}}
-  named_scope :fora_do_livro_caixa, :conditions=>['nao_lancar_no_livro_caixa = ?', true]
+  named_scope :fora_do_livro_caixa, :conditions=>['nao_lancar_no_livro_caixa = ? AND nao_lancar_no_livro_caixa IS NOT NULL', true]
   named_scope :no_dia, lambda{|dia|
        {:conditions=>["data_de_pagamento = ? ",dia]}}
-  named_scope :no_livro_caixa, :conditions=>['nao_lancar_no_livro_caixa = ?', false]
+  named_scope :no_livro_caixa, :conditions=>['nao_lancar_no_livro_caixa = ? OR nao_lancar_no_livro_caixa IS NULL', false]
   named_scope :tipos, lambda{|tipos| 
             {:conditions=>["tipo_pagamento_id in (?)", tipos]}}
   named_scope :nao_excluidos, :conditions=>["data_de_exclusao IS NULL"]

@@ -2,7 +2,7 @@
 <div id="link">
   <%= link_to 'novo pagamento', new_pagamento_path %> 
 </div>
-<fieldset>
+<fieldset class='fieldset_40'>
     <legend>Relatório de pagamentos</legend>
 <% form_tag relatorio_pagamentos_path do %>
 <table class="transparente">
@@ -35,6 +35,17 @@
      Tipos de pagamento : <br/>
    <%= select_tag 'tipo_pagamento_id', options_for_select(@tipos_pagamento, params[:tipo_pagamento_id] ), :multiple=>true %>
 <a href="#" id="selecao" onclick="javascript:selecionar();">todos</a>   </td>
+<td>
+  Livro caixa :
+  <table>
+    <tr>
+      <td><%= radio_button_tag :livro_caixa, 'sim', params[:livro_caixa]== 'sim' %> sim</td>
+      <td><%= radio_button_tag :livro_caixa, 'não', params[:livro_caixa]=='não' %> não</td>
+      <td><%= radio_button_tag :livro_caixa, 'ambos', params[:livro_caixa]=='ambos' %> ambos</td>
+    </tr>
+  </table>
+</td>
+
    </tr>
    <tr><td>&nbsp;</td><td><%= submit_tag "pesquisar"%></td></tr>
 </table>
@@ -122,7 +133,7 @@
 <br />
 
 <%= link_to 'novo pagamento', new_pagamento_path %> |  
-  <%= link_de_impressao(dados, session[:clinica_id], 'landscape') %>
+  <%= link_de_impressao(dados, session[:clinica_id], 'portrait') %>
 
 
 <% end %>
