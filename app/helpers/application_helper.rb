@@ -58,4 +58,12 @@ module ApplicationHelper
     # link_to "imprime", "#", :onclick=>"gera_pdf('#{dados}', '#{session[:clinica_id]}', '#{orientation}')"
     link_to "imprime", imprime_path(:tabela=>dados,:clinica_id=>clinica_id,:orientation=>orientation)
   end
+  
+  def data_abreviada(data)
+    if data
+      data.to_s_br[0..5]+data.to_s_br[8..9]
+    else
+      ''
+    end
+  end
 end

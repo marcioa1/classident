@@ -3,6 +3,7 @@
   %span#valor 0
   %span#link_pagamento
     = link_to "efetua pagamento ", new_pagamento_path()
+- dados = "Trabalhos recebidos e não pagos>Paciente;Dente;Dt Envio;Descrição;Observação;Valor;Dt devolução;Dentista>left;center;center;left;left;right;center;left>"
 %h2 Trabalhos recebidos e não pagos
 %table.tabela
   %tr
@@ -48,11 +49,14 @@
       %td= trab.dentista && trab.dentista.nome
       %td{:align => "center"}= check_box_tag :pagar, trab.id, false , options={ :onclick=>'pagar(' + trab.valor.to_s + ',' + trab.id.to_s + ',' + @protetico.id.to_s +  ');', :id=>'pagar_'+trab.id.to_s}
       - total += trab.valor
+      - dados += "#{trab.paciente.nome};#{trab.dente if trab.dente.present?};#{data_abreviada(trab.data_de_envio)};#{trab.tabela_protetico.descricao if trab.tabela_protetico};#{trab.observacoes};#{trab.valor.real};#{data_abreviada(trab.data_de_devolucao)};#{trab.dentista && trab.dentista.nome};>"
   %tr
     %td{:colspan=>5, :align=>'center'} Total
     %td{:id=>'total', :align=>'right'}
       = total.real
     %td{:colspan=>3} &nbsp;
+  - dados += "; ; ; ; Total;#{total.real}; ; ;>"
+= link_de_impressao(dados,session[:clinica_id],'landscape')
 :javascript
   function todos(){
     $("table input").attr("checked", true);

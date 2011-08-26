@@ -7,9 +7,9 @@ class RelatoriosController < ApplicationController
     nome_da_clinica = clinica_atual.nome
     params[:orientation] = 'landscape' if params[:orientation].nil?
     if ( landscape = params[:orientation].downcase == 'landscape')
-      devy = 520
+      devy = 540 #520
     else
-      devy = 690
+      devy = 720 #690
     end
     items     = []
     tr        = params[:tabela].split(">")
@@ -29,7 +29,7 @@ class RelatoriosController < ApplicationController
     Prawn::Document.generate(File.join(Rails.root,"/impressoes/#{session[:clinica_id]}/relatorio.pdf"), :page_layout => params[:orientation].to_sym) do 
     repeat :all do
       text "#{Time.current.to_s_br} - #{nome_da_clinica}", :align => :right, :size=>8
-      image "public/images/logo-print.jpg", :align => :left, :vposition => -20
+      # image "public/images/logo-print.jpg", :align => :left, :vposition => -20
 
       if landscape == 'landscape'
         bounding_box [50, devy], :width  => bounds.width do
@@ -39,7 +39,7 @@ class RelatoriosController < ApplicationController
       else
         bounding_box [10, devy], :width  => bounds.width do
           font "Helvetica"
-          text titulo, :align => :center, :size => 12, :vposition => -20
+          text titulo, :align => :left, :size => 12, :vposition => -20
         end
       end
     end
@@ -52,7 +52,7 @@ class RelatoriosController < ApplicationController
           it[index] = st.gsub(/[^a-z0-9.:,$áéíóúãõ˜eç\/\- ]/i,'.')
         end
       end
-      bounding_box [2, devy - 20], :width  => bounds.width do
+      bounding_box [2, devy - 30], :width  => bounds.width do
         table([header] + items , :header => true) do
             # style(row(0), :background_color => 'ff00ff')
           row(0).style(:font_style => :bold, :background_color => 'cccccc')
