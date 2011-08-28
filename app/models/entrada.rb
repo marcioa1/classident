@@ -4,7 +4,7 @@ class Entrada < ActiveRecord::Base
   belongs_to :clinica_destino, :class_name => 'Clinica', :foreign_key => :clinica_destino
   
   validates_numericality_of :valor, :message => "is not a number"
-  validates_presence_of :observacao, :message => "não pode ser vazio"
+  # validates_presence_of :observacao, :message => "não pode ser vazio"
   
   named_scope :confirmado, :conditions=>['data_confirmacao_da_entrada IS NOT NULL']
   named_scope :da_clinica, lambda{|clinica_id| {:conditions=>["clinica_id = ?", clinica_id]}}
