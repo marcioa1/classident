@@ -32,9 +32,8 @@ class Recebimento < ActiveRecord::Base
   validates_presence_of :valor, :message => "Não pode ser em branco."
   validates_numericality_of :valor, :greater_than => 0, :message => " tem que ser numérico maior que zero."
   validates_numericality_of :percentual_dentista, :message => "deve ser um número."
-
+  validates_presence_of :observacao_exclusao, :if => :excluido?
   validate :verifica_quinzena, :verifica_data_do_cheque
-  
   # validates_numericality_of :valor_segundo_paciente, :only => [:create, :update] , :message => "não é numérico"
   #   validates_numericality_of :valor_terceiro_paciente, :only => [:create, :update] , :message => "não é numérico"
   #   validates_numericality_of :valor_do_cheque, :only => [:create, :update] , :message => "não é numérico"

@@ -184,7 +184,6 @@ class RecebimentosController < ApplicationController
   end
   
   def exclui
-    debugger
     @recebimento.exclui(current_user.id, params[:observacao_exclusao])
     redirect_to(abre_paciente_path(@recebimento.paciente))
   end

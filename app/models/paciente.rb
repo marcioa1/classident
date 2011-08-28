@@ -19,6 +19,7 @@ class Paciente < ActiveRecord::Base
   
   validates_presence_of :nome, :on => :create, :message => "Campo nome é obrigatório" 
   validates_presence_of :tabela, :on => :create, :message => "Tabela obrigatória"  
+  validates_presence_of :email
   # validates_format_of :email, :with => /^(([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,}))?$/i, :only => [:create, :update], 
   #                        :message => 'Formato de email inválido.'
   validates_presence_of :inicio_tratamento, :only => [:create, :update], :message => "A data de início do tratamento é obrigatória."

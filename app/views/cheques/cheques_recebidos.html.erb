@@ -104,13 +104,13 @@
       </td>
       <td colspan="4">&nbsp;</td>
     <% else %>
-      <td colspan="2" align="center">Total</td>
+      <td colspan="5" align="center">Total</td>
       <td align="right"><%= total.real%></td>
       <td colspan="6" align="right"><%= link_to_function "enviar cheques selecionados p/ administração" , "enviar_administracao();"  if params[:status]=="disponíveis" && !@clinica_atual.administracao? %></td>
     <% end %>
     
   </tr>
-  <% dados += ";;;;#{total.real.to_s};>"%>
+  <% dados += ";;Total :;;;#{total.real.to_s}; ;>"%>
 </table>
   <%= link_de_impressao(dados, session[:clinica_id], 'portrait') %>
 </div>

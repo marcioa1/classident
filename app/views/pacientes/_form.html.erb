@@ -95,7 +95,7 @@
   </fieldset>
   <fieldset class="fieldset_40">
     <legend>
-	  <% if current_user.master? %>
+	  <% if current_user.master?  %>
       <%= f.check_box :sair_da_lista_de_debitos  %> 
     <% else %>
       <%= f.check_box :sair_da_lista_de_debitos,  :disabled => 'disabled'  %> 
@@ -104,8 +104,8 @@
     </legend>
     <p>
       <%= f.label :data_da_saída_da_lista_de_débitos %> :
-      <% if curent_user.master ? %>
-        <%= text_field_tag :datepicker4, @paciente.data_da_saida_da_lista_de_debitos.to_s_br , :size=>10%>
+      <% if current_user.master?  %>
+        <%= text_field_tag :datepicker4, @paciente.data_da_saida_da_lista_de_debitos.to_s_br , :size=>10 %>
       <% else %>
         <%= @paciente.data_da_saida_da_lista_de_debitos.to_s_br %>
       <% end %>
@@ -113,9 +113,9 @@
     
     <p>
       <%= f.label :motivo_para_sair_da_lista_de_debitos%> : 
-      <% if current_user.master ?%>
+      <% if current_user.master? %>
         <%= f.text_field :motivo_sair_da_lista_de_debitos%>
-      <% end %>
+      <% else %>
         <%= @paciente.motivo_sair_da_lista_de_debitos %>
       <% end %>
     </p>

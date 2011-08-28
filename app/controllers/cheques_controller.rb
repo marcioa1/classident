@@ -104,16 +104,16 @@ class ChequesController < ApplicationController
           @cheques = Cheque.da_clinica(session[:clinica_id]).entre_datas(@data_inicial,@data_final).
             devolvido_duas_vezes.nao_excluidos.das_clinicas(selecionadas).por_valor
         when params[:status] == 'enviados à administração' && params[:ordem] == 'por_data' 
-          @cheques = Cheque.entre_datas(@data_inicial,@data_final).
-            entregues_a_administracao.nao_recebidos.nao_excluidos.das_clinicas(selecionadas).por_bom_para
+          @cheques = Cheque.enviados_a_administracao(@data_inicial,@data_final).
+            nao_recebidos.nao_excluidos.das_clinicas(selecionadas).por_bom_para
         when params[:status] == 'enviados à administração' && params[:ordem] == 'por_valor' 
-          @cheques = Cheque.entre_datas(@data_inicial,@data_final).
-            entregues_a_administracao.nao_recebidos.nao_excluidos.das_clinicas(selecionadas).por_valor
+          @cheques = Cheque.enviados_a_administracao(@data_inicial,@data_final).
+            nao_recebidos.nao_excluidos.das_clinicas(selecionadas).por_valor
         when params[:status] == 'recebidos pela administração' && params[:ordem] == 'por_data' 
           @cheques = Cheque.entre_datas(@data_inicial,@data_final).
             na_administracao.nao_excluidos.das_clinicas(selecionadas).por_bom_para
         when params[:status] == 'recebidos pela administração' && params[:ordem] == 'por_valor' 
-          @cheques = Cheque.entre_datas(@data_inicial,@data_final).
+          @cheques = Cheque.enviados_a_administracao(@data_inicial,@data_final).
             na_administracao.nao_excluidos.das_clinicas(selecionadas).por_valor
         when params[:status] == 'usados para pagamento' && params[:ordem] == 'por_data' 
           @cheques = Cheque.entre_datas(@data_inicial,@data_final).
@@ -173,10 +173,10 @@ class ChequesController < ApplicationController
           @cheques = Cheque.da_clinica(session[:clinica_id]).entre_datas(@data_inicial,@data_final).
             devolvido_duas_vezes.nao_excluidos.por_valor
         when params[:status] == 'enviados à administração' && params[:ordem] == 'por_data' 
-          @cheques = Cheque.da_clinica(session[:clinica_id]).entre_datas(@data_inicial,@data_final).
-            entregues_a_administracao.nao_recebidos.nao_excluidos.por_bom_para
+          @cheques = Cheque.da_clinica(session[:clinica_id]).enviados_a_administracao(@data_inicial,@data_final).
+            nao_recebidos.nao_excluidos.por_bom_para
         when params[:status] == 'enviados à administração' && params[:ordem] == 'por_valor' 
-          @cheques = Cheque.da_clinica(session[:clinica_id]).entre_datas(@data_inicial,@data_final).
+          @cheques = Cheque.da_clinica(session[:clinica_id]).enviados_a_administracao(@data_inicial,@data_final).
             entregues_a_administracao.nao_recebidos.nao_excluidos.por_valor
         when params[:status] == 'recebidos pela administração' && params[:ordem] == 'por_data' 
           @cheques = Cheque.da_clinica(session[:clinica_id]).entre_datas(@data_inicial,@data_final).
