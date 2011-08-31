@@ -115,14 +115,18 @@ class DentistasController < ApplicationController
     end
     if params[:clinicas]
       clinicas = params[:clinicas].split(",").to_a
+      nome_das_clinicas = Clinica.all(:conditions => ["id in (?)", clinicas]).map(&:nome).join(',')
     else
       clinicas = session[:clinica_id].to_a
+      nome_das_clinicas = ''
     end
+      # raise nome_das_clinicas
     if Date.valid?(params[:datepicker]) && Date.valid?(params[:datepicker2])
       inicio      = params[:datepicker].to_date if Date.valid?(params[:datepicker])
       fim         = params[:datepicker2].to_date if Date.valid?(params[:datepicker2])
       @producao   = @dentista.busca_producao(inicio,fim,clinicas)
       @ortodontia = @dentista.busca_producao_de_ortodontia(inicio,fim)
+      @titulo     = "#{@dentista.nome}\nProdutividade entre : #{@data_inicial.to_s_br} e #{@data_final.to_s_br} na clínica #{nome_das_clinicas}"
       render :partial=>'dentistas/producao_do_dentista', :locals=>{:producao=>@producao} 
     else
       @erros = ''
