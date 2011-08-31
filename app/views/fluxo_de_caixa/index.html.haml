@@ -21,7 +21,7 @@
         Saldo anterior em cheque :
       %td{ :align => "right" }
         = @fluxo.saldo_em_cheque.real
-  - dados = "Livro Caixa;>Descrição;>Crédit din;Déb din;Saldo din;Crédit chq;Déb chq;Saldo chq;Cartão>left;right;right;right;right;right;right;right;>"
+  - dados = "Livro Caixa em #{@fluxo.data.to_s_br};>Descrição;Crédit din;Déb din;Saldo din;Crédit chq;Déb chq;Saldo chq;Cartão>left;right;right;right;right;right;right;right;>"
   %table{:class=>'tabela'}
     %tr
       %th{ :width => "250px" }
@@ -36,6 +36,7 @@
     %tr
       %td
         Saldo de abertura
+        - dados += "Saldo de abertura;;;#{@fluxo.saldo_em_dinheiro.real};;;#{@fluxo.saldo_em_cheque.real}; ;>"
       %td
         \&nbsp;
       %td
@@ -59,8 +60,10 @@
         - case lancamento.class.name
           - when 'Cheque' :
             %td
-              = lancamento.nome_dos_pacientes 
-              = " ( " + lancamento.recebimentos[0].paciente.clinica.sigla + " ) " if @clinica_atual.administracao? && lancamento.recebimentos[0]
+              - str = lancamento.nome_dos_pacientes
+              - str += " ( " + lancamento.recebimentos[0].paciente.clinica.sigla + " ) " if @clinica_atual.administracao? && lancamento.recebimentos[0]
+              = str
+              - dados += str + ";;;;#{lancamento.valor.real}; ; ; ;"
             %td &nbsp;
             %td &nbsp;
             %td &nbsp;
@@ -73,83 +76,117 @@
             %td &nbsp;
           - when "Recebimento" :
             - if lancamento.formas_recebimento.nome.downcase =="dinheiro"
-              %td= lancamento.paciente && lancamento.paciente.nome
+              %td
+              - if lancamento.paciente && lancamento.paciente.nome
+                - dados += "#{lancamento.paciente.nome};"
+                = lancamento.paciente.nome
+              - else
+                - dados += ";"
               %td{ :align => "right" }
                 = lancamento.valor.real
+                - dados += "#{lancamento.valor.real};;"
               %td &nbsp;
               - saldo_dinheiro += lancamento.valor
               %td{ :align => "right" }
                 = saldo_dinheiro.real
+                - dados += "#{saldo_dinheiro.real};;;"
               %td &nbsp;
               %td &nbsp;
               %td{ :align => "right" }
                 = saldo_cheque.real
+                - dados += "#{saldo_cheque.real};;"
               - total_de_credito_em_dinheiro += lancamento.valor
               %td &nbsp;
             - elsif lancamento.formas_recebimento.nome.downcase =="cheque"
-              %td= lancamento.paciente && lancamento.paciente.nome
+              %td
+                - if lacamento.paciente
+                  = lancamento.paciente.nome
+                  - dados += "#{lancamento.paciente.nome};;;"
+                - else
+                  - dados += ";;;"
               %td &nbsp;
               %td &nbsp;
               %td{ :align => "right" }
                 = saldo_dinheiro.real
+                - dados += "#{saldo_dinheiro.real};"
               - if lancamento.cheque && lancamento.cheque.recebido_pela_administracao?
                 %td{:align => 'right'}= lancamento.valor.real
+                - dados += "#{lancamento.valor.real};"
                 %td{ :align => "right", :style => "color: red;" }
                   = lancamento.valor.real
+                - dados += "#{lancamento.valor.real};"
                 - saldo_cheque -= lancamento.valor
                 - total_de_debito_em_cheque += lancamento.valor
                 - total_de_credito_em_cheque += lancamento.valor
               - else
                 %td{ :align => "right" }
                   = lancamento.valor.real
+                  - dados += "#{lancamento.valor.real};;"
                 %td &nbsp;
                 - saldo_cheque += lancamento.valor
                 - total_de_credito_em_cheque += lancamento.valor
               %td{ :align => "right" }
                 = saldo_cheque.real
+                - dados += "#{saldo_cheque.real};;"
               %td &nbsp;
 
             - else
-              %td= lancamento.paciente && lancamento.paciente.nome
+              %td
+                -if lancamento.paciente
+                  = lancamento.paciente.nome
+                  - dados += "#{lancamento.paciente.nome};;;"
+                -else 
+                  &nbsp;
               %td &nbsp;
               %td &nbsp;
               %td{ :align => "right" }
                 = saldo_dinheiro.real
+                - dados += "#{saldo_dinheiro.real};;;"
               %td &nbsp;
               %td &nbsp;
               %td{ :align => "right" }
                 = saldo_cheque.real
+                - dados += "#{saldo_cheque.real};"
               %td{ :align => "right" }
                 = lancamento.valor.real
+                - dados += "#{lancamento.valor.real};"
               - total_de_credito_em_cartao += lancamento.valor
             
           - when "Pagamento"
             %td
               - if lancamento.observacao && lancamento.tipo_pagamento
                 = link_to lancamento.tipo_pagamento.nome + ', ' + lancamento.observacao, edit_pagamento_path(lancamento)
+                - dados += "#{lancamento.tipo_pagamento.nome + ', ' + lancamento.observacao};"
               - elsif lancamento.observacao
                 = link_to lancamento.observacao, edit_pagamento_path(lancamento)
+                - dados += "#{lancamento.observacao};"
               - else
                 = link_to lancamento.tipo_pagamento.nome, edit_pagamento_path(lancamento)
+                - dados += "#{lancamento.tipo_pagamento.nome};"
                
             %td &nbsp;
+            - dados += ";"
             - if lancamento.em_dinheiro? || lancamento.opcao_restante == Pagamento::OPCAO_RESTANTE_EM_DINHEIRO
               - if lancamento.em_dinheiro?
                 %td{ :align => "right", :style => "color: red;" }
                   = lancamento.valor_pago.real
+                  - dados += "#{lancamento.valor_pago.real};"
                 - saldo_dinheiro -= lancamento.valor_pago
                 - total_de_debito_em_dinheiro += lancamento.valor_pago
                 %td{:align => "right"}= saldo_dinheiro 
+                - dados += "#{saldo_dinheiro.real};;;"
                 %td &nbsp;
                 %td &nbsp; 
               - else
                 %td{ :align => "right", :style => "color: red;" }
                   = lancamento.valor_restante.real
+                  - dados += "#{lancamento.valor_restante.real};;;"
                 - saldo_dinheiro -= lancamento.valor_restante
                 %td &nbsp;
                 %td &nbsp;
                 %td{ :align => "right", :style => "color: red;" }
                   = lancamento.valor_pago.real - lancamento.valor_restante.real
+                  - dados += "#{lancamento.valor_pago.real - lancamento.valor_restante.real};"
                 - #saldo_cheque -= lancamento.valor_pago - lancamento. valor_restante.real
                 - total_de_debito_em_cheque += lancamento.valor_pago
 
@@ -159,22 +196,28 @@
               %td &nbsp;
               %td{ :align => "right", :style => "color: red;" }
                 = lancamento.valor_pago.real 
+                - dados += ";;;#{lancamento.valor_pago.real};"
               - saldo_cheque -= lancamento.valor_pago - lancamento. valor_restante.real
               - total_de_debito_em_cheque += lancamento.valor_pago
             %td{ :align => "right" }
               = saldo_cheque.real
+              - dados += "#{saldo_cheque.real};;"
             %td &nbsp;
 
         - when "Entrada"
           - if lancamento.remessa?(session[:clinica_id])
             %td= "Remessa, " +lancamento.observacao
-            %td &nbsp
+            - dados += "Remessa ,#{lancamento.observacao};;"
+            %td &nbsp;
             %td{ :align => "right", :style => 'color: red;'}= lancamento.valor.real * (-1)
+            -dados += "#{lancamento.valor.real};"
             - saldo_dinheiro -= lancamento.valor
             - total_de_debito_em_dinheiro -= lancamento.valor
           - else
             %td= "Entrada, " +lancamento.observacao
+            - dados += "Entrada, #{lancamento.observacao};"
             %td{ :align => "right"}= lancamento.valor.real
+            - dados += "#{lancamento.valor.real};;"
             %td &nbsp;
             - saldo_dinheiro += lancamento.valor
             - total_de_credito_em_dinheiro += lancamento.valor
@@ -183,20 +226,26 @@
           %td &nbsp;
           %td &nbsp;
           %td &nbsp;
+          - saldo += ";;;;;"
         - else
           %td= lancamento.class.name + "-"+lancamento.observacao
+          - dados += "#{lancamento.class.name + "-"+lancamento.observacao};"
           - if lancamento.valor.nil?
             %td 
               = lancamento.class.name + "-" + lancamento.id.to_s
+              - dados += "#{lancamento.class.name + "-" + lancamento.id.to_s};"
           - if lancamento.valor && lancamento.valor > 0
             %td{ :align => "right" }
               = lancamento.valor.real
+              - dados += "#{lancamento.valor.real};;"
             - saldo_dinheiro += lancamento.valor
             %td &nbsp;
           - else
             %td &nbsp;
+            - dados += ";"
             %td{ :align => "right", :style => "color: red;" }
               = lancamento.valor && lancamento.valor.abs.real
+              - dados += "#{lancamento.valor && lancamento.valor.abs.real};"
             - saldo_dinheiro += lancamento.valor if lancamento.valor
             %td{ :align => "right" }
               =# saldo_dinheiro.real
@@ -205,6 +254,9 @@
             %td{ :align => "right" }
               =# saldo_cheque.real
             %td &nbsp;
+            - dados += ";;;;"
+      - dados += ">"
+      - #raise dados.inspect
     %tr
       %td= 'Saldo de fechamento'
       %td{ :align=>'right' }= total_de_credito_em_dinheiro.real
@@ -217,8 +269,10 @@
         %strong= saldo_cheque.real
       %td{ :align=>'right' }
         %strong= total_de_credito_em_cartao.real
-
+      - dados += "Saldo de fechamento;#{total_de_credito_em_dinheiro.real};#{total_de_debito_em_dinheiro.real};#{saldo_dinheiro.real};#{total_de_credito_em_cheque.real};#{total_de_debito_em_cheque.real};#{saldo_cheque.real};#{total_de_credito_em_cartao.real};>"
   %p
     = link_to "anterior", fluxo_de_caixa_path(:data=>@fluxo.data - 1.day)
     = "|"
     = link_to "próximo", fluxo_de_caixa_path(:data=>@fluxo.data + 1.day, :saldo_dinheiro=>saldo_dinheiro.real, :saldo_cheque => saldo_cheque.real)
+    = "|"
+    = link_de_impressao(dados, session[:clinica_id], 'landscape')
