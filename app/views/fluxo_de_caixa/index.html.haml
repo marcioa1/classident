@@ -99,7 +99,7 @@
               %td &nbsp;
             - elsif lancamento.formas_recebimento.nome.downcase =="cheque"
               %td
-                - if lacamento.paciente
+                - if lancamento.paciente
                   = lancamento.paciente.nome
                   - dados += "#{lancamento.paciente.nome};;;"
                 - else
