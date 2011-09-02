@@ -1,10 +1,8 @@
 - content_for :main do
   - form_tag  :controller=>'senhas', :action=>'salva' do 
-    = hidden_field_tag :controller_name, @senha.controller_name
-    = hidden_field_tag :action_name, @senha.action_name
-    = hidden_field_tag :clinica_id, @senha.clinica_id
+    = text_field_tag :action_name, params[:controller_name] + ',' + params[:action_name]
     = label_tag :senha
-    = password_field_tag :senha, '' , :size=> 6
+    = text_field_tag :senha_action, '' , :size=> 6
     %p
     = submit_tag "salvar"
     = link_to "voltar", :back

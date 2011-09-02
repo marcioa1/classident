@@ -193,6 +193,7 @@ class RecebimentosController < ApplicationController
   end
   
   def relatorio
+    raise session[:action].inspect
     @formas_recebimento = FormasRecebimento.por_nome
     if !params[:datepicker]
       params[:datepicker2] = Date.today.to_s_br

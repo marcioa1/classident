@@ -2,4 +2,4 @@
   #corpo_senha
     Senha
     = password_field_tag :nova_senha, '', :size=> 5
-    = link_to "libera", "#", :onclick=>'valida_senha();'
+    = button_to_function "entrar", 'valida_senha();'

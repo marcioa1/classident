@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110629082222) do
+ActiveRecord::Schema.define(:version => 20110902133216) do
 
   create_table "abonos", :force => true do |t|
     t.date     "data"
@@ -455,15 +455,12 @@ ActiveRecord::Schema.define(:version => 20110629082222) do
   add_index "recebimentos", ["sequencial"], :name => "index_recebimentos_on_sequencial"
 
   create_table "senhas", :force => true do |t|
-    t.string   "controller_name", :limit => 45
-    t.string   "action_name",     :limit => 45
     t.integer  "clinica_id"
     t.string   "senha"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "action"
   end
-
-  add_index "senhas", ["controller_name", "action_name"], :name => "index_senhas_on_controller_name_and_action_name", :unique => true
 
   create_table "tabela_proteticos", :force => true do |t|
     t.integer  "protetico_id"
