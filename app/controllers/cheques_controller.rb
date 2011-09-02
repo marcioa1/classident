@@ -48,7 +48,6 @@ class ChequesController < ApplicationController
   end
 
   def destroy
-    debugger
     @cheque = Cheque.find(params[:id])
     @cheque.destroy
 

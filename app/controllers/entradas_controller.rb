@@ -38,7 +38,6 @@ class EntradasController < ApplicationController
     @entrada = Entrada.new(params[:entrada])
     @entrada.data       = params[:datepicker].to_date
     @entrada.clinica_id = session[:clinica_id]
-    debugger
     if @clinica_atual.administracao?
       @entrada.clinica_destino = params[:clinica_id]
     else

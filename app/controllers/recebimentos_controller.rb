@@ -193,7 +193,7 @@ class RecebimentosController < ApplicationController
   end
   
   def relatorio
-    raise session[:action].inspect
+    session[:origem] = relatorio_recebimentos_path
     @formas_recebimento = FormasRecebimento.por_nome
     if !params[:datepicker]
       params[:datepicker2] = Date.today.to_s_br
@@ -226,10 +226,6 @@ class RecebimentosController < ApplicationController
       @recebimentos_excluidos = []
     end
     @titulo = "Relatório de recebimentos entre #{@data_inicial.to_s_br} e #{@data_final.to_s_br} da clínica #{@clinica_atual.nome}"
-    # if formas_selecionadas.include?(forma_cheque_id.to_s)
-    #   @recebimentos_devolvidos = Recebimento.em_cheque.com_problema.entre_datas(@data_inicial,@data_final)
-    #   @recebimentos = @recebimentos - @recebimentos_devolvidos 
-    # end
   end
   
   def das_clinicas
