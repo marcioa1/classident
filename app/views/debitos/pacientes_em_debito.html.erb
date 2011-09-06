@@ -30,8 +30,9 @@
     <th>Telefone</th>
     <th>Celular</th>
     <th>Saldo devedor</th>
+    <th>Último lançamento</th>
   </tr>
-  <% dados = "#{@titulo};>Paciente;Telefone;Celular;Saldo devedor;>left;left;left;right;>"%>
+  <% dados = "#{@titulo};>Paciente;Telefone;Celular;Saldo devedor;Último lançamento>left;left;left;right;center;>"%>
   <% total = 0.0 %>
   <% @em_debito.each() do |pac| %>
     <tr>
@@ -39,15 +40,16 @@
     <td><%= pac.telefone %></td>
     <td><%= pac.celular %></td>
     <td align="right" style="color:red;"><%= pac.saldo.real %></td>
+    <td align='center'><%= pac.ultimo_lancamento && pac.ultimo_lancamento.data.to_s_br %></td>
     <% total += pac.saldo %>
     </tr>
-    <% dados += "#{pac.nome};#{pac.telefone};#{pac.celular};#{pac.saldo.real};>"%>
+    <% dados += "#{pac.nome};#{pac.telefone};#{pac.celular};#{pac.saldo.real};#{pac.ultimo_lancamento && pac.ultimo_lancamento.data.to_s_br}>"%>
   <% end %>
   <tr>
   <td>Total</td>
   <td colspan="3"align="right" style="color:red;"><%= total.real %></td>
   </tr>
-  <% dados += "Total;;;#{total.real}>"%>
+  <% dados += "Total;;;#{total.real};>"%>
   </table>
   <%= link_de_impressao(dados) %>
 <% end %>
