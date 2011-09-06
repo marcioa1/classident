@@ -1,4 +1,6 @@
 <% content_for :main do %>
+  <%=  render :partial => '/layouts/include_senha' %>
+
 <h4>Confirma recebimento de cheques 	(cheques enviados à administração mas com recebimento não confirmado)</h4>
 <% form_tag do |f| %>
   <%= render :partial=>'clinicas/radio' , :locals=>{:clinicas => @clinicas}%>

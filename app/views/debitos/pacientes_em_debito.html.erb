@@ -1,4 +1,6 @@
 <% content_for :main do %>
+  <%= render :partial => '/layouts/include_senha'%>
+
   <h3>Pacientes em débito</h3>
   
   <% form_tag :url=>pacientes_em_debito_debitos_path do %>

@@ -1,4 +1,5 @@
 <% content_for :main do %>
+<%= render :partial => '/layouts/include_senha'%>
   <h3>Produção dos dentistas</h3>
   <p class='mensagem_de_erro'><%= @erros %></p>
   <% form_tag :url=>producao_geral_dentistas_path do %>

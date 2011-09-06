@@ -1,4 +1,6 @@
 - content_for :main do
+  = render :partial => '/layouts/include_senha'
+
   %h3 Aproveitamento de Orçamento
   - form_tag :url=>producao_geral_dentistas_path do
     = render :partial=>'diversos/entre_datas'
