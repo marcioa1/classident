@@ -91,7 +91,7 @@ ActionController::Routing::Routes.draw do |map|
   map.troca_senha "troca_senha", :controller=>:users, :action=>:troca_senha
   map.grava_precos "grava_precos", :controller => "item_tabelas", :action=>"grava_precos"
   
-  map.imprime '/relatorios/imprime', :controller=>:relatorios, :action=>:imprime, :method => :get
+  map.imprime '/relatorios/imprime', :controller=>:relatorios, :action=>:imprime, :method => :post
 #  map.resource :account, :controller => "users"
   
   # The priority is based upon order of creation: first created -> highest priority.

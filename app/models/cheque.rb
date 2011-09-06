@@ -168,7 +168,7 @@ class Cheque < ActiveRecord::Base
   end
   
   def devolvido_uma_vez?
-    data_primeira_devolucao.present?  
+    data_primeira_devolucao.present?  || motivo_primeira_devolucao.present?
   end
   
   def reapresentado?

@@ -1,5 +1,7 @@
 class RelatoriosController < ApplicationController
   
+  before_filter :verify_existence_of_directory
+  
   def imprime
     require "prawn/layout"
     require "prawn/core"
@@ -69,6 +71,16 @@ class RelatoriosController < ApplicationController
      # head :ok
   end
   
+  
+  def verify_existence_of_directory
+    directory_name = Dir::pwd + "/impressoes/#{session[:clinica_id]}"
+    if FileTest::directory?(directory_name)
+      return
+    else
+      Dir::mkdir(directory_name)
+    end
+  end
+
   # protected
   
   def imprime_cabecalho(pdf, titulo)

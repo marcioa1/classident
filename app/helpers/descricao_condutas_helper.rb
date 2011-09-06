@@ -1,2 +1,0 @@
-module DescricaoCondutasHelper
-end
