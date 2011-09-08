@@ -10,6 +10,7 @@
     <th width="290px">Descrição</th>
     <th width='60px'>Preço</th>
     <th>Ativo</th>
+    <th>Dias de retorno</th>
     <th>&nbsp;</th>
   </tr>
 
@@ -19,6 +20,7 @@
     <td><%= link_to item_tabela.descricao, edit_item_tabela_path(item_tabela) %></td>
     <td align='right'><%=h item_tabela.preco.real %></td>
     <td><%=h item_tabela.ativo ? "sim" : "não" %></td>
+    <td align='center'><%= item_tabela.dias_de_retorno %></td>
     <td><%= link_to 'Excluir', item_tabela, :confirm => 'Tem certeza?', :method => :delete, :class => 'ui-icon ui-icon-trash', :title=>'Excluir'  %></td>
     
   </tr>

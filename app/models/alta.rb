@@ -7,5 +7,5 @@ class Alta < ActiveRecord::Base
   named_scope :em_alta, :conditions=>["data_termino IS NULL"]
   named_scope :da_clinica, lambda{|clinica_id| {:conditions=>['clinica_id = ?', clinica_id]}}
   named_scope :entre_datas, lambda{|inicio,fim| {:conditions=>['data_inicio between ? and ?', inicio, fim]}}
-  
+  named_scope :a_retornar, lambda{|mes,ano| {:conditions=>['MONTH(data_termino) = ? and YEAR(data_termino)=?', mes,ano]}}
 end

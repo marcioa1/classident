@@ -131,6 +131,17 @@ class Tratamento < ActiveRecord::Base
       alta.user_termino_id = user
       alta.save
     end
+    if self.item_tabela && self.item_tabela.dias_de_retorno > 0
+      alta = Alta.new()
+      alta.paciente_id  = self.paciente_id
+      debugger
+      alta.clinica_id   = self.paciente.clinica_id
+      alta.observacao   = "Término proc #{self.item_tabela.descricao} em #{self.data}"
+      alta.user_id      = user
+      alta.data_inicio  = Time.current
+      alta.data_termino = alta.data_inicio + self.item_tabela.dias_de_retorno.days
+      alta.save!
+    end
   end
   
   def faces

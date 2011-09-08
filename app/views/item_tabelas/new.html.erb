@@ -26,6 +26,10 @@
      <%= f.label :descrição_da_conduta %><br/>
      <%= f.select :descricao_conduta_id, @descricao_condutas , :include_blank=>true%>
    </p>
+   <p>
+    <%= f.label :dias_de_retorno %><br />
+    <%= f.text_field :dias_de_retorno, :size=>4 %>
+   </p>
   <p>
     <%= f.submit 'Criar' %>
   </p>

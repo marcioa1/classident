@@ -49,5 +49,18 @@ class AltasController < ApplicationController
 
     redirect_to(altas_url) 
   end
+  
+  def retorno
+    if params[:date]
+      @mes = params[:date][:month]
+      @ano = params[:date][:year]
+      @data = Date.new(@ano.to_i, @mes.to_i,1)
+    else
+      @data = Date.today
+      @mes  = Date.today.month
+      @year = Date.today.year
+    end
+    @altas = Alta.da_clinica(session[:clinica_id]).a_retornar(@mes,@ano)
+  end
 
 end

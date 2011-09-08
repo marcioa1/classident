@@ -1,0 +1,9 @@
+- content_for :main do
+  Retorno no mes
+  -form_tag do
+    = select_month @data
+    = select_year @data
+    = submit_tag :pesquisar
+  -@altas.each do |alta|
+    = alta.paciente.nome
+    %br
