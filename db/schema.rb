@@ -269,17 +269,18 @@ ActiveRecord::Schema.define(:version => 20110908174457) do
 
   create_table "item_tabelas", :force => true do |t|
     t.integer  "tabela_id"
-    t.string   "codigo",               :limit => 12
-    t.string   "descricao",            :limit => 120
-    t.boolean  "ativo",                                                             :default => true
+    t.string   "codigo",                 :limit => 12
+    t.string   "descricao",              :limit => 120
+    t.boolean  "ativo",                                                               :default => true
     t.integer  "clinica_id"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "descricao_conduta_id"
     t.integer  "sequencial"
     t.string   "clinica"
-    t.decimal  "preco",                               :precision => 9, :scale => 2
-    t.integer  "dias_de_retorno",                                                   :default => 0
+    t.decimal  "preco",                                 :precision => 9, :scale => 2
+    t.integer  "dias_de_retorno",                                                     :default => 0
+    t.boolean  "tem_custo_de_protetico",                                              :default => false
   end
 
   add_index "item_tabelas", ["descricao_conduta_id"], :name => "index_item_tabelas_on_descricao_conduta_id"

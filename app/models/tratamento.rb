@@ -110,6 +110,10 @@ class Tratamento < ActiveRecord::Base
     end
   end
   
+  def pode_finalizar?
+    self.item_tabela && (!self.item_tabela.tem_custo_de_protetico? || self.custo > 0)
+  end
+  
   def finalizar_procedimento(user)
     if self.orcamento.nil? && self.valor > 0
       debito               = Debito.new
@@ -126,8 +130,8 @@ class Tratamento < ActiveRecord::Base
       end
     end
     if paciente.em_alta?
-      alta = paciente.altas.last(:order=>:id)
-      alta.data_termino = Time.now
+      alta                 = paciente.altas.last(:order=>:id)
+      alta.data_termino    = Time.now
       alta.user_termino_id = user
       alta.save
     end
