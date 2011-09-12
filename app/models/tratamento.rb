@@ -27,6 +27,10 @@ class Tratamento < ActiveRecord::Base
   validates_presence_of :descricao, :message => "não pode ser vazio."
   validates_presence_of :dentista,  :message => "não pode ser vazio."
   validate :data_nao_pode_ser_futura
+  validates_presence_of :custo , :if => :item_de_protetico?, 
+          :message => 'Este item tem obrigaoriamente que ter um custo associado.'
+  validates_numericality_of :custo, :greater_than => 0 ,  :if => :item_de_protetico?, 
+          :message => ' : este item tem que obrigatoriamente ter um custo associado.'
   
   attr_accessor :data_termino_br, :valor_pt, :custo_pt
   
@@ -108,6 +112,10 @@ class Tratamento < ActiveRecord::Base
     else
       return true
     end
+  end
+  
+  def item_de_protetico?
+    self.item_tabela && self.item_tabela.tem_custo_de_protetico? && self.data.present?
   end
   
   def pode_finalizar?

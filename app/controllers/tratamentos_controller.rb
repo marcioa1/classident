@@ -60,7 +60,10 @@ class TratamentosController < ApplicationController
   end
   
   def update
-    @tratamento.data   = params[:data_de_termino].to_date if Date.valid?(params[:data_de_termino])
+    if Date.valid?(params[:data_de_termino]) 
+      @tratamento.data   = params[:data_de_termino].to_date
+    end
+    
     if @tratamento.update_attributes(params[:tratamento])
       if !@tratamento.data.nil?
         @tratamento.paciente.verifica_alta_automatica(current_user, session[:clinica_id])
