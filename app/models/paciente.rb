@@ -214,15 +214,15 @@ class Paciente < ActiveRecord::Base
   def ultimo_lancamento
     rec = Recebimento.first(:select=>'data', :conditions=>['paciente_id = ? AND data_de_exclusao IS NULL', self.id], :order=>'data desc')
     deb = Debito.first(:select=>'data', :conditions=>['paciente_id = ? AND data_de_exclusao IS NULL', self.id], :order=>'data desc')
-    if rec.data && deb.data
+    if rec && deb
       if rec.data > deb.data
         rec.data
       else
         deb.data
       end
-    elsif rec.data
+    elsif rec
       rec.data
-    elsif deb.data
+    elsif deb
       deb.data
     else
       ''
