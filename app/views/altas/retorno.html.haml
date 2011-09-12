@@ -4,6 +4,12 @@
     = select_month @data
     = select_year @data
     = submit_tag :pesquisar
-  -@altas.each do |alta|
-    = alta.paciente.nome
-    %br
+  <br/>
+  %table
+    %tr
+      %th Nome  
+      %th Data de início 
+    -@altas.each do |alta|
+      %tr
+        %td= alta.paciente.nome
+        %td= alta.data_inicio.to_s_br

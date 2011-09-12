@@ -144,21 +144,6 @@ class Paciente < ActiveRecord::Base
     ultima.data_termino.nil?
   end
   
-  def verifica_alta_automatica(user,clinica)
-    if !em_alta?
-      if Tratamento.do_paciente(self.id).nao_excluido.nao_feito.empty?
-        alta             = Alta.new
-        alta.paciente_id = self.id
-        alta.data_inicio = Date.today
-        alta.observacao  = "Alta automática"
-        alta.user_id     = user
-        alta.clinica_id  = clinica
-        alta.save
-        self.altas << alta
-      end
-    end
-  end
-  
   def cheques_devolvidos
     devolvidos = []
     self.recebimentos.each do |recebimento|
@@ -227,7 +212,21 @@ class Paciente < ActiveRecord::Base
   end
   
   def ultimo_lancamento
-    Recebimento.first(:select=>'data', :conditions=>['paciente_id = ? AND data_de_exclusao IS NULL', self.id], :order=>'data desc')
+    rec = Recebimento.first(:select=>'data', :conditions=>['paciente_id = ? AND data_de_exclusao IS NULL', self.id], :order=>'data desc')
+    deb = Debito.first(:select=>'data', :conditions=>['paciente_id = ? AND data_de_exclusao IS NULL', self.id], :order=>'data desc')
+    if rec.data && deb.data
+      if rec.data > deb.data
+        rec.data
+      else
+        deb.data
+      end
+    elsif rec.data
+      rec.data
+    elsif deb.data
+      deb.data
+    else
+      ''
+    end
   end
   
 end

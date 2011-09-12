@@ -66,7 +66,7 @@ class TratamentosController < ApplicationController
     
     if @tratamento.update_attributes(params[:tratamento])
       if !@tratamento.data.nil?
-        @tratamento.paciente.verifica_alta_automatica(current_user, session[:clinica_id])
+        Alta.verifica_alta_automatica(current_user, session[:clinica_id], @tratamento)
         @debito = Debito.find_by_tratamento_id(@tratamento.id)
         if @debito.nil? && @tratamento.orcamento.nil?
           @debito = Debito.new
@@ -105,7 +105,7 @@ class TratamentosController < ApplicationController
       @paciente        = @tratamento.paciente
       @tratamento.finalizar_procedimento(current_user)
       @tratamento.save!
-      @tratamento.paciente.verifica_alta_automatica(current_user, session[:clinica_id])
+      Alta.verifica_alta_automatica(current_user, session[:clinica_id], @tratamento)
       Rails.cache.write(@paciente.id.to_s, @paciente, :expires_in => 2.minutes) 
       render :partial => 'pacientes/extrato', :locals => {:paciente => @paciente}
     rescue  Exception => ex

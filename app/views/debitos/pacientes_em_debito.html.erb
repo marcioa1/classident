@@ -40,10 +40,10 @@
     <td><%= pac.telefone %></td>
     <td><%= pac.celular %></td>
     <td align="right" style="color:red;"><%= pac.saldo.real %></td>
-    <td align='center'><%= pac.ultimo_lancamento && pac.ultimo_lancamento.data.to_s_br %></td>
+    <td align='center'><%= pac.ultimo_lancamento && pac.ultimo_lancamento.to_s_br %></td>
     <% total += pac.saldo %>
     </tr>
-    <% dados += "#{pac.nome};#{pac.telefone};#{pac.celular};#{pac.saldo.real};#{pac.ultimo_lancamento && pac.ultimo_lancamento.data.to_s_br}>"%>
+    <% dados += "#{pac.nome};#{pac.telefone};#{pac.celular};#{pac.saldo.real};#{pac.ultimo_lancamento && pac.ultimo_lancamento.to_s_br}>"%>
   <% end %>
   <tr>
   <td>Total</td>
