@@ -29,5 +29,4 @@ class Alta < ActiveRecord::Base
     end
   end
     
-  end
 end
