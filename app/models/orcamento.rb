@@ -92,4 +92,18 @@ class Orcamento < ActiveRecord::Base
     end
     result
   end
+  
+  def explicacoes
+    result = {}
+    self.tratamentos.each do |trat|
+      if trat.item_tabela.present?
+        if trat.item_tabela.descricao_conduta
+          result = result.merge({trat.item_tabela.codigo =>
+                        trat.item_tabela.descricao_conduta.descricao})
+        end
+      end
+    end
+    result
+  end
+  
 end

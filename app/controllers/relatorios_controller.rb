@@ -5,8 +5,9 @@ class RelatoriosController < ApplicationController
   def imprime
     require "prawn/layout"
     require "prawn/core"
-    clinica_atual = Clinica.find(params[:clinica_id])
-    nome_da_clinica = clinica_atual.nome
+    clinica_atual    = Clinica.find(params[:clinica_id])
+    nome_da_clinica  = clinica_atual.nome
+    sigla_da_clinica = clinica_atual.sigla
     params[:orientation] = 'landscape' if params[:orientation].nil?
     if ( landscape = params[:orientation].downcase == 'landscape')
       devy = 540 #520
@@ -30,7 +31,7 @@ class RelatoriosController < ApplicationController
 
     Prawn::Document.generate(File.join(Rails.root,"/impressoes/#{session[:clinica_id]}/relatorio.pdf"), :page_layout => params[:orientation].to_sym) do 
     repeat :all do
-      text "#{Time.current.to_s_br} - #{nome_da_clinica}", :align => :right, :size=>8
+      text "#{Time.current.to_s_br} - #{sigla_da_clinica}", :align => :right, :size=>8
 
       # image "public/images/logo-print.jpg", :align => :left, :vposition => -20
 
