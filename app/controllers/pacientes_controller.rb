@@ -220,42 +220,70 @@ class PacientesController < ApplicationController
   def imprime_tratamento
     require 'prawn/core'
     require "prawn/layout"
-    require 'iconv'
-
-    Prawn::Document.generate(File.join(Rails.root , "/impressoes/#{session[:clinica_id]}/tratamento.pdf")) do |pdf|
-      pdf.repeat :all do
-        pdf.image "public/images/logo-print.jpg", :align => :left, :vposition => -20
-        pdf.bounding_box [10, 700], :width  => pdf.bounds.width do
-          pdf.font "Helvetica"
-          pdf.text 'Tratamento', :align => :center, :size => 14, :vposition => -20
+    Prawn::Document.generate(File.join(Rails.root , "impressoes/#{session[:clinica_id]}/tratamento.pdf")) do |pdf|
+      pdf.font_size = 12
+      pdf.draw_text "Número : #{@paciente.codigo}", :at => [ 2,720 ]
+      pdf.font_size = 10
+      pdf.draw_text "Nome : #{@paciente.nome}", :at => [2, 705]
+      pdf.draw_text "Nascimento : #{@paciente.nascimento.to_s_br}", :at => [2, 693]
+      pdf.draw_text "Início trat.: #{@paciente.inicio_tratamento.to_s_br}", :at => [2, 681]
+      pdf.start_new_page
+      y = 705
+      @paciente.tratamentos.each do |trat|
+        pdf.draw_text trat.dente, :at => [30, y]
+        pdf.draw_text trat.descricao.gsub(/[^a-z0-9.:,$áéíóúãõ˜eç\/\- ]/i,'.'), :at => [ 60, y]
+        if trat.valor.present?
+          pdf.bounding_box([220, y+7], :width => 50, :height => 100) do
+            pdf.text trat.valor.real.to_s, :align => :right
+          end
         end
+        y -= 11
       end
     
-      pdf.move_down 20
-      pdf.text "Paciente : #{@paciente.nome}", :size=>14
-      pdf.move_down 36
-      cabecalho = ['dente,face,código,descrição,valor,dentista,data,orçamento'.split(',')]
-      dados = @paciente.tratamentos.map do |t|
-        [
-          t.dente,
-          t.face,
-          t.item_tabela && t.item_tabela.codigo ,
-          t.descricao,
-          t.valor.real.to_s,
-          t.dentista.nome,
-          t.data.to_s_br,
-          t.orcamento.present? ? t.orcamento.numero.to_s : ''
-        ]
-      end
-    pdf.font_size = 9
-    pdf.table(  cabecalho + dados, :header => false) do
-      row(0).style(:font_style => :bold, :background_color => 'cccccc')
-    end
+    end  
+    send_file File.join(RAILS_ROOT , "impressoes/#{session[:clinica_id]}/tratamento.pdf")
 
-
-    end
-    send_file File.join(RAILS_ROOT + "/impressoes/#{session[:clinica_id]}/tratamento.pdf")
-    # head :ok
   end
+  
+  # def imprime_tratamento_2
+  #   require 'prawn/core'
+  #   require "prawn/layout"
+  #   require 'iconv'
+  # 
+  #   Prawn::Document.generate(File.join(Rails.root , "/impressoes/#{session[:clinica_id]}/tratamento.pdf")) do |pdf|
+  #     pdf.repeat :all do
+  #       pdf.image "public/images/logo-print.jpg", :align => :left, :vposition => -20
+  #       pdf.bounding_box [10, 700], :width  => pdf.bounds.width do
+  #         pdf.font "Helvetica"
+  #         pdf.text 'Tratamento', :align => :center, :size => 14, :vposition => -20
+  #       end
+  #     end
+  #   
+  #     pdf.move_down 20
+  #     pdf.text "Paciente : #{@paciente.nome}", :size=>14
+  #     pdf.move_down 36
+  #     cabecalho = ['dente,face,código,descrição,valor,dentista,data,orçamento'.split(',')]
+  #     dados = @paciente.tratamentos.map do |t|
+  #       [
+  #         t.dente,
+  #         t.face,
+  #         t.item_tabela && t.item_tabela.codigo ,
+  #         t.descricao,
+  #         t.valor.real.to_s,
+  #         t.dentista.nome,
+  #         t.data.to_s_br,
+  #         t.orcamento.present? ? t.orcamento.numero.to_s : ''
+  #       ]
+  #     end
+  #   pdf.font_size = 9
+  #   pdf.table(  cabecalho + dados, :header => false) do
+  #     row(0).style(:font_style => :bold, :background_color => 'cccccc')
+  #   end
+  # 
+  # 
+  #   end
+  #   send_file File.join(RAILS_ROOT + "/impressoes/#{session[:clinica_id]}/tratamento.pdf")
+  #   # head :ok
+  # end
   
 end

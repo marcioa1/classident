@@ -192,5 +192,5 @@ class Tratamento < ActiveRecord::Base
     self.custo += valor
     self.save
   end
-
+  
 end

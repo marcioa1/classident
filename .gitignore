@@ -7,6 +7,8 @@ db/production.sqlite3
 doc/*.old
 doc/*.txt
 doc/*.rb
+doc/**/*
+doc/pendencias/**
 doc/anteriores/*.*
 doc/convertidos/*.*
 *.sql
@@ -14,4 +16,4 @@ config/database.yml
 public/javascripts/jsDraw2D/*
 public/relatorios/*.*
 public/relatorios/*/*
-impressoes/
+impressoes/**/*
