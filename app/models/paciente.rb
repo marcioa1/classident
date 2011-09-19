@@ -81,6 +81,13 @@ class Paciente < ActiveRecord::Base
     result = (result + debitos_nao_excluidos + abonos).sort { |a,b| a.data<=>b.data }
   end
   
+  def recebimentos_validos
+    result = []
+    recebimentos.each do |recebimento|
+      result << recebimento unless (recebimento.excluido? or (recebimento.em_cheque? && recebimento.cheque && recebimento.cheque.com_problema?))
+    end
+    result
+  end
   
   def total_de_debito
     total = 0

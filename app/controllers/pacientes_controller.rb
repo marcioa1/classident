@@ -239,6 +239,11 @@ class PacientesController < ApplicationController
         end
         y -= 11
       end
+      
+      pdf.bounding_box([20, 500], :width => 400, :height => 120) do
+        
+      end
+    
     
     end  
     send_file File.join(RAILS_ROOT , "impressoes/#{session[:clinica_id]}/tratamento.pdf")
