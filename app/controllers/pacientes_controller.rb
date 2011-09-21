@@ -220,6 +220,9 @@ class PacientesController < ApplicationController
   def imprime_tratamento
     require 'prawn/core'
     require "prawn/layout"
+    
+    verify_existence_of_directory
+    
     Prawn::Document.generate(File.join(Rails.root , "impressoes/#{session[:clinica_id]}/tratamento.pdf")) do |pdf|
       pdf.font_size = 12
       pdf.draw_text "Número : #{@paciente.codigo}", :at => [ 2,720 ]

@@ -73,14 +73,14 @@ class RelatoriosController < ApplicationController
   end
   
   
-  def verify_existence_of_directory
-    directory_name = Dir::pwd + "/impressoes/#{session[:clinica_id]}"
-    if FileTest::directory?(directory_name)
-      return
-    else
-      Dir::mkdir(directory_name)
-    end
-  end
+  # def verify_existence_of_directory
+  #   directory_name = Dir::pwd + "/impressoes/#{session[:clinica_id]}"
+  #   if FileTest::directory?(directory_name)
+  #     return
+  #   else
+  #     Dir::mkdir(directory_name)
+  #   end
+  # end
 
   # protected
   

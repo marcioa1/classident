@@ -72,7 +72,15 @@ class ApplicationController < ActionController::Base
   end
   
 
- 
+  def verify_existence_of_directory
+    directory_name = Dir::pwd + "/impressoes/#{session[:clinica_id]}"
+    if FileTest::directory?(directory_name)
+      return
+    else
+      Dir::mkdir(directory_name)
+    end
+  end
+
 
   private
   

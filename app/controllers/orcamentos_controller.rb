@@ -124,6 +124,8 @@ class OrcamentosController < ApplicationController
 
   require 'prawn/core'
   require "prawn/layout"
+ 
+  verify_existence_of_directory
 
   Prawn::Document.generate(File.join(Rails.root , "impressoes/#{session[:clinica_id]}/orcamento.pdf")) do |pdf|
     pdf.repeat :all do

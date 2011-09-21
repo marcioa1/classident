@@ -8,6 +8,7 @@ doc/*.old
 doc/*.txt
 doc/*.rb
 doc/**/*
+doc/*.doc
 doc/pendencias/**
 doc/anteriores/*.*
 doc/convertidos/*.*
@@ -17,3 +18,4 @@ public/javascripts/jsDraw2D/*
 public/relatorios/*.*
 public/relatorios/*/*
 impressoes/**/*
+
