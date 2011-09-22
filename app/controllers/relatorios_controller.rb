@@ -12,7 +12,7 @@ class RelatoriosController < ApplicationController
     if ( landscape = params[:orientation].downcase == 'landscape')
       devy = 540 #520
     else
-      devy = 700 #690
+      devy = 740 #690
     end
     items     = []
     tr        = params[:tabela].split(">")
@@ -56,7 +56,7 @@ class RelatoriosController < ApplicationController
           it[index] = st.gsub(/[^a-z0-9.:,$áéíóúãõ˜eç\/\- ]/i,'.')
         end
       end
-      bounding_box [2, devy - 30], :width  => bounds.width do
+      bounding_box [2, devy - 50], :width  => bounds.width do
         table([header] + items , :header => true) do
             # style(row(0), :background_color => 'ff00ff')
           row(0).style(:font_style => :bold, :background_color => 'cccccc')

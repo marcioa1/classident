@@ -126,7 +126,7 @@ class DentistasController < ApplicationController
       fim         = params[:datepicker2].to_date if Date.valid?(params[:datepicker2])
       @producao   = @dentista.busca_producao(inicio,fim,clinicas)
       @ortodontia = @dentista.busca_producao_de_ortodontia(inicio,fim)
-      @titulo     = "#{@dentista.nome}\nProdutividade entre : #{inicio.to_s_br} e #{fim.to_s_br} na clínica #{nome_das_clinicas}"
+      @titulo     = "#{nome_das_clinicas} \n#{@dentista.nome}\nProdutividade entre : #{inicio.to_s_br} e #{fim.to_s_br} "
       render :partial=>'dentistas/producao_do_dentista', :locals=>{:producao=>@producao} 
     else
       @erros = ''
