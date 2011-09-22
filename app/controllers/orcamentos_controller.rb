@@ -130,7 +130,6 @@ class OrcamentosController < ApplicationController
   Prawn::Document.generate(File.join(Rails.root , "impressoes/#{session[:clinica_id]}/orcamento.pdf")) do |pdf|
     pdf.repeat :all do
       pdf.text "#{Time.current.to_s_br}", :align => :right, :size=>8, :vposition => 10
-      pdf.image "public/images/logo-print.jpg", :align => :left, :vposition => -20
       pdf.bounding_box [10, 700], :width  => pdf.bounds.width do
         pdf.font "Helvetica"
         pdf.text 'Orçamento', :align => :center, :size => 14, :vposition => -20
@@ -221,7 +220,7 @@ class OrcamentosController < ApplicationController
   end
 
   def imprime_cabecalho(pdf, titulo)
-    pdf.image "public/images/logo-print.jpg", :align => :left
+    # pdf.image "public/images/logo-print.jpg", :align => :left
     pdf.text "#{Time.current.to_s_br}", :align => :right, :size=>8
     pdf.move_down 20
     pdf.text titulo, :align => :center, :size => 14
