@@ -250,8 +250,8 @@ class PacientesController < ApplicationController
       recebimentos = recebimentos.last(16)
       (0..3).each do |quadro|
         x = 1 + ( quadro * 60)
-        pdf.bounding_box([x, 300], :width => 60, :height => 120) do
-          y = 300
+        pdf.bounding_box([x, 220], :width => 60, :height => 120) do
+          y = 220
           if recebimentos[(quadro*4),4].present?
             recebimentos[(quadro*4),4].each do |rec|
               puts rec.data.to_s_br
