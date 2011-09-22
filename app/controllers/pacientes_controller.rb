@@ -237,11 +237,11 @@ class PacientesController < ApplicationController
         pdf.draw_text trat.dente, :at => [30, y]
         pdf.draw_text trat.descricao.gsub(/[^a-z0-9.:,$áéíóúãõ˜eç\/\- ]/i,'.'), :at => [ 60, y]
         if trat.valor.present?
-          pdf.bounding_box([200, y+7], :width => 50, :height => 100) do
+          pdf.bounding_box([180, y+7], :width => 50, :height => 100) do
             pdf.text trat.valor.real.to_s, :align => :right
           end
         end
-        pdf.horizontal_line 2, 360, :at => y-2
+        pdf.horizontal_line 2, 390, :at => y-2
         pdf.stroke
         y -= 12
       end
