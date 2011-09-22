@@ -225,26 +225,41 @@ class PacientesController < ApplicationController
     
     Prawn::Document.generate(File.join(Rails.root , "impressoes/#{session[:clinica_id]}/tratamento.pdf")) do |pdf|
       pdf.font_size = 12
-      pdf.draw_text "Número : #{@paciente.codigo}", :at => [ 2,720 ]
+      pdf.draw_text "Número : #{@paciente.codigo}", :at => [ 2,740 ]
       pdf.font_size = 10
-      pdf.draw_text "Nome : #{@paciente.nome}", :at => [2, 705]
-      pdf.draw_text "Nascimento : #{@paciente.nascimento.to_s_br}", :at => [2, 693]
-      pdf.draw_text "Início trat.: #{@paciente.inicio_tratamento.to_s_br}", :at => [2, 681]
+      pdf.draw_text "Nome : #{@paciente.nome}", :at => [2, 725]
+      pdf.draw_text "Nascimento : #{@paciente.nascimento.to_s_br}", :at => [2, 713]
+      pdf.draw_text "Início trat.: #{@paciente.inicio_tratamento.to_s_br}", :at => [2, 701]
+      pdf.draw_text "Término trat.: #{@paciente.termino_tratamento}", :at => [200, 701]
       pdf.start_new_page
-      y = 705
+      y = 725
       @paciente.tratamentos.each do |trat|
         pdf.draw_text trat.dente, :at => [30, y]
         pdf.draw_text trat.descricao.gsub(/[^a-z0-9.:,$áéíóúãõ˜eç\/\- ]/i,'.'), :at => [ 60, y]
         if trat.valor.present?
-          pdf.bounding_box([220, y+7], :width => 50, :height => 100) do
+          pdf.bounding_box([200, y+7], :width => 50, :height => 100) do
             pdf.text trat.valor.real.to_s, :align => :right
           end
         end
-        y -= 11
+        pdf.horizontal_line 2, 360, :at => y-2
+        pdf.stroke
+        y -= 12
       end
       
-      pdf.bounding_box([20, 500], :width => 400, :height => 120) do
-        
+      recebimentos = @paciente.recebimentos_validos.sort { |a,b| a.data<=>b.data }
+      recebimentos = recebimentos.last(16)
+      (0..3).each do |quadro|
+        x = 1 + ( quadro * 60)
+        pdf.bounding_box([x, 300], :width => 60, :height => 120) do
+          y = 300
+          recebimentos[(quadro*4),4].each do |rec|
+            puts rec.data.to_s_br
+            puts rec.valor.real.to_s
+            pdf.draw_text rec.data.to_s_br, :at => [x, y]
+            pdf.draw_text rec.valor.real,   :at => [x + 56, y]
+            y -= 12
+          end
+        end
       end
     
     

@@ -46,6 +46,13 @@ class Paciente < ActiveRecord::Base
   
   attr_accessor :inicio_tratamento_br, :data_suspensao_da_cobranca_de_orto_br,
                 :data_da_saida_da_lista_de_debitos_br
+  attr_reader :termino_tratamento
+  
+  def termino_tratamento
+    return "__/__/____" if altas.blank?
+    ultima = altas.last(:order=>:created_at)
+    ultima.data_termino.present? ? ultima.data_termino.to_s_br : "__/__/____"
+  end
   
   def inicio_tratamento_br
     self.inicio_tratamento.nil? ? Date.today.to_s_br : self.inicio_tratamento.to_s_br
