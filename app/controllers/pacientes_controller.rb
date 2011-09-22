@@ -252,12 +252,14 @@ class PacientesController < ApplicationController
         x = 1 + ( quadro * 60)
         pdf.bounding_box([x, 300], :width => 60, :height => 120) do
           y = 300
-          recebimentos[(quadro*4),4].each do |rec|
-            puts rec.data.to_s_br
-            puts rec.valor.real.to_s
-            pdf.draw_text rec.data.to_s_br, :at => [x, y]
-            pdf.draw_text rec.valor.real,   :at => [x + 56, y]
-            y -= 12
+          if recebimentos[(quadro*4),4].present?
+            recebimentos[(quadro*4),4].each do |rec|
+              puts rec.data.to_s_br
+              puts rec.valor.real.to_s
+              pdf.draw_text rec.data.to_s_br, :at => [x, y]
+              pdf.draw_text rec.valor.real,   :at => [x + 56, y]
+              y -= 12
+            end
           end
         end
       end
