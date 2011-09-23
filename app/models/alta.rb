@@ -10,7 +10,7 @@ class Alta < ActiveRecord::Base
   named_scope :a_retornar, lambda{|mes,ano| {:conditions=>['MONTH(data_termino) = ? and YEAR(data_termino)=?', mes,ano]}}
   
   def self.verifica_alta_automatica(user, clinica, tratamento)
-    if !em_alta?
+    if !tratamento.paciente.em_alta?
       if Tratamento.do_paciente(tratamento.paciente_id).nao_excluido.nao_feito.empty?
         alta             = Alta.new
         alta.paciente_id = tratamento.paciente_id.id
