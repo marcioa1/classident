@@ -221,7 +221,7 @@ class PacientesController < ApplicationController
     require 'prawn/core'
     require "prawn/layout"
     
-    # verify_existence_of_directory
+    verify_existence_of_directory
     
     Prawn::Document.generate(File.join(Rails.root , "impressoes/#{session[:clinica_id]}/tratamento.pdf")) do |pdf|
       pdf.font_size = 12
