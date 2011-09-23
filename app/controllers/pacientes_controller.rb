@@ -221,7 +221,7 @@ class PacientesController < ApplicationController
     require 'prawn/core'
     require "prawn/layout"
     
-    verify_existence_of_directory
+    # verify_existence_of_directory
     
     Prawn::Document.generate(File.join(Rails.root , "impressoes/#{session[:clinica_id]}/tratamento.pdf")) do |pdf|
       pdf.font_size = 12
@@ -232,16 +232,17 @@ class PacientesController < ApplicationController
       pdf.draw_text "Início trat.: #{@paciente.inicio_tratamento.to_s_br}", :at => [2, 701]
       pdf.draw_text "Término trat.: #{@paciente.termino_tratamento}", :at => [200, 701]
       pdf.start_new_page
+      pdf.font_size = 8
       y = 725
       @paciente.tratamentos.each do |trat|
         pdf.draw_text trat.dente, :at => [30, y]
         pdf.draw_text trat.descricao.gsub(/[^a-z0-9.:,$áéíóúãõ˜eç\/\- ]/i,'.'), :at => [ 60, y]
         if trat.valor.present?
-          pdf.bounding_box([180, y+7], :width => 50, :height => 100) do
+          pdf.bounding_box([180, y+7], :width => 50, :height => 12) do
             pdf.text trat.valor.real.to_s, :align => :right
           end
         end
-        pdf.horizontal_line 2, 390, :at => y-2
+        pdf.horizontal_line -20, 380, :at => y-2
         pdf.stroke
         y -= 12
       end
@@ -249,19 +250,17 @@ class PacientesController < ApplicationController
       recebimentos = @paciente.recebimentos_validos.sort { |a,b| a.data<=>b.data }
       recebimentos = recebimentos.last(16)
       (0..3).each do |quadro|
-        x = 1 + ( quadro * 60)
-        pdf.bounding_box([x, 220], :width => 60, :height => 120) do
-          y = 220
+        x = -20 + ( quadro * 86)
+        # pdf.bounding_box([x-20, 100], :width => 60, :height => 120) do
+          y = 398
           if recebimentos[(quadro*4),4].present?
             recebimentos[(quadro*4),4].each do |rec|
-              puts rec.data.to_s_br
-              puts rec.valor.real.to_s
               pdf.draw_text rec.data.to_s_br, :at => [x, y]
-              pdf.draw_text rec.valor.real,   :at => [x + 56, y]
+              pdf.draw_text rec.valor.real,   :at => [x + 52, y]
               y -= 12
             end
           end
-        end
+        # end
       end
     
     
