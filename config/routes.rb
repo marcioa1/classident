@@ -20,7 +20,7 @@ ActionController::Routing::Routes.draw do |map|
                   :member=>{:abre=>:get, :producao=>:get, :pagamento=>:get,
                             :orcamentos=>:get, :reativar=>:get, :troca_ortodontista => :post}, 
                   :collection=>{:pesquisar=>:get, :producao_geral=>:get, 
-                    :producao_geral => :get }
+                    :producao_geral => :get, :imprime_producao_detalhada => :get}
   map.resources :descricao_condutas
   map.resources :destinacaos
   map.resources :entradas, :collection=>{ :na_administracao => :get, :registra_confirmacao_de_entrada => :post }
