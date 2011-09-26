@@ -2,6 +2,8 @@ class ClinicasController < ApplicationController
   
   layout "adm"
   before_filter :require_master_user, :only =>[:relatorio_de_exclusao]
+  before_filter :salva_action_na_session
+  before_filter :verifica_se_tem_senha
   
   def selecionou_clinica
     session[:clinica_id] = params[:clinica_id]
