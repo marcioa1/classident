@@ -129,15 +129,15 @@ class OrcamentosController < ApplicationController
 
   Prawn::Document.generate(File.join(Rails.root , "impressoes/#{session[:clinica_id]}/orcamento.pdf")) do |pdf|
     pdf.font_size = 12
-    pdf.draw_text "Paciente", :at => [1, 600]
-    pdf.draw_text ": #{@orcamento.paciente.nome}", :at => [70,600]
-    pdf.draw_text "Dentista", :at => [1, 580]
-    pdf.draw_text ": #{@orcamento.dentista.nome}", :at => [70,580]
-    pdf.draw_text "Data", :at => [380, 580]
-    pdf.draw_text ": #{@orcamento.data.to_s_br}", :at => [420,580]
+    pdf.draw_text "Paciente", :at => [1, 640]
+    pdf.draw_text ": #{@orcamento.paciente.nome}", :at => [70,640]
+    pdf.draw_text "Dentista", :at => [1, 620]
+    pdf.draw_text ": #{@orcamento.dentista.nome}", :at => [70,620]
+    pdf.draw_text "Data", :at => [380, 620]
+    pdf.draw_text ": #{@orcamento.data.to_s_br}", :at => [420,620]
 
     pdf.font_size = 10
-    y = 530
+    y = 570
     pdf.draw_text "Dente", :at=>[2,y]
     pdf.draw_text "Faces", :at => [40,y] 
     pdf.draw_text "Conduta" , :at => [120, y]

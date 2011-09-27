@@ -216,11 +216,11 @@
           - else
             %td= "Entrada, " +lancamento.observacao
             - dados += "Entrada, #{lancamento.observacao};"
-            %td{ :align => "right"}= lancamento.valor.real
+            %td{ :align => "right"}= lancamento.abs.valor.real
             - dados += "#{lancamento.valor.real};;"
             %td &nbsp;
-            - saldo_dinheiro += lancamento.valor
-            - total_de_credito_em_dinheiro += lancamento.valor
+            - saldo_dinheiro += lancamento.abs.valor
+            - total_de_credito_em_dinheiro += lancamento.abs.valor
           %td &nbsp;
           %td &nbsp;
           %td &nbsp;

@@ -224,9 +224,9 @@ class PacientesController < ApplicationController
     verify_existence_of_directory
     
     Prawn::Document.generate(File.join(Rails.root , "impressoes/#{session[:clinica_id]}/tratamento.pdf")) do |pdf|
-      pdf.font_size = 12
+      pdf.font_size = 14
       pdf.draw_text "Número : #{@paciente.codigo}", :at => [ 2,740 ]
-      pdf.font_size = 10
+      pdf.font_size = 12
       pdf.draw_text "Nome : #{@paciente.nome}", :at => [2, 725]
       pdf.draw_text "Nascimento : #{@paciente.nascimento.to_s_br}", :at => [2, 713]
       pdf.draw_text "Início trat.: #{@paciente.inicio_tratamento.to_s_br}", :at => [2, 701]
