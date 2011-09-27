@@ -216,11 +216,11 @@
           - else
             %td= "Entrada, " +lancamento.observacao
             - dados += "Entrada, #{lancamento.observacao};"
-            %td{ :align => "right"}= lancamento.abs.valor.real
-            - dados += "#{lancamento.valor.real};;"
+            %td{ :align => "right"}= lancamento.valor.abs.real
+            - dados += "#{lancamento.valor.abs.real};;"
             %td &nbsp;
-            - saldo_dinheiro += lancamento.abs.valor
-            - total_de_credito_em_dinheiro += lancamento.abs.valor
+            - saldo_dinheiro += lancamento.valor.abs
+            - total_de_credito_em_dinheiro += lancamento.valor.abs
           %td &nbsp;
           %td &nbsp;
           %td &nbsp;
@@ -236,7 +236,7 @@
               - dados += "#{lancamento.class.name + "-" + lancamento.id.to_s};"
           - if lancamento.valor && lancamento.valor > 0
             %td{ :align => "right" }
-              = lancamento.valor.real
+              = lancamento.valor.abs.real
               - dados += "#{lancamento.valor.real};;"
             - saldo_dinheiro += lancamento.valor
             %td &nbsp;
@@ -244,8 +244,8 @@
             %td &nbsp;
             - dados += ";"
             %td{ :align => "right", :style => "color: red;" }
-              = lancamento.valor && lancamento.valor.abs.real
-              - dados += "#{lancamento.valor && lancamento.valor.abs.real};"
+              = lancamento.valor && lancamento.valor.real
+              - dados += "#{lancamento.valor && lancamento.valor.real};"
             - saldo_dinheiro += lancamento.valor if lancamento.valor
             %td{ :align => "right" }
               =# saldo_dinheiro.real
