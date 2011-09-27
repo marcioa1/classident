@@ -29,6 +29,9 @@ class TrabalhoProteticosController < ApplicationController
   end
 
   def create
+    debugger
+    params[:trabalho_protetico][:valor] = params[:trabalho_protetico][:valor].gsub(".","").gsub(",",".").to_f rescue "0.0"
+
     @trabalho_protetico                            = TrabalhoProtetico.new(params[:trabalho_protetico])
     # @trabalho_protetico.data_de_envio              = params[:datepicker].to_date if params[:datepicker]
     # @trabalho_protetico.data_prevista_de_devolucao = params[:datepicker2].to_date if params[:datepicker2]
@@ -43,6 +46,8 @@ class TrabalhoProteticosController < ApplicationController
 
   def update
     custo_anterior      = @trabalho_protetico.valor
+    params[:trabalho_protetico][:valor] = params[:trabalho_protetico][:valor].gsub(".","").gsub(",",".").to_f rescue "0.0"
+
     if @trabalho_protetico.update_attributes(params[:trabalho_protetico])
       flash[:notice] = 'TrabalhoProtetico alterado com sucesso.'
       if @trabalho_protetico.tratamento.present? && custo_anterior != @trabalho_protetico.valor

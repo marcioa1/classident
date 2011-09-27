@@ -36,12 +36,18 @@ class TrabalhoProtetico < ActiveRecord::Base
   
   attr_accessor :data_envio_pt, :data_prevista_de_devolucao_pt, 
                 :data_de_devolucao_pt, :data_de_repeticao_pt, 
-                :data_prevista_da_devolucao_da_repeticao_pt
+                :data_prevista_da_devolucao_da_repeticao_pt, :valor_pt
   
+  def valor_pt
+    self.valor.real.to_s
+  end
+  def valor_pt=(value)
+    self.valor = value.gsub('.', '').gsub(',','.') rescue 0.0
+  end
+
   def data_envio_pt
     self.data_de_envio.nil? ? Date.today.to_s_br : self.data_de_envio.to_s_br
   end
-
   def data_envio_pt=(data)
     self.data_de_envio = data.to_date if Date.valid?(data)
   end
@@ -49,7 +55,6 @@ class TrabalhoProtetico < ActiveRecord::Base
   def data_prevista_de_devolucao_pt
     self.data_prevista_de_devolucao.nil? ? (Date.today + 5.days).to_s_br : self.data_prevista_de_devolucao.to_s_br
   end
-
   def data_prevista_de_devolucao_pt=(data)
     self.data_prevista_de_devolucao = data.to_date if Date.valid?(data)
   end  
