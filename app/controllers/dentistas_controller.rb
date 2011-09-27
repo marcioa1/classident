@@ -223,7 +223,7 @@ class DentistasController < ApplicationController
      dentistas.each do |dentista|
         @dentista = Dentista.find(dentista.to_i)
         pdf.font_size = 14
-        pdf.draw_text @dentista.nome, :at => [10,500]
+        pdf.draw_text @dentista.nome.gsub(/[^a-z0-9.:,$ ]/i,'.') , :at => [10,500]
         pdf.font_size = 10
         y = 470
         pdf.draw_text "Data", :at=>[2,y]
