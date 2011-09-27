@@ -128,91 +128,74 @@ class OrcamentosController < ApplicationController
   verify_existence_of_directory
 
   Prawn::Document.generate(File.join(Rails.root , "impressoes/#{session[:clinica_id]}/orcamento.pdf")) do |pdf|
-    pdf.repeat :all do
-      pdf.text "#{Time.current.to_s_br}", :align => :right, :size=>8, :vposition => 10
-      pdf.bounding_box [10, 700], :width  => pdf.bounds.width do
-        pdf.font "Helvetica"
-        pdf.text 'Orçamento', :align => :center, :size => 14, :vposition => -20
+    pdf.font_size = 12
+    pdf.draw_text "Paciente", :at => [1, 600]
+    pdf.draw_text ": #{@orcamento.paciente.nome}", :at => [70,600]
+    pdf.draw_text "Dentista", :at => [1, 580]
+    pdf.draw_text ": #{@orcamento.dentista.nome}", :at => [70,580]
+    pdf.draw_text "Data", :at => [380, 580]
+    pdf.draw_text ": #{@orcamento.data.to_s_br}", :at => [420,580]
 
-      end
-    end
-    pdf.horizontal_line 2, 550, :at => 680
+    pdf.font_size = 10
+    y = 530
+    pdf.draw_text "Dente", :at=>[2,y]
+    pdf.draw_text "Faces", :at => [40,y] 
+    pdf.draw_text "Conduta" , :at => [120, y]
+    pdf.draw_text "Descrição" , :at => [200, y]
+    pdf.draw_text "Valor" , :at => [500, y]
+    y -= 12
+    pdf.horizontal_line 1, 30, :at => y+7
+    pdf.horizontal_line 40, 70, :at => y+7
+    pdf.horizontal_line 120, 150, :at => y+7
+    pdf.horizontal_line 200, 400, :at => y+7
+    pdf.horizontal_line 480, 530, :at => y+7
     pdf.stroke
-    pdf.move_down 20
-    pdf.text "Paciente : #{@orcamento.paciente.nome}", :size=>14
-    pdf.move_down 36
-    pdf.draw_text "Elaborado em :", :at => [2,612]
-    pdf.draw_text " #{@orcamento.data.to_s_br}", :at => [126, 612]
-    pdf.move_down 4
-    pdf.draw_text "Dentista : ", :at => [2, 594]
-    pdf.draw_text "#{@orcamento.dentista.nome}", :at => [126, 594]
-    pdf.move_down 4
-    pdf.draw_text "Valor total : ", :at => [2,576]
-    pdf.draw_text "R$ #{@orcamento.valor.real.to_s}",:at =>[126, 576]
-    if @orcamento.desconto > 0
-      pdf.move_down 4
-      pdf.draw_text "Desconto :#{ @orcamento.desconto.to_s} + '%'"
-      pdf.move_down 4
-      pdf.text "Valor final :#{ @orcamento.valor_com_desconto.real.to_s}"
-      pdf.move_down 4
-      pdf.draw_text "Número de parcelas : ", :at => [ 20,558]
-      pdf.draw_text "#{@orcamento.numero_de_parcelas}", :at => [126,558]
-      pdf.move_down 4
-      pdf.text "Valor da parcela : "
-      pdf.draw_text "R$ #{@orcamento.valor_da_parcela.real}", :at => [126, 540]
-      pdf.move_down 4
-      pdf.text "Forma de pagamento :"
-      pdf.draw_text "#{@orcamento.forma_de_pagamento}", :at => [126,522]
-    else
-      pdf.move_down 4
-      pdf.draw_text "Número de parcelas : ", :at => [2,558]
-      pdf.draw_text "#{@orcamento.numero_de_parcelas}", :at => [126,558]
-      pdf.move_down 4
-      pdf.draw_text "Valor da parcela : ", :at => [2, 540]
-      pdf.draw_text "R$ #{@orcamento.valor_da_parcela.real}", :at => [126, 540]
-      pdf.move_down 4
-      pdf.draw_text "Forma de pagamento :", :at => [2,522]
-      pdf.draw_text "#{@orcamento.forma_de_pagamento}", :at => [126,522]
+    y -= 5
+    @orcamento.tratamentos.each do |trat|
+      pdf.draw_text trat.dente, :at=> [2,y]
+      pdf.draw_text trat.face, :at=> [40,y]
+      pdf.draw_text trat.item_tabela.present? ? trat.item_tabela.codigo : "", :at=> [120,y]
+      pdf.draw_text trat.descricao.gsub(/[^a-z0-9.:,$ ]/i,'.'), :at=> [200,y]
+      pdf.bounding_box([480, y+7], :width => 50, :height => 12) do
+        pdf.text trat.valor.real.to_s, :align => :right
+      end
+
+      y -= 12
+    end
+    pdf.horizontal_line 480, 530, :at => y+7
+    pdf.stroke
+    y -= 5
+    pdf.bounding_box([480, y+7], :width => 50, :height => 12) do
+      pdf.text @orcamento.valor.real.to_s, :align => :right
     end
 
-    pdf.move_down 88
-    pdf.font_size 10
-    pdf.text "Parcelas"
-    corpo = [['nº','data', 'valor']]
-    (1..@orcamento.numero_de_parcelas).each_with_index do |parcela,index|
-      corpo << [(index+1).to_s, @orcamento.vencimento_primeira_parcela.to_s_br , @orcamento.valor_da_parcela.real.to_s]
-    end
-    pdf.table( corpo) do
-      row(0).style(:font_style => :bold, :background_color => 'cccccc')
-      column(2).style(:align=>:right)
-    end
 
-    # @orcamento.tratamentos.
 
-     data = @orcamento.tratamentos.map do |trat|
-      [
-        trat.dente,
-        trat.face,
-        trat.item_tabela.present? ? trat.item_tabela.codigo : "",
-        trat.descricao.gsub(/[^a-z0-9.:,$ ]/i,'.'),
-        trat.valor.real.to_s
-      ]
-    end
-    cabe = [['dente','face', 'código', 'descrição', 'valor']]
-    pdf.move_down 18
-    pdf.text "Procedimentos"
-    pdf.table( cabe + data, :header => false) do
-      row(0).style(:font_style => :bold, :background_color => 'cccccc')
-      column(4).style(:align=>:right)
-    end
+    y -= 20
+    pdf.draw_text "Forma de pagamento ", :at => [10, y]
+    pdf.draw_text ": #{@orcamento.forma_de_pagamento}", :at => [120, y]
+    y -= 12
+    pdf.draw_text "Número de parcelas", :at => [10, y]
+    pdf.draw_text ": #{@orcamento.numero_de_parcelas}", :at => [120, y]
+    y -= 12
+    pdf.draw_text "Valor da parcela", :at => [10, y]
+    pdf.draw_text ": #{@orcamento.valor_da_parcela.real}", :at => [120, y]
+    y -= 12
+    pdf.draw_text "Dia de vencimento", :at => [10, y]
+    pdf.draw_text ": #{@orcamento.vencimento_primeira_parcela.day.to_s}", :at => [120, y]
+    y -= 12
+    pdf.draw_text "Primeira parcela", :at => [10, y]
+    pdf.draw_text ": #{@orcamento.vencimento_primeira_parcela.to_s_br}", :at => [120, y]
+    y -= 12
 
-    pdf.move_down 18
-    pdf.text "Explicações"
-    cabe = [['código(s)' , 'Explicações']]
-    pdf.table(cabe + @orcamento.explicacoes.to_a) do
-      row(0).style(:font_style => :bold, :background_color => 'cccccc')
-      column(4).style(:align=>:right)
-    end
+
+    # pdf.move_down 18
+    # pdf.text "Explicações"
+    # cabe = [['código(s)' , 'Explicações']]
+    # pdf.table(cabe + @orcamento.explicacoes.to_a) do
+    #   row(0).style(:font_style => :bold, :background_color => 'cccccc')
+    #   column(4).style(:align=>:right)
+    # end
 
     # pdf.text @orcamento.explicacoes.inspect
   end
