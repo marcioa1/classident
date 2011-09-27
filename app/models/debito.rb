@@ -45,7 +45,7 @@ class Debito < ActiveRecord::Base
   end 
   
   def pode_excluir?
-    self.tratamento_id.nil?
+    self.na_quinzena? && self.tratamento_id.nil?
   end
   
   def pode_alterar?
