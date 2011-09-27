@@ -76,11 +76,12 @@
             %td &nbsp;
           - when "Recebimento" :
             - if lancamento.formas_recebimento.nome.downcase =="dinheiro"
-              %td
               - if lancamento.paciente && lancamento.paciente.nome
-                - dados += "#{lancamento.paciente.nome};"
-                = lancamento.paciente.nome
+                %td
+                  = lancamento.paciente.nome
+                  - dados += "#{lancamento.paciente.nome};"
               - else
+                %td &nbsp;
                 - dados += ";"
               %td{ :align => "right" }
                 = lancamento.valor.real
@@ -98,12 +99,13 @@
               - total_de_credito_em_dinheiro += lancamento.valor
               %td &nbsp;
             - elsif lancamento.formas_recebimento.nome.downcase =="cheque"
-              %td
-                - if lancamento.paciente
+              - if lancamento.paciente
+                %td
                   = lancamento.paciente.nome
                   - dados += "#{lancamento.paciente.nome};;;"
-                - else
-                  - dados += ";;;"
+              - else
+                - dados += ";;;"
+                %td &nbsp;
               %td &nbsp;
               %td &nbsp;
               %td{ :align => "right" }
