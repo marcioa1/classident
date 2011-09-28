@@ -39,4 +39,9 @@ class Entrada < ActiveRecord::Base
   def nome_clinica_destino
     
   end
+  
+  def self.remessas(data,clinica)
+    Entrada.all(:conditions=> ["clinica_destino = ? and clinica_origem = ?", Clinica::ADMINISTRACAO_ID,clinica])
+  end
+  
 end
