@@ -30,8 +30,11 @@ class FluxoDeCaixaController < ApplicationController
       @remessas     = Entrada.entrada_na_clinica.do_dia(@data)
     else
       @entradas     = Entrada.entrada_na_clinica(session[:clinica_id]).do_dia(@data)#.da_clinica(session[:clinica_id])
-      @remessas     = Entrada.entrada_na_administracao.do_dia(@data)#.da_clinica(session[:clinica_id])
+      @remessas     = Entrada.entrada_na_administracao.do_dia(@data).da_clinica(session[:clinica_id])
       @recebimentos = Recebimento.da_clinica(session[:clinica_id]).no_dia(@fluxo.data).nao_excluidos #.nas_formas(FormasRecebimento.dinheiro_ou_cheque)
+#TODO Dupliquei o código abaixo apra evitra erro de named_scope em buffer. Deve ter outra solução
+      @entradas     = Entrada.entrada_na_clinica(session[:clinica_id]).do_dia(@data)#.da_clinica(session[:clinica_id])
+      @remessas     = Entrada.entrada_na_administracao.do_dia(@data).da_clinica(session[:clinica_id])
       @cheques      = []
     end
 
