@@ -106,4 +106,8 @@ class Orcamento < ActiveRecord::Base
     result
   end
   
+  def a_vista?
+    self.forma_de_pagamento = 'a vista'
+  end
+  
 end

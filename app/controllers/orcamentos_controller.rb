@@ -173,20 +173,25 @@ class OrcamentosController < ApplicationController
 
     y -= 20
     pdf.draw_text "Forma de pagamento ", :at => [10, y]
-    pdf.draw_text ": #{@orcamento.forma_de_pagamento}", :at => [120, y]
-    y -= 12
-    pdf.draw_text "Número de parcelas", :at => [10, y]
-    pdf.draw_text ": #{@orcamento.numero_de_parcelas}", :at => [120, y]
-    y -= 12
-    pdf.draw_text "Valor da parcela", :at => [10, y]
-    pdf.draw_text ": #{@orcamento.valor_da_parcela.real}", :at => [120, y]
-    y -= 12
-    pdf.draw_text "Dia de vencimento", :at => [10, y]
-    pdf.draw_text ": #{@orcamento.vencimento_primeira_parcela.day.to_s}", :at => [120, y]
-    y -= 12
-    pdf.draw_text "Primeira parcela", :at => [10, y]
-    pdf.draw_text ": #{@orcamento.vencimento_primeira_parcela.to_s_br}", :at => [120, y]
-    y -= 12
+    if @orcamento.a_vista?
+      pdf.draw_text ": Dinheiro, pagamento de acordo c/ a realização do tratamento.", :at => [120, y]
+      y -= 12
+    else
+      pdf.draw_text ": #{@orcamento.forma_de_pagamento}", :at => [120, y]
+      y -= 12
+      pdf.draw_text "Número de parcelas", :at => [10, y]
+      pdf.draw_text ": #{@orcamento.numero_de_parcelas}", :at => [120, y]
+      y -= 12
+      pdf.draw_text "Valor da parcela", :at => [10, y]
+      pdf.draw_text ": #{@orcamento.valor_da_parcela.real}", :at => [120, y]
+      y -= 12
+      pdf.draw_text "Dia de vencimento", :at => [10, y]
+      pdf.draw_text ": #{@orcamento.vencimento_primeira_parcela.day.to_s}", :at => [120, y]
+      y -= 12
+      pdf.draw_text "Primeira parcela", :at => [10, y]
+      pdf.draw_text ": #{@orcamento.vencimento_primeira_parcela.to_s_br}", :at => [120, y]
+      y -= 12
+    end
 
 
     # pdf.move_down 18
