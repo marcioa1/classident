@@ -77,9 +77,13 @@ class ProteticosController < ApplicationController
     end
     if !params[:data_inicial]
       params[:data_inicial] = (Date.today - 15.days).to_s_br
-      params[:data_final] = Date.today.to_s_br
+      params[:data_final]   = Date.today.to_s_br
     end
     @pagamentos = Pagamento.ao_protetico(@protetico.id).entre_datas(params[:data_inicial], params[:data_final])
+    if !params[:data_inicial_liberacao]
+      params[:data_inicial_liberacao] = Date.today.to_s_br
+      params[:data_final_liberacao]   = Date.today.to_s_br
+    end
   end
   
   def pagamentos
@@ -143,10 +147,21 @@ class ProteticosController < ApplicationController
   end
   
   def busca_trabalhos_liberados
-    protetico_id = params
+    if params[:data_inicial_liberacao]
+      @data_inicial_liberacao = params[:data_inicial_liberacao].to_date + 1.second
+      @data_final_liberacao   = params[:data_final_liberacao].to_date + 1.day - 1.second
+    else
+      @data_inicial_liberacao = Date.today
+      @data_final_liberacao   = (Date.today + 1.day) - 1.second
+    end
+    protetico_id = params[:id]
     @itens = TrabalhoProtetico.
-      do_protetico(@protetico.id).da_clinica(session[:clinica_id]).liberados_para_pagamento.nao_pagos
-    render :partial => 'itens_liberados_para_pagamento', :locals => { :itens => @itens }
+      do_protetico(@protetico.id).da_clinica(session[:clinica_id]).
+      nao_pagos.
+      liberados_entre_datas(@data_inicial_liberacao, @data_final_liberacao)
+    render :partial => 'tabela_de_liberacao', :locals => { :itens => @itens, 
+                                                           :inicio => @data_inicial_liberacao,
+                                                           :fim => @data_final_liberacao}
   end
 
   def desativar

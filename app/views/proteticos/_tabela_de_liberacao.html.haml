@@ -1,0 +1,31 @@
+-dados = "Itens liberados para pagamento do protético #{@protetico.nome} entre #{inicio.to_s_br[0..10]} e #{fim.to_s_br[0..10]}>Paciente;Dente;Descrição;Valor;Dt devolução;Dt liberação pgto;Dentista>left;center;left;right;center;center;left>"
+
+%table.tabela
+  %tr
+    %th Paciente
+    %th Dente
+    %th Descrição
+    %th Valor
+    %th Data de devolução
+    %th Data de liberação para pagamento
+    %th Dentista
+    %th cancelar liberação
+  - total = 0
+  - itens.each do |item|
+    %tr{:id=>"tr-liberados#{item.id}"}
+      %td= item.paciente.nome
+      %td= item.dente
+      %td= item.tabela_protetico.descricao
+      %td{:align=>'right'}= item.valor.real
+      %td{:align=>'center'}= l(item.data_de_devolucao)
+      %td{:align=>'center'}= item.data_liberacao_para_pagamento.to_s_br
+      %td= item.dentista && item.dentista.nome
+      %td= link_to_function 'cancelar liberação' ,"cancelar_liberacao(#{item.id})"
+      - total += item.valor
+      - dados += "#{item.paciente.nome};#{item.dente};#{item.tabela_protetico.descricao};#{total.real};#{l(item.data_de_devolucao)};#{item.data_liberacao_para_pagamento.to_s_br};#{item.dentista && item.dentista.nome};>"
+  %tr
+    %td{:colspan=>3,:align=>'center'}Total
+    %td{:aligm=>'right'}= total.real
+    %td{:colspan=>4}
+  - dados += ";;Total;#{total.real}; ; ;>"
+= link_de_impressao(dados,session[:clinica_id], 'landscape')

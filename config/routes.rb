@@ -25,6 +25,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :destinacaos
   map.resources :entradas, :collection=>{ :na_administracao => :get, :registra_confirmacao_de_entrada => :post }
   map.fluxo_de_caixa "fluxo_de_caixa", :controller=>"fluxo_de_caixa", :action=>"index"
+  map.fechamento_de_mes "fechamento_de_mes", :controller=>"fluxo_de_caixa", :action=>"fechamento_de_mes"
   map.conserta_saldo 'conserta_saldo', :controller=>'fluxo_de_caixa', :action=>'conserta_saldo'
   map.busca_saldo 'busca_saldo',       :controller=>'fluxo_de_caixa', :action=>'busca_saldo'
   map.grava_saldo 'grava_saldo',       :controller=>'fluxo_de_caixa', :action=>'grava_saldo'

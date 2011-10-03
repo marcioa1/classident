@@ -48,6 +48,9 @@ class FluxoDeCaixaController < ApplicationController
     end
   end
   
+  def fechamento_de_mes
+    
+  end
   
   def conserta_saldo
     if !current_user.master? 

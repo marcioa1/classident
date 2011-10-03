@@ -10,7 +10,7 @@
   function pagamento_do_protetico(id){
     $.ajax({
       url: "pagamentos",
-      data:  {id:809, 
+      data:  {id: id, 
               data_inicial: $("#data_inicial").val(), 
               data_final: $("#data_final").val()},
       success: function(data){

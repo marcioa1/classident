@@ -1,31 +1,21 @@
--dados = "Itens liberados para pagamento do protético #{@protetico.nome}>Paciente;Dente;Descrição;Valor;Dt devolução;Dt liberação pgto;Dentista>left;center;left;right;center;center;left>"
+#formulario_liberacao
+  = label_tag :data_inicial 
+  = text_field_tag :data_inicial_liberacao, params[:data_inicial_liberacao], :size=>10, :class=>'datepicker'
+  = label_tag :data_inicial 
+  = text_field_tag :data_final_liberacao, params[:data_final_liberacao], :size=>10, :class=>'datepicker' 
+  = button_to_function 'pesquisar', "liberacao_entre_datas(#{@protetico.id})"
+%p
 %h2 Itens liberados para pagamento ( ainda não pagos )
-%table.tabela
-  %tr
-    %th Paciente
-    %th Dente
-    %th Descrição
-    %th Valor
-    %th Data de devolução
-    %th Data de liberação para pagamento
-    %th Dentista
-    %th cancelar liberação
-  - total = 0
-  - itens.each do |item|
-    %tr{:id=>"tr-liberados#{item.id}"}
-      %td= item.paciente.nome
-      %td= item.dente
-      %td= item.tabela_protetico.descricao
-      %td{:align=>'right'}= item.valor.real
-      %td{:align=>'center'}= l(item.data_de_devolucao)
-      %td= l(item.data_liberacao_para_pagamento)
-      %td= item.dentista && item.dentista.nome
-      %td= link_to_function 'cancelar liberação' ,"cancelar_liberacao(#{item.id})"
-      - total += item.valor
-      - dados += "#{item.paciente.nome};#{item.dente};#{item.tabela_protetico.descricao};#{total.real};#{l(item.data_de_devolucao)};#{item.data_liberacao_para_pagamento.to_s_br};#{item.dentista && item.dentista.nome};>"
-  %tr
-    %td{:colspan=>3,:align=>'center'}Total
-    %td{:aligm=>'right'}= total.real
-    %td{:colspan=>4}
-  - dados += ";;Total;#{total.real}; ; ;>"
-= link_de_impressao(dados,session[:clinica_id], 'landscape')
+#tabela_de_liberacao
+:javascript
+  function liberacao_entre_datas(id){
+    $.ajax({
+      url: "/proteticos/busca_trabalhos_liberados",
+      data:  {id: id, 
+              data_inicial_liberacao: $("#data_inicial_liberacao").val(), 
+              data_final_liberacao: $("#data_final_liberacao").val()},
+      success: function(data){
+        $("#tabela_de_liberacao").html(data);
+      }
+    });
+  }
