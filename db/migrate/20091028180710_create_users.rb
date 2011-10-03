@@ -21,6 +21,8 @@ class CreateUsers < ActiveRecord::Migration
     :password_confirmation =>'1234', :nome=>'Ricardo', :tipo_usuario_id => 1, :clinicas => Clinica.all)
    User.create!(:login => 'fabiana', :password=>'1234', :email=>'fabi@ibest.com.br',
     :password_confirmation =>'1234', :nome=>'Fabiana Felix', :tipo_usuario_id => 2, :clinicas => Clinica.all)
+   User.create!(:login => 'regina', :password=>'1234', :email=>'regina@ibest.com.br',
+    :password_confirmation =>'1234', :nome=>'Regina', :tipo_usuario_id => 2, :clinicas => Clinica.all)
    User.create!(:login => 'anapaula', :password=>'1234', :email=>'anapaula@ibest.com.br',
              :password_confirmation =>'1234', :nome=>'Ana Paula', :tipo_usuario_id => 2, :clinicas => Clinica.all)
     User.create!(:login => 'margareth', :password=>'1234', :email=>'margo@ibest.com.br', 
@@ -41,6 +43,8 @@ class CreateUsers < ActiveRecord::Migration
     :password_confirmation =>'1234', :nome=>'Thuani', :tipo_usuario_id => 3, :clinicas => [Clinica.find_by_sigla("centro")])
    User.create!(:login => 'sheyla', :password=>'1234', :email=>'sheyla@ibest.com.br',
              :password_confirmation =>'1234', :nome=>'Sheyla', :tipo_usuario_id => 3, :clinicas => [Clinica.find_by_sigla("recreio")])
+   User.create!(:login => 'angela', :password=>'1234', :email=>'angela@ibest.com.br',
+             :password_confirmation =>'1234', :nome=>'Angela', :tipo_usuario_id => 3, :clinicas => [Clinica.find_by_sigla("vc")])
 
   end
 
