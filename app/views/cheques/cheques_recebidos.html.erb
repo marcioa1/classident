@@ -29,7 +29,7 @@
       <th>Clínica</th>
     <% end %>
     <th>Bom para</th>
-    <th width="170px">Paciente</th>
+    <th width="230px">Paciente</th>
     <th width="100px">Banco</th>
     <th>Agência</th>
     <th>Número</th>
@@ -83,6 +83,8 @@
            cheque.destinacao.nome
         when cheque.entregue_a_administracao? then 
            link_to 'reverter', '#', :onclick=>"javascript:reverte_cheque(#{cheque.id})"
+        when cheque.recebido_pela_administracao? then
+          link_to 'devolver à clínica', '#'
        else cheque.status_resumido
     end %>
   
