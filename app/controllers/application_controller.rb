@@ -69,7 +69,7 @@ class ApplicationController < ActionController::Base
     # else
     #   data < primeira ? false : true
     # end
-    date.today - data > 15 ? false : true
+    date.today - data > 25 ? false : true
   end
   
 

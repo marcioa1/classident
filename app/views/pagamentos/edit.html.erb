@@ -60,7 +60,6 @@
     <%= f.submit 'alterar' %>
   </p>
 <% end %>
-<%= @pagamento%>
 <%= render :partial=>"cheques/disponiveis" %>
 <%= render :partial=>"pagamentos/cheques_utilizados", :locals=>{:pagamento=>@pagamento} %>
 
