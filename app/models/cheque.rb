@@ -291,7 +291,7 @@ class Cheque < ActiveRecord::Base
     historia = "devolvido em #{data_primeira_devolucao.to_s_br} motivo #{motivo_primeira_devolucao} \n" if devolvido_uma_vez?
     historia += "reapresentado em #{data_reapresentacao.to_s_br} \n" if reapresentado?
     historia += "devolvido pela segunda vez em #{data_segunda_devolucao.to_s_br} por #{motivo_segunda_devolucao} \n" if devolvido_duas_vezes?
-    historia
+    historia += "solucionado em #{data_solucao.to_s_br} , #{descricao_solucao}\n" if solucionado?
   end
   
 end

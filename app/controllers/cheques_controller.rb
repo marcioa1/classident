@@ -100,11 +100,11 @@ class ChequesController < ApplicationController
           @cheques = Cheque.entre_datas(@data_inicial,@data_final).
             disponiveis_na_administracao.nao_excluidos.das_clinicas(selecionadas).por_valor
         when params[:status] == 'devolvido 2 vezes' && params[:ordem] == 'por_data' 
-          @cheques = Cheque.da_clinica(session[:clinica_id]).entre_datas(@data_inicial,@data_final).
-            devolvido_duas_vezes.nao_excluidos.das_clinicas(selecionadas).por_bom_para
+          @cheques = Cheque.devolvido_duas_vezes_entre_datas(@data_inicial,@data_final).
+                     nao_excluidos.das_clinicas(selecionadas).por_bom_para
         when params[:status] == 'devolvido 2 vezes' && params[:ordem] == 'por_valor' 
-          @cheques = Cheque.da_clinica(session[:clinica_id]).entre_datas(@data_inicial,@data_final).
-            devolvido_duas_vezes.nao_excluidos.das_clinicas(selecionadas).por_valor
+          @cheques = Cheque.devolvido_duas_vezes_entre_datas(@data_inicial,@data_final).
+                     nao_excluidos.das_clinicas(selecionadas).por_valor
         when params[:status] == 'enviados à administração' && params[:ordem] == 'por_data' 
           @cheques = Cheque.enviados_a_administracao(@data_inicial,@data_final).
             nao_recebidos.nao_excluidos.das_clinicas(selecionadas).por_bom_para
