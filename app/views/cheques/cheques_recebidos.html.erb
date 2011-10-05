@@ -37,6 +37,7 @@
     <th>Adm</th>
     <th width='120px'>Situação</th>
     <th>Data recebimento</th>
+    <th>Histórico</th>
     <th>&nbsp;</th>
   </tr>
   <% total = 0 %>
@@ -90,6 +91,7 @@
   
     </td>
     <td align='center'><%= cheque.data_recebimento_na_administracao.to_s_br %></td>
+    <td><%= cheque.historico %></td>
     <td><%= link_to 'alterar', edit_cheque_path(cheque), :class=>'ui-icon ui-icon-pencil' , :title=>'alterar'  %></td>
 
   </tr>
