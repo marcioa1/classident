@@ -31,12 +31,13 @@ module ApplicationHelper
 
   def na_quinzena?(data)
     if data
-      primeira = Date.new(Date.today.year,Date.today.month,1)
-      segunda  = Date.new(Date.today.year,Date.today.month,16)
-      return false if data < primeira
-      return false if data < segunda && Date.today >= segunda
-      return true if data < segunda && Date.today < segunda
-      return true if data >= segunda && Date.today >= segunda
+      return  (Date.today - data).days > 25.days ? false : true
+      # primeira = Date.new(Date.today.year,Date.today.month,1)
+      # segunda  = Date.new(Date.today.year,Date.today.month,16)
+      # return false if data < primeira
+      # return false if data < segunda && Date.today >= segunda
+      # return true if data < segunda && Date.today < segunda
+      # return true if data >= segunda && Date.today >= segunda
     else
       return true
     end
