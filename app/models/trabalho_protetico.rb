@@ -29,7 +29,7 @@ class TrabalhoProtetico < ActiveRecord::Base
   named_scope :pendentes, :conditions=>["data_de_devolucao IS NULL OR (data_de_devolucao IS NOT NULL and (data_de_repeticao IS NOT NULL and data_de_devolucao_da_repeticao IS NULL))"]
   named_scope :por_data_de_devolucao, :order => ["data_De_Devolucao DESC"]
   named_scope :por_protetico, :include=> :protetico, :order=>'proteticos.nome'
-  named_scope :a_partir_de, lambda {|data| {:conditions => ['data_de_devolucao > ?' , data]}}
+  named_scope :a_partir_de, lambda {|data| {:conditions => ['data_de_envio > ?' , data]}}
   
   def data_de_devolucao_final
     self.data_de_devolucao_da_repeticao.nil? ? self.data_de_devolucao : self.data_de_devolucao_da_repeticao

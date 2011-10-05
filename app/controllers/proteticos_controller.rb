@@ -71,9 +71,9 @@ class ProteticosController < ApplicationController
              nao_pagos.por_data_de_devolucao.a_partir_de('2011-02-01')
     else
       @trabalhos_pendentes  = TrabalhoProtetico.do_protetico(@protetico.id).pendentes.
-             da_clinica(session[:clinica_id]).a_partir_de('2011-02-01')
+             a_partir_de('2011-02-01')
       @trabalhos_devolvidos = TrabalhoProtetico.do_protetico(@protetico.id).devolvidos.
-             da_clinica(session[:clinica_id]).nao_pagos.por_data_de_devolucao.a_partir_de('2011-02-01')
+             nao_pagos.por_data_de_devolucao.a_partir_de('2011-02-01')
     end
     if !params[:data_inicial]
       params[:data_inicial] = (Date.today - 15.days).to_s_br
