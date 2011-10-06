@@ -73,6 +73,20 @@ class ApplicationController < ActionController::Base
   #    (date.today - data).days > 25 ? false : true
   #  end
   
+  def na_quinzena?(data)
+    if data
+      # return  (Date.today - data).days > 25.days ? false : true
+      primeira = Date.new(Date.today.year,Date.today.month,1)
+      segunda  = Date.new(Date.today.year,Date.today.month,16)
+      return false if data < primeira
+      return false if data < segunda && Date.today >= segunda
+      return true if data < segunda && Date.today < segunda
+      return true if data >= segunda && Date.today >= segunda
+    else
+      return false
+    end
+  end
+
 
   def verify_existence_of_directory
     directory_name = Dir::pwd + "/impressoes/#{session[:clinica_id]}"
