@@ -41,7 +41,8 @@ class Entrada < ActiveRecord::Base
   end
   
   def self.remessas(data,clinica)
-    Entrada.all(:conditions=> ["data = ? and clinica_destino = ? and clinica_id = ?", data, Clinica::ADMINISTRACAO_ID,clinica])
+    remessas = Entrada.all(:conditions=> ["data = ? and clinica_destino = ? and clinica_id = ?", data, Clinica::ADMINISTRACAO_ID,clinica])
+    remessas || []
   end
   
 end
