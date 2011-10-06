@@ -1,7 +1,7 @@
 #formulario_liberacao
   = label_tag :data_inicial 
   = text_field_tag :data_inicial_liberacao, params[:data_inicial_liberacao], :size=>10, :class=>'datepicker'
-  = label_tag :data_inicial 
+  = label_tag :data_final 
   = text_field_tag :data_final_liberacao, params[:data_final_liberacao], :size=>10, :class=>'datepicker' 
   = button_to_function 'pesquisar', "liberacao_entre_datas(#{@protetico.id})"
 %p
