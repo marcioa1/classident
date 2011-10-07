@@ -10,6 +10,7 @@
   = link_to "Imprime", "#", :onclick=>"imprime_extrato(#{@paciente.id}, #{@paciente.clinica_id})", :class => 'ui-icon ui-icon-print', :style=>'display: inline-block;'
 - dados = "Extrato do paciente #{@paciente.nome}>Data;Descrição;Débito;Crédito;Saldo>center;left;right;right;right>"
 %p
+= @current_user.master?
 %table{:class=>'tabela'}
   %tr
     %th Data
@@ -28,7 +29,7 @@
   - total_credito = 0.0
   - @paciente.extrato.each do |lancamento|
     %tr{ :class=>"#{lancamento.is_a?(Debito) ? 'debito' : ''}"}
-      - if lancamento.class == Abono
+      - if lancamento.is_a? Abono
         - total_credito += lancamento.valor
         %td{ :align => "center" }
           - if lancamento.pode_alterar?(current_user)
@@ -51,7 +52,7 @@
         - dados += "#{saldo.real};>"
         - 4.times do
           %td &nbsp;
-      - elsif lancamento.class == Debito
+      - elsif lancamento.is_a? Debito
         %td{ :align => "center" }
           - if lancamento.pode_alterar?
             = link_to lancamento.data.to_s_br, edit_debito_path(lancamento)
@@ -75,7 +76,7 @@
         %td &nbsp;
         - if @paciente.ortodontia?
           %td &nbsp;
-        - if lancamento.pode_excluir?
+        - if lancamento.pode_excluir? || @current_user.master?
           %td
             = link_to 'Excluir', lancamento, :confirm => 'Tem certeza da exclusão deste débito ?', :method => :delete , :class=>'ui-icon ui-icon-trash', :title=>'excluir'
         - else
