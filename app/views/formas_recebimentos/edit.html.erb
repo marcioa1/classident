@@ -14,10 +14,16 @@
      <%= f.select :tipo, [['Outros', 'O'], ['Cheque', 'C'], ['Dinheiro', 'D']] %>
   </p>
 
-  <p>
-    <%= f.check_box :ativo %>
-    <%= f.label :ativo %>
-  </p>
+  <% if @current_user.master? %>
+    <p>
+      <%= f.check_box :ativo %>
+      <%= f.label :ativo %>
+    </p>
+  <% else %>
+    <p>
+      Ativo :  <%= sim_nao(@formas_recebimento.ativo) %>
+    </p>
+  <% end %>
   <p>
     <%= f.submit 'alterar' %>
   </p>
