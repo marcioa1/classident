@@ -320,7 +320,7 @@ class RecebimentosController < ApplicationController
   
   def busca_bancos_e_forma_de_recebimento
     @bancos              = Banco.por_nome.collect{|obj| [obj.numero_formatado + '-' + obj.nome,obj.id]}.sort{|a,b| a <=> b}
-    @formas_recebimentos = FormasRecebimento.por_nome.collect{|obj| [obj.nome,obj.id]}
+    @formas_recebimentos = FormasRecebimento.ativas.por_nome.collect{|obj| [obj.nome,obj.id]}
   end  
 
   def busca_recebimento
