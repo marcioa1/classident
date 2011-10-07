@@ -27,6 +27,7 @@ class OrcamentosController < ApplicationController
 
   def edit
     @paciente = @orcamento.paciente
+    @orcamento.recalcula_valor
     @dentistas = Clinica.find(session[:clinica_id]).dentistas.ativos.por_nome.collect{|obj| [obj.nome,obj.id]}
   end
 

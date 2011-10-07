@@ -110,4 +110,19 @@ class Orcamento < ActiveRecord::Base
     self.forma_de_pagamento = 'a vista'
   end
   
+  def recalcula_valor
+    if em_aberto?
+      total = 0
+      self.tratamentos.each do |trat|
+        total += trat.valor if !trat.excluido?
+      end
+    end
+    self.valor = total
+    if self.desconto && self.desconto != 0
+      self.valor_com_desconto = self.valor * ( 1 - (self.desconto / 100)) 
+    else
+      self.valor_com_desconto = self.valor
+    end
+  end
+  
 end
