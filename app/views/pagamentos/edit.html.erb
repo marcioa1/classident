@@ -1,6 +1,6 @@
 <% content_for :main do %>
 <fieldset class="fieldset_50">
-<legend>Editando pagamento</legend>
+<legend>Editando pagamento <%= @pagamento.id %></legend>
 
 <% form_for(@pagamento) do |f| %>
   <%= f.error_messages %>

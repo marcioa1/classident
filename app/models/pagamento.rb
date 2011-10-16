@@ -113,11 +113,11 @@ class Pagamento < ActiveRecord::Base
   end
   
   def em_dinheiro?
-    self.cheques.empty? && !self.em_cheque_classident?
+    !self.em_cheque_pacientes? && !self.em_cheque_classident?
   end
   
   def em_cheque_pacientes?
-    !self.cheques.empty?
+    self.valor_terceiros > 0 #!self.cheques.empty?
   end
 
   def em_cheque_classident?
