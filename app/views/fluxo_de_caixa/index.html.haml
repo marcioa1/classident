@@ -208,7 +208,8 @@
 
         - when "Entrada"
           - if lancamento.remessa?(session[:clinica_id])
-            %td= "Remessa, " +lancamento.observacao
+            - clinica = Clinica.find(lancamento.clinica_destino)
+            %td= "Remessa, " + lancamento.observacao + " (#{clinica.sigla}) "
             - dados += "Remessa ,#{lancamento.observacao};;"
             %td &nbsp;
             %td{ :align => "right", :style => 'color: red;'}= lancamento.valor.real * (-1)
@@ -216,7 +217,8 @@
             - saldo_dinheiro -= lancamento.valor
             - total_de_debito_em_dinheiro -= lancamento.valor
           - else
-            %td= "Entrada, " +lancamento.observacao
+            - clinica = Clinica.find(lancamento.clinica_id)
+            %td= "Entrada, " +lancamento.observacao + " (#{clinica.sigla}) "
             - dados += "Entrada, #{lancamento.observacao};"
             %td{ :align => "right"}= lancamento.valor.abs.real
             - dados += "#{lancamento.valor.abs.real};;"

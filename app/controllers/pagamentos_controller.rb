@@ -154,12 +154,6 @@ class PagamentosController < ApplicationController
         @titulo += " com cheque de paciente"
       end
     end
-    if params[:pela_adm]
-      @pela_administracao = Pagamento.pela_administracao.entre_datas(@data_inicial, @data_final).da_clinica(session[:clinica_id])
-      @pagamentos += @pela_administracao
-      @titulo += " pela adm"
-    end
-    # raise params[:livro_caixa].inspect
     if params[:livro_caixa] == 'sim'
       @pagamentos = @pagamentos.no_livro_caixa
       @titulo += " no livro caixa"
@@ -167,6 +161,12 @@ class PagamentosController < ApplicationController
       @pagamentos = @pagamentos.fora_do_livro_caixa
       @titulo += " fora do livro caixa"
     end
+    if params[:pela_adm]
+      @pela_administracao = Pagamento.pela_administracao.entre_datas(@data_inicial, @data_final).da_clinica(session[:clinica_id])
+      @pagamentos += @pela_administracao
+      @titulo += " pela adm"
+    end
+    # raise params[:livro_caixa].inspect
   end
    
   def registra_pagamento_a_protetico
