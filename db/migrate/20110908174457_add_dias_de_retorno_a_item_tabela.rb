@@ -6,6 +6,6 @@ class AddDiasDeRetornoAItemTabela < ActiveRecord::Migration
 
   def self.down
     remove_column :item_tabelas, :dias_de_retorno
-    remove_volumn :tem_custo_de_protetico
+    remove_column :tem_custo_de_protetico
   end
 end
