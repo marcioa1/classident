@@ -12,9 +12,11 @@ class AddKeysForMigration < ActiveRecord::Migration
     # add_index :tabela_proteticos, [:protetico_id, :sequencial], :name => :protetico_id_sequencial
     add_index :recebimentos, [:sequencial_cheque, :clinica_id], :name => :sequencial_cheque_clinica_id
     add_index :pagamentos, [:sequencial, :clinica_id], :name => :sequencial_clinica_id
+    add_index :orcamentos, [:numero, :paciente_id, :clinica_id], :name => :numero_paciente_id_clinica_id
   end
 
   def self.down
+    remove_index :orcamentos, :numero_paciente_id_clinica_id
     remove_index :pagamentos, :sequencial_clinica_id
     remove_index :recebimentos, :sequencial_cheque_clinica_id
     # remove_index :tabela_proteticos , :protetico_id_sequencial
