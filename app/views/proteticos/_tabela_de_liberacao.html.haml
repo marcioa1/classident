@@ -22,7 +22,7 @@
       %td= item.dentista && item.dentista.nome
       %td= link_to_function 'cancelar liberação' ,"cancelar_liberacao(#{item.id})"
       - total += item.valor
-      - dados += "#{item.paciente.nome};#{item.dente};#{item.tabela_protetico.descricao};#{total.real};#{l(item.data_de_devolucao)};#{item.data_liberacao_para_pagamento.to_s_br};#{item.dentista && item.dentista.nome};>"
+      - dados += "#{item.paciente.nome};#{item.dente};#{item.tabela_protetico.descricao};#{item.valor.real};#{l(item.data_de_devolucao)};#{item.data_liberacao_para_pagamento.to_s_br};#{item.dentista && item.dentista.nome};>"
   %tr
     %td{:colspan=>3,:align=>'center'}Total
     %td{:aligm=>'right'}= total.real
