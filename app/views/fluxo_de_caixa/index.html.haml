@@ -212,8 +212,8 @@
             %td= "Remessa, " + lancamento.observacao + " (#{clinica.sigla}) "
             - dados += "Remessa ,#{lancamento.observacao};;"
             %td &nbsp;
-            %td{ :align => "right", :style => 'color: red;'}= lancamento.valor.real * (-1)
-            -dados += "#{lancamento.valor.real};"
+            %td{ :align => "right", :style => 'color: red;'}= lancamento.valor.real 
+            -dados += "#{lancamento.valor.abs.real};"
             - saldo_dinheiro -= lancamento.valor
             - total_de_debito_em_dinheiro -= lancamento.valor
           - else
