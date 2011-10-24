@@ -214,7 +214,7 @@
             %td &nbsp;
             %td{ :align => "right", :style => 'color: red;'}= lancamento.valor.abs.real 
             -dados += "#{lancamento.valor.abs.real};"
-            - saldo_dinheiro -= lancamento.valor.abs
+            - saldo_dinheiro -= lancamento.valor
             - total_de_debito_em_dinheiro += lancamento.valor.abs
             %td{ :align => "right"}= saldo_dinheiro.real
           - else
