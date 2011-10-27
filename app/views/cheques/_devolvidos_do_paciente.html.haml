@@ -8,8 +8,11 @@
       Motivo
     %th{ :width => "120px" }
       Data 2ª devolução
+    %th
+      Descrição
   - @paciente.cheques_devolvidos.each do |cheque|
     %tr
       %td{:align=>'center'}= link_to cheque.data_primeira_devolucao.to_s_br, cheque, :target=>:blank
       %td= cheque.motivo_primeira_devolucao
       %td{:align=>'center'}= cheque.data_segunda_devolucao.to_s_br
+      %td= cheque.observacao
