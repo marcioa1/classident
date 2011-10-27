@@ -21,6 +21,8 @@ class Cheque < ActiveRecord::Base
   named_scope :das_clinicas, lambda{|clinicas| {:conditions=>["clinica_id in ('?') ", clinicas]}}
   named_scope :devolvidos, lambda{|data_inicial, data_final| 
       {:conditions=>["data_reapresentacao IS NULL and data_primeira_devolucao between ? and ?", data_inicial, data_final]}}
+  named_scope :devolvidos_a_clinica, :conditions=>["data_envio_a_clinica IS NOT NULL"]
+  named_scope :devolvidos_a_clinica_entre_datas, lambda {|data_inicial,data_final| {:conditions=>["data_envio_a_clinica between ? and ?", data_inicial, data_final] }} 
   named_scope :devolvido_duas_vezes, :conditions=>["data_segunda_devolucao IS NOT NULL"]
   named_scope :devolvido_duas_vezes_entre_datas, lambda{|data_inicial, data_final| {:conditions=>["data_segunda_devolucao between ? and ? ", data_inicial, data_final ]}}
   named_scope :disponiveis_na_clinica, :conditions=>["data_segunda_devolucao IS NULL and 
@@ -48,6 +50,7 @@ class Cheque < ActiveRecord::Base
       {:conditions=>["data_reapresentacao between ? and ?", data_inicial, data_final]}}
   named_scope :recebidos_na_administracao, lambda{|data_inicial, data_final| 
           {:conditions=>["data_recebimento_na_administracao between ? and ?", data_inicial, data_final]}}
+  named_scope :ordenado_por, lambda {|ordem| {:order => ordem.to_sym}}
   named_scope :por_bom_para, :order=>:bom_para
   named_scope :por_valor, :order=>'valor desc'
   named_scope :menores_ou_igual_a, lambda{|valor| {:conditions=>["valor<=?", valor]}}
@@ -205,6 +208,10 @@ class Cheque < ActiveRecord::Base
   
   def com_destinacao?
     destinacao_id.present?
+  end
+  
+  def devolvido_a_clinica?
+    self.data_envio_a_clinica.present?
   end
     
   def limpo?

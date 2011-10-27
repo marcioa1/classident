@@ -13,9 +13,9 @@
     <%= label_tag :data_final %> : <%= text_field_tag :datepicker2, @data_final.to_s_br, :size=>10  %>
     <%= label_tag :situação %> : 
     <%= select_tag :status, options_for_select(@status, params[:status]) %>
-    <%= radio_button_tag :ordem, :por_data , params[:ordem]%>
+    <%= radio_button_tag :ordem, :bom_para , params[:ordem]%>
     <%= label_tag :por_data%>
-    <%= radio_button_tag :ordem, :por_valor , params[:ordem]  %>
+    <%= radio_button_tag :ordem, :valor , params[:ordem]  %>
     <%= label_tag :por_valor %>
     <%= submit_tag "pesquisar"%>  
   </p>
@@ -77,15 +77,17 @@
         <% end %>
       </td>
     <% end %>
-    <td><%= status = case 
+    <td id="td_<%= cheque.id%> "><%= status = case 
         when cheque.status=~/usado pgto/ then 
           link_to cheque.pagamento.tipo_pagamento.nome, '#', :onclick=>'javascript:abre_pagamento('+ cheque.pagamento_id.to_s + ')'
         when cheque.status=~/destinação/ then
            cheque.destinacao.nome
         when cheque.entregue_a_administracao? then 
            link_to 'reverter', '#', :onclick=>"javascript:reverte_cheque(#{cheque.id})"
+        when cheque.devolvido_a_clinica? then
+          "enviado à clínica em #{cheque.data_envio_a_clinica.to_s_br}"
         when cheque.recebido_pela_administracao? then
-          link_to 'devolver à clínica', '#'
+          link_to 'devolver à clínica', "javascript:devolve_cheque_a_clinica(#{cheque.id})"
        else cheque.status_resumido
     end %>
   
@@ -99,7 +101,7 @@
   <% end %>
   <tr>
     <% if @clinica_atual.administracao? %>
-      <td colspan="3" align="center">Total</td>
+      <td colspan="6" align="center">Total</td>
       <td align="right"><%= total.real%></td>
       <td colspan="3" align="right">&nbsp;</td>
       <td><% if params[:status] == 'enviados à administração' %>

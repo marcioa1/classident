@@ -642,3 +642,15 @@ function troca_para_ortodontista(dentista_id){
 }
 
 
+function devolve_cheque_a_clinica(id){
+  jQuery.ajax({
+     url : "/cheques/"+ id + "/devolve_a_clinica",
+     type: 'GET',
+     success: function(data){
+       $("#td_" + id).html('devolvido à clínica');
+     }
+  });
+}
+
+function registra_confirmacao_de_movimentacao(id){
+}
