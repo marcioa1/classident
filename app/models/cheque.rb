@@ -53,6 +53,8 @@ class Cheque < ActiveRecord::Base
   named_scope :ordenado_por, lambda {|ordem| {:order => ordem.to_sym}}
   named_scope :por_bom_para, :order=>:bom_para
   named_scope :por_valor, :order=>'valor desc'
+  named_scope :recebidos_pela_clinica_entre_datas, lambda {|data_inicial, data_final|
+                {:conditions=>["data_data_recebido_da_administracao between ? and ? ", data_inicial, data_final]}}
   named_scope :menores_ou_igual_a, lambda{|valor| {:conditions=>["valor<=?", valor]}}
   named_scope :menores_que, lambda{|valor| {:conditions=>["valor<?", valor]}}
   named_scope :sem_segunda_devolucao, :conditions=>["data_segunda_devolucao IS NULL"]

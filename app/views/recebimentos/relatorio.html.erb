@@ -32,16 +32,15 @@
       <td><%=h recebimento.paciente.nome %></td>
       <td align="right"><%=h number_to_currency(recebimento.valor.to_f, :unit=>'') %></td>
       <td><%=h recebimento.observacao %></td>
-      <td>
-        <%  if recebimento.em_cheque? %>
-          <%= link_to_function "cheque", "abre_cheque(#{recebimento.cheque.id})" if recebimento.cheque %>
-          <td><%= recebimento.cheque && recebimento.cheque.observacao%></td>
-        <% else %> 
-          <td>&nbsp;</td>
-          <%= recebimento.formas_recebimento.nome %>
-        <% end %></td>
-        <td><%= link_to 'editar', edit_recebimento_path(recebimento), :class=>'ui-icon ui-icon-pencil', :title=>'editar' %></td>
-        <td><%= link_to 'excluir', exclusao_recebimento_path(recebimento.id), :class=>'ui-icon ui-icon-trash', :title=>'excluir' if recebimento.pode_excluir? %></td>
+      <%  if recebimento.em_cheque? %>
+        <td><%= link_to_function "cheque", "abre_cheque(#{recebimento.cheque.id})" if recebimento.cheque %>
+        <td><%= recebimento.cheque && recebimento.cheque.observacao%></td>
+      <% else %> 
+        <td>&nbsp;</td>
+        <td><%= recebimento.formas_recebimento.nome %></td>
+      <% end %>
+      <td><%= link_to 'editar', edit_recebimento_path(recebimento), :class=>'ui-icon ui-icon-pencil', :title=>'editar' %></td>
+      <td><%= link_to 'excluir', exclusao_recebimento_path(recebimento.id), :class=>'ui-icon ui-icon-trash', :title=>'excluir' if recebimento.pode_excluir? %></td>
     </tr>
     <% dados += "#{recebimento.data.to_s_br};#{recebimento.paciente.nome};#{recebimento.valor.real.to_s};#{recebimento.observacao} ;#{recebimento.formas_recebimento.nome}; #{recebimento.cheque && recebimento.cheque.observacao};>" %>
     <% total += recebimento.valor %>
