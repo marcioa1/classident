@@ -158,10 +158,24 @@ class RecebimentosController < ApplicationController
       @cheque.errors.add(:banco, 'não pode ser branco') if !@recebimento.cheque.banco.present?
       @cheque.errors.add(:numero, 'do cheque não pode ser branco') if !@recebimento.cheque.numero.present?
       @cheque.errors.add(:valor, ' do cheque não pode ser branco') if !@recebimento.cheque.valor.present?
+    elsif @recebimento.em_cheque? && @recebimento.cheque.nil?
+      @cheque = Cheque.new
+      @recebimento.observacao = params[:observacao]
+      @cheque.bom_para        = params[:bom_para_br].to_date
+      @cheque.banco_id        = params[:banco]
+      @cheque.agencia         = params[:agencia]
+      @cheque.numero          = params[:numero]
+      @cheque.conta_corrente  = params[:conta_corrente]
+      @cheque.valor           = params[:valor_cheque].gsub('.','').gsub(',','.')
+      @cheque.errors.add(:banco, 'não pode ser branco') if !@cheque.banco.present?
+      @cheque.errors.add(:numero, 'do cheque não pode ser branco') if !@cheque.numero.present?
+      @cheque.errors.add(:valor, ' do cheque não pode ser branco') if !@cheque.valor.present?
+      @cheque.save
+      @recebimento.cheque = @cheque
     else
       @recebimento.cheque = nil
     end
-
+debugger
     if @recebimento.update_attributes(params[:recebimento]) 
       @recebimento.verifica_fluxo_de_caixa
       
