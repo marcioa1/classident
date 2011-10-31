@@ -38,7 +38,13 @@ class RecebimentosController < ApplicationController
   def edit
     @cheque    = @recebimento.cheque
     @paciente  = @recebimento.paciente
-    @recebimento.cheque = Cheque.new if @recebimento.cheque.nil?
+    if @recebimento.cheque.nil?
+      @cheque             = Cheque.new(:clinica_id => session[:clinica_id], 
+                                       :bom_para => @recebimento.data, 
+                                       :valor => @recebimento.valor) 
+      @recebimento.cheque = @cheque
+    end
+    debugger
   end
 
   def create
@@ -149,6 +155,7 @@ class RecebimentosController < ApplicationController
       # @recebimento.valor_real             = params[:recebimento_valor_real]
       @recebimento.observacao             = params[:observacao]
       @cheque                             = @recebimento.cheque
+      @cheque.clinica_id      = @recebimento.clinica_id
       @cheque.bom_para        = params[:bom_para_br].to_date
       @cheque.banco_id        = params[:banco]
       @cheque.agencia         = params[:agencia]
@@ -161,6 +168,7 @@ class RecebimentosController < ApplicationController
     elsif @recebimento.em_cheque? && @recebimento.cheque.nil?
       @cheque = Cheque.new
       @recebimento.observacao = params[:observacao]
+      @cheque.clinica_id      = @recebimento.clinica_id
       @cheque.bom_para        = params[:bom_para_br].to_date
       @cheque.banco_id        = params[:banco]
       @cheque.agencia         = params[:agencia]
