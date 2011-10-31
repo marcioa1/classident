@@ -175,7 +175,6 @@ class RecebimentosController < ApplicationController
     else
       @recebimento.cheque = nil
     end
-debugger
     if @recebimento.update_attributes(params[:recebimento]) 
       @recebimento.verifica_fluxo_de_caixa
       
