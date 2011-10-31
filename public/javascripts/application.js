@@ -663,5 +663,16 @@ function recebe_cheque_devolvido(id){
   });
 }
 
+function confirma_recebimento_de_cheque(id){
+  jQuery.ajax({
+     url : "/cheques/"+ id + "/confirma_recebimento_na_administracao",
+     type: 'GET',
+     success: function(data){
+       $("#adm_" + id + " a").hide();
+       $("#adm_" + id).html('Recebido.');
+     }
+  });
+}
+
 function registra_confirmacao_de_movimentacao(id){
 }

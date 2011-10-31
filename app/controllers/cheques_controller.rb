@@ -258,6 +258,12 @@ class ChequesController < ApplicationController
     end
   end
   
+  def confirma_recebimento_na_adminitracao
+    cheque = Cheque.find(params[:id])
+    cheque.update_attribute(:data_recebimento_na_administracao, Date.today)
+    head :ok
+  end
+
   def reverte_cheque
     cheque = Cheque.find(params[:id])
     cheque.update_attribute(:data_entrega_administracao, nil)

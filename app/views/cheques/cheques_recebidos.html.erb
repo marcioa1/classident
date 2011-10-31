@@ -60,9 +60,9 @@
     <td><%= cheque.numero %></td>
     <td align="right"><%= cheque.valor.real %></td>
     <% if @clinica_atual.administracao? %>
-      <td>
+      <td id="adm_<%= cheque.id%>">
          <% if cheque.entregue_a_administracao? %>
-           &nbsp;
+           <%= link_to "Receber",  "javascript:confirma_recebimento_de_cheque(#{cheque.id})"%>
          <% else %>
           <%= cheque.data_recebimento_na_administracao.to_s_br %>
          <% end %>
@@ -80,8 +80,12 @@
       </td>
     <% end %>
     <td id="td_<%= cheque.id%>"><%= status = case 
-        when cheque.status=~/usado pgto/ then 
-          link_to cheque.pagamento.tipo_pagamento.nome, '#', :onclick=>'javascript:abre_pagamento('+ cheque.pagamento_id.to_s + ')'
+        when cheque.status=~/usado pgto/ then
+          if !@clinica_atual.administracao?
+            "usado p/ pagamento"
+          else
+            link_to cheque.pagamento.tipo_pagamento.nome, '#', :onclick=>'javascript:abre_pagamento('+ cheque.pagamento_id.to_s + ')' 
+          end
         when cheque.status=~/destinação/ then
            cheque.destinacao.nome
         when cheque.entregue_a_administracao? then 
@@ -95,7 +99,7 @@
             link_to "enviado à clínica em #{cheque.data_envio_a_clinica.to_s_br}. Receber", "javascript:recebe_cheque_devolvido(#{cheque.id});"
           end
         when cheque.recebido_pela_administracao? then
-          link_to 'devolver à clínica', "javascript:devolve_cheque_a_clinica(#{cheque.id})"
+          link_to 'devolver à clínica', "javascript:devolve_cheque_a_clinica(#{cheque.id})" if @clinica_atual.administracao?
        else cheque.status_resumido
     end %>
   
