@@ -54,7 +54,7 @@ class Cheque < ActiveRecord::Base
   named_scope :por_bom_para, :order=>:bom_para
   named_scope :por_valor, :order=>'valor desc'
   named_scope :recebidos_pela_clinica_entre_datas, lambda {|data_inicial, data_final|
-                {:conditions=>["data_data_recebido_da_administracao between ? and ? ", data_inicial, data_final]}}
+                {:conditions=>["data_recebido_da_administracao between ? and ? ", data_inicial, data_final]}}
   named_scope :menores_ou_igual_a, lambda{|valor| {:conditions=>["valor<=?", valor]}}
   named_scope :menores_que, lambda{|valor| {:conditions=>["valor<?", valor]}}
   named_scope :sem_segunda_devolucao, :conditions=>["data_segunda_devolucao IS NULL"]
@@ -132,6 +132,7 @@ class Cheque < ActiveRecord::Base
     return "destinação" if com_destinacao?
     return "receb. adm" if recebido_pela_administracao?
     return "enviado adm" if entregue_a_administracao?
+    return "devolvido à clínica" if devolvido_a_clinica?
     return "disponível" unless !sem_devolucao? 
   end
   
@@ -214,6 +215,10 @@ class Cheque < ActiveRecord::Base
   
   def devolvido_a_clinica?
     self.data_envio_a_clinica.present?
+  end
+  
+  def recebido_pela_clinica?
+    self.data_recebido_da_administracao.present?
   end
     
   def limpo?

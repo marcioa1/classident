@@ -72,20 +72,28 @@
         <% if cheque.entregue_a_administracao?  %>
           <%= image_tag "ok.png" %>
           <%= cheque.data_entrega_administracao.to_s_br %>
+        <% elsif cheque.devolvido_a_clinica? %>
+          &nbsp;
         <% elsif cheque.disponivel? %>
            <%= check_box_tag "adm_"+cheque.id.to_s %>
         <% end %>
       </td>
     <% end %>
-    <td id="td_<%= cheque.id%> "><%= status = case 
+    <td id="td_<%= cheque.id%>"><%= status = case 
         when cheque.status=~/usado pgto/ then 
           link_to cheque.pagamento.tipo_pagamento.nome, '#', :onclick=>'javascript:abre_pagamento('+ cheque.pagamento_id.to_s + ')'
         when cheque.status=~/destinação/ then
            cheque.destinacao.nome
         when cheque.entregue_a_administracao? then 
            link_to 'reverter', '#', :onclick=>"javascript:reverte_cheque(#{cheque.id})"
-        when cheque.devolvido_a_clinica? then
-          "enviado à clínica em #{cheque.data_envio_a_clinica.to_s_br}"
+        when cheque.recebido_pela_clinica?
+          "Recebido em #{cheque.data_recebido_da_administracao.to_s_br}"
+        when cheque.devolvido_a_clinica? then 
+          if @clinica_atual.administracao?
+            "enviado à clínica em #{cheque.data_envio_a_clinica.to_s_br}"
+          else
+            link_to "enviado à clínica em #{cheque.data_envio_a_clinica.to_s_br}. Receber", "javascript:recebe_cheque_devolvido(#{cheque.id});"
+          end
         when cheque.recebido_pela_administracao? then
           link_to 'devolver à clínica', "javascript:devolve_cheque_a_clinica(#{cheque.id})"
        else cheque.status_resumido

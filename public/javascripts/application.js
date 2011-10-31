@@ -652,5 +652,16 @@ function devolve_cheque_a_clinica(id){
   });
 }
 
+function recebe_cheque_devolvido(id){
+  jQuery.ajax({
+     url : "/cheques/"+ id + "/recebe_da_administracao",
+     type: 'GET',
+     success: function(data){
+       $("#td_" + id + " a").hide();
+       $("#td_" + id).html('Recebido.');
+     }
+  });
+}
+
 function registra_confirmacao_de_movimentacao(id){
 }

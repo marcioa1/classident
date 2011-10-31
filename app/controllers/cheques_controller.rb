@@ -125,6 +125,9 @@ class ChequesController < ApplicationController
         when params[:status]=="devolvidos à clínica"
           @cheques = Cheque.devolvidos_a_clinica_entre_datas(@data_inicial,@data_final).
             das_clinicas(selecionadas).ordenado_por(params[:ordem])
+        when params[:status]=="recebidos pela clínica"
+          @cheques = Cheque.recebidos_pela_clinica_entre_datas(@data_inicial,@data_final).
+            das_clinicas(selecionadas).ordenado_por(params[:ordem])
       end
     else
       case
@@ -156,6 +159,12 @@ class ChequesController < ApplicationController
           @cheques = Cheque.da_clinica(session[:clinica_id]).spc(@data_inicial,@data_final).ordenado_por(params[:ordem])
         when params[:status]=="recebidos pela clínica" 
           @cheques = Cheque.da_clinica(session[:clinica_id]).recebidos_pela_clinica_entre_datas(@data_inicial,@data_final).ordenado_por(params[:ordem])
+        when params[:status]=="devolvidos à clínica"
+          @cheques = Cheque.devolvidos_a_clinica_entre_datas(@data_inicial,@data_final).
+            da_clinica(session[:clinica_id]).ordenado_por(params[:ordem])
+        when params[:status]=="recebidos pela clínica"
+          @cheques = Cheque.recebidos_pela_clinica_entre_datas(@data_inicial,@data_final).
+            da_clinica(session[:clinica_id]).ordenado_por(params[:ordem])
       end
     end
     @titulo = "Lista de cheques entre #{@data_inicial.to_s_br}e #{@data_final.to_s_br} , #{params[:status]}"
@@ -260,5 +269,10 @@ class ChequesController < ApplicationController
     cheque.update_attribute(:data_envio_a_clinica, Date.today)
     head :ok
   end
-  
+
+  def recebe_da_administracao
+    cheque = Cheque.find(params[:id])
+    cheque.update_attribute(:data_recebido_da_administracao, Date.today)
+    head :ok
+  end  
 end
