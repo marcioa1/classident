@@ -121,7 +121,7 @@ class ChequesController < ApplicationController
             das_clinicas(selecionadas).ordenado_por(params[:ordem])
         when params[:status]=="solucionado" 
           @cheques = Cheque.na_administracao.solucionado(@data_inicial,@data_final).
-            das_clinicas(selecionadas)..ordenado_por(params[:ordem])
+            das_clinicas(selecionadas).ordenado_por(params[:ordem])
         when params[:status]=="devolvidos à clínica"
           @cheques = Cheque.devolvidos_a_clinica_entre_datas(@data_inicial,@data_final).
             das_clinicas(selecionadas).ordenado_por(params[:ordem])
