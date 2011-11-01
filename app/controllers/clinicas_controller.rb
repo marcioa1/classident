@@ -139,7 +139,7 @@ class ClinicasController < ApplicationController
       @data_inicial = params[:data_inicial].to_date
       @data_final   = params[:data_final].to_date
     end
-    @recebimentos_excluidos = Recebimento.entre_datas(@data_inicial, @data_final).da_clinica(params[:clinica_id])
+    @recebimentos_excluidos = Recebimento.excluidos.entre_datas(@data_inicial, @data_final).da_clinica(params[:clinica_id])
     @pagamentos_excluidos   = Pagamento.excluidos.entre_datas(@data_inicial, @data_final).da_clinica(params[:clinica_id])
   end
   
