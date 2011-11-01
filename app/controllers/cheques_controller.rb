@@ -258,9 +258,9 @@ class ChequesController < ApplicationController
     end
   end
   
-  def confirma_recebimento_na_adminitracao
+  def confirma_recebimento_na_administracao
     cheque = Cheque.find(params[:id])
-    cheque.update_attribute(:data_recebimento_na_administracao, Date.today)
+    cheque.confirma_recebimento_na_administracao
     head :ok
   end
 
@@ -272,7 +272,7 @@ class ChequesController < ApplicationController
 
   def devolve_a_clinica
     cheque = Cheque.find(params[:id])
-    cheque.update_attribute(:data_envio_a_clinica, Date.today)
+    cheque.devolve_a_clinica
     head :ok
   end
 

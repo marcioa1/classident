@@ -2,7 +2,7 @@ require 'test_helper'
 
 class ChequeTest < ActiveSupport::TestCase
   
-  def test_entregue_na_adminitracao?
+  def test_entregue_na_administracao?
     adm = cheques(:adm)
     dispo = cheques(:disponivel)
     assert adm.entregue_a_administracao

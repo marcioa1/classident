@@ -8,7 +8,7 @@ ActionController::Routing::Routes.draw do |map|
        :recebe_cheques=>:get,:confirma_recebimento=>:get, 
        :registra_recebimento_de_cheques=>:get, :recebimento_confirmado=>:get, :pesquisa=>:get},
        :member => {:reverte_cheque=>:post, :devolve_a_clinica => :get, 
-                   :recebe_da_administracao => :get, :confirma_recebimento_na_adminitracao => :get}
+                   :recebe_da_administracao => :get, :confirma_recebimento_na_administracao => :get}
                 
   map.resource :clinicas, :collection=>{:producao_entre_datas=>:get, :producao_anual=>:get,
        :relatorio_alta=>:get, :abandono_de_tratamento=>:get, :pacientes_de_ortodontia =>:get,

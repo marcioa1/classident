@@ -291,15 +291,6 @@ class Cheque < ActiveRecord::Base
     nome
   end
   
-  # def nome_dos_pacientes
-  #   nome = ""
-  #   recebimentos = self.recebimentos
-  #   recebimentos.each do |rec|
-  #     nome += rec.paciente.nome + ", "
-  #   end
-  #   nome
-  # end
-  
   def historico
     historia = ""
     historia = "devolvido em #{data_primeira_devolucao.to_s_br} motivo #{motivo_primeira_devolucao} \n" if devolvido_uma_vez?
@@ -308,4 +299,33 @@ class Cheque < ActiveRecord::Base
     historia += "solucionado em #{data_solucao.to_s_br} , #{descricao_solucao}\n" if solucionado?
   end
   
+  def confirma_recebimento_na_administracao     
+    self.update_attribute(:data_recebimento_na_administracao, Date.today)
+    acompanhamento           = AcompanhamentoCheque.new()
+    acompanhamento.cheque_id = self.id
+    acompanhamenro.origem    = session[:clinica_id]
+    acompanhamento.descricao = "#{curren_user.name} confirmou o recebimento em #{Date.today}"
+    acompanhamento.user_id   = current_user
+    acompanhamento.save
+  end
+  
+  def devolve_a_clinica
+    self.update_attribute(:data_envio_a_clinica, Date.today)
+    acompanhamento           = AcompanhamentoCheque.new()
+    acompanhamento.cheque_id = self.id
+    acompanhamenro.origem    = session[:clinica_id]
+    acompanhamento.descricao = "#{curren_user.name} devolveu à clínica em #{Date.today}"
+    acompanhamento.user_id   = current_user
+    acompanhamento.save
+  end
+  
+  def recebe_da_administracao
+    self.update_attribute(:data_recebido_da_administracao, Date.today)
+    acompanhamento           = AcompanhamentoCheque.new()
+    acompanhamento.cheque_id = self.id
+    acompanhamenro.origem    = session[:clinica_id]
+    acompanhamento.descricao = "#{curren_user.name} recebeu da administração em #{Date.today}"
+    acompanhamento.user_id   = current_user
+    acompanhamento.save
+  end
 end
