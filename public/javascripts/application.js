@@ -134,7 +134,7 @@ function abre_cheque(id){
 }
 
 function abre_pagamento(id){
-    window.open("/pagamentos/"+ id,"abre o pagamento" ,"height=600,width=600,status=no,resizable=yes,scrollbars=yes");
+    window.open("/pagamentos/"+ id,"abre o pagamento" ,"heigth=800,width=800,status=no,resizable=yes,scrollbars=yes");
 }
 
 function pesquisa_disponiveis(){

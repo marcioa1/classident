@@ -1,7 +1,7 @@
 %p
   Cheques utilizados 
   %br
-  %table{:celpadding=>0, :cellspacing=>0, :border=>1}
+  %table{:cellpadding=>3, :cellspacing=>0, :border=>1}
     %tr{:style=>'background-color: #455A79; color: white;'}
       - if @clinica_atual.administracao?
         %td Clínica
@@ -9,6 +9,7 @@
       %th{:width=>"90px"}Valor
       %th{:width=>"120px"}Banco
       %th Número
+      %th Bom para
     - pagamento.cheques.each() do |cheque|
       %tr
         - if @clinica_atual.administracao?
@@ -17,3 +18,4 @@
         %td{:align=>"right"}= cheque.valor.real 
         %td= cheque.banco.numero.to_s + "-" + cheque.banco.nome if cheque.banco
         %td= cheque.numero 
+        %td= cheque.bom_para.to_s_br
