@@ -5,7 +5,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :altas, :collection => {:retorno => :get}
   map.resources :bancos
   map.resources :cheques, :collection=>{:busca_disponiveis=>:get, :cheques_recebidos=>:get, 
-       :recebe_cheques=>:get,:confirma_recebimento=>:get, 
+       :envia_cheques_a_administracao =>:get,:confirma_recebimento=>:get, 
        :registra_recebimento_de_cheques=>:get, :recebimento_confirmado=>:get, :pesquisa=>:get},
        :member => {:reverte_cheque=>:post, :devolve_a_clinica => :get, 
                    :recebe_da_administracao => :get, :confirma_recebimento_na_administracao => :get}

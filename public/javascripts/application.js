@@ -108,7 +108,7 @@ function enviar_administracao(){
                selecionados += item + ",";
              }
     }
-    $.getJSON("recebe_cheques", {cheques: selecionados}, function(data){
+    $.getJSON("envia_cheques_a_administracao", {cheques: selecionados}, function(data){
       $("form:last").trigger("submit");
     });
 }

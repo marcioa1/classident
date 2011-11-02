@@ -170,13 +170,12 @@ class ChequesController < ApplicationController
     @titulo = "Lista de cheques entre #{@data_inicial.to_s_br}e #{@data_final.to_s_br} , #{params[:status]}"
   end
   
-  def recebe_cheques
+  def envia_cheques_a_administracao
     lista = params[:cheques].split(",")
     lista.each() do |numero|
       id      = numero.split("_")
       cheque  = Cheque.find(id[1].to_i)
-      cheque.data_entrega_administracao =  Date.today
-      cheque.save
+      cheque.envia_a_administracao
     end
     render :json => (lista.size.to_s  + " cheques recebidos.").to_json
   end
@@ -194,8 +193,7 @@ class ChequesController < ApplicationController
     lista = params[:cheques].split(",")
     lista.each() do |numero|
       cheque = Cheque.find(numero.to_i)
-      cheque.data_recebimento_na_administracao = Date.today
-      cheque.save
+      cheque.confirma_recebimento_na_administracao
     end
     render :json => (lista.size.to_s  + " cheques recebidos.").to_json
   end
@@ -281,4 +279,5 @@ class ChequesController < ApplicationController
     cheque.update_attribute(:data_recebido_da_administracao, Date.today)
     head :ok
   end  
+  
 end

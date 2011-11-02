@@ -299,33 +299,27 @@ class Cheque < ActiveRecord::Base
     historia += "solucionado em #{data_solucao.to_s_br} , #{descricao_solucao}\n" if solucionado?
   end
   
+  def envia_cheque_a_administracao
+    self.update_attribute(:data_entrega_administracao, Date.today)
+    AcompanhamentoCheque.create(:cheque_id => self.id,
+         :descricao => "#{curren_user.name} enviou o cheque à administraçã em #{Date.today}")
+  end
+  
   def confirma_recebimento_na_administracao     
     self.update_attribute(:data_recebimento_na_administracao, Date.today)
-    acompanhamento           = AcompanhamentoCheque.new()
-    acompanhamento.cheque_id = self.id
-    acompanhamento.origem    = session[:clinica_id]
-    acompanhamento.descricao = "#{curren_user.name} confirmou o recebimento em #{Date.today}"
-    acompanhamento.user_id   = current_user
-    acompanhamento.save
+    AcompanhamentoCheque.create(:cheque_id => self.id,
+         :descricao => "#{curren_user.name} confirmou o recebimento em #{Date.today}")
   end
   
   def devolve_a_clinica
     self.update_attribute(:data_envio_a_clinica, Date.today)
-    acompanhamento           = AcompanhamentoCheque.new()
-    acompanhamento.cheque_id = self.id
-    acompanhamento.origem    = session[:clinica_id]
-    acompanhamento.descricao = "#{curren_user.name} devolveu à clínica em #{Date.today}"
-    acompanhamento.user_id   = current_user
-    acompanhamento.save
+    AcompanhamentoCheque.create(:cheque_id => self.id,
+         :descricao => "#{curren_user.name} devolveu à clínica em #{Date.today}")
   end
   
   def recebe_da_administracao
     self.update_attribute(:data_recebido_da_administracao, Date.today)
-    acompanhamento           = AcompanhamentoCheque.new()
-    acompanhamento.cheque_id = self.id
-    acompanhamento.origem    = session[:clinica_id]
-    acompanhamento.descricao = "#{curren_user.name} recebeu da administração em #{Date.today}"
-    acompanhamento.user_id   = current_user
-    acompanhamento.save
+    AcompanhamentoCheque.create(:cheque_id => self.id,
+         :descricao => "#{curren_user.name} recebeu da administração em #{Date.today}")
   end
 end
