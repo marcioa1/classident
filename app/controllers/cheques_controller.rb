@@ -170,7 +170,7 @@ class ChequesController < ApplicationController
     @titulo = "Lista de cheques entre #{@data_inicial.to_s_br}e #{@data_final.to_s_br} , #{params[:status]}"
   end
   
-  def envia_cheques_a_administracao
+  def envia_cheques_a_administracao(session[:clinica_id])
     lista = params[:cheques].split(",")
     lista.each() do |numero|
       id      = numero.split("_")
@@ -193,7 +193,7 @@ class ChequesController < ApplicationController
     lista = params[:cheques].split(",")
     lista.each() do |numero|
       cheque = Cheque.find(numero.to_i)
-      cheque.confirma_recebimento_na_administracao
+      cheque.confirma_recebimento_na_administracao(session[:clinica_id])
     end
     render :json => (lista.size.to_s  + " cheques recebidos.").to_json
   end
@@ -258,7 +258,7 @@ class ChequesController < ApplicationController
   
   def confirma_recebimento_na_administracao
     cheque = Cheque.find(params[:id])
-    cheque.confirma_recebimento_na_administracao
+    cheque.confirma_recebimento_na_administracao(session[:clinica_id])
     head :ok
   end
 
@@ -270,13 +270,14 @@ class ChequesController < ApplicationController
 
   def devolve_a_clinica
     cheque = Cheque.find(params[:id])
-    cheque.devolve_a_clinica
+    cheque.devolve_a_clinica(session[:clinica_id])
     head :ok
   end
 
   def recebe_da_administracao
     cheque = Cheque.find(params[:id])
-    cheque.update_attribute(:data_recebido_da_administracao, Date.today)
+    cheque.recebe_da_adminitracao(session[:clinica_id])
+    # cheque.update_attribute(:data_recebido_da_administracao, Date.today)
     head :ok
   end  
   

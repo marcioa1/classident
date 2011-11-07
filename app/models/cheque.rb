@@ -299,34 +299,34 @@ class Cheque < ActiveRecord::Base
     historia += "solucionado em #{data_solucao.to_s_br} , #{descricao_solucao}\n" if solucionado?
   end
   
-  def envia_cheque_a_administracao
+  def envia_cheque_a_administracao(clinica_id)
     self.update_attribute(:data_entrega_administracao, Date.today)
     AcompanhamentoCheque.create(:cheque_id => self.id,
-         :origem    => session[:clinica_id],
+         :origem    => clinica_id,
          :user_id   => current_user.id, 
          :descricao => "#{curren_user.name} enviou o cheque à administraçã em #{Date.today}")
   end
   
-  def confirma_recebimento_na_administracao     
+  def confirma_recebimento_na_administracao(clinica_id)    
     self.update_attribute(:data_recebimento_na_administracao, Date.today)
     AcompanhamentoCheque.create(:cheque_id => self.id,
-         :origem    => session[:clinica_id],
+         :origem    => clinica_id,
          :user_id   => current_user.id, 
          :descricao => "#{curren_user.name} confirmou o recebimento em #{Date.today}")
   end
   
-  def devolve_a_clinica
+  def devolve_a_clinica(clinica_id)
     self.update_attribute(:data_envio_a_clinica, Date.today)
     AcompanhamentoCheque.create(:cheque_id => self.id,
-         :origem    => session[:clinica_id],
+         :origem    => clinica_id,
          :user_id   => current_user.id, 
          :descricao => "#{curren_user.name} devolveu à clínica em #{Date.today}")
   end
   
-  def recebe_da_administracao
+  def recebe_da_administracao(clinica_id)
     self.update_attribute(:data_recebido_da_administracao, Date.today)
     AcompanhamentoCheque.create(:cheque_id => self.id,
-         :origem    => session[:clinica_id],
+         :origem    => clinica_id,
          :user_id   => current_user.id, 
          :descricao => "#{curren_user.name} recebeu da administração em #{Date.today}")
   end
