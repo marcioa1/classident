@@ -170,12 +170,12 @@ class ChequesController < ApplicationController
     @titulo = "Lista de cheques entre #{@data_inicial.to_s_br}e #{@data_final.to_s_br} , #{params[:status]}"
   end
   
-  def envia_cheques_a_administracao(session[:clinica_id])
+  def envia_cheques_a_administracao
     lista = params[:cheques].split(",")
     lista.each() do |numero|
       id      = numero.split("_")
       cheque  = Cheque.find(id[1].to_i)
-      cheque.envia_a_administracao
+      cheque.envia_a_administracao(session[:clinica_id])
     end
     render :json => (lista.size.to_s  + " cheques recebidos.").to_json
   end
