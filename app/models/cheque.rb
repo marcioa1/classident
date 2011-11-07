@@ -13,6 +13,8 @@ class Cheque < ActiveRecord::Base
   validates_presence_of :bom_para,  :message => "Não pode ser vazio"
   validates_numericality_of :valor, :greater_then => 0, :message => "valor tem que ser maior que zero."
   
+  validate :valor_igual_ao_recebimento
+  
   named_scope :ate_a_data, lambda {|data| {:conditions => ['bom_para <= ?', data]}}
   named_scope :com_destinacao, :conditions=>["destinacao_id IS NOT NULL"]
   named_scope :com_numero, lambda{|numero| {:conditions=>["numero=?",numero ]}}
@@ -104,6 +106,16 @@ class Cheque < ActiveRecord::Base
     self.data_solucao = valor.to_date if Date.valid?(valor)  
   end
 
+  def valor_igual_ao_recebimento
+    total_recebimento = 0
+    self.recebimentos.each do |rec|
+      total_recebimento += rec.valor
+    end
+    if self.valor != total_recebimento
+      self.errors.add(:valor, "O total dos valores do(s) recebimento(s) é diferente do valor deste cheque.")
+    end
+  end
+  
   
   def status
     return "solucionado" unless !solucionado?

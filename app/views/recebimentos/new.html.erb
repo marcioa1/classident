@@ -38,6 +38,9 @@
   <legend>Novo recebimento</legend>
   <% form_for(@recebimento, @cheque) do |f| %>
     <%= f.error_messages %>
+    <% if @cheque && @cheque.invalid? %>
+      <%= @cheque.errors.full_messages %>
+    <% end %>
     <%= f.hidden_field :paciente_id %>
     <%= f.hidden_field :clinica_id %>
     <table class='transparente'>

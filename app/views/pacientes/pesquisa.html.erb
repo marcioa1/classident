@@ -11,7 +11,7 @@
         window.location = "/pacientes/0/abre?nome=" + nome
       }
 
-      $("#iniciais").autocomplete({
+      $("#iniciais-0").autocomplete({
         source: "pesquisa_nomes",
         minLength: 5,
         maxRows: 5,
@@ -26,17 +26,28 @@
         },
       });
     });
+    
+    function busca_pacientes_pelas_iniciais(){
+      $.ajax({
+        get :"pacientes/pesquisa_nomes",
+        data :{ term :$("#iniciais").val()},
+        success :function(data){
+          alert(data);
+        }
+      });
+    }
 </script>
 <div>
   <% form_tag pesquisa_pacientes_path do %>
     <div>
       <label>Código : </label>
-      <%= text_field_tag :codigo, params[:codigo], :size=>8, :onblur=>"$('#pesquisar_button').attr('disabled',true); )", :onfocus=>"limpa_nome();" %>&nbsp;&nbsp;<%= submit_tag "pesquisar", :disabled=>false, :id=>"pesquisar_button" %>
+      <%= text_field_tag :codigo, params[:codigo], :size=>8, :onblur=>"$('#pesquisar_button').attr('disabled',true); )", :onfocus=>"limpa_nome();" %>&nbsp;&nbsp;<%= submit_tag "pesquisar pelo código", :disabled=>false, :id=>"pesquisar_button" %>
     </div>
     <div>
       <label>Paciente : </label>
       <span class="ui-widget">
-      <input id="iniciais" size="40" class="ui-autocomplete-input"></span>
+      <input id="iniciais" size="40" class="">
+      <%= button_to_function "pesquisa", "busca_pacientes_pelas_iniciais()" %></span>
     </div>
   <% end %>
 </div>
