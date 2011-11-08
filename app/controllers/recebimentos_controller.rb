@@ -44,7 +44,6 @@ class RecebimentosController < ApplicationController
                                        :valor => @recebimento.valor) 
       @recebimento.cheque = @cheque
     end
-    debugger
   end
 
   def create

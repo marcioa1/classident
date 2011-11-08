@@ -88,6 +88,8 @@
           end
         when cheque.status=~/destinação/ then
            cheque.destinacao.nome
+        when cheque.arquivo_morto? then
+          "arquivo morto em #{cheque.data_arquivo_morto.to_s_br}"
         when cheque.entregue_a_administracao? then 
            link_to 'reverter', '#', :onclick=>"javascript:reverte_cheque(#{cheque.id})"
         when cheque.recebido_pela_clinica?

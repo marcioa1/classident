@@ -81,6 +81,7 @@ class ChequesController < ApplicationController
       @status << ["recebidos pela administração", "recebidos pela administração"]
       @status << ["devolvidos à clínica", "devolvidos à clínica"]
       @status << ["recebidos pela clínica", "recebidos pela clínica"]
+      @status << ["arquivo morto", "arquivo morto"]
     # end
     @cheques = []
     if @clinica_atual.administracao?
@@ -128,6 +129,9 @@ class ChequesController < ApplicationController
         when params[:status]=="recebidos pela clínica"
           @cheques = Cheque.recebidos_pela_clinica_entre_datas(@data_inicial,@data_final).
             das_clinicas(selecionadas).ordenado_por(params[:ordem])
+        when params[:status]=="arquivo morto"
+          @cheques = Cheque.arquivo_morto_entre_datas(@data_inicial,@data_final).
+            das_clinicas(selecionadas).ordenado_por(params[:ordem])
       end
     else
       case
@@ -165,6 +169,10 @@ class ChequesController < ApplicationController
         when params[:status]=="recebidos pela clínica"
           @cheques = Cheque.recebidos_pela_clinica_entre_datas(@data_inicial,@data_final).
             da_clinica(session[:clinica_id]).ordenado_por(params[:ordem])
+        when params[:status]=="arquivo morto"
+          @cheques = Cheque.arquivo_morto_entre_datas(@data_inicial,@data_final).
+            da_clinica(session[:clinica_id]).ordenado_por(params[:ordem])
+
       end
     end
     @titulo = "Lista de cheques entre #{@data_inicial.to_s_br}e #{@data_final.to_s_br} , #{params[:status]}"
@@ -175,7 +183,7 @@ class ChequesController < ApplicationController
     lista.each() do |numero|
       id      = numero.split("_")
       cheque  = Cheque.find(id[1].to_i)
-      cheque.envia_a_administracao(session[:clinica_id])
+      cheque.envia_cheque_a_administracao(session[:clinica_id], current_user)
     end
     render :json => (lista.size.to_s  + " cheques recebidos.").to_json
   end
@@ -193,7 +201,7 @@ class ChequesController < ApplicationController
     lista = params[:cheques].split(",")
     lista.each() do |numero|
       cheque = Cheque.find(numero.to_i)
-      cheque.confirma_recebimento_na_administracao(session[:clinica_id])
+      cheque.confirma_recebimento_na_administracao(session[:clinica_id], current_user)
     end
     render :json => (lista.size.to_s  + " cheques recebidos.").to_json
   end
@@ -258,7 +266,7 @@ class ChequesController < ApplicationController
   
   def confirma_recebimento_na_administracao
     cheque = Cheque.find(params[:id])
-    cheque.confirma_recebimento_na_administracao(session[:clinica_id])
+    cheque.confirma_recebimento_na_administracao(session[:clinica_id], current_user)
     head :ok
   end
 
@@ -270,13 +278,13 @@ class ChequesController < ApplicationController
 
   def devolve_a_clinica
     cheque = Cheque.find(params[:id])
-    cheque.devolve_a_clinica(session[:clinica_id])
+    cheque.devolve_a_clinica(session[:clinica_id], current_user)
     head :ok
   end
 
   def recebe_da_administracao
     cheque = Cheque.find(params[:id])
-    cheque.recebe_da_adminitracao(session[:clinica_id])
+    cheque.recebe_da_adminitracao(session[:clinica_id], current_user)
     # cheque.update_attribute(:data_recebido_da_administracao, Date.today)
     head :ok
   end  

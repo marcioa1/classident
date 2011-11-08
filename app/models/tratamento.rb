@@ -146,7 +146,6 @@ class Tratamento < ActiveRecord::Base
     if self.item_tabela && self.item_tabela.dias_de_retorno > 0
       alta = Alta.new()
       alta.paciente_id  = self.paciente_id
-      debugger
       alta.clinica_id   = self.paciente.clinica_id
       alta.observacao   = "Término proc #{self.item_tabela.descricao} em #{self.data}"
       alta.user_id      = user

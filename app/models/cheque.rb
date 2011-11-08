@@ -16,6 +16,8 @@ class Cheque < ActiveRecord::Base
   validate :valor_igual_ao_recebimento
   
   named_scope :ate_a_data, lambda {|data| {:conditions => ['bom_para <= ?', data]}}
+  named_scope :arquivo_morto, :conditions => ["data_arquivo_morto IS NOT NULL"]
+  named_scope :arquivo_morto_entre_datas, lambda{|data_inicial, data_final| { :conditions => ["data_arquivo_morto BETWEEN ? AND ? ", data_inicial, data_final]}}
   named_scope :com_destinacao, :conditions=>["destinacao_id IS NOT NULL"]
   named_scope :com_numero, lambda{|numero| {:conditions=>["numero=?",numero ]}}
   named_scope :da_agencia, lambda{|agencia| {:conditions=>["agencia=?",agencia]}}
@@ -296,8 +298,7 @@ class Cheque < ActiveRecord::Base
   
   def nome_dos_outros_pacientes(nome_paciente)
     nome = ""
-    recebimentos = self.recebimentos
-    recebimentos.each do |rec|
+    self.recebimentos.each do |rec|
       nome += rec.paciente.nome + " , " if rec.paciente.nome != nome_paciente
     end
     nome
@@ -311,7 +312,7 @@ class Cheque < ActiveRecord::Base
     historia += "solucionado em #{data_solucao.to_s_br} , #{descricao_solucao}\n" if solucionado?
   end
   
-  def envia_cheque_a_administracao(clinica_id)
+  def envia_cheque_a_administracao(clinica_id, current_user)
     self.update_attribute(:data_entrega_administracao, Date.today)
     AcompanhamentoCheque.create(:cheque_id => self.id,
          :origem    => clinica_id,
@@ -319,7 +320,7 @@ class Cheque < ActiveRecord::Base
          :descricao => "#{curren_user.name} enviou o cheque à administraçã em #{Date.today}")
   end
   
-  def confirma_recebimento_na_administracao(clinica_id)    
+  def confirma_recebimento_na_administracao(clinica_id, current_user)    
     self.update_attribute(:data_recebimento_na_administracao, Date.today)
     AcompanhamentoCheque.create(:cheque_id => self.id,
          :origem    => clinica_id,
@@ -327,7 +328,7 @@ class Cheque < ActiveRecord::Base
          :descricao => "#{curren_user.name} confirmou o recebimento em #{Date.today}")
   end
   
-  def devolve_a_clinica(clinica_id)
+  def devolve_a_clinica(clinica_id, current_user)
     self.update_attribute(:data_envio_a_clinica, Date.today)
     AcompanhamentoCheque.create(:cheque_id => self.id,
          :origem    => clinica_id,
@@ -335,7 +336,7 @@ class Cheque < ActiveRecord::Base
          :descricao => "#{curren_user.name} devolveu à clínica em #{Date.today}")
   end
   
-  def recebe_da_administracao(clinica_id)
+  def recebe_da_administracao(clinica_id, current_user)
     self.update_attribute(:data_recebido_da_administracao, Date.today)
     AcompanhamentoCheque.create(:cheque_id => self.id,
          :origem    => clinica_id,
