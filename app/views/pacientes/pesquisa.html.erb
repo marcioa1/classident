@@ -8,13 +8,28 @@
 <script type="text/javascript">
   $(function() {
       function busca_por_nome(nome){
-        window.location = "/pacientes/0/abre?nome=" + nome
+        window.location = "/pacientes/0/abre?nome=" + nome;
       }
 
-      $("#iniciais-0").autocomplete({
+      $("#iniciais").keypress(function(keycode){
+        if (keycode.which == 13 && $("#iniciais").val().length>5){
+          $.ajax({
+            url: '/pacientes/pesquisa_nomes',
+            data: {term : $("#iniciais").val()},
+            type: "GET",
+            success: function(data){
+              $("#nomes").empty();
+              $("#nomes").html(data);
+            }
+            
+          });
+        }
+      });
+
+      $("#iniciais2").autocomplete({
         source: "pesquisa_nomes",
         minLength: 5,
-        maxRows: 5,
+        maxRows: 7,
         select: function(event,ui){
           nome = ui.item.value;
           busca_por_nome(nome);
@@ -46,8 +61,10 @@
     <div>
       <label>Paciente : </label>
       <span class="ui-widget">
-      <input id="iniciais" size="40" class="">
-      <%= button_to_function "pesquisa", "busca_pacientes_pelas_iniciais()" %></span>
+        <input id="iniciais" size="40" class="">
+        <ul id="nomes"></ul>
+        <%= button_to_function "pesquisa", "busca_pacientes_pelas_iniciais()" %>
+      </span>
     </div>
   <% end %>
 </div>

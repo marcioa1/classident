@@ -82,16 +82,16 @@ class PacientesController < ApplicationController
   
   def pesquisa_nomes
     if @clinica_atual.administracao?
-      nomes = Paciente.all(:select=>'nome,clinica_id', :conditions=>["nome like ?", "#{params[:term]}%" ])  
+      nomes = Paciente.all(:select=>'nome,clinica_id,id', :conditions=>["nome like ?", "#{params[:term]}%" ])  
     else
-      nomes = Paciente.all(:select=>'nome,clinica_id', :conditions=>["nome like ? and clinica_id = ? ", "#{params[:term].nome_proprio}%", session[:clinica_id] ])  
+      nomes = Paciente.all(:select=>'nome,clinica_id,id', :conditions=>["nome like ? and clinica_id = ? ", "#{params[:term].nome_proprio}%", session[:clinica_id] ])  
     end
-    result = []
+    result = ''
     nomes.each do |pac|
       if @clinica_atual.administracao?
-        result << pac.nome + ', ' + Clinica.find(pac.clinica_id).sigla
+        result += "<li><a href='/pacientes/#{pac.id}/abre'>#{pac.nome}</a> , #{Clinica.find(pac.clinica_id).sigla}</li>"
       else
-        result << pac.nome 
+        result += "<li><a href='/pacientes/#{pac.id}/abre'>#{pac.nome}</a></li>"
       end      
     end
     render :json => result.to_json
