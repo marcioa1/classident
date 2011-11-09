@@ -20,7 +20,7 @@ class ChequesController < ApplicationController
     @bancos = Banco.all(:order=>:nome).collect{|obj| [obj.nome,obj.id]}
     @cheque = Cheque.find(params[:id])
     @destinacoes = Destinacao.all(:conditions=>["clinica_id = ?", session[:clinica_id]], :order=>:nome).collect{|d| [d.nome,d.id]}
-    session[:origem] = edit_cheque_path(@cheque)
+    # session[:origem] = edit_cheque_path(@cheque)
   end
 
   def update
