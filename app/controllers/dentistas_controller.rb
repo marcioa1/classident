@@ -214,7 +214,7 @@ class DentistasController < ApplicationController
           pdf.text "#{Time.current.to_s_br}", :align => :right, :size=>8, :vposition => 10
           pdf.bounding_box [10, 540], :width  => pdf.bounds.width do
             pdf.font "Helvetica"
-            pdf.text "#{@nome_da_clinica} - período #{@data_inicial.to_s_br} a #{@data_final.to_s_br}", :align => :center, :size => 14, :vposition => -20
+            pdf.text "#{@nome_da_clinica} - período #{@data_inicial.to_date.to_s_br} a #{@data_final.to_date.to_s_br}", :align => :center, :size => 14, :vposition => -20
           end
           pdf.horizontal_line 2, 850, :at => 520
           pdf.stroke
