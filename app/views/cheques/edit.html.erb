@@ -31,6 +31,10 @@
     <%= f.label :bom_para %> :
     <%= f.text_field :bom_para_br,  :size=>10, :class => 'datepicker' %>
   </div>
+  <div>
+    <%= f.label :destinação %> :
+    <%= f.select :destinacao_id,  @destinacoes, :include_blank => true %>
+  </div>
  <p>
     <%= check_box_tag :uma_devolucao, 1, checked=@cheque.devolvido_uma_vez? , options={ :onclick=>"abre_uma_devolucao();", :disabled=>!@clinica_atual.administracao? }%> devolvido uma vez
  </p>

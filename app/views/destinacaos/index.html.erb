@@ -1,18 +1,26 @@
-<h1>Listing destinacaos</h1>
+<% content_for :main do %>
+
+<h3>Listando destinacaos</h3>
 
 <table>
   <tr>
+    <th>Nome</th>
+    <th>&nbsp;</th>
+    <th>&nbsp;</th>
+    <th>&nbsp;</th>
   </tr>
 
 <% @destinacaos.each do |destinacao| %>
   <tr>
-    <td><%= link_to 'Show', destinacao %></td>
-    <td><%= link_to 'Edit', edit_destinacao_path(destinacao) %></td>
-    <td><%= link_to 'Destroy', destinacao, :confirm => 'Tem certeza?', :method => :delete %></td>
+    <td><%= destinacao.nome %></td>
+    <td><%= link_to 'mostrar', destinacao %></td>
+    <td><%= link_to 'editar', edit_destinacao_path(destinacao) %></td>
+    <td><%= link_to 'excluir', destinacao, :confirm => 'Tem certeza?', :method => :delete %></td>
   </tr>
 <% end %>
 </table>
 
 <br />
 
-<%= link_to 'New destinacao', new_destinacao_path %>
+<%= link_to 'Nova destinação', new_destinacao_path %>
+<% end %>

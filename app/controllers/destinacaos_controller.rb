@@ -1,7 +1,9 @@
 class DestinacaosController < ApplicationController
 
+  layout "adm"
+  
   def index
-    @destinacaos = Destinacao.all
+    @destinacaos = Destinacao.all(:conditions=>(["clinica_id =?",  session[:clinica_id]]), :order=>:nome)
   end
 
   def show
@@ -18,10 +20,11 @@ class DestinacaosController < ApplicationController
 
   def create
     @destinacao = Destinacao.new(params[:destinacao])
+    @destinacao.clinica_id = session[:clinica_id]
 
     if @destinacao.save
       flash[:notice] = 'Destinacao criado com sucesso.'
-      redirect_to(@destinacao) 
+      redirect_to(destinacaos_path) 
     else
       render :action => "new" 
     end
