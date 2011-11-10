@@ -128,7 +128,7 @@ class Tratamento < ActiveRecord::Base
       debito.paciente_id   = self.paciente_id
       debito.tratamento_id = self.id
       debito.descricao     = self.descricao + " (dente :" + self.dente + ")"
-      debito.valor         = self.valor
+      debito.valor         = self.valor_com_desconto
       debito.data          = self.data
       debito.save
     else
