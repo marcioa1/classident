@@ -13,7 +13,7 @@ class Cheque < ActiveRecord::Base
   validates_presence_of :bom_para,  :message => "Não pode ser vazio"
   validates_numericality_of :valor, :greater_then => 0, :message => "valor tem que ser maior que zero."
   
-  validate :valor_igual_ao_recebimento
+  # validate :valor_igual_ao_recebimento
   
   named_scope :ate_a_data, lambda {|data| {:conditions => ['bom_para <= ?', data]}}
   named_scope :arquivo_morto, :conditions => ["data_arquivo_morto IS NOT NULL"]
