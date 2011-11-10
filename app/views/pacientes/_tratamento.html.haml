@@ -24,6 +24,12 @@
     %th{ :width => "60px" }
       %br
       Valor
+    %th{ :width => "30px" }
+      %br
+      Desconto (%)
+    %th{ :width => "60px" }
+      %br
+      Valor final
     %th{ :width => "60px" }
       %br
       Custo
@@ -47,6 +53,7 @@
       %br
       Excluir
   - total = 0.0
+  - total_com_desconto = 0.0
   - @paciente.tratamentos.each() do |tratamento|
     %tr{:style=>'height: 40px;'}
       %td{ :align => "center" }= tratamento.dente
@@ -58,6 +65,8 @@
         - else
           = tratamento.descricao
       %td{ :align => "right" }= tratamento.valor.real
+      %td{ :align => "right" }= tratamento.desconto
+      %td{ :align => "right" }= tratamento.valor_com_desconto.real
       %td{ :align => "right" }= tratamento.custo.real
       %td= tratamento.dentista.nome unless tratamento.dentista.nil?
       %td{ :align => "center" }
@@ -80,10 +89,15 @@
       %td{ :align => "center" }
         = link_to "excluir",  tratamento, :confirm => 'Tem certeza ?', :method=>:delete , :class => "ui-icon ui-icon-trash", :title => 'excluir'  if tratamento.pode_excluir?
     - total += tratamento.valor
+    - total_com_desconto += tratamento.valor_com_desconto
   %tr
     %td{ :align => "center", :colspan => "4" }
       Total
     %td{ :align => "right" }
       = total.real
-    %td{ :colspan => "6" }
+    %td
+      &nbsp;
+    %td{ :align => 'right'}
+      = total_com_desconto.real
+    %td{ :colspan => "7" }
 = link_to "imprime", imprime_tratamento_paciente_path(@paciente)

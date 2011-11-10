@@ -192,4 +192,19 @@ class Tratamento < ActiveRecord::Base
     self.save
   end
   
+  def desconto
+    if self.orcamento
+      self.orcamento.desconto
+    else
+      0
+    end
+  end
+  
+  def valor_com_desconto
+    if self.desconto > 0
+      self.valor * (100-self.desconto) / 100
+    else
+      self.valor
+    end
+  end
 end
