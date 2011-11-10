@@ -66,6 +66,12 @@
     <%= f.label :valor %> :
     <%= f.text_field :valor_pt, :size=>10, :class=>'txt'  %>
   </div>
+  <% if @tratamento.orcamento && @tratamento.orcamento.desconto > 0 %>
+    <div>
+      <%= f.label :desconto %> : <%= @tratamento.orcamento.desconto %> % <br />
+      <%= f.label :valor_com_desconto %> : <%= @tratamento.valor_com_desconto.real %>
+    </div>
+  <% end %>
   <div>
     <%= f.label :custo %> :
     <%= f.text_field :custo_pt, :size=>10, :class=>'txt' %>
