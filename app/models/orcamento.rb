@@ -116,8 +116,8 @@ class Orcamento < ActiveRecord::Base
       self.tratamentos.each do |trat|
         total += trat.valor if !trat.excluido?
       end
+      self.valor = total
     end
-    self.valor = total
     if self.desconto && self.desconto != 0
       self.valor_com_desconto = self.valor * ( 1 - (self.desconto / 100)) 
     else
