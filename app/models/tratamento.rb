@@ -122,7 +122,7 @@ class Tratamento < ActiveRecord::Base
     self.item_tabela && (!self.item_tabela.tem_custo_de_protetico? || self.custo > 0)
   end
   
-  def finalizar_procedimento(user)
+  def finalizar_procedimento(user, clinica_id)
     if self.valor > 0
       debito               = Debito.new
       debito.paciente_id   = self.paciente_id
@@ -130,6 +130,7 @@ class Tratamento < ActiveRecord::Base
       debito.descricao     = self.descricao + " (dente :" + self.dente + ")"
       debito.valor         = self.valor_com_desconto
       debito.data          = self.data
+      debito.clinica_id    = clinica_id 
       debito.save
     else
       if self.orcamento && self.orcamento.em_aberto?

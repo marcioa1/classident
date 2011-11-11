@@ -28,7 +28,7 @@ class TratamentosController < ApplicationController
       @tratamento.clinica_id  = session[:clinica_id]
       @tratamento.excluido    = false
       if @tratamento.save 
-        @tratamento.finalizar_procedimento(current_user) if @tratamento.data
+        @tratamento.finalizar_procedimento(current_user, session[:clinica_id]) if @tratamento.data
       else
         erro = true
       end
@@ -105,7 +105,7 @@ class TratamentosController < ApplicationController
     begin
       @tratamento.data = Date.today
       @paciente        = @tratamento.paciente
-      @tratamento.finalizar_procedimento(current_user)
+      @tratamento.finalizar_procedimento(current_user, session[:clinica_id])
       @tratamento.save!
       Alta.verifica_alta_automatica(current_user, session[:clinica_id], @tratamento)
       Rails.cache.write(@paciente.id.to_s, @paciente, :expires_in => 2.minutes) 
