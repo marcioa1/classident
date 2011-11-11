@@ -139,7 +139,7 @@
     </p>
   <% end %>
   <p>
-    <%= f.submit 'Update' unless (@cheque.entregue_a_administracao? && !@clinica_atual.administracao?) || @cheque.para_mais_de_um_paciente? %>
+    <%= f.submit 'Update' unless (@cheque.entregue_a_administracao? && !@clinica_atual.administracao?)  %>
   </p>
 <% end %>
 <%= link_to 'adiciona observação', new_acompanhamento_cheque_path(:cheque_id => @cheque.id) %>
