@@ -71,11 +71,12 @@ class TratamentosController < ApplicationController
           @debito = Debito.find_by_tratamento_id(@tratamento.id)
           if @debito.nil?
             @debito = Debito.new
-            @debito.paciente_id = @tratamento.paciente_id
+            @debito.paciente_id   = @tratamento.paciente_id
             @debito.tratamento_id = @tratamento.id
+            @debito.clinica_id    = @tratamento.paciente.clinica_id
           end
           @debito.descricao = @tratamento.descricao
-          @debito.valor     = @tratamento.valor
+          @debito.valor     = @tratamento.valor_com_desconto
           @debito.data      = @tratamento.data
           @debito.save
         end
