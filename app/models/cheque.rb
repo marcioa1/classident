@@ -333,7 +333,7 @@ class Cheque < ActiveRecord::Base
     AcompanhamentoCheque.create(:cheque_id => self.id,
          :origem    => clinica_id,
          :user_id   => current_user.id, 
-         :descricao => "#{current_user.nomee} devolveu à clínica em #{Date.today}")
+         :descricao => "#{current_user.nome} devolveu à clínica em #{Date.today}")
   end
   
   def recebe_da_administracao(clinica_id, current_user)
