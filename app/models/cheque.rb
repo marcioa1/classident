@@ -317,7 +317,7 @@ class Cheque < ActiveRecord::Base
     AcompanhamentoCheque.create(:cheque_id => self.id,
          :origem    => clinica_id,
          :user_id   => current_user.id, 
-         :descricao => "#{curren_user.name} enviou o cheque à administraçã em #{Date.today}")
+         :descricao => "#{current_user.name} enviou o cheque à administraçã em #{Date.today}")
   end
   
   def confirma_recebimento_na_administracao(clinica_id, current_user)    
@@ -325,7 +325,7 @@ class Cheque < ActiveRecord::Base
     AcompanhamentoCheque.create(:cheque_id => self.id,
          :origem    => clinica_id,
          :user_id   => current_user.id, 
-         :descricao => "#{curren_user.name} confirmou o recebimento em #{Date.today}")
+         :descricao => "#{current_user.name} confirmou o recebimento em #{Date.today}")
   end
   
   def devolve_a_clinica(clinica_id, current_user)
@@ -333,7 +333,7 @@ class Cheque < ActiveRecord::Base
     AcompanhamentoCheque.create(:cheque_id => self.id,
          :origem    => clinica_id,
          :user_id   => current_user.id, 
-         :descricao => "#{curren_user.name} devolveu à clínica em #{Date.today}")
+         :descricao => "#{current_user.name} devolveu à clínica em #{Date.today}")
   end
   
   def recebe_da_administracao(clinica_id, current_user)
@@ -341,6 +341,6 @@ class Cheque < ActiveRecord::Base
     AcompanhamentoCheque.create(:cheque_id => self.id,
          :origem    => clinica_id,
          :user_id   => current_user.id, 
-         :descricao => "#{curren_user.name} recebeu da administração em #{Date.today}")
+         :descricao => "#{current_user.name} recebeu da administração em #{Date.today}")
   end
 end
