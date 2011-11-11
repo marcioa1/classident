@@ -48,7 +48,7 @@
         <td><%= cheque.nome_dos_pacientes  %></td>
         <td>
           <% if cheque.usado_para_pagamento? %>
-            <%= link_to cheque.status, "#", :onclick=>'abre_pagamento( ' + cheque.pagamento_id.to_s + ')'%>
+            <%= link_to cheque.status + " / " + cheque.pagamento.tipo_pagamento.nome, "#", :onclick=>'abre_pagamento( ' + cheque.pagamento_id.to_s + ')'%>
           <% else %>
             <%=  cheque.status %>
           <% end %>
