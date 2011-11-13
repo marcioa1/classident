@@ -82,7 +82,7 @@
     <td id="td_<%= cheque.id%>"><%= status = case 
         when cheque.status=~/usado pgto/ then
           if !@clinica_atual.administracao?
-            "usado p/ pagamento"
+            "usado p/ pagamento, #{cheque.pagamento.tipo_pagamento.nome}"
           else
             link_to cheque.pagamento.tipo_pagamento.nome, '#', :onclick=>'javascript:abre_pagamento('+ cheque.pagamento_id.to_s + ')' 
           end
