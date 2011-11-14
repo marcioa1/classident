@@ -285,8 +285,7 @@ class ChequesController < ApplicationController
 
   def recebe_da_administracao
     cheque = Cheque.find(params[:id])
-    cheque.recebe_da_adminitracao(session[:clinica_id], current_user)
-    # cheque.update_attribute(:data_recebido_da_administracao, Date.today)
+    cheque.recebe_da_administracao(session[:clinica_id], current_user)
     head :ok
   end  
   
