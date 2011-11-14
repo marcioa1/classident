@@ -1,0 +1,14 @@
+%fieldset
+  %legend
+    Acompanhamentos
+  %br
+  %table
+    %tr
+      %th= "Observação"
+      %th= "Data"
+    - @cheque.acompanhamento_cheques.each do |acom|
+      %tr
+        %td= acom.descricao
+        %td= acom.created_at.to_s_br
+  %br
+  = link_to 'adiciona observação', new_acompanhamento_cheque_path(:cheque_id => @cheque.id)

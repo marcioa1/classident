@@ -310,6 +310,10 @@ class Cheque < ActiveRecord::Base
     historia += "reapresentado em #{data_reapresentacao.to_s_br} \n" if reapresentado?
     historia += "devolvido pela segunda vez em #{data_segunda_devolucao.to_s_br} por #{motivo_segunda_devolucao} \n" if devolvido_duas_vezes?
     historia += "solucionado em #{data_solucao.to_s_br} , #{descricao_solucao}\n" if solucionado?
+    self.acompanhamento_cheques.each do |acom|
+      historia += acom.descricao + " ( #{acom.created_at.to_s_br}), "
+    end
+    historia
   end
   
   def envia_cheque_a_administracao(clinica_id, current_user)
