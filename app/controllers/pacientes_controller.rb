@@ -223,6 +223,8 @@ class PacientesController < ApplicationController
     
     verify_existence_of_directory
     
+    numero = params[:numero] 
+    
     Prawn::Document.generate(File.join(Rails.root , "impressoes/#{session[:clinica_id]}/tratamento.pdf")) do |pdf|
       pdf.font_size = 14
       pdf.draw_text "Número : #{@paciente.codigo}", :at => [ 2,740 ]
@@ -235,16 +237,18 @@ class PacientesController < ApplicationController
       pdf.font_size = 8
       y = 725
       @paciente.tratamentos.each do |trat|
-        pdf.draw_text trat.dente, :at => [30, y]
-        pdf.draw_text trat.descricao.gsub(/[^a-z0-9.:,$áéíóúãõ˜eç\/\- ]/i,'.'), :at => [ 60, y]
-        if trat.valor.present?
-          pdf.bounding_box([180, y+7], :width => 50, :height => 12) do
-            pdf.text trat.valor.real.to_s, :align => :right
+        if numero.nil? || (trat.orcamento && (numero.to_i == trat.orcamento.numero))
+          pdf.draw_text trat.dente, :at => [30, y]
+          pdf.draw_text trat.descricao.gsub(/[^a-z0-9.:,$áéíóúãõ˜eç\/\- ]/i,'.'), :at => [ 60, y]
+          if trat.valor.present?
+            pdf.bounding_box([180, y+7], :width => 50, :height => 12) do
+              pdf.text trat.valor.real.to_s, :align => :right
+            end
           end
+          pdf.horizontal_line -20, 380, :at => y-2
+          pdf.stroke
+          y -= 12
         end
-        pdf.horizontal_line -20, 380, :at => y-2
-        pdf.stroke
-        y -= 12
       end
       
       recebimentos = @paciente.recebimentos_validos.sort { |a,b| a.data<=>b.data }

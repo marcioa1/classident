@@ -101,3 +101,6 @@
       = total_com_desconto.real
     %td{ :colspan => "7" }
 = link_to "imprime", imprime_tratamento_paciente_path(@paciente)
+- @paciente.orcamentos.each do |o|
+  |
+  = link_to "imprime #{o.numero}", imprime_tratamento_paciente_path(@paciente, :numero => o.numero)
