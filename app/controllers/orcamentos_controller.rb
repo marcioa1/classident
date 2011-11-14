@@ -170,8 +170,6 @@ class OrcamentosController < ApplicationController
       pdf.text @orcamento.valor.real.to_s, :align => :right
     end
 
-
-
     y -= 20
     pdf.draw_text "Forma de pagamento ", :at => [10, y]
     if @orcamento.a_vista?

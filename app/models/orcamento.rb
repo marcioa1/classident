@@ -107,7 +107,7 @@ class Orcamento < ActiveRecord::Base
   end
   
   def a_vista?
-    self.forma_de_pagamento = 'a vista'
+    self.forma_de_pagamento == 'a vista'
   end
   
   def recalcula_valor
