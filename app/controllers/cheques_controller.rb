@@ -45,7 +45,7 @@ class ChequesController < ApplicationController
       if valor_anterior != @cheque.valor
         @cheque.recebimentos.first.update_attribute(:valor, @cheque.valor)
       end
-      redirect_to( session[:origem] ) 
+      redirect_to( session[:origem].present? ? session[:origem] : :back  ) 
     else
       render :action => "edit" 
     end
