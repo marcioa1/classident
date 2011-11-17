@@ -52,6 +52,9 @@
     %th
       %br
       Excluir
+    - if current_user.master?
+      %th
+        &nbsp;
   - total = 0.0
   - total_com_desconto = 0.0
   - @paciente.tratamentos.each() do |tratamento|
@@ -88,6 +91,9 @@
           = link_to 'editar', edit_tratamento_path(:id=>tratamento.id), :class=>'ui-icon ui-icon-pencil' , :title=>'editar'
       %td{ :align => "center" }
         = link_to "excluir",  tratamento, :confirm => 'Tem certeza ?', :method=>:delete , :class => "ui-icon ui-icon-trash", :title => 'excluir'  if tratamento.pode_excluir?
+      - if current_user.master?
+        %td
+          =link_to "liberar", new_alteraco_path(:tabela => 'tratamentos', :id_registro => tratamento.id)
     - total += tratamento.valor
     - total_com_desconto += tratamento.valor_com_desconto
   %tr

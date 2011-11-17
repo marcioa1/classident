@@ -1,0 +1,6 @@
+<% content_for :main do %>
+<% form_for(@alteraco) do |f| %>
+  <%= f.error_messages %>
+  <%= f.submit "confirma a liberação deste registro para alteração ?" %>
+<% end %>
+<% end %>

@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111027163101) do
+ActiveRecord::Schema.define(:version => 20111117105022) do
 
   create_table "abonos", :force => true do |t|
     t.date     "data"
@@ -47,6 +47,15 @@ ActiveRecord::Schema.define(:version => 20111027163101) do
   end
 
   add_index "altas", ["user_id"], :name => "index_altas_on_user_id"
+
+  create_table "alteracoes", :force => true do |t|
+    t.string   "tabela"
+    t.integer  "id_liberado"
+    t.date     "data_correcao"
+    t.integer  "user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "audits", :force => true do |t|
     t.integer  "auditable_id"
@@ -119,6 +128,9 @@ ActiveRecord::Schema.define(:version => 20111027163101) do
   end
 
   add_index "cheques", ["banco_id"], :name => "index_cheques_on_banco_id"
+  add_index "cheques", ["clinica_id", "numero", "agencia"], :name => "clinica_id"
+  add_index "cheques", ["clinica_id", "numero", "conta_corrente"], :name => "clinica_id_2"
+  add_index "cheques", ["clinica_id", "numero", "valor"], :name => "clinica_id_3"
   add_index "cheques", ["clinica_id"], :name => "index_cheques_on_clinica_id"
   add_index "cheques", ["data_entrega_administracao"], :name => "index_cheques_on_data_entrega_administracao"
   add_index "cheques", ["data_recebimento_na_administracao"], :name => "index_cheques_on_data_recebimento_na_administracao"
@@ -390,6 +402,7 @@ ActiveRecord::Schema.define(:version => 20111027163101) do
     t.string   "forma_de_pagamento"
   end
 
+  add_index "pagamentos", ["clinica_id", "sequencial"], :name => "clinica_id"
   add_index "pagamentos", ["clinica_id"], :name => "index_pagamentos_on_clinica_id"
   add_index "pagamentos", ["conta_bancaria_id"], :name => "index_pagamentos_on_conta_bancaria_id"
   add_index "pagamentos", ["dentista_id"], :name => "index_pagamentos_on_dentista_id"
@@ -596,22 +609,22 @@ ActiveRecord::Schema.define(:version => 20111027163101) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean  "ativo",                            :default => true
-    t.datetime "hora_de_inicio_0",                 :default => '2011-10-21 10:00:00'
-    t.datetime "hora_de_termino_0",                :default => '2011-10-21 20:00:00'
-    t.datetime "hora_de_inicio_1",                 :default => '2011-10-21 10:00:00'
-    t.datetime "hora_de_termino_1",                :default => '2011-10-21 20:00:00'
-    t.datetime "hora_de_inicio_2",                 :default => '2011-10-21 10:00:00'
-    t.datetime "hora_de_termino_2",                :default => '2011-10-21 20:00:00'
-    t.datetime "hora_de_inicio_3",                 :default => '2011-10-21 10:00:00'
-    t.datetime "hora_de_termino_3",                :default => '2011-10-21 20:00:00'
-    t.datetime "hora_de_inicio_4",                 :default => '2011-10-21 10:00:00'
-    t.datetime "hora_de_termino_4",                :default => '2011-10-21 20:00:00'
-    t.datetime "hora_de_inicio_5",                 :default => '2011-10-21 10:00:00'
-    t.datetime "hora_de_termino_5",                :default => '2011-10-21 20:00:00'
-    t.datetime "hora_de_inicio_6",                 :default => '2011-10-21 10:00:00'
-    t.datetime "hora_de_termino_6",                :default => '2011-10-21 20:00:00'
-    t.datetime "hora_de_inicio_7",                 :default => '2011-10-21 10:00:00'
-    t.datetime "hora_de_termino_7",                :default => '2011-10-21 20:00:00'
+    t.datetime "hora_de_inicio_0",                 :default => '2011-11-09 10:00:00'
+    t.datetime "hora_de_termino_0",                :default => '2011-11-09 20:00:00'
+    t.datetime "hora_de_inicio_1",                 :default => '2011-11-09 10:00:00'
+    t.datetime "hora_de_termino_1",                :default => '2011-11-09 20:00:00'
+    t.datetime "hora_de_inicio_2",                 :default => '2011-11-09 10:00:00'
+    t.datetime "hora_de_termino_2",                :default => '2011-11-09 20:00:00'
+    t.datetime "hora_de_inicio_3",                 :default => '2011-11-09 10:00:00'
+    t.datetime "hora_de_termino_3",                :default => '2011-11-09 20:00:00'
+    t.datetime "hora_de_inicio_4",                 :default => '2011-11-09 10:00:00'
+    t.datetime "hora_de_termino_4",                :default => '2011-11-09 20:00:00'
+    t.datetime "hora_de_inicio_5",                 :default => '2011-11-09 10:00:00'
+    t.datetime "hora_de_termino_5",                :default => '2011-11-09 20:00:00'
+    t.datetime "hora_de_inicio_6",                 :default => '2011-11-09 10:00:00'
+    t.datetime "hora_de_termino_6",                :default => '2011-11-09 20:00:00'
+    t.datetime "hora_de_inicio_7",                 :default => '2011-11-09 10:00:00'
+    t.datetime "hora_de_termino_7",                :default => '2011-11-09 20:00:00'
     t.boolean  "dia_da_semana_0",                  :default => false
     t.boolean  "dia_da_semana_1",                  :default => true
     t.boolean  "dia_da_semana_2",                  :default => true
