@@ -3,7 +3,7 @@ class DentistasController < ApplicationController
   before_filter :require_user
   before_filter :quinzena, :on=>:producao_geral
   before_filter :busca_dentista, :only=>[:abre, :desativar, :update, 
-                   :destroy, :show, :edit, :troca_ortodontista]
+                   :destroy, :show, :edit, :reativar, :troca_ortodontista]
 
   def index
     params[:ativo] = "true" if params[:ativo].nil?
