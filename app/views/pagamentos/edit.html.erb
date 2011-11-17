@@ -60,8 +60,7 @@
     <%= f.submit 'alterar' %>
   </p>
 <% end %>
-<%= render :partial=>"cheques/disponiveis" %>
-<%= render :partial=>"pagamentos/cheques_utilizados", :locals=>{:pagamento=>@pagamento} %>
+<%= render :partial=>"cheques/disponiveis", :locals => {:pagamento => @pagamento }%>
 
 <%= link_to 'voltar', session[:origem] %>
 </fieldset>

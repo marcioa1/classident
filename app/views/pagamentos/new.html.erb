@@ -9,7 +9,7 @@
     <%= f.error_messages %>
   <div id="valor_restante" class="direita">
       <p><%= f.label :valor_restante %>
-         <%= f.text_field :valor_restante, :size=>9 %></p>
+         <%= f.text_field :valor_restante_br, :size=>9 %></p>
       <p>
         <%= f.radio_button :opcao_restante,  0, :onclick=>"cheque(0);"%> sem restante<br/>
         <%= f.radio_button :opcao_restante,  1, :onclick=>"cheque(1);" %> pago em cheque<br/>
@@ -85,7 +85,7 @@
     </p>
 
   <% end %>
-  <%= render :partial=>"cheques/disponiveis" %>
+  <%= render :partial=>"cheques/disponiveis" , :locals => {:pagamento => @pagamento}%>
   <%= button_to 'voltar', session[:origem] %>
 
   </fieldset>

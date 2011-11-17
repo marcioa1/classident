@@ -11,7 +11,7 @@
       %th Número
       %th Bom para
     - pagamento.cheques.each() do |cheque|
-      %tr
+      %tr{:id=>"tr_"+ cheque.id.to_s}
         - if @clinica_atual.administracao?
           %td= cheque.clinica.sigla
         %td= cheque.nome_dos_pacientes 

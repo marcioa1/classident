@@ -312,39 +312,41 @@ function limpa_codigo(){
 
 function verifica_valor_restante(){
   var total_de_cheques = 0.0;
-  var todos = $("#lista_de_cheques :checked");
+  var todos = $("#selecionados table tbody tr");
   var selecionados = "";
   for (var i = 0; i < todos.length; i++) {
     id_cheque = (todos[i].id).split("_")[1];
-    selecionados += id_cheque + ",";
-    var valor = $("#valor_" + id_cheque).text();
-    valor = valor.replace(".","");
-    valor = parseFloat(valor.replace(",", "."));
-    total_de_cheques += valor;
+    if (id_cheque != 'undefined'){
+      selecionados += id_cheque + ",";
+      var valor = $("#valor_" + id_cheque).text();
+      valor = valor.replace(".","");
+      valor = parseFloat(valor.replace(",", "."));
+      total_de_cheques += valor;
+    }
   }
   $("#cheques_ids").val(selecionados);
   var total_a_pagar = parseFloat($("#pagamento_valor_pago_real").val().replace(".", "").replace(",", "."));;
   console.log('total_a_pagar : '+ total_a_pagar);
   console.log('total_de_cheques : '+ total_de_cheques);
-  $("#pagamento_valor_restante").val(parseInt((total_a_pagar - total_de_cheques) * 100));
-  console.log($("#pagamento_valor_restante").val());
-  formata_valor($("#pagamento_valor_restante"));
+  $("#pagamento_valor_restante_br").val(parseInt((total_a_pagar - total_de_cheques) * 100));
+  console.log($("#pagamento_valor_restante_br").val());
+  formata_valor($("#pagamento_valor_restante_br"));
   if (total_a_pagar < total_de_cheques){
-    sem_sinal = $("#pagamento_valor_restante").val();
-    $("#pagamento_valor_restante").val('-' + sem_sinal);
-    $("#pagamento_valor_restante").css('color', 'red');
+    sem_sinal = $("#pagamento_valor_restante_br").val();
+    $("#pagamento_valor_restante_br").val('-' + sem_sinal);
+    $("#pagamento_valor_restante_br").css('color', 'red');
     alert("A soma dos valores dos cheques selecionados é maior que o valor do pagamento.");
   }else {
-        $("#pagamento_valor_restante").css('color', 'black');
+        $("#pagamento_valor_restante_Br").css('color', 'black');
   }
 }
 function selecionou_cheque(elemento){
-  verifica_valor_restante();
   if ($("#tr2_" + elemento)[0]) {
     $("#tr2_" + elemento).remove();
   } else {
-    $("#selecionados table tbody").append("<tr id='tr2_" + elemento + "'>" + $("#tr_"+elemento).html() + "</tr>");
+    $("#selecionados table tbody").last().prepend("<tr id='tr2_" + elemento + "'>" + $("#tr_"+elemento).html() + "</tr>");
   }
+  verifica_valor_restante();
 }
 
 function producao(){

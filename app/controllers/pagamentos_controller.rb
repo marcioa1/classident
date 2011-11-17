@@ -94,6 +94,25 @@ class PagamentosController < ApplicationController
     @pagamento = Pagamento.find(params[:id])
 
     if @pagamento.update_attributes(params[:pagamento])
+      cheques_anteriores = @pagamento.cheques.map(&:id)
+      ids = params[:cheques_ids].split(",")
+      # retira os cheques usados num primeiro pagamento que nõa fazer 
+      # mais parte deste pagamento para torná-los disponíveis novamente
+      (cheques_anteriores - ids).each do |chq|
+        cheque = Cheque.find(chq)
+        cheque.update_attribute(:pagamento_id, nil)
+      end
+        
+      total_cheque = 0.0
+      @pagamento.cheques = []
+      ids.each do |id|
+        cheque = Cheque.find(id)
+        @pagamento.cheques << cheque unless cheque.nil?
+        total_cheque += cheque.valor
+      end
+      @pagamento.valor_terceiros = total_cheque
+      @pagamento.save
+      
       @pagamento.verifica_fluxo_de_caixa
       flash[:notice] = 'Pagamento alterado com sucesso.'
       redirect_to(session[:origem] || relatorio_pagamentos_path) 

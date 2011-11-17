@@ -16,8 +16,19 @@
           %th Bom para
           %th{:width=>"80px"} Valor
           %th{:width=>"200px"} Paciente
-          %th &nbsp;
           %th{:width=>"80px"} Banco
           %th Agência
           %th Número
+          %th &nbsp;
       %tbody
+      - pagamento.cheques.each do |cheque|
+        %tr{:id=>"tr2_"+ cheque.id.to_s}
+          - if @clinica_atual.administracao?
+            %td= cheque.clinica.sigla
+          %td= cheque.bom_para.to_s_br
+          %td{:align=>'right', :id=>'valor_' + cheque.id.to_s}= cheque.valor.real
+          %td= cheque.nome_dos_pacientes
+          %td= cheque.banco.nome if cheque.banco
+          %td= cheque.agencia
+          %td= cheque.numero
+          %td= check_box_tag "cheque_#{cheque.id}", false ,false ,options={ :onclick=>"selecionou_cheque(#{cheque.id})"}
