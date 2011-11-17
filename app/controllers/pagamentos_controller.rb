@@ -44,6 +44,7 @@ class PagamentosController < ApplicationController
     @tipos_pagamento  = TipoPagamento.ativos.por_nome.collect{|obj| [obj.nome, obj.id]}
     @pagamento        = Pagamento.find(params[:id])
     @contas_bancarias = ContaBancaria.all.collect{|obj| [obj.nome, obj.id]}.insert(0,'')
+    @ids_cheques = @pagamento.cheques.map(&:id).join(",")
   end
 
   def create
