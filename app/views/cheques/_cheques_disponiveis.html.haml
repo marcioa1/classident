@@ -4,22 +4,22 @@
       - if @clinica_atual.administracao?
         %th Clínica
       %th Bom para
-      %th{:width=>'80px'} Valor
       %th{:width=>'200px'} Paciente
       %th{:width=>'80px'} Banco
       %th Agência
       %th Número
+      %th{:width=>'80px'} Valor
       %th &nbsp;
     - cheques.each do |cheque|
       %tr{:id=>"tr_"+ cheque.id.to_s }
         - if @clinica_atual.administracao?
           %td= cheque.clinica.sigla
         %td= link_to_function cheque.bom_para.to_s_br, "abre_cheque(#{cheque.id})"
-        %td{:align=>'right'}
-          %span{:id=>"valor_#{cheque.id}" }
-            = cheque.valor.real.to_s 
         %td= cheque.nome_dos_pacientes
         %td= cheque.banco.nome if cheque.banco
         %td= cheque.agencia
         %td= cheque.numero
+        %td{:align=>'right'}
+          %span{:id=>"valor_#{cheque.id}" }
+            = cheque.valor.real.to_s 
         %td= check_box_tag "cheque_#{cheque.id}", false ,false ,options={ :onclick=>"selecionou_cheque(#{cheque.id})"}
