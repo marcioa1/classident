@@ -281,3 +281,7 @@
     = link_to "próximo", fluxo_de_caixa_path(:data=>@fluxo.data + 1.day, :saldo_dinheiro=>saldo_dinheiro.real, :saldo_cheque => saldo_cheque.real)
     = "|"
     = link_de_impressao(dados, session[:clinica_id], 'landscape')
+
+    - form_tag imprime_path(:clinica_id=>session[:clinica_id],:orientation=>'landscape') do 
+      = hidden_field_tag :tabela, dados
+      = submit_tag "imprime"
