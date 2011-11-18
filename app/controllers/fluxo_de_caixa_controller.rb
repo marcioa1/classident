@@ -41,13 +41,13 @@ class FluxoDeCaixaController < ApplicationController
     @pagamentos   = Pagamento.da_clinica(session[:clinica_id]).no_dia(@fluxo.data).no_livro_caixa.nao_excluidos
     @lancamentos  = @recebimentos + @pagamentos + @entradas + @remessas + @cheques
     @entradas_adm = []
-    if @clinica_atual.administracao?
-      @entradas_adm = Entrada.confirmado.do_dia(@fluxo.data).nao_e_resolucao_de_cheque
-      @entradas_adm.each do |entrada| 
-        entrada.valor *= -1
-      end
-      @lancamentos += @entradas_adm 
-    end
+    # if @clinica_atual.administracao?
+    #   @entradas_adm = Entrada.confirmado.do_dia(@fluxo.data).nao_e_resolucao_de_cheque
+    #   @entradas_adm.each do |entrada| 
+    #     entrada.valor *= -1
+    #   end
+    #   @lancamentos += @entradas_adm 
+    # end
   end
   
   def fechamento_de_mes

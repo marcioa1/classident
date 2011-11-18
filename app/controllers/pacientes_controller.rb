@@ -155,6 +155,7 @@ class PacientesController < ApplicationController
     @ortodontistas  = Clinica.find(session[:clinica_id]).ortodontistas.collect{|obj| [obj.nome,obj.id]}
   end
   
+  #TODO retirar esta action
   def extrato_pdf
     require "prawn/layout"
     require "prawn/core"

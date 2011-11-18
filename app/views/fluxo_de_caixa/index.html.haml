@@ -219,7 +219,7 @@
             %td{ :align => "right"}= saldo_dinheiro.real
           - else
             - clinica = Clinica.find(lancamento.clinica_id)
-            %td= "Entrada, " +lancamento.observacao + " (#{clinica.sigla}) "
+            %td= "XEntrada, " +lancamento.observacao + " (#{clinica.sigla}) "
             - dados += "Entrada, #{lancamento.observacao};"
             %td{ :align => "right"}= lancamento.valor.abs.real
             - dados += "#{lancamento.valor.abs.real};;"
