@@ -105,13 +105,13 @@ class TratamentosController < ApplicationController
   def finalizar_procedimento
     begin
       @tratamento.data = Date.today
-      @paciente        = @tratamento.paciente
       @tratamento.finalizar(current_user, session[:clinica_id])
       @tratamento.save!
+      @paciente        = Paciente.find(@tratamento.paciente_id)
       Alta.verifica_alta_automatica(current_user, session[:clinica_id], @tratamento)
       Rails.cache.write(@paciente.id.to_s, @paciente, :expires_in => 2.minutes) 
-      redirect_to(abre_paciente_path(paciente) )
-      # render :partial => 'pacientes/extrato', :locals => {:paciente => @paciente}
+      # redirect_to(abre_paciente_path(paciente) )
+      render :partial => 'pacientes/extrato', :locals => {:paciente => @paciente}
     rescue  Exception => ex
       head :bad_request
     end
