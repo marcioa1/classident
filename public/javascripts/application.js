@@ -141,14 +141,12 @@ function pesquisa_disponiveis(){
   jQuery.ajax({
      url : "/cheques/busca_disponiveis",
      type: 'GET',
-     data: {valor: $("#pagamento_valor_pago_real").val()},
+     data: {valor: $("#pagamento_valor_pago_real").val(),
+            bom_para: $("#pagamento_data_de_pagamento_pt").val()},
      success: function(data){
        $("#lista_de_cheques").replaceWith("<span id='lista_de_cheques'>" + data + "</span>");
      }
   });
-   // $.getJSON("/cheques/busca_disponiveis?valor=" + $("#pagamento_valor_pago_real").val(), function(data){
-   //   $("#lista_de_cheques").replaceWith("<span id='lista_de_cheques'>" + data + "</span>");
-   //   });
 }
 
 function formata_valor(elemento){

@@ -120,7 +120,6 @@ class DentistasController < ApplicationController
       clinicas = session[:clinica_id].to_a
       nome_das_clinicas = ''
     end
-      # raise nome_das_clinicas
     if Date.valid?(params[:datepicker]) && Date.valid?(params[:datepicker2])
       inicio      = params[:datepicker].to_date if Date.valid?(params[:datepicker])
       fim         = params[:datepicker2].to_date if Date.valid?(params[:datepicker2])

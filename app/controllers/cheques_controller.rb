@@ -221,11 +221,13 @@ class ChequesController < ApplicationController
   end
   
   def busca_disponiveis
-    valor = params[:valor].gsub('.', '').gsub(',','.')
+    valor    = params[:valor].gsub('.', '').gsub(',','.')
+    bom_para = params[:bom_para].present? ? params[:bom_para].to_date : Date.today
+
     if @clinica_atual.administracao?
-      @cheques = Cheque.disponiveis_na_administracao.por_valor.menores_ou_igual_a(valor).entre_datas(Date.new(2011,01,01),Date.today);
+      @cheques = Cheque.disponiveis_na_administracao.por_valor.menores_ou_igual_a(valor).entre_datas(Date.new(2011,01,01),bom_para);
     else
-      @cheques = Cheque.da_clinica(session[:clinica_id]).disponiveis_na_clinica.por_valor.menores_ou_igual_a(valor).entre_datas(Date.new(2011,01,01),Date.today);
+      @cheques = Cheque.da_clinica(session[:clinica_id]).disponiveis_na_clinica.por_valor.menores_ou_igual_a(valor).entre_datas(Date.new(2011,01,01),bom_para);
     end
     @cheques = @cheques.all(:limit => 11150)
     render :partial => 'cheques_disponiveis', :locals=>{:cheques => @cheques}

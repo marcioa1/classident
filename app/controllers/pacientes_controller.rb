@@ -98,7 +98,6 @@ class PacientesController < ApplicationController
   end
   
   def abre
-    # raise params.inspect
     if params[:nome]
       nome_sem_clinica = params[:nome].split(',')[0].strip
       if @clinica_atual.administracao?
