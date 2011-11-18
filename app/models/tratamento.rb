@@ -123,7 +123,8 @@ class Tratamento < ActiveRecord::Base
     self.item_tabela && (!self.item_tabela.tem_custo_de_protetico? || self.custo > 0)
   end
   
-  def finalizar_procedimento(user, clinica_id)
+  def finalizar(user, clinica_id)
+    debugger
     if self.valor > 0
       debito               = Debito.new
       debito.paciente_id   = self.paciente_id

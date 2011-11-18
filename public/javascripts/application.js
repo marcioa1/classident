@@ -674,5 +674,3 @@ function confirma_recebimento_de_cheque(id){
   });
 }
 
-function registra_confirmacao_de_movimentacao(id){
-}

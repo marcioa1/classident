@@ -28,7 +28,7 @@ class TratamentosController < ApplicationController
       @tratamento.clinica_id  = session[:clinica_id]
       @tratamento.excluido    = false
       if @tratamento.save 
-        @tratamento.finalizar_procedimento(current_user, session[:clinica_id]) if @tratamento.data
+        @tratamento.finalizar(current_user, session[:clinica_id]) if @tratamento.data
       else
         erro = true
       end
@@ -60,24 +60,26 @@ class TratamentosController < ApplicationController
   end
   
   def update
+    estava_terminado = @tratamento.data.present?
     if Date.valid?(params[:data_de_termino]) 
       @tratamento.data   = params[:data_de_termino].to_date
     end
     
     if @tratamento.update_attributes(params[:tratamento])
-      if @tratamento.data.present?
-        Alta.verifica_alta_automatica(current_user, session[:clinica_id], @tratamento)
-        @debito = Debito.find_by_tratamento_id(@tratamento.id)
-        if @debito.nil?
-          @debito = Debito.new
-          @debito.paciente_id   = @tratamento.paciente_id
-          @debito.tratamento_id = @tratamento.id
-          @debito.clinica_id    = @tratamento.paciente.clinica_id
-        end
-        @debito.descricao = @tratamento.descricao
-        @debito.valor     = @tratamento.valor_com_desconto
-        @debito.data      = @tratamento.data
-        @debito.save
+      if @tratamento.data.present? and !estava_terminado
+        @tratamento.finalizar(current_user, session[:clinica_id])
+        # Alta.verifica_alta_automatica(current_user, session[:clinica_id], @tratamento)
+        # @debito = Debito.find_by_tratamento_id(@tratamento.id)
+        # if @debito.nil?
+        #   @debito = Debito.new
+        #   @debito.paciente_id   = @tratamento.paciente_id
+        #   @debito.tratamento_id = @tratamento.id
+        #   @debito.clinica_id    = @tratamento.paciente.clinica_id
+        # end
+        # @debito.descricao = @tratamento.descricao
+        # @debito.valor     = @tratamento.valor_com_desconto
+        # @debito.data      = @tratamento.data
+        # @debito.save
       end
       redirect_to(abre_paciente_path(:id=>@tratamento.paciente_id)) 
     else
@@ -104,11 +106,12 @@ class TratamentosController < ApplicationController
     begin
       @tratamento.data = Date.today
       @paciente        = @tratamento.paciente
-      @tratamento.finalizar_procedimento(current_user, session[:clinica_id])
+      @tratamento.finalizar(current_user, session[:clinica_id])
       @tratamento.save!
       Alta.verifica_alta_automatica(current_user, session[:clinica_id], @tratamento)
       Rails.cache.write(@paciente.id.to_s, @paciente, :expires_in => 2.minutes) 
-      render :partial => 'pacientes/extrato', :locals => {:paciente => @paciente}
+      redirect_to(abre_paciente_path(paciente) )
+      # render :partial => 'pacientes/extrato', :locals => {:paciente => @paciente}
     rescue  Exception => ex
       head :bad_request
     end

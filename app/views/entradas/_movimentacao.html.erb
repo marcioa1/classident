@@ -42,7 +42,7 @@
       <% if mov.data_confirmacao_da_entrada %>
         <%=h mov.data_confirmacao_da_entrada.to_s_br %>
       <% else %>
-        <%= link_to_function "confirma", "registra_confirmacao_de_movimentacao(#{mov.id});" if titulo.downcase != 'remessa'%>
+        <%= link_to_function "confirma", "registra_confirmacao_de_movimentacao(#{mov.id})" if titulo.downcase != 'remessa'%>
       <% end %>
     </td>
     <td><%= link_to 'editar', edit_entrada_path(mov), :class=>'ui-icon ui-icon-pencil' , :title=>'editar' if !mov.confirmada? %></td>
