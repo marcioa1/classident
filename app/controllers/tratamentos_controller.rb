@@ -65,21 +65,19 @@ class TratamentosController < ApplicationController
     end
     
     if @tratamento.update_attributes(params[:tratamento])
-      if !@tratamento.data.nil?
+      if @tratamento.data.present?
         Alta.verifica_alta_automatica(current_user, session[:clinica_id], @tratamento)
-        if @tratamento.orcamento.nil?
-          @debito = Debito.find_by_tratamento_id(@tratamento.id)
-          if @debito.nil?
-            @debito = Debito.new
-            @debito.paciente_id   = @tratamento.paciente_id
-            @debito.tratamento_id = @tratamento.id
-            @debito.clinica_id    = @tratamento.paciente.clinica_id
-          end
-          @debito.descricao = @tratamento.descricao
-          @debito.valor     = @tratamento.valor_com_desconto
-          @debito.data      = @tratamento.data
-          @debito.save
+        @debito = Debito.find_by_tratamento_id(@tratamento.id)
+        if @debito.nil?
+          @debito = Debito.new
+          @debito.paciente_id   = @tratamento.paciente_id
+          @debito.tratamento_id = @tratamento.id
+          @debito.clinica_id    = @tratamento.paciente.clinica_id
         end
+        @debito.descricao = @tratamento.descricao
+        @debito.valor     = @tratamento.valor_com_desconto
+        @debito.data      = @tratamento.data
+        @debito.save
       end
       redirect_to(abre_paciente_path(:id=>@tratamento.paciente_id)) 
     else

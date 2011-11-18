@@ -78,6 +78,7 @@
             %span{ :id => "finalizar_#{tratamento.id.to_s}" }
               = link_to "finalizar", "#", :onclick=>'finalizar_tratamento(' + tratamento.id.to_s + ')' 
           - else
+            - debugger
             custo não lançado
         - else
           = tratamento.data.to_s_br

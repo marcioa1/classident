@@ -119,6 +119,7 @@ class Tratamento < ActiveRecord::Base
   end
   
   def pode_finalizar?
+    return true if self.item_tabela.nil?
     self.item_tabela && (!self.item_tabela.tem_custo_de_protetico? || self.custo > 0)
   end
   
