@@ -58,6 +58,20 @@ module ApplicationHelper
   def link_de_impressao(dados, clinica_id=session[:clinica_id], orientation='portrait')
     # link_to "imprime", "#", :onclick=>"gera_pdf('#{dados}', '#{session[:clinica_id]}', '#{orientation}')"
     link_to "imprime", imprime_path(:tabela=>dados,:clinica_id=>clinica_id,:orientation=>orientation), :method => :post
+     # form_tag imprime_path(:clinica_id=>clinica_id,:orientation=>orientation) do 
+     #   text_field_tag :tabela, dados
+     #   "aqqui"
+     #   submit_tag "imprime"
+     # end
+  end
+  
+  def botao_de_impressao(dados, clinica_id=session[:clinica_id], orientation='portrait')
+    capture_haml do
+     form_tag imprime_path(:clinica_id=>clinica_id,:orientation=>orientation) do 
+       hidden_field_tag :tabela, dados
+       submit_tag "imprime"
+     end
+   end
   end
   
   def data_abreviada(data)
