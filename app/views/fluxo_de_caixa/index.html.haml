@@ -197,9 +197,9 @@
               %td &nbsp;
               %td &nbsp;
               %td{ :align => "right", :style => "color: red;" }
-                = lancamento.valor_pago.real 
-                - dados += ";;;#{lancamento.valor_pago.real};"
-              - saldo_cheque -= lancamento.valor_pago - lancamento. valor_restante.real
+                = lancamento.valor_terceiros.real 
+                - dados += ";;;#{lancamento.valor_terceiros.real};"
+              - saldo_cheque -= lancamento.valor_terceiros #- lancamento.valor_restante.real
               - total_de_debito_em_cheque += lancamento.valor_pago
             %td{ :align => "right" }
               = saldo_cheque.real
