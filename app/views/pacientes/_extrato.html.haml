@@ -21,6 +21,8 @@
     - if @paciente.ortodontia?
       %th Percentual
     %th &nbsp;
+    - if current_user.master?
+      %th &nbsp;
   
   - saldo         = 0.0
   - total_debito  = 0.0
@@ -104,9 +106,11 @@
         - if lancamento.formas_recebimento && lancamento.formas_recebimento.nome.downcase == 'dinheiro'
           %td
             &nbsp;
+
         - else
           %td
             = link_to lancamento.cheque.bom_para.to_s_br, lancamento.cheque, :target => :blank  if lancamento.cheque.present? && lancamento.cheque.bom_para.present?
+
         %td
           = lancamento.formas_recebimento.nome if lancamento.formas_recebimento
         - if @paciente.ortodontia?
@@ -117,6 +121,9 @@
             = link_to 'Excluir', exclusao_recebimento_path(lancamento.id) , :class=> 'ui-icon ui-icon-trash', :title=>'excluir'
         - else
           %td &nbsp;
+        - if current_user.master?
+          %td= link_to "liberar", new_alteraco_path(:tabela => 'recebimentos', :id_registro => lancamento.id)
+
   %tr
     %td{ :align => "center", :colspan => "2" }
       Total

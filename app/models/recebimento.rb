@@ -55,7 +55,7 @@ class Recebimento < ActiveRecord::Base
   end
   
   def verifica_quinzena
-    errors.add(:data, "Fora da quinzena : anterior ao dia #{@data_inicial.to_s_br}") if !na_quinzena?
+    errors.add(:data, "Fora da quinzena : anterior ao dia #{@data_inicial.to_s_br}") if !self.pode_alterar?
   end
   
   def verifica_data_do_cheque
@@ -118,11 +118,16 @@ class Recebimento < ActiveRecord::Base
   end
   
   def pode_alterar?
-    self.na_quinzena?
+    self.na_quinzena? || self.liberado_para_alteracao?
   end
   
   def pode_excluir?
-    self.na_quinzena?
+    self.na_quinzena? || self.liberado_para_alteracao?
+  end
+  
+  def liberado_para_alteracao?
+    reg = Alteracoe.find_by_tabela_and_id_liberado(self.class.table_name, self.id)
+    reg && reg.data_correcao.nil?
   end
   
   def observacao_do_recebimento
