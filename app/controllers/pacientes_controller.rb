@@ -82,9 +82,9 @@ class PacientesController < ApplicationController
   
   def pesquisa_nomes
     if @clinica_atual.administracao?
-      nomes = Paciente.all(:select=>'nome,clinica_id,id', :conditions=>["nome like ?", "#{params[:term]}%" ])  
+      nomes = Paciente.all(:select=>'nome,clinica_id,id', :conditions=>["arquivo_morto = ? and nome like ?", false, "#{params[:term]}%" ])  
     else
-      nomes = Paciente.all(:select=>'nome,clinica_id,id', :conditions=>["nome like ? and clinica_id = ? ", "#{params[:term].nome_proprio}%", session[:clinica_id] ])  
+      nomes = Paciente.all(:select=>'nome,clinica_id,id', :conditions=>["arquivo_morto = ? and nome like ? and clinica_id = ? ", false,  "#{params[:term].nome_proprio}%", session[:clinica_id] ])  
     end
     result = ''
     nomes.each do |pac|

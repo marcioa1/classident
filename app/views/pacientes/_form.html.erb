@@ -120,3 +120,15 @@
       <% end %>
     </p>
   </fieldset>
+  
+    <fieldset class="fieldset_40">
+    <legend>
+      <%= f.check_box :arquivo_morto  %> 
+      <%= f.label :arquivo_morto %>
+    </legend>
+    <p>
+        <%= f.label :motivo %> :
+        <%= f.text_field :descricao_arquivo_morto, :size=>50 %>
+    </p>
+    
+  </fieldset>
