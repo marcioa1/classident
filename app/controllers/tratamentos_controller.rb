@@ -66,8 +66,19 @@ class TratamentosController < ApplicationController
     end
     
     if @tratamento.update_attributes(params[:tratamento])
-      if @tratamento.data.present? and !estava_terminado
-        @tratamento.finalizar(current_user, session[:clinica_id])
+      if @tratamento.data.present? 
+        debugger
+        if !estava_terminado
+          @tratamento.finalizar(current_user, session[:clinica_id])
+        else
+          # alterar débito
+          @debito = Debito.find_by_tratamento_id(@tratamento.id)
+          @debito.descricao = @tratamento.descricao
+          @debito.valor     = @tratamento.valor_com_desconto
+          @debito.data      = @tratamento.data
+          @debito.save
+        end
+        
         # Alta.verifica_alta_automatica(current_user, session[:clinica_id], @tratamento)
         # @debito = Debito.find_by_tratamento_id(@tratamento.id)
         # if @debito.nil?
