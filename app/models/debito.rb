@@ -63,7 +63,9 @@ class Debito < ActiveRecord::Base
   end
   
   def verifica_quinzena
-    errors.add(:data, 'Fora da quinzena') if !na_quinzena?
+    if !na_quinzena? && !self.liberado_para_alteracao?
+      errors.add(:data, ' : Fora da quinzena') 
+    end
   end
   
   def self.verifica_debitos_de_ortodontia(clinica_id)
@@ -79,5 +81,11 @@ class Debito < ActiveRecord::Base
       MensalidadeOrtodontia.registra_novo_mes(clinica_id)
     end
   end
+  
+  def liberado_para_alteracao?
+    reg = Alteracoe.find_by_tabela_and_id_liberado("tratamentos", self.tratamento_id)
+    reg && reg.data_correcao.nil?
+  end
+
   
 end

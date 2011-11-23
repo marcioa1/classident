@@ -81,7 +81,8 @@
             = link_to 'Excluir', lancamento, :confirm => 'Tem certeza da exclusão deste débito ?', :method => :delete , :class=>'ui-icon ui-icon-trash', :title=>'excluir'
         - else
           %td &nbsp;
-     
+        - if current_user.master?
+          %td &nbsp;     
       - elsif lancamento.is_a?(Recebimento)
         - total_credito += lancamento.valor
         %td{ :align => "center" }
@@ -122,7 +123,10 @@
         - else
           %td &nbsp;
         - if current_user.master?
-          %td= link_to "liberar", new_alteraco_path(:tabela => 'recebimentos', :id_registro => lancamento.id)
+          - if lancamento.liberado_para_alteracao?
+            %td= link_to "fechar", close_alteraco_path(:tabela => 'recebimentos', :id_registro => lancamento.id),:class=>'ui-icon ui-icon-unlocked'
+          - else
+            %td= link_to "liberar", new_alteraco_path(:tabela => 'recebimentos', :id_registro => lancamento.id),:class=>'ui-icon ui-icon-locked'
 
   %tr
     %td{ :align => "center", :colspan => "2" }

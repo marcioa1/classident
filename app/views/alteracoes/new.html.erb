@@ -1,8 +1,8 @@
 <% content_for :main do %>
 <% form_for(@alteraco) do |f| %>
   <%= f.error_messages %>
-  <%= f.text_field :tabela %> / 
-  <%= f.text_field :id_liberado %>
+  <%= f.hidden_field :tabela %>
+  <%= f.hidden_field :id_liberado %>
   Tabela a alterar : <%= @alteraco.tabela %>
   <%= f.submit "confirma a liberação deste registro para alteração ?" %>
 <% end %>

@@ -124,7 +124,6 @@ class Tratamento < ActiveRecord::Base
   end
   
   def finalizar(user, clinica_id)
-    debugger
     if self.valor > 0
       debito               = Debito.new
       debito.paciente_id   = self.paciente_id
@@ -209,4 +208,10 @@ class Tratamento < ActiveRecord::Base
       self.valor
     end
   end
+  
+  def liberado_para_alteracao?
+    reg = Alteracoe.find_by_tabela_and_id_liberado(self.class.table_name, self.id)
+    reg && reg.data_correcao.nil?
+  end
+
 end

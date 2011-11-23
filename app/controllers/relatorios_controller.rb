@@ -7,7 +7,6 @@ class RelatoriosController < ApplicationController
     require "prawn/core"
     
     dados            = params[:dados]
-    debugger
     clinica_atual    = Clinica.find(params[:clinica_id])
     nome_da_clinica  = clinica_atual.nome
     sigla_da_clinica = clinica_atual.sigla

@@ -66,8 +66,8 @@ class TratamentosController < ApplicationController
     end
     
     if @tratamento.update_attributes(params[:tratamento])
+      debugger
       if @tratamento.data.present? 
-        debugger
         if !estava_terminado
           @tratamento.finalizar(current_user, session[:clinica_id])
         else
@@ -80,18 +80,8 @@ class TratamentosController < ApplicationController
         end
         
         # Alta.verifica_alta_automatica(current_user, session[:clinica_id], @tratamento)
-        # @debito = Debito.find_by_tratamento_id(@tratamento.id)
-        # if @debito.nil?
-        #   @debito = Debito.new
-        #   @debito.paciente_id   = @tratamento.paciente_id
-        #   @debito.tratamento_id = @tratamento.id
-        #   @debito.clinica_id    = @tratamento.paciente.clinica_id
-        # end
-        # @debito.descricao = @tratamento.descricao
-        # @debito.valor     = @tratamento.valor_com_desconto
-        # @debito.data      = @tratamento.data
-        # @debito.save
       end
+      Alteracoe.retira_permissao_de_alteracao('tratamentos', @tratamento.id, current_user.id) if !@tratamento.na_quinzena?
       redirect_to(abre_paciente_path(:id=>@tratamento.paciente_id)) 
     else
       @paciente               = @tratamento.paciente
@@ -106,9 +96,10 @@ class TratamentosController < ApplicationController
   
   def destroy
     paciente  = @tratamento.paciente
-    if @tratamento.pode_excluir?
+    if @tratamento.pode_excluir? || @tratamento.liberado_para_alteracao?
       Debito.find_by_tratamento_id(@tratamento.id).try(:destroy) if @tratamento.data
       @tratamento.destroy
+      Alteracoe.retira_permissao_de_alteracao('tratamentos', @tratamento.id, current_user.id) if !@tratamento.na_quinzena?
     end
     redirect_to(abre_paciente_path(paciente) )
   end

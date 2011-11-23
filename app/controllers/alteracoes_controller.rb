@@ -8,7 +8,6 @@ class AlteracoesController < ApplicationController
   end
 
   def create
-    debugger
     @alteraco = Alteracoe.new(params[:alteracoe])
     if @alteraco.save
       flash[:notice] = 'alteração liberada  com sucesso.'
@@ -19,6 +18,12 @@ class AlteracoesController < ApplicationController
   end
 
   def index
+  end
+
+  def close
+    @alteracao = Alteracoe.find_by_tabela_and_id_liberado(params[:tabela], params[:id_registro])
+    @alteracao.destroy
+    redirect_to :back
   end
 
 end

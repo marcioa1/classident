@@ -63,7 +63,7 @@
       %td= tratamento.faces
       %td= tratamento.item_tabela.codigo  unless tratamento.item_tabela.nil?
       %td
-        - if tratamento.pode_alterar?
+        - if tratamento.pode_alterar? || tratamento.liberado_para_alteracao?
           = link_to tratamento.descricao, edit_tratamento_path(tratamento)
         - else
           = tratamento.descricao
@@ -87,13 +87,17 @@
         = tratamento.resumo_protetico
         = link_to "trab. protético", new_trabalho_protetico_path(:tratamento_id=>tratamento.id, :paciente_id=>tratamento.paciente.id), :class=>'ui-icon ui-icon-plus' , :title => 'Novo tratalho de protético' if tratamento.pode_alterar? && tratamento.data.nil?
       %td{ :align => 'center'}
-        - if tratamento.pode_alterar?
+        - if tratamento.pode_alterar? || tratamento.liberado_para_alteracao?
           = link_to 'editar', edit_tratamento_path(:id=>tratamento.id), :class=>'ui-icon ui-icon-pencil' , :title=>'editar'
       %td{ :align => "center" }
-        = link_to "excluir",  tratamento, :confirm => 'Tem certeza ?', :method=>:delete , :class => "ui-icon ui-icon-trash", :title => 'excluir'  if tratamento.pode_excluir?
-      - if current_user.master?
-        %td
-          =link_to "liberar", new_alteraco_path(:tabela => 'tratamentos', :id_registro => tratamento.id)
+        = link_to "excluir",  tratamento, :confirm => 'Tem certeza ?', :method=>:delete , :class => "ui-icon ui-icon-trash", :title => 'excluir'  if tratamento.pode_excluir? || tratamento.liberado_para_alteracao?
+      - if current_user.master? && !tratamento.na_quinzena?
+        - if tratamento.liberado_para_alteracao?
+          %td= link_to "fechar", close_alteraco_path(:tabela => 'tratamentos', :id_registro => tratamento.id),:class=>'ui-icon ui-icon-unlocked'
+        - else
+          %td= link_to "liberar", new_alteraco_path(:tabela => 'tratamentos', :id_registro => tratamento.id),:class=>'ui-icon ui-icon-locked'
+      - if current_user.master? && tratamento.na_quinzena?
+        %td &nbsp;
     - total += tratamento.valor
     - total_com_desconto += tratamento.valor_com_desconto
   %tr

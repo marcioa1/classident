@@ -3,7 +3,8 @@ ActionController::Routing::Routes.draw do |map|
   map.events 'events', :controller =>'services', :action=>'events'
   map.resources :acompanhamento_cheques
   map.resources :altas, :collection => {:retorno => :get}
-  map.resources :alteracoes
+  map.resources :alteracoes, :member => {:close => :get}
+       
   map.resources :bancos
   map.resources :cheques, :collection=>{:busca_disponiveis=>:get, :cheques_recebidos=>:get, 
        :envia_cheques_a_administracao =>:get,:confirma_recebimento=>:get, 
