@@ -1,4 +1,4 @@
--dados = "Itens liberados para pagamento do protético #{@protetico.nome} entre #{inicio.to_s_br[0..10]} e #{fim.to_s_br[0..10]}>Paciente;Dente;Descrição;Valor;Dt devolução;Dt liberação pgto;Dentista>left;center;left;right;center;center;left>"
+-dados = "Itens liberados para pagamento do protético #{@protetico.nome} entre #{inicio.to_s_br[0..10]} e #{fim.to_s_br[0..10]}>Paciente;Dente;Descrição;Valor; Devolução;Liberação pgto;Dentista>left;center;left;right;center;center;left>"
 
 %table.tabela
   %tr
@@ -27,5 +27,5 @@
     %td{:colspan=>3,:align=>'center'}Total
     %td{:aligm=>'right'}= total.real
     %td{:colspan=>4}
-  - dados += ";;Total;#{total.real}; ; ;>"
+  - dados += ";;Total;#{total.real}; ; ; ;>"
 = link_de_impressao(dados,session[:clinica_id], 'landscape')
