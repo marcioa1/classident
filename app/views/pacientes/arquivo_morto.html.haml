@@ -1,0 +1,10 @@
+- content_for :main do
+  %h3 Arquivo morto
+  %table
+    %tr
+      %th Nome
+      %th Motivo
+    - @pacientes.each do |pac|
+      %tr
+        %td= link_to pac.nome, abre_paciente_path(pac)
+        %td= pac.descricao_arquivo_morto

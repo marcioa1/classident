@@ -314,4 +314,8 @@ class PacientesController < ApplicationController
   #   # head :ok
   # end
   
+  def arquivo_morto
+    @pacientes = Paciente.no_arquivo_morto.da_clinica(session[:clinica_id]).por_nome
+  end
+  
 end
