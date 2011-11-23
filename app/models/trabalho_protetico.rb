@@ -37,7 +37,8 @@ class TrabalhoProtetico < ActiveRecord::Base
   
   attr_accessor :data_envio_pt, :data_prevista_de_devolucao_pt, 
                 :data_de_devolucao_pt, :data_de_repeticao_pt, 
-                :data_prevista_da_devolucao_da_repeticao_pt, :valor_pt
+                :data_prevista_da_devolucao_da_repeticao_pt, :valor_pt,
+                :data_de_devolucao_da_repeticao_pt
   
   def valor_pt
     self.valor.real.to_s
@@ -63,7 +64,6 @@ class TrabalhoProtetico < ActiveRecord::Base
   def data_de_devolucao_pt
     data_de_devolcao_pt = self.data_de_devolucao.to_s_br if self.data_de_devolucao
   end
-
   def data_de_devolucao_pt=(data)
     if (Date.valid?(data))
       self.data_de_devolucao = data.to_date 
@@ -73,19 +73,24 @@ class TrabalhoProtetico < ActiveRecord::Base
   end
 
   def data_de_repeticao_pt
-    data_de_repeticao_pt = self.data_de_repeticao
+    data_de_repeticao_pt = self.data_de_repeticao.to_s_br if self.data_de_repeticao
   end
-  
   def data_de_repeticao_pt=(data)
     self.data_de_repeticao = data.to_date if Date.valid?(data)
   end
   
   def data_prevista_da_devolucao_da_repeticao_pt
-    data_prevista_da_devolucao_da_repeticao_pt = self.data_prevista_da_devolucao_da_repeticao 
+    data_prevista_da_devolucao_da_repeticao_pt = self.data_prevista_da_devolucao_da_repeticao.to_s_br if self.data_prevista_da_devolucao_da_repeticao
   end
-  
   def data_prevista_da_devolucao_da_repeticao_pt=(data)
     self.data_prevista_da_devolucao_da_repeticao = data.to_date if Date.valid?(data)
+  end
+  
+  def data_de_devolucao_da_repeticao_pt
+    data_de_devolucao_da_repeticao_pt = self.data_de_devolucao_da_repeticao.to_s_br if self.data_de_devolucao_da_repeticao
+  end
+  def data_de_devolucao_da_repeticao_pt=(data)
+    self.data_de_devolucao_da_repeticao = data.to_date if Date.valid?(data)
   end
   
   def devolvido?
