@@ -188,7 +188,7 @@ class RecebimentosController < ApplicationController
       if @recebimento.em_cheque? && @recebimento.cheque
         @cheque.save
       end
-      Alteracoe.retira_permissao_de_alteracao(self.class.table_name, self.id) if !@recebimento.na_quinzena?
+      Alteracoe.retira_permissao_de_alteracao('recebimentos', @recebimento.id) if !@recebimento.na_quinzena?
       #TODO fazer redirect_to back votlar para a presquisa feita com dados
       # redirect_to :back
       redirect_to(abre_paciente_path(:id=>@recebimento.paciente_id)) 
@@ -206,7 +206,7 @@ class RecebimentosController < ApplicationController
   
   def exclui
     @recebimento.exclui(current_user.id, params[:observacao_exclusao])
-    Alteracoe.retira_permissao_de_alteracao(self.class.table_name, self.id) if !@recebimento.na_quinzena?
+    Alteracoe.retira_permissao_de_alteracao('recebimentos', @recebimento.id) if !@recebimento.na_quinzena?
     redirect_to(abre_paciente_path(@recebimento.paciente))
   end
   
