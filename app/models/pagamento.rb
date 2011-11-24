@@ -110,7 +110,20 @@ class Pagamento < ActiveRecord::Base
   end
   
   def pode_alterar?
-    na_quinzena?(self.data_de_pagamento)
+    na_quinzena? || self.liberado_para_alteracao?
+  end
+  
+  def na_quinzena?
+    if self.data_de_pagamento
+      primeira = Date.new(Date.today.year,Date.today.month,1)
+      segunda  = Date.new(Date.today.year,Date.today.month,16)
+      return false if self.data_de_pagamento < primeira
+      return false if self.data_de_pagamento < segunda && Date.today >= segunda
+      return true if self.data_de_pagamento < segunda && Date.today < segunda
+      return true if self.data_de_pagamento >= segunda && Date.today >= segunda
+    else
+      return false
+    end
   end
   
   def em_dinheiro?
@@ -131,4 +144,9 @@ class Pagamento < ActiveRecord::Base
     return "Dinheiro" if em_dinheiro?
   end
   
+  def liberado_para_alteracao?
+    reg = Alteracoe.find_by_tabela_and_id_liberado("pagamentos", self.id)
+    reg && reg.data_correcao.nil?
+  end
+
 end

@@ -71,6 +71,9 @@
     <th>&nbsp;</th>
     <th>&nbsp;</th>
     <th>&nbsp;</th>
+    <% if current_user.master? %>
+      <th>&nbsp;</th>
+    <% end %>      
   </tr></thead>
 <% dados = "#{@titulo};>Pago em;Tipo;Valor;Observações;Terceiros;Dinheiro;Cheque;Detalhes>center;left;right;left;right;right;right;left>" %>
 <% total = 0 %>
@@ -113,6 +116,19 @@
     <td><%= link_to 'editar', edit_pagamento_path(pagamento), :class=>'ui-icon ui-icon-pencil', :title=>'editar' if pagamento.pode_alterar? %></td>
     <td><%= link_to 'excluir', exclusao_pagamento_path(pagamento), :class=>'ui-icon ui-icon-trash', :title=>'excluir'  if pagamento.pode_alterar? || current_user.master? %></td>
     <td><%= link_to 'mostrar', '#', :onclick=>'javascript:abre_pagamento('+ pagamento.id.to_s + ')' , :class=>'ui-icon ui-icon-info', :title=>'ver detalhes'%></td>
+    
+    <% if current_user.master? && !pagamento.na_quinzena? %>
+      <% if pagamento.liberado_para_alteracao? %>
+        <td><%= link_to "fechar", "/alteracoes/0/close?tabela=pagamentos&idregistro="+ pagamento.id.to_s,:class=>'ui-icon ui-icon-unlocked' %></td>
+      <% else %>
+        <td> <%= link_to "liberar", new_alteraco_path(:tabela => 'pagamentos', :id_registro => pagamento.id),:class=>'ui-icon ui-icon-locked' %> </td>
+      <% end %>
+    <% end %>
+    <% if current_user.master? && pagamento.na_quinzena? %>
+      <td> &nbsp; </td>
+    <% end %>
+
+    
   </tr>
   <% total += pagamento.valor_pago  %>
   <% total_dinheiro += pagamento.valor_dinheiro %>

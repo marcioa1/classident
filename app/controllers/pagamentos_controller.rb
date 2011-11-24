@@ -113,6 +113,7 @@ class PagamentosController < ApplicationController
       end
       @pagamento.valor_terceiros = total_cheque
       @pagamento.save
+      Alteracoe.retira_permissao_de_alteracao('pagamentos', @pagamento.id, current_user.id) if !@pagamento.na_quinzena?
       
       @pagamento.verifica_fluxo_de_caixa
       flash[:notice] = 'Pagamento alterado com sucesso.'
@@ -140,6 +141,7 @@ class PagamentosController < ApplicationController
       end
       @pagamento.save
     end
+    Alteracoe.retira_permissao_de_alteracao('pagamentos', @pagamento.id, current_user.id) if !@pagamento.na_quinzena?
     redirect_to(session[:origem] || relatorio_pagamentos_path) 
   end
   
