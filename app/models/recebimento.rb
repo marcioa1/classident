@@ -156,6 +156,14 @@ class Recebimento < ActiveRecord::Base
     end
   end
   
+  def valor_do_ortodontista
+    if self.percentual_dentista
+      self.valor * self.percentual_dentista / 100
+    else
+      0
+    end
+  end
+  
   def method_missing(symbol, *params)
      if (symbol.to_s =~ /^(.*)_before_type_cast$/)
        send $1

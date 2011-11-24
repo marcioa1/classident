@@ -1,0 +1,11 @@
+%h3 Produção de ortodontia
+%table
+  %tr
+    %th Data
+    %th Paciente
+    %th Valor
+  -@ortodontia && @ortodontia.each do |o|
+    %tr
+      %td= o.data.to_s_br
+      %td= o.paciente.nome
+      %td= o.valor.real

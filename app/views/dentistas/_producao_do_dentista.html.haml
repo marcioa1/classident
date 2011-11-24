@@ -44,6 +44,23 @@
       - total_clinica += tratamento.valor_clinica unless tratamento.valor_clinica.nil?
       - total += tratamento.valor
       - dados += "#{tratamento.data.to_s_br};#{tratamento.paciente.nome};#{tratamento.descricao};#{tratamento.valor.real.to_s};#{tratamento.custo.real.to_s};#{tratamento.valor_dentista.real.to_s}>"
+      
+    - @ortodontia && @ortodontia.each do |o|
+      %tr
+        %td= o.data.to_s_br
+        %td= o.paciente.nome
+        %td ortodontia
+        %td{:align=>'right'}= o.valor.real
+        %td &nbsp;
+        %td{:align=>'right'}= o.valor_do_ortodontista.real
+        %td{:align=>'right'}= o.valor.real - o.valor_do_ortodontista.real
+        - total_dentista += o.valor_do_ortodontista
+        - total_clinica += o.valor - o.valor_do_ortodontista
+        - total += o.valor
+        - dados += "#{o.data.to_s_br};#{o.paciente.nome};ortodontia;#{o.valor.real.to_s};;#{o.valor_do_ortodontista.real.to_s}>"
+
+        
+        
     %tr
       %td{:colspan=>'3', :align=>'center'}
         Total

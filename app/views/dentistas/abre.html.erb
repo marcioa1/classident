@@ -9,7 +9,8 @@
         <li><a href="#fragment-3"><span>Pagamento</span></a></li>
         <li><a href="#fragment-4"><span>Orçamentos</span></a></li>
         <% if @dentista.ortodontista %>
-          <li><a href="#ortodontia"><span>Ortodontia</span></a></li>
+          <li><a href="#ortodontia"><span>Pacientes de Ortodontia</span></a></li>
+          <!-- <li><a href="#producao_ortodontia"><span>Produção de Ortodontia</span></a></li> -->
         <% end %>
     </ul>
     <div id="fragment-1">
@@ -25,6 +26,7 @@
     <div id='fragment-4'><%= render :partial=>'orcamentos_elaborados' %> </div>
     <% if @dentista.ortodontista %>
       <div id="ortodontia"><%= render :partial=> 'pacientes_de_ortodontia' %></div>
+      <!-- <div id="producao_ortodontia"><%= render :partial=> 'producao_de_ortodontia' %></div> -->
     <% end %>
 </div>
 <% end %>
