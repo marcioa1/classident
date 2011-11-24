@@ -8,6 +8,7 @@
       <li><%= link_to "Tabela de protético", tabela_proteticos_path %></li>
       <li><%= link_to "Indicação" , indicacaos_path %></li>
       <li><%= link_to "Bancos", bancos_path %></li>
+      <li><%= link_to "Contas Bancárias", conta_bancarias_path %></li>
       <li><%= link_to "Destinações", destinacaos_path %></li>
     </ul>
   </li>
@@ -42,7 +43,6 @@
       <li><%= link_to "Cheques confirmados", recebimento_confirmado_cheques_path %></li>
       <li><%= link_to "Entrada/Remessa de dinheiro", entradas_path %></li>
       <li><%= link_to "Recebimentos", das_clinicas_recebimentos_path %></li>
-      <li><%= link_to "Contas Bancárias", conta_bancarias_path %></li>
       <li><%= link_to "Registra entrada de dinheiro", na_administracao_entradas_path %></li>
       <% if current_user.master? %>
         <li><%= link_to "Saldo fluxo de caixa" , conserta_saldo_path %></li>

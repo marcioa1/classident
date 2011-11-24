@@ -370,11 +370,11 @@ function cheque(mostra){
     if (mostra==1){
         $("#cheque_classident").show();
         $("#pagamento_conta_bancaria_id").focus();
-        $("#pagamento_valor_cheque").val($("#pagamento_valor_restante").val());
+        $("#pagamento_valor_cheque_br").val($("#pagamento_valor_restante_br").val());
     }else {
         $("#cheque_classident").hide();
         $("#pagamento_numero_do_cheque").val("");
-        $("#pagamento_valor_cheque").val("");
+        $("#pagamento_valor_cheque_br").val("");
     }
 }
 
