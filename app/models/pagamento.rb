@@ -103,6 +103,7 @@ class Pagamento < ActiveRecord::Base
   end
   
   def verifica_fluxo_de_caixa
+    return false if self.em_cheque_classident?
     if !self.nao_lancar_no_livro_caixa && self.data_de_pagamento && self.data_de_pagamento < FluxoDeCaixa.data_atual(self.clinica_id)
       FluxoDeCaixa.voltar_para_a_data(self.data_de_pagamento, self.clinica_id)
     end
