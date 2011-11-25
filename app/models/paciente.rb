@@ -46,7 +46,7 @@ class Paciente < ActiveRecord::Base
   named_scope :com_logradouro, :conditions=>['logradouro IS NOT NULL']
   
   attr_accessor :inicio_tratamento_br, :data_suspensao_da_cobranca_de_orto_br,
-                :data_da_saida_da_lista_de_debitos_br
+                :data_da_saida_da_lista_de_debitos_br, :mensalidade_de_ortodontia_br
   attr_reader :termino_tratamento
   
   def termino_tratamento
@@ -54,11 +54,17 @@ class Paciente < ActiveRecord::Base
     ultima = altas.last(:order=>:created_at)
     ultima.data_termino.present? ? ultima.data_termino.to_s_br : "__/__/____"
   end
+
+  def mensalidade_de_ortodontia_br
+    self.mensalidade_de_ortodontia_br = self.mensalidade_de_ortodontia.real.to_s
+  end
+  def mensalidade_de_ortodontia_br=(value)
+    self.mensalidade_de_ortodontia = value.gsub(".", '').gsub(',','.') rescue 0
+  end
   
   def inicio_tratamento_br
     self.inicio_tratamento.nil? ? Date.today.to_s_br : self.inicio_tratamento.to_s_br
   end
-  
   def inicio_tratamento_br=(value)
     self.inicio_tratamento = value.to_date if Date.valid?(value)
   end

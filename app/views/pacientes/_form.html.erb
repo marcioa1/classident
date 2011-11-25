@@ -67,7 +67,7 @@
   <legend><%= f.check_box :ortodontia %> <%= f.label :Paciente_de_ortodontia %></legend>
   <table class='transparente'>
     <tr>
-      <td align='right'><%= f.label :valor_da_mensalidade%> : </td><td><%= f.text_field :mensalidade_de_ortodontia, :size=>8 %> </td>
+      <td align='right'><%= f.label :valor_da_mensalidade%> : </td><td><%= f.text_field :mensalidade_de_ortodontia_br, :size=>8 %> </td>
     </tr>
     <tr>
       <td align='right'><%= f.label :ortodontista %> : </td><td><%= f.select :ortodontista_id, @ortodontistas , :include_blank=>true %></td>
