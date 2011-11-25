@@ -56,7 +56,7 @@ class Paciente < ActiveRecord::Base
   end
 
   def mensalidade_de_ortodontia_br
-    self.mensalidade_de_ortodontia_br = self.mensalidade_de_ortodontia.real.to_s
+    self.mensalidade_de_ortodontia_br.real.to_s
   end
   def mensalidade_de_ortodontia_br=(value)
     self.mensalidade_de_ortodontia = value.gsub(".", '').gsub(',','.') rescue 0
