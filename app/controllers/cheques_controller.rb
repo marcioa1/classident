@@ -5,7 +5,8 @@ class ChequesController < ApplicationController
   before_filter :require_user
   before_filter :salva_action_na_session
   before_filter :verifica_se_tem_senha
-
+  before_filter :find_current, :only => [:grava_destinacao, :show, 
+                      :edit, :udpate, :destroy, :reverte_cheque, :devolve_a_clinica]
 
   def index
     @cheques = Cheque.all
@@ -13,18 +14,15 @@ class ChequesController < ApplicationController
   end
 
   def show
-    @cheque = Cheque.find(params[:id])
   end
 
   def edit
     @bancos = Banco.all(:order=>:nome).collect{|obj| [obj.nome,obj.id]}
-    @cheque = Cheque.find(params[:id])
     @destinacoes = Destinacao.all(:conditions=>["clinica_id = ?", session[:clinica_id]], :order=>:nome).collect{|d| [d.nome,d.id]}
     # session[:origem] = edit_cheque_path(@cheque)
   end
 
   def update
-    @cheque = Cheque.find(params[:id])
     valor_anterior = @cheque.valor
     if params[:datepicker2].empty?
       @cheque.data_primeira_devolucao = nil
@@ -36,11 +34,6 @@ class ChequesController < ApplicationController
     else
       @cheque.data_reapresentacao = params[:datepicker3].to_date
     end
-    # if params[:datepicker4].empty?
-    #      @cheque.data_segunda_devolucao = nil
-    #    else
-    #      @cheque.data_segunda_devolucao = params[:datepicker4].to_date
-    #    end
     if @cheque.update_attributes(params[:cheque])
       if valor_anterior != @cheque.valor
         @cheque.recebimentos.first.update_attribute(:valor, @cheque.valor)
@@ -52,7 +45,6 @@ class ChequesController < ApplicationController
   end
 
   def destroy
-    @cheque = Cheque.find(params[:id])
     @cheque.destroy
 
     redirect_to(cheques_url) 
@@ -61,6 +53,8 @@ class ChequesController < ApplicationController
   def cheques_recebidos
     params[:ordem] = 'por_data' if params[:ordem].nil?
     session[:origem] = cheques_recebidos_cheques_path
+    @destinacoes = Destinacao.all(:conditions=>["clinica_id = ?", session[:clinica_id]], :order=>:nome).collect{|d| [d.nome,d.id]}.insert(0,'')
+
     @clinicas = Clinica.todas.por_nome if @clinica_atual.administracao?
     if params[:datepicker] && Date.valid?(params[:datepicker])
       @data_inicial = params[:datepicker].to_date
@@ -274,21 +268,26 @@ class ChequesController < ApplicationController
   end
 
   def reverte_cheque
-    cheque = Cheque.find(params[:id])
-    cheque.update_attribute(:data_entrega_administracao, nil)
+    @cheque.update_attribute(:data_entrega_administracao, nil)
     head :ok
   end
 
   def devolve_a_clinica
-    cheque = Cheque.find(params[:id])
-    cheque.devolve_a_clinica(session[:clinica_id], current_user)
+    @cheque.devolve_a_clinica(session[:clinica_id], current_user)
     head :ok
   end
 
   def recebe_da_administracao
-    cheque = Cheque.find(params[:id])
     cheque.recebe_da_administracao(session[:clinica_id], current_user)
     head :ok
   end  
   
+  def grava_destinacao
+    @cheque.registra_destinacao(session[:clinica_id], current_user, params[:destinacao_id])
+    head:ok
+  end
+
+  def find_current
+    @cheque = Cheque.find(params[:id])
+  end
 end

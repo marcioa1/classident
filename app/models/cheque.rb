@@ -347,4 +347,14 @@ class Cheque < ActiveRecord::Base
          :user_id   => current_user.id, 
          :descricao => "#{current_user.nome} recebeu da administração em #{Date.today}")
   end
+
+  def registra_destinacao(clinica_id, current_user, destinacao_id)
+    self.update_attribute(:destinacao_id, destinacao_id)
+    AcompanhamentoCheque.create(:cheque_id => self.id,
+         :origem    => clinica_id,
+         :user_id   => current_user.id, 
+         :descricao => "#{current_user.nome} destinou o cheque em #{Date.today}")
+  end
+
+
 end

@@ -139,7 +139,7 @@
     </p>
   <% end %>
   <p>
-    <%= f.submit 'Update' unless (@cheque.entregue_a_administracao? && !@clinica_atual.administracao?)  %>
+    <%= f.submit 'Alterar' unless (@cheque.entregue_a_administracao? && !@clinica_atual.administracao?)  %>
   </p>
 <% end %>
 <%= render :partial => '/acompanhamento_cheques/show', :locals => {:cheque => @cheque } %>

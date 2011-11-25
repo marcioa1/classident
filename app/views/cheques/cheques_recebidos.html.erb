@@ -37,7 +37,11 @@
     <th>Adm</th>
     <th width='120px'>Situação</th>
     <th>Data recebimento</th>
-    <th>Histórico</th>
+    <% if params[:status] == 'disponíveis'%>
+      <th>Destino</th>
+    <% else %>
+      <th>Histórico</th>
+    <% end %>
     <th>&nbsp;</th>
   </tr>
   <% total = 0 %>
@@ -107,7 +111,12 @@
   
     </td>
     <td align='center'><%= cheque.data_recebimento_na_administracao.to_s_br %></td>
-    <td><%= cheque.historico %></td>
+    <% if params[:status] == 'disponíveis'%>
+      <td>    <%= select_tag :destinacao_id,  options_for_select(@destinacoes), :id=>"destinacao_#{cheque.id}" %> <%= button_to_function "gravar", "grava_destinacao(#{cheque.id})"%></td>
+    <% else %>
+        <td><%= cheque.historico %></td>
+    <% end %>
+
     <td><%= link_to 'alterar', edit_cheque_path(cheque), :class=>'ui-icon ui-icon-pencil' , :title=>'alterar'  %></td>
 
   </tr>
@@ -142,6 +151,17 @@
      success: function(){
        $("#tr_" + id).remove();
        }
+    });
+  }
+  function grava_destinacao(id){
+    $.ajax({
+      url: "/cheques/" + id + "/grava_destinacao",
+      data: { destinacao_id: $("#destinacao_"+id).val() },
+      type: 'GET',
+      success: function(){
+        $("#tr_"+id).remove();
+      }
+      
     });
   }
 </script>
