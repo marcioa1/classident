@@ -11,9 +11,9 @@ class EntradasController < ApplicationController
     end  
     if @clinica_atual.administracao?
       @entradas = Entrada.entrada_na_administracao.do_mes(@data)
-      @remessas = Entrada.entrada_na_clinica.do_mes(@data)
+      @remessas = Entrada.remessa_da_administracao.do_mes(@data)
     else
-      @entradas = Entrada.entrada_na_clinica.do_mes(@data).para_clinica(session[:clinica_id])
+      @entradas = Entrada.do_mes(@data).para_clinica(session[:clinica_id])
       @remessas = Entrada.entrada_na_administracao.do_mes(@data).da_clinica(session[:clinica_id])
     end
   end
@@ -25,7 +25,7 @@ class EntradasController < ApplicationController
   def new
     @entrada      = Entrada.new
     @entrada.data = Date.today
-    @clinicas     = (Clinica.all - Clinica.administracao.first(1)).collect{|c| [c.nome, c.id] }
+    @clinicas     = (Clinica.all).collect{|c| [c.nome, c.id] }
   end
 
   def edit
@@ -39,7 +39,7 @@ class EntradasController < ApplicationController
     @entrada.data       = params[:datepicker].to_date
     @entrada.clinica_id = session[:clinica_id]
     if @clinica_atual.administracao?
-      @entrada.clinica_destino = params[:clinica_id]
+      @entrada.clinica_destino = Clinica.find(params[:clinica_id])
     else
       @entrada.clinica_destino = Clinica.administracao.first
     end

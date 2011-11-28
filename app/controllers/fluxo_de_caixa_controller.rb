@@ -29,7 +29,7 @@ class FluxoDeCaixaController < ApplicationController
       @cheques      = Cheque.por_bom_para.na_administracao.
                entre_datas(@fluxo.data,@fluxo.data).nao_excluidos
       @entradas     = Entrada.entrada_na_administracao.do_dia(@data).nao_e_resolucao_de_cheque.confirmado
-      @remessas     = Entrada.entrada_na_clinica.do_dia(@data)
+      @remessas     = Entrada.remessa_da_administracao.do_dia(@data)
     else
       @entradas     = Entrada.entrada_na_clinica(session[:clinica_id]).do_dia(@data).confirmado#.da_clinica(session[:clinica_id])
       @remessas     = Entrada.da_clinica(session[:clinica_id]).entrada_na_administracao.do_dia(@data).nao_e_resolucao_de_cheque
