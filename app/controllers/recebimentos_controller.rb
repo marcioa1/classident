@@ -147,7 +147,7 @@ class RecebimentosController < ApplicationController
   end
 
   def update
-    if !@recebimento.na_quinzena?
+    if !@recebimento.pode_alterar?
       @recebimento.errors.add(:data, " : não pode ser anterior à quinzena")
     elsif @recebimento.em_cheque? && @recebimento.cheque
       # @recebimento.data_pr_br             = params[:datepicker].to_date
@@ -180,7 +180,7 @@ class RecebimentosController < ApplicationController
       @cheque.save
       @recebimento.cheque = @cheque
     else
-      @recebimento.cheque = nil
+       @recebimento.cheque = nil
     end
     if @recebimento.update_attributes(params[:recebimento]) 
       @recebimento.verifica_fluxo_de_caixa
