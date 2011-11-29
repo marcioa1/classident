@@ -148,9 +148,11 @@ class PagamentosController < ApplicationController
   def relatorio
     # raise params.inspect
     params[:livro_caixa] = 'ambos' if params[:livro_caixa].nil?
-    params[:modo] = 'todos' if params[:modo].nil?
-    session[:origem] = '/pagamentos/relatorio'
-    @tipos_pagamento = TipoPagamento.da_clinica(session[:clinica_id]).por_nome.collect{|obj| [obj.nome, obj.id.to_s]}
+    params[:modo]     = 'todos' if params[:modo].nil?
+    session[:origem]  = '/pagamentos/relatorio'
+    @tipos_pagamento  = TipoPagamento.da_clinica(session[:clinica_id]).por_nome.collect{|obj| [obj.nome, obj.id.to_s]}
+    @contas_bancarias = ContaBancaria.all(:order=>'nome').collect{|obj| [obj.nome, obj.id.to_s]}.insert(0, '')
+
     if params[:datepicker] && Date.valid?(params[:datepicker])
       @data_inicial = params[:datepicker].to_date 
     else
@@ -187,6 +189,9 @@ class PagamentosController < ApplicationController
       @pela_administracao = Pagamento.pela_administracao.entre_datas(@data_inicial, @data_final).da_clinica(session[:clinica_id])
       @pagamentos += @pela_administracao
       @titulo += " pela adm"
+    end
+    if params[:conta_bancaria_id] && !params[:conta_bancaria_id].blank?
+      @pagamentos = @pagamentos.pela_conta_bancaria(params[:conta_bancaria_id])
     end
     # raise params[:livro_caixa].inspect
   end

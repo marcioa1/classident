@@ -29,7 +29,9 @@
         <td colspan='2'><%= radio_button_tag :modo, 'cheque paciente', params[:modo] == 'cheque paciente' %> Cheque de pacientes</td>
       </tr>
       <tr>
-        <td colspan='2'><%= radio_button_tag :modo, 'cheque classident', params[:modo] == 'cheque classident' %> Cheque da classident</td>
+        <td colspan='2'><%= radio_button_tag :modo, 'cheque classident', params[:modo] == 'cheque classident' %> Cheque da classident
+        <%= select_tag :conta_bancaria_id, options_for_select(@contas_bancarias, params[:conta_bancaria_id]) %>
+        </td>
       </tr>
     </table>
     </td>

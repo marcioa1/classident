@@ -32,6 +32,7 @@ class Pagamento < ActiveRecord::Base
             {:conditions=>["tipo_pagamento_id in (?)", tipos]}}
   named_scope :nao_excluidos, :conditions=>["data_de_exclusao IS NULL"]
   named_scope :pela_administracao, :conditions=>["pagamento_id IS NOT NULL"]
+  named_scope :pela_conta_bancaria, lambda {|conta_bancaria_id| {:conditions=>["conta_bancaria_id = ? ", conta_bancaria_id]}}
   named_scope :por_data, :order=>:data_de_pagamento
 #  named_scope :total,  :sum('valor_pago') #conditions=>['sum valor_pago where data between ? and ? ', '2009-01-01', '2009-01-31']
        
