@@ -12,7 +12,7 @@
       }
 
       $("#iniciais").keypress(function(keycode){
-        if (keycode.which == 13 && $("#iniciais").val().length>5){
+        if (keycode.which == 13 && $("#iniciais").val().length>3){
           $.ajax({
             url: '/pacientes/pesquisa_nomes',
             data: {term : $("#iniciais").val()},
