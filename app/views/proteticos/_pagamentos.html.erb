@@ -1,6 +1,6 @@
   <%= label_tag :data_inicial %>
   <%= text_field_tag :data_inicial, params[:data_inicial], :size=>10, :class=>'datepicker' %>
-  <%= label_tag :data_inicial %>
+  <%= label_tag :data_final %>
   <%= text_field_tag :data_final, params[:data_final], :size=>10, :class=>'datepicker' %>
   <%= button_to_function 'pesquisar', "pagamento_do_protetico(#{@protetico.id})"%>
 <br/><br/>

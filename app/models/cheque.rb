@@ -317,11 +317,12 @@ class Cheque < ActiveRecord::Base
   end
   
   def envia_cheque_a_administracao(clinica_id, current_user)
-    self.update_attribute(:data_entrega_administracao, Date.today)
+    self.update_attributes(:data_entrega_administracao => Date.today,
+                    :data_recebimento_na_administracao => nil)
     AcompanhamentoCheque.create(:cheque_id => self.id,
          :origem    => clinica_id,
          :user_id   => current_user.id, 
-         :descricao => "#{current_user.nome} enviou o cheque à administraçã em #{Date.today}")
+         :descricao => "#{current_user.nome} enviou o cheque à administração em #{Date.today}")
   end
   
   def confirma_recebimento_na_administracao(clinica_id, current_user)    
@@ -364,6 +365,5 @@ class Cheque < ActiveRecord::Base
          :user_id   => current_user.id, 
          :descricao => "#{current_user.nome} tornou este cheque disponível em #{Date.today} : ( id do pagamento anterior : #{pagamento_id})")
   end
-
 
 end

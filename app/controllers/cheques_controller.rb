@@ -7,7 +7,7 @@ class ChequesController < ApplicationController
   before_filter :verifica_se_tem_senha
   before_filter :find_current, :only => [:grava_destinacao, :show, 
                       :edit, :udpate, :destroy, :reverte_cheque,
-                      :devolve_a_clinica, :tornar_disponivel]
+                      :devolve_a_clinica, :tornar_disponivel, :envia_a_administacao]
 
   def index
     @cheques = Cheque.all
@@ -290,6 +290,11 @@ class ChequesController < ApplicationController
 
   def tornar_disponivel
     @cheque.registra_disponivel(session[:clinica_id], current_user)
+    head :ok
+  end
+
+  def envia_a_administracao
+    @cheque.envia_cheque_a_administracao(session[:clinica_id], current_user)
     head :ok
   end
 

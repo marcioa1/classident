@@ -77,7 +77,7 @@
           <%= image_tag "ok.png" %>
           <%= cheque.data_entrega_administracao.to_s_br %>
         <% elsif cheque.devolvido_a_clinica? %>
-          retorna à administração
+          <%= link_to_function "retorna à administração",  "eviar_de_vola_a_administracao(#{cheque.id})"
         <% elsif cheque.disponivel? %>
            <%= check_box_tag "adm_"+cheque.id.to_s %>
         <% end %>
@@ -172,15 +172,26 @@
 
   function tornar_disponivel(id){
     if (confirm("Tem certeza de que quer tornar este cheque disponível ?")){
+      $.ajax({
+        url: "/cheques/" + id + "/tornar_disponivel",
+        type: 'GET',
+        success: function(){
+          $("#tr_"+id).remove();
+        }
+      
+      });
+    }
+  }
+
+  function enviar_de_volta_a_administracao(id){
     $.ajax({
-      url: "/cheques/" + id + "/tornar_disponivel",
+      url: "/cheques/" + id + "/envia_a_administracao",
       type: 'GET',
       success: function(){
         $("#tr_"+id).remove();
       }
-      
+    
     });
-  }
   }
 
 
