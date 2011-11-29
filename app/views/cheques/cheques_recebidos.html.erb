@@ -76,8 +76,8 @@
         <% if cheque.entregue_a_administracao?  %>
           <%= image_tag "ok.png" %>
           <%= cheque.data_entrega_administracao.to_s_br %>
-        <% elsif cheque.devolvido_a_clinica? %>
-          <%= link_to_function "retorna à administração",  "eviar_de_vola_a_administracao(#{cheque.id})"
+        <% elsif cheque.recebido_pela_clinica? %>
+          <%= link_to_function "retorna à administração",  "enviar_de_volta_a_administracao(#{cheque.id})" %>
         <% elsif cheque.disponivel? %>
            <%= check_box_tag "adm_"+cheque.id.to_s %>
         <% end %>
