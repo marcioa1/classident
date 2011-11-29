@@ -6,7 +6,8 @@ class ChequesController < ApplicationController
   before_filter :salva_action_na_session
   before_filter :verifica_se_tem_senha
   before_filter :find_current, :only => [:grava_destinacao, :show, 
-                      :edit, :udpate, :destroy, :reverte_cheque, :devolve_a_clinica]
+                      :edit, :udpate, :destroy, :reverte_cheque,
+                      :devolve_a_clinica, :tornar_disponivel]
 
   def index
     @cheques = Cheque.all
@@ -284,7 +285,12 @@ class ChequesController < ApplicationController
   
   def grava_destinacao
     @cheque.registra_destinacao(session[:clinica_id], current_user, params[:destinacao_id])
-    head:ok
+    head :ok
+  end
+
+  def tornar_disponivel
+    @cheque.registra_disponivel(session[:clinica_id], current_user)
+    head :ok
   end
 
   def find_current

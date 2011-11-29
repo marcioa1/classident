@@ -89,6 +89,11 @@
             "usado p/ pagamento, #{cheque.pagamento.tipo_pagamento.nome}"
           else
             link_to cheque.pagamento.tipo_pagamento.nome, '#', :onclick=>'javascript:abre_pagamento('+ cheque.pagamento_id.to_s + ')' 
+            if cheque.bom_para > cheque.pagamento.data_de_pagamento
+              link_to "tornar disponivel", "#", :onclick=>'javascript:tornar_disponivel('+ cheque.id.to_s + ')'
+            else
+            link_to cheque.pagamento.tipo_pagamento.nome, "#", :onclick=>'javascript:abre_pagamento('+ cheque.pagamento_id.to_s + ')' 
+            end
           end
         when cheque.status=~/destinação/ then
            cheque.destinacao.nome
@@ -164,6 +169,21 @@
       
     });
   }
+
+  function tornar_disponivel(id){
+    if (confirm("Tem certeza de que quer tornar este cheque disponível ?")){
+    $.ajax({
+      url: "/cheques/" + id + "/tornar_disponivel",
+      type: 'GET',
+      success: function(){
+        $("#tr_"+id).remove();
+      }
+      
+    });
+  }
+  }
+
+
 </script>
 
 <% end %>

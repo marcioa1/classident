@@ -356,5 +356,14 @@ class Cheque < ActiveRecord::Base
          :descricao => "#{current_user.nome} destinou o cheque em #{Date.today}")
   end
 
+  def registra_disponivel(clinica_id, current_user)
+    pagamento_id = self.pagamento_id
+    self.update_attribute(:pagamento_id, nil)
+    AcompanhamentoCheque.create(:cheque_id => self.id,
+         :origem    => clinica_id,
+         :user_id   => current_user.id, 
+         :descricao => "#{current_user.nome} tornou este cheque disponível em #{Date.today} : ( id do pagamento anterior : #{pagamento_id})")
+  end
+
 
 end
