@@ -5,8 +5,8 @@ class ChequesController < ApplicationController
   before_filter :require_user
   before_filter :salva_action_na_session
   before_filter :verifica_se_tem_senha
-  before_filter :find_current, :only => [:grava_destinacao, :show, 
-                      :edit, :udpate, :destroy, :reverte_cheque, :recebe_da_administracao,
+  before_filter :find_current, :only => [:grava_destinacao, :show, :edit, :udpate,
+                      :destroy, :reverte_cheque, :recebe_da_administracao,
                       :devolve_a_clinica, :tornar_disponivel, :envia_a_administracao]
 
   def index
@@ -24,6 +24,7 @@ class ChequesController < ApplicationController
   end
 
   def update
+    @cheque = Cheque.find(params[:id])
     valor_anterior = @cheque.valor
     if params[:datepicker2].empty?
       @cheque.data_primeira_devolucao = nil
@@ -299,6 +300,8 @@ class ChequesController < ApplicationController
   end
 
   def find_current
+    puts "----------------------"
+    puts "passou pelo find_current"
     @cheque = Cheque.find(params[:id])
   end
 end
