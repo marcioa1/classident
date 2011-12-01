@@ -1,0 +1,29 @@
+-content_for :main do
+  = render :partial => '/layouts/include_senha' 
+  - dados = "#{@titulo}>Mês;Abertura;Pagamento;Recebimento;Remessa;Saldo>center;right;right;right;right;right>"
+  %h3 Fechamento de mês
+  - form_tag :url=>fechamento_mes_clinicas_path do 
+    Ano : 
+    = select_year @data 
+    = submit_tag 'pesquisar' 
+  %p
+  %table{:class=>'tabela'}
+    %tr
+      %th Mês
+      %th{:width=>'100px'}Abertura
+      %th{:width=>'100px'}Pagamento
+      %th{:width=>'100px'}Recebimento
+      %th{:width=>'100px'}Remessa
+      %th{:width=>'100px'}Saldo
+    
+    - (1..12).each do |mes| 
+      %tr
+        %td= Date::MONTHNAMES[mes]  
+        %td{:align=>'right'}= @abertura[mes].real 
+        %td{:align=>'right'}= @pagamento[mes].real 
+        %td{:align=>'right'}= @recebimento[mes].real 
+        %td{:align=>'right'}= @remessa[mes].real 
+        %td{:align=>'right'}= @abertura[mes].real - @pagamento[mes].real + @recebimento[mes].real - @remessa[mes].real 
+      
+      - dados += "#{mes};#{@abertura[mes].real};#{@pagamento[mes].real};#{@recebimento[mes].real};#{@remessa[mes].real};#{@abertura[mes].real - @pagamento[mes].real + @recebimento[mes].real - @remessa[mes].real}>"
+  = botao_de_impressao(dados, session[:clinica_id], 'landscape') 
