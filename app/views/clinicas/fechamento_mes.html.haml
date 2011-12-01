@@ -26,4 +26,8 @@
         %td{:align=>'right'}= @abertura[mes].real - @pagamento[mes].real + @recebimento[mes].real - @remessa[mes].real 
       
       - dados += "#{mes};#{@abertura[mes].real};#{@pagamento[mes].real};#{@recebimento[mes].real};#{@remessa[mes].real};#{@abertura[mes].real - @pagamento[mes].real + @recebimento[mes].real - @remessa[mes].real}>"
-  = botao_de_impressao(dados, session[:clinica_id], 'landscape') 
+  
+  #impressao
+    - form_tag imprime_path(:clinica_id=>session[:clinica_id],:orientation=>'landscape') do 
+      = hidden_field_tag :tabela, dados
+      = submit_tag "imprime"

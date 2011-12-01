@@ -68,18 +68,12 @@ module ApplicationHelper
   def botao_de_impressao(dados, clinica_id=session[:clinica_id], orientation='portrait')
     capture_haml do
      form_tag imprime_path(:clinica_id=>clinica_id,:orientation=>orientation) do 
-       hidden_field_tag :tabela, dados
+       text_field_tag :tabela, dados
        submit_tag "imprime"
      end
    end
   end
 
-  def botao_de_impressao_html(dados, clinica_id=session[:clinica_id], orientation='portrait')
-   form_tag imprime_path(:clinica_id=>clinica_id,:orientation=>orientation) do 
-     text_field_tag :tabela, dados
-     submit_tag "imprime"
-   end
-  end
   
   def data_abreviada(data)
     if data
