@@ -29,5 +29,6 @@
       <% dados += "#{mes};#{@abertura[mes].real};#{@pagamento[mes].real};#{@recebimento[mes].real};#{@remessa[mes].real};#{@abertura[mes].real - @pagamento[mes].real + @recebimento[mes].real - @remessa[mes].real}>"%>
     <% end %>
   </table>
-  <%= link_de_impressao(dados)%>
+  <%= botao_de_impressao(dados, session[:clinica_id], 'landscape') %
+
 <% end %>
