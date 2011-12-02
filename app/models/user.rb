@@ -57,6 +57,6 @@ class User < ActiveRecord::Base
   end
   
   def pode_alterar_na_clinica?
-    self.tipo_usuario.nivel == 1
+    self.tipo_usuario.nivel == 2
   end
 end

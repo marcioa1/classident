@@ -11,7 +11,7 @@ class Pagamento < ActiveRecord::Base
   belongs_to :pagamento, :class_name => "Pagamento"
   
   validates_presence_of :data_de_pagamento, :message => " : obrigatória."
-  # validate :verifica_quinzena
+  validate :verifica_quinzena
   validates_numericality_of :valor_pago, :message => " : deve ser numérico"
   
   named_scope :ao_protetico, lambda{|protetico_id| {:conditions=>["protetico_id = ?", protetico_id]}}
@@ -87,7 +87,7 @@ class Pagamento < ActiveRecord::Base
   
   def verifica_quinzena
     errors.add(:data_de_pagamento, "não pode ser fora da quinzena.") if
-      !na_quinzena?(data_de_pagamento)# < Date.today  
+      !self.na_quinzena? && self.em_dinheiro?# < Date.today  
   end
   
   def descricao_opcao_restante
