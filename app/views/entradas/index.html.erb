@@ -13,6 +13,6 @@
 <%= render :partial =>"movimentacao", :locals=>{:movimentacao=>@entradas, :titulo=>"Entrada"} %>
 <p/>
 <%= render :partial =>"movimentacao", :locals=>{:movimentacao=>@remessas, :titulo=>"Remessa"} %>
-<%= link_to 'Nova remessa' , new_entrada_path(:tipo=>'entrada') %>
+<%= link_to 'Nova remessa' , new_entrada_path(:tipo=>'entrada') if current_user.pode_alterar_na_clinica? %>
 
 <% end %>

@@ -22,7 +22,7 @@
     <%= f.text_field :observacao, :size=>20 %>
   </p>
   <p>
-    <%= f.submit 'alterar' %>
+    <%= f.submit 'alterar' if current_user.pode_alterar_na_clinica? %>
   </p>
 <% end %>
 

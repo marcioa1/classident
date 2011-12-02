@@ -1,4 +1,4 @@
-<p><%= link_to "Nova alta", new_alta_path(:paciente_id=> @paciente.id) unless @paciente.em_alta? %>
+<p><%= link_to "Nova alta", new_alta_path(:paciente_id=> @paciente.id)  if current_user.pode_alterar_na_clinica? unless @paciente.em_alta? %>
 </p>
 <table class='tabela'>
   <tr>

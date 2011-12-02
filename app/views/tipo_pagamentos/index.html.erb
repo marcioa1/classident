@@ -25,7 +25,7 @@
     <td><%=h tipo_pagamento.ativo? ? "sim" : "não" %></td>
     <td>
     <% if tipo_pagamento.ativo? %>
-      <%= link_to 'desativar', tipo_pagamento, :confirm => 'Tem certeza ?', :method => :delete %>
+      <%= link_to 'desativar', tipo_pagamento, :confirm => 'Tem certeza ?', :method => :delete  if current_user.pode_alterar_na_clinica?%>
     <% else %>
       <%= link_to 'reativar', reativar_tipo_pagamento_path(tipo_pagamento) %>
     <% end %>
@@ -36,5 +36,5 @@
 
 <br />
 
-<%= link_to 'Novo tipo de pagamento', new_tipo_pagamento_path %>
+<%= link_to 'Novo tipo de pagamento', new_tipo_pagamento_path if current_user.pode_alterar_na_clinica? %>
 <% end %>

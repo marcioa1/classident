@@ -25,16 +25,16 @@
     <td><%= tabela.ativa ? "sim" : "não" %></td>
     <td>
       <% if tabela.ativa %>
-        <%= link_to_function 'desativar' , "desativar_tabela(#{tabela.id})" %>
+        <%= link_to_function 'desativar' , "desativar_tabela(#{tabela.id})" if current_user.pode_alterar_na_clinica? %>
       <% else %>
         &nbsp;
       <% end %>
     </td>
-    <td><%= link_to 'Editar', edit_tabela_path(tabela)  %></td>
+    <td><%= link_to 'Editar', edit_tabela_path(tabela) if current_user.pode_alterar_na_clinica?  %></td>
     <td><% if params[:ativa] == 'nao'%>
-	        <%= link_to 'Reativar', reativar_tabela_path(tabela), :confirm => 'Tem certeza ?' %>
+	        <%= link_to 'Reativar', reativar_tabela_path(tabela), :confirm => 'Tem certeza ?' if current_user.pode_alterar_na_clinica? %>
         <% else %>
-          <%= link_to 'Excluir', tabela, :confirm => 'Tem certeza ?', :method => :delete %>
+          <%= link_to 'Excluir', tabela, :confirm => 'Tem certeza ?', :method => :delete if current_user.pode_alterar_na_clinica? %>
         <% end %>
     </td>
 
@@ -44,7 +44,7 @@
 
 <br />
 
-<%= link_to 'Nova tabela', new_tabela_path  %>
+<%= link_to 'Nova tabela', new_tabela_path if current_user.pode_alterar_na_clinica?  %>
 <script type="text/javascript">
   function desativar_tabela(id){
     $.ajax({

@@ -6,7 +6,7 @@
   - total_de_credito_em_cartao   = 0.0
 
   = render :partial => '/layouts/include_senha'
-  = link_to 'novo pagamento', new_pagamento_path
+  = link_to 'novo pagamento', new_pagamento_path if current_user.pode_alterar_na_clinica?
   %h3{ :style => "padding-left: 10em;" }
     Fluxo de caixa do dia :
     = @fluxo.data.to_s_br
@@ -279,8 +279,6 @@
     = link_to "anterior", fluxo_de_caixa_path(:data=>@fluxo.data - 1.day)
     = "|"
     = link_to "próximo", fluxo_de_caixa_path(:data=>@fluxo.data + 1.day, :saldo_dinheiro=>saldo_dinheiro.real, :saldo_cheque => saldo_cheque.real)
-    = "|"
-    = link_de_impressao(dados, session[:clinica_id], 'landscape')
     = botao_de_impressao(dados, session[:clinica_id], 'landscape')
     - form_tag imprime_path(:clinica_id=>session[:clinica_id],:orientation=>'landscape') do 
       = hidden_field_tag :tabela, dados

@@ -1,7 +1,7 @@
 = javascript_include_tag 'jsDraw2D.js','odontograma.js'
 
 - if !@clinica_atual.administracao?
-  = link_to "Novo procedimento" , new_tratamento_path(:paciente_id=>@paciente.id) 
+  = link_to "Novo procedimento" , new_tratamento_path(:paciente_id=>@paciente.id) if current_user.pode_alterar_na_clinica?
   |
   = link_to "Odontograma", '#', :onclick=>'desenha_odontograma();'
 %br

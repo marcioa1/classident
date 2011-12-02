@@ -1,11 +1,11 @@
 - if current_user.master?
-  = link_to "Novo abono", new_abono_path(:paciente_id => @paciente )
+  = link_to "Novo abono", new_abono_path(:paciente_id => @paciente ) if current_user.pode_alterar_na_clinica?
   |
 
 - if !@clinica_atual.administracao?
-  = link_to "Novo recebimento", new_recebimento_path(:paciente_id=>@paciente.id)
+  = link_to "Novo recebimento", new_recebimento_path(:paciente_id=>@paciente.id)if current_user.pode_alterar_na_clinica?
   | 
-  = link_to "Novo débito", new_debito_path(:paciente_id=>@paciente.id) if !@clinica_atual.administracao?
+  = link_to "Novo débito", new_debito_path(:paciente_id=>@paciente.id) if current_user.pode_alterar_na_clinica?
 
 - dados = "Extrato do paciente #{@paciente.nome}>Data;Descrição;Débito;Crédito;Saldo>center;left;right;right;right>"
 %p

@@ -26,7 +26,7 @@ class User < ActiveRecord::Base
   end
   
   def pode_incluir_tabela
-    tipo_usuario.nivel < 2
+    self.master?
   end
   
   def acesso_com_senha?
@@ -54,5 +54,9 @@ class User < ActiveRecord::Base
       result += cl.nome + ','
     end
     result
+  end
+  
+  def pode_alterar_na_clinica?
+    self.tipo_usuario.nivel == 1
   end
 end

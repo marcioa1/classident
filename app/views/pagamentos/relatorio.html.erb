@@ -2,7 +2,7 @@
   <%= render :partial => '/layouts/include_senha' %>
 
 <div id="link">
-  <%= link_to 'novo pagamento', new_pagamento_path %> 
+  <%= link_to 'novo pagamento', new_pagamento_path if current_user.pode_alterar_na_clinica? %> 
 </div>
 <fieldset class='fieldset_40'>
     <legend>Relatório de pagamentos</legend>
@@ -152,7 +152,7 @@
 
 <br />
 
-<%= link_to 'novo pagamento', new_pagamento_path %> |  
+<%= link_to 'novo pagamento', new_pagamento_path  if current_user.pode_alterar_na_clinica?%> |  
   <%= link_de_impressao(dados, session[:clinica_id], 'portrait') %>
 
 

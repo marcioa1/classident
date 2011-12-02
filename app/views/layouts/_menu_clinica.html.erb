@@ -26,7 +26,7 @@
     <% if !session[:paciente_id].nil? %>
       <li><%= link_to session[:paciente_nome] , abre_paciente_path(:id=>session[:paciente_id])%></li>
     <% end %>
-      <li><%= link_to "Novo paciente", new_paciente_path %></li>
+      <li><%= link_to "Novo paciente", new_paciente_path if current_user.pode_alterar_na_clinica?%></li>
       <li><%= link_to "Pesquisa paciente", pesquisa_pacientes_path %></li>
     </ul>
   </li>

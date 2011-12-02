@@ -13,7 +13,7 @@
     <%= f.check_box :ativo %><%= f.label :ativo %>
   </p>
   <p>
-    <%= f.submit 'Criar' %>
+    <%= f.submit 'Criar' if current_user.pode_alterar_na_clinica? %>
   </p>
 <% end %>
 
