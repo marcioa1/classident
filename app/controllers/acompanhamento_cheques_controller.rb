@@ -14,7 +14,7 @@ class AcompanhamentoChequesController < ApplicationController
     @acompanhamento_cheque.user = current_user
     if @acompanhamento_cheque.save
       flash[:notice] = 'Observação salva com sucesso.'
-      redirect_to( session[:origem] ) 
+      redirect_to( session[:origem] ? session[:origem] : :back) 
     else
       render :action => new
     end
