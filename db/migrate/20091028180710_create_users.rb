@@ -50,7 +50,7 @@ class CreateUsers < ActiveRecord::Migration
    User.create!(:login => 'regina pessoa', :password=>'1234', :email=>'reginapessoa@ibest.com.br',
              :password_confirmation =>'1234', :nome=>'Regina Pessoa', :tipo_usuario_id => 3, :clinicas => [Clinica.find_by_sigla("centro")])
    User.create!(:login => 'paulo', :password=>'1234', :email=>'Paulo@ibest.com.br',
-             :password_confirmation =>'1234', :nome=>'Paulo', :tipo_usuario_id => 3, :clinicas => [Clinica.find_by_sigla("ni")])
+             :password_confirmation =>'1234', :nome=>'Paulo', :tipo_usuario_id => 3, :clinicas => [Clinica.find_by_sigla("niteroi")])
 
   end
 
