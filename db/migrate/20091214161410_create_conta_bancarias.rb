@@ -2,6 +2,7 @@ class CreateContaBancarias < ActiveRecord::Migration
   def self.up
     create_table :conta_bancarias do |t|
       t.string :nome, :limit => 30
+      t.integer :sequencial
 
       t.timestamps
     end
