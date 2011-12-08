@@ -128,9 +128,6 @@ ActiveRecord::Schema.define(:version => 20111205123500) do
   end
 
   add_index "cheques", ["banco_id"], :name => "index_cheques_on_banco_id"
-  add_index "cheques", ["clinica_id", "numero", "agencia"], :name => "clinica_id"
-  add_index "cheques", ["clinica_id", "numero", "conta_corrente"], :name => "clinica_id_2"
-  add_index "cheques", ["clinica_id", "numero", "valor"], :name => "clinica_id_3"
   add_index "cheques", ["clinica_id"], :name => "index_cheques_on_clinica_id"
   add_index "cheques", ["data_entrega_administracao"], :name => "index_cheques_on_data_entrega_administracao"
   add_index "cheques", ["data_recebimento_na_administracao"], :name => "index_cheques_on_data_recebimento_na_administracao"
@@ -172,7 +169,6 @@ ActiveRecord::Schema.define(:version => 20111205123500) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "clinica_id"
-    t.integer  "sequencial"
   end
 
   add_index "conta_bancarias", ["clinica_id"], :name => "index_conta_bancarias_on_clinica_id"
@@ -330,7 +326,7 @@ ActiveRecord::Schema.define(:version => 20111205123500) do
   end
 
   add_index "orcamentos", ["dentista_id"], :name => "index_orcamentos_on_dentista_id"
-  add_index "orcamentos", ["numero", "paciente_id", "clinica_id"], :name => "numero_paciente_id_clinica_id"
+  add_index "orcamentos", ["numero", "paciente_id", "clinica_id"], :name => "index_orcamentos_on_numero_and_paciente_id_and_clinica_id"
   add_index "orcamentos", ["paciente_id"], :name => "index_orcamentos_on_paciente_id"
 
   create_table "pacientes", :force => true do |t|
@@ -406,13 +402,12 @@ ActiveRecord::Schema.define(:version => 20111205123500) do
     t.string   "forma_de_pagamento"
   end
 
-  add_index "pagamentos", ["clinica_id", "sequencial"], :name => "clinica_id"
   add_index "pagamentos", ["clinica_id"], :name => "index_pagamentos_on_clinica_id"
   add_index "pagamentos", ["conta_bancaria_id"], :name => "index_pagamentos_on_conta_bancaria_id"
   add_index "pagamentos", ["dentista_id"], :name => "index_pagamentos_on_dentista_id"
   add_index "pagamentos", ["pagamento_id"], :name => "index_pagamentos_on_pagamento_id"
   add_index "pagamentos", ["protetico_id"], :name => "index_pagamentos_on_protetico_id"
-  add_index "pagamentos", ["sequencial", "clinica_id"], :name => "sequencial_clinica_id"
+  add_index "pagamentos", ["sequencial", "clinica_id"], :name => "index_pagamentos_on_sequencial_and_clinica_id"
   add_index "pagamentos", ["sequencial"], :name => "index_pagamentos_on_sequencial"
   add_index "pagamentos", ["tipo_pagamento_id"], :name => "index_pagamentos_on_tipo_pagamento_id"
 
@@ -476,7 +471,7 @@ ActiveRecord::Schema.define(:version => 20111205123500) do
   add_index "recebimentos", ["formas_recebimento_id"], :name => "index_recebimentos_on_formas_recebimento_id"
   add_index "recebimentos", ["paciente_id"], :name => "index_recebimentos_on_paciente_id"
   add_index "recebimentos", ["sequencial"], :name => "index_recebimentos_on_sequencial"
-  add_index "recebimentos", ["sequencial_cheque", "clinica_id"], :name => "sequencial_cheque_clinica_id"
+  add_index "recebimentos", ["sequencial_cheque", "clinica_id"], :name => "index_recebimentos_on_sequencial_cheque_and_clinica_id"
 
   create_table "senhas", :force => true do |t|
     t.integer  "clinica_id"
@@ -613,22 +608,22 @@ ActiveRecord::Schema.define(:version => 20111205123500) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean  "ativo",                            :default => true
-    t.datetime "hora_de_inicio_0",                 :default => '2011-10-21 10:00:00'
-    t.datetime "hora_de_termino_0",                :default => '2011-10-21 20:00:00'
-    t.datetime "hora_de_inicio_1",                 :default => '2011-10-21 10:00:00'
-    t.datetime "hora_de_termino_1",                :default => '2011-10-21 20:00:00'
-    t.datetime "hora_de_inicio_2",                 :default => '2011-10-21 10:00:00'
-    t.datetime "hora_de_termino_2",                :default => '2011-10-21 20:00:00'
-    t.datetime "hora_de_inicio_3",                 :default => '2011-10-21 10:00:00'
-    t.datetime "hora_de_termino_3",                :default => '2011-10-21 20:00:00'
-    t.datetime "hora_de_inicio_4",                 :default => '2011-10-21 10:00:00'
-    t.datetime "hora_de_termino_4",                :default => '2011-10-21 20:00:00'
-    t.datetime "hora_de_inicio_5",                 :default => '2011-10-21 10:00:00'
-    t.datetime "hora_de_termino_5",                :default => '2011-10-21 20:00:00'
-    t.datetime "hora_de_inicio_6",                 :default => '2011-10-21 10:00:00'
-    t.datetime "hora_de_termino_6",                :default => '2011-10-21 20:00:00'
-    t.datetime "hora_de_inicio_7",                 :default => '2011-10-21 10:00:00'
-    t.datetime "hora_de_termino_7",                :default => '2011-10-21 20:00:00'
+    t.datetime "hora_de_inicio_0",                 :default => '2011-12-07 10:00:00'
+    t.datetime "hora_de_termino_0",                :default => '2011-12-07 20:00:00'
+    t.datetime "hora_de_inicio_1",                 :default => '2011-12-07 10:00:00'
+    t.datetime "hora_de_termino_1",                :default => '2011-12-07 20:00:00'
+    t.datetime "hora_de_inicio_2",                 :default => '2011-12-07 10:00:00'
+    t.datetime "hora_de_termino_2",                :default => '2011-12-07 20:00:00'
+    t.datetime "hora_de_inicio_3",                 :default => '2011-12-07 10:00:00'
+    t.datetime "hora_de_termino_3",                :default => '2011-12-07 20:00:00'
+    t.datetime "hora_de_inicio_4",                 :default => '2011-12-07 10:00:00'
+    t.datetime "hora_de_termino_4",                :default => '2011-12-07 20:00:00'
+    t.datetime "hora_de_inicio_5",                 :default => '2011-12-07 10:00:00'
+    t.datetime "hora_de_termino_5",                :default => '2011-12-07 20:00:00'
+    t.datetime "hora_de_inicio_6",                 :default => '2011-12-07 10:00:00'
+    t.datetime "hora_de_termino_6",                :default => '2011-12-07 20:00:00'
+    t.datetime "hora_de_inicio_7",                 :default => '2011-12-07 10:00:00'
+    t.datetime "hora_de_termino_7",                :default => '2011-12-07 20:00:00'
     t.boolean  "dia_da_semana_0",                  :default => false
     t.boolean  "dia_da_semana_1",                  :default => true
     t.boolean  "dia_da_semana_2",                  :default => true
