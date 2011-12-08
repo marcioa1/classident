@@ -5,7 +5,7 @@ class PacientesController < ApplicationController
   before_filter :busca_tabelas
   
   def index
-    @pacientes = Paciente.all
+    @pacientes = Paciente.da_classident
   end
 
   def show
@@ -64,7 +64,7 @@ class PacientesController < ApplicationController
     @pacientes = []
     if !params[:codigo].blank?
       if @clinica_atual.administracao?
-        @pacientes = Paciente.all(:conditions=>["codigo=?", params[:codigo]], :order=>:nome)
+        @pacientes = Paciente.da_classident(:conditions=>["codigo=?", params[:codigo]], :order=>:nome)
       else
         @pacientes = Paciente.all(:conditions=>["clinica_id=? and codigo=?", session[:clinica_id].to_i, params[:codigo].to_i],:order=>:nome)
       end
@@ -82,7 +82,7 @@ class PacientesController < ApplicationController
   
   def pesquisa_nomes
     if @clinica_atual.administracao?
-      nomes = Paciente.all(:select=>'nome,clinica_id,id', :conditions=>["arquivo_morto = ? and nome like ?", false, "#{params[:term]}%" ])  
+      nomes = Paciente.da_classident(:select=>'nome,clinica_id,id', :conditions=>["arquivo_morto = ? and nome like ?", false, "#{params[:term]}%" ])  
     else
       nomes = Paciente.all(:select=>'nome,clinica_id,id', :conditions=>["arquivo_morto = ? and nome like ? and clinica_id = ? ", false,  "#{params[:term].nome_proprio}%", session[:clinica_id] ])  
     end
@@ -127,7 +127,7 @@ class PacientesController < ApplicationController
   def nomes_que_iniciam_com
     if params[:nome]
       if @clinica_atual.administracao?
-        @pacientes = Paciente.all(:conditions=>["nome like ?", params[:nome] + '%'],:order=>:nome)
+        @pacientes = Paciente.da_classident(:conditions=>["nome like ?", params[:nome] + '%'],:order=>:nome)
       else
         @pacientes = Paciente.all(:conditions=>["clinica_id= ? and nome like ?", session[:clinica_id].to_i, params[:nome] + '%'],:order=>:nome)
       end

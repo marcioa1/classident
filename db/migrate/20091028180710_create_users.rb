@@ -18,13 +18,13 @@ class CreateUsers < ActiveRecord::Migration
      t.timestamps
    end
    User.create!(:login => 'ricardo', :password=>'1234', :email=>'classident@ibest.com.br',
-    :password_confirmation =>'1234', :nome=>'Ricardo', :tipo_usuario_id => 1, :clinicas => Clinica.all)
+    :password_confirmation =>'1234', :nome=>'Ricardo', :tipo_usuario_id => 1, :clinicas => Clinica.da_classident)
    User.create!(:login => 'fabiana', :password=>'1234', :email=>'fabi@ibest.com.br',
-    :password_confirmation =>'1234', :nome=>'Fabiana Felix', :tipo_usuario_id => 2, :clinicas => Clinica.all)
+    :password_confirmation =>'1234', :nome=>'Fabiana Felix', :tipo_usuario_id => 2, :clinicas => Clinica.da_classident)
    User.create!(:login => 'regina', :password=>'1234', :email=>'regina@ibest.com.br',
-    :password_confirmation =>'1234', :nome=>'Regina', :tipo_usuario_id => 2, :clinicas => Clinica.all)
+    :password_confirmation =>'1234', :nome=>'Regina', :tipo_usuario_id => 2, :clinicas => Clinica.da_classident)
    User.create!(:login => 'anapaula', :password=>'1234', :email=>'anapaula@ibest.com.br',
-             :password_confirmation =>'1234', :nome=>'Ana Paula', :tipo_usuario_id => 2, :clinicas => Clinica.all)
+             :password_confirmation =>'1234', :nome=>'Ana Paula', :tipo_usuario_id => 2, :clinicas => Clinica.da_classident)
     User.create!(:login => 'margareth', :password=>'1234', :email=>'margo@ibest.com.br', 
     :password_confirmation =>'1234', :nome=>'Margareth', :tipo_usuario_id => 3, :clinicas =>[ Clinica.find_by_sigla("SC")])
    User.create!(:login => 'cristina', :password=>'1234', :email=>'cristina@ibest.com.br',
@@ -47,6 +47,10 @@ class CreateUsers < ActiveRecord::Migration
              :password_confirmation =>'1234', :nome=>'Angela', :tipo_usuario_id => 3, :clinicas => [Clinica.find_by_sigla("vc")])
    User.create!(:login => 'paty', :password=>'1234', :email=>'paty@ibest.com.br',
              :password_confirmation =>'1234', :nome=>'Patricia', :tipo_usuario_id => 3, :clinicas => [Clinica.find_by_sigla("sc")])
+   User.create!(:login => 'regina pessoa', :password=>'1234', :email=>'reginapessoa@ibest.com.br',
+             :password_confirmation =>'1234', :nome=>'Regina Pessoa', :tipo_usuario_id => 3, :clinicas => [Clinica.find_by_sigla("centro")])
+   User.create!(:login => 'paulo', :password=>'1234', :email=>'Paulo@ibest.com.br',
+             :password_confirmation =>'1234', :nome=>'Paulo', :tipo_usuario_id => 3, :clinicas => [Clinica.find_by_sigla("ni")])
 
   end
 

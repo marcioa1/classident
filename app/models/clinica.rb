@@ -14,11 +14,12 @@ class Clinica < ActiveRecord::Base
   has_many :tabelas
   
   named_scope :administracao, :conditions=>["sigla = 'ad'"]
+  named_scope :da_classident, :conditions=>['id < 8']
   named_scope :por_nome, :order=>:nome
   named_scope :todas, :conditions=>["sigla <> 'ad'"]
 
  ADMINISTRACAO_ID   = 1 #Clinica.administracao.first.id
- NUMERO_DE_CLINICAS = Clinica.count
+ NUMERO_DE_CLINICAS = Clinica.da_classident.count
   
   def ortodontistas
     result = []

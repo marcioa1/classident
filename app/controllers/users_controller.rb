@@ -12,7 +12,7 @@ class UsersController < ApplicationController
 
   def new
     redirect_to users_path unless current_user.pode_incluir_user
-    @clinicas      = busca_clinicas #Clinica.all
+    @clinicas      = busca_clinicas
     @user          = User.new
     @tipos_usuario = TipoUsuario.all(:order=>:nome).collect{|obj| [obj.nome,obj.id]}
     if !current_user.master?
@@ -51,7 +51,7 @@ class UsersController < ApplicationController
 
   def edit
     @user     = User.find(params[:id])
-    @clinicas = busca_clinicas #Clinica.all
+    @clinicas = busca_clinicas 
     @tipos_usuario = TipoUsuario.all(:order=>:nome).collect{|obj| [obj.nome,obj.id]}
     if !current_user.master?
        master = TipoUsuario.master.collect{|obj| [obj.nome,obj.id]}
@@ -71,7 +71,7 @@ class UsersController < ApplicationController
       flash[:notice] = "Usuário alterado!"
       redirect_to users_path
     else
-       @clinicas = busca_clinicas #Clinica.all
+       @clinicas = busca_clinicas 
        @tipos_usuario = TipoUsuario.all(:order=>:nome).collect{|obj| [obj.nome,obj.id]}
        @tipos_usuario = @tipos_usuario - TipoUsuario.master if !current_user.master?
       render :action => :edit

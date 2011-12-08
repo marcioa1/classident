@@ -7,6 +7,7 @@ class Protetico < ActiveRecord::Base
   
   
   named_scope :ativos, :conditions => ['ativo = ? ', true]
+  named_scope :da_classident, :conditions=>["clinica_id < 8"]
   named_scope :da_clinica, lambda {|clinica_id| {:conditions=>["proteticos.clinica_id = ?", clinica_id]}}
   named_scope :inativos, :conditions => ['ativo = ?', false]
   named_scope :por_nome, :order=>:nome

@@ -14,6 +14,7 @@ class CreateClinicas < ActiveRecord::Migration
     Clinica.create(:nome=>"Taquara", :sigla=>"taqua", :administracao => false)
     Clinica.create(:nome=>"Vicente de Carvalho", :sigla=>"vc", :administracao => false)
     Clinica.create(:nome=>"Vista Alegre", :sigla=>"va", :administracao => false)
+    Clinica.create(:nome=>"Niteroi", :sigla=>"ni", :administracao => false)
     # add_column :users, /:clinica_id, :integer
   end
 

@@ -34,7 +34,6 @@ class Entrada < ActiveRecord::Base
   end
   
   def remessa?(clinica_id)
-    debugger
     Clinica.find(clinica_id).administracao? ?  self.clinica_id == 1 && self.clinica_destino.id != 1 : self.clinica_id > 1 
   end
   

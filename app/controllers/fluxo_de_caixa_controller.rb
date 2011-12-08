@@ -58,7 +58,7 @@ class FluxoDeCaixaController < ApplicationController
     if !current_user.master? 
       render  :nothing
     else
-      @clinicas = Clinica.all.collect{|obj| [obj.nome, obj.id]}
+      @clinicas = Clinica.da_classident.collect{|obj| [obj.nome, obj.id]}
     end
   end
   

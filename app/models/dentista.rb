@@ -10,6 +10,7 @@ class Dentista < ActiveRecord::Base
   validates_numericality_of :percentual
   
   named_scope :ativos, :conditions=>["ativo=?", true]
+  named_scope :da_classident, :conditions => ["clinica_id < 8"]
   named_scope :inativos, :conditions=>["ativo=?", false]
   named_scope :por_nome, :order=>:nome
   named_scope :que_iniciam_com, lambda{|iniciais| {:conditions=>['nome like ?', iniciais + '%']}}
@@ -62,7 +63,7 @@ class Dentista < ActiveRecord::Base
   
   def pacientes_de_ortodontia
     # Paciente.all(:select=>"id, nome", :conditions => ["ortodontista_id = ?", self.id]).map(&:id) 
-    Paciente.all(:conditions => ["ortodontista_id = ?", self.id],
+    Paciente.da_classident(:conditions => ["ortodontista_id = ?", self.id],
                  :order => :nome,
                  :select => 'nome, id, mensalidade_de_ortodontia,data_da_suspensao_da_cobranca_de_orto,motivo_suspensao_cobranca_orto')
   end

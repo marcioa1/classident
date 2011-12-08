@@ -25,7 +25,7 @@ class EntradasController < ApplicationController
   def new
     @entrada      = Entrada.new
     @entrada.data = Date.today
-    @clinicas     = (Clinica.all).collect{|c| [c.nome, c.id] }
+    @clinicas     = (Clinica.da_classident).collect{|c| [c.nome, c.id] }
   end
 
   def edit

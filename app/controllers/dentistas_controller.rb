@@ -9,9 +9,9 @@ class DentistasController < ApplicationController
     params[:ativo] = "true" if params[:ativo].nil?
     if @clinica_atual.administracao? 
       if params[:ativo]=="true"
-        @dentistas = Dentista.por_nome.ativos
+        @dentistas = Dentista.da_classident.por_nome.ativos
       else
-        @dentistas = Dentista.por_nome.inativos
+        @dentistas = Dentista.da_classident.por_nome.inativos
       end
     else
       if params[:ativo]=="true"
@@ -34,13 +34,13 @@ class DentistasController < ApplicationController
   end
 
   def edit
-    @clinicas = busca_clinicas #Clinica.all(:order=>:nome)
+    @clinicas = busca_clinicas 
   end
 
   def create
     @dentista = Dentista.new(params[:dentista])
     @dentista.clinicas = []
-    clinicas = busca_clinicas #Clinica.all
+    clinicas = busca_clinicas 
     clinicas.each() do |clinica|
       if params["clinica_#{clinica.id.to_s}"]
         @dentista.clinicas << clinica
@@ -58,7 +58,7 @@ class DentistasController < ApplicationController
 
   def update
     @dentista.clinicas = []
-    clinicas = busca_clinicas #Clinica.all
+    clinicas = busca_clinicas 
     clinicas.each() do |clinica|
       if params["clinica_#{clinica.id.to_s}"]
         @dentista.clinicas << clinica
@@ -98,11 +98,10 @@ class DentistasController < ApplicationController
   end
 
   def abre
-    @clinicas      = busca_clinicas #Clinica.all(:order=>:nome)
+    @clinicas      = busca_clinicas 
     @clinica_atual = Clinica.find(session[:clinica_id])
     quinzena
     @orcamentos    = Orcamento.do_dentista(@dentista.id)
-#TODO fazer campo pagamento_id ao tratamento  
 
   end
   
@@ -177,7 +176,7 @@ class DentistasController < ApplicationController
       @data_inicial = params[:data_inicial].to_date if Date.valid?(params[:data_inicial])
       @data_final   = params[:data_final].to_date if Date.valid?(params[:data_final])
     end
-    @clinicas    = Clinica.all
+    @clinicas    = Clinica.da_classident
     @clinicas_da_pesquisa = []
     if Date.valid?(params[:data_inicial]) && Date.valid?(params[:data_final])
       @clinicas.each do |clinica|

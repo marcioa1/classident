@@ -29,6 +29,7 @@ class Paciente < ActiveRecord::Base
  
   named_scope :cobranca_de_ortodontia_ativa, :conditions =>["data_da_suspensao_da_cobranca_de_orto IS NULL and ortodontia = TRUE"]
   named_scope :da_clinica, lambda{|clinica_id| {:conditions=>["pacientes.clinica_id=?", clinica_id]}}
+  named_scope :da_classident, :conditions=>["clinica_id < 8"]
   named_scope :de_clinica, :conditions=>["ortodontia = ?", false]
   named_scope :de_ortodontia, :conditions=>["ortodontia = ?", true]
   named_scope :fora_da_lista_de_debito, :conditions=>["sair_da_lista_de_debitos = ? ", true]

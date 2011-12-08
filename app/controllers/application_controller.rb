@@ -158,7 +158,7 @@ class ApplicationController < ActionController::Base
     def busca_clinicas
       @clinicas = []
       if !Rails.cache.read(Clinica::ADMINISTRACAO_ID.to_s)
-        Clinica.all.each do |clinica|
+        Clinica.da_classident.each do |clinica|
           @clinicas << clinica
           Rails.cache.write("clinica_#{clinica.id}",clinica, :expires_in => 14.hours) 
         end

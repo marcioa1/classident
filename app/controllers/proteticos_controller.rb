@@ -11,9 +11,9 @@ class ProteticosController < ApplicationController
     
     if @clinica_atual.administracao?
       if params[:ativo] == 'true'
-        @proteticos = Protetico.por_nome.ativos
+        @proteticos = Protetico.da_classident.por_nome.ativos
       else
-        @proteticos = Protetico.por_nome.inativos
+        @proteticos = Protetico.da_classident.por_nome.inativos
       end      
     else
       if params[:ativo] == 'true'
