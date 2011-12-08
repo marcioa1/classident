@@ -50,10 +50,12 @@ class ApplicationController < ActionController::Base
   end 
   
   def administracao
+    @classident    = session[:clinica_id].to_i < 8
     @clinica_atual = Clinica.find session[:clinica_id].to_i if session[:clinica_id]
   end
 
   def administracao?
+    @classident    = session[:clinica_id].to_i < 8
     session[:clinica_id].to_i == Clinica::ADMINISTRACAO_ID
   end
   

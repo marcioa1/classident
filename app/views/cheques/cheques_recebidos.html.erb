@@ -128,6 +128,7 @@
   <% total += cheque.valor %>
   <% end %>
   <tr>
+<<<<<<< Updated upstream
     <% if @clinica_atual.administracao? %>
       <td colspan="6" align="center">Total</td>
       <td align="right"><%= total.real%></td>
@@ -140,7 +141,7 @@
     <% else %>
       <td colspan="5" align="center">Total</td>
       <td align="right"><%= total.real%></td>
-      <td colspan="6" align="right"><%= link_to_function "enviar cheques selecionados p/ administração" , "enviar_administracao();"  if params[:status]=="disponíveis" && !@clinica_atual.administracao? %></td>
+      <td colspan="6" align="right"><%= link_to_function "enviar cheques selecionados p/ administração" , "enviar_administracao();"  if params[:status]=="disponíveis" && !@clinica_atual.administracao? && @classident %></td>
     <% end %>
     
   </tr>
