@@ -1,7 +1,7 @@
 #libera_pagamento{:style => "float:right;"}
  
   %span#link_pagamento
-    = button_to_function 'libera pagamento', 'libera_pagamento();'
+    = button_to_function 'libera pagamento', 'libera_pagamento();' if @classident
 %h2 Trabalhos recebidos a serem liberados para pagamento
 %table.tabela
   %tr
