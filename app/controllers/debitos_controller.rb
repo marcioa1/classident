@@ -2,7 +2,7 @@ class DebitosController < ApplicationController
   layout "adm"
   
   before_filter :require_user
-  before_filter :busca_corrente, :only=>[:show, :edit, :update, :destroy]
+  before_filter :busca_corrente, :only=>[:show, :edit, :update, :destroy, :cancela]
 
   def index
     @debitos = Debito.all
@@ -75,6 +75,11 @@ class DebitosController < ApplicationController
     @pacientes = Paciente.fora_da_lista_de_debito_entre(@data_inicial, @data_final).da_clinica(session[:clinica_id])
     @titulo = "Pacientes fora da lista de débito entre #{@data_inicial.to_s_br} e #{@data_final.to_s_br} da clínica #{@clinica_atual.nome}"
 
+  end
+  
+  def cancela
+    @debito.update_attribute("cancelado", !@debito.cancelado?)
+    redirect_to :back
   end
   
   private

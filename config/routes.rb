@@ -20,7 +20,8 @@ ActionController::Routing::Routes.draw do |map|
        :mala_direta => :get, :gera_arquivo_de_mala_direta => :get }
   map.resources :conta_bancarias
   map.resources :conversao, :collection=>{:cheque_adm => :get, :teste=>:get}
-  map.resources :debitos, :collection=>{:pacientes_em_debito=>:get, :pacientes_fora_da_lista=>:get}
+  map.resources :debitos, :collection=>{:pacientes_em_debito=>:get, :pacientes_fora_da_lista=>:get},
+                          :member => {:cancela => :get}
   map.resources :dentistas, 
                   :member=>{:abre=>:get, :producao=>:get, :pagamento=>:get,
                             :orcamentos=>:get, :reativar=>:get, :troca_ortodontista => :post}, 

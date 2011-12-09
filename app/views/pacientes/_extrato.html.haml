@@ -29,7 +29,7 @@
   - total_debito  = 0.0
   - total_credito = 0.0
   - @paciente.extrato.each do |lancamento|
-    %tr{ :class=>"#{lancamento.is_a?(Debito) ? 'debito' : ''}"}
+    %tr{ :class=>"#{lancamento.is_a?(Debito) ? lancamento.cancelado? ? 'cancelado' : 'debito' : ''}"}
       - if lancamento.is_a? Abono
         - total_credito += lancamento.valor
         %td{ :align => "center" }
@@ -69,7 +69,7 @@
         - dados += "#{lancamento.valor.real};"
         %td
           &nbsp;
-        - saldo -= lancamento.valor
+        - saldo -= lancamento.valor if !lancamento.cancelado?
         %td{ :align => "right" }
           = saldo.real
         - dados += ";#{saldo.real}>"
@@ -84,6 +84,9 @@
           %td &nbsp;
         - if current_user.master?
           %td &nbsp;     
+          %td
+            = link_to "#{lancamento.cancelado? ? 'reativa' : 'cancela'} débito", cancela_debito_path(lancamento)
+
       - elsif lancamento.is_a?(Recebimento)
         - total_credito += lancamento.valor
         %td{ :align => "center" }
@@ -128,6 +131,7 @@
             %td= link_to "fechar", close_alteraco_path(:tabela => 'recebimentos', :id_registro => lancamento.id),:class=>'ui-icon ui-icon-unlocked'
           - else
             %td= link_to "liberar", new_alteraco_path(:tabela => 'recebimentos', :id_registro => lancamento.id),:class=>'ui-icon ui-icon-locked'
+          %td &nbsp;
 
   %tr
     %td{ :align => "center", :colspan => "2" }

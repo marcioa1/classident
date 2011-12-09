@@ -107,7 +107,7 @@ class Paciente < ActiveRecord::Base
   def total_de_debito
     total = 0
     debitos.each() do |debito|
-      total += debito.valor unless debito.excluido?
+      total += debito.valor unless debito.excluido? || debito.cancelado?
     end
     return total
   end
