@@ -4,7 +4,7 @@ class Dentista < ActiveRecord::Base
   has_and_belongs_to_many :clinicas
   has_many :trabalho_proteticos
   has_many :pagamentos
-  has_many :pacientes_de_ortodontia, :class_name=>"Paciente", :foreign_key=>"ortodontista_id"
+  # has_many :pacientes_de_ortodontia, :class_name=>"Paciente", :foreign_key=>"ortodontista_id"
   
   validates_presence_of :nome, :cro, :percentual, :message => "não pode ser vazio ( em branco )."
   validates_numericality_of :percentual
@@ -63,7 +63,7 @@ class Dentista < ActiveRecord::Base
   
   def pacientes_de_ortodontia
     # Paciente.all(:select=>"id, nome", :conditions => ["ortodontista_id = ?", self.id]).map(&:id) 
-    Paciente.da_classident(:conditions => ["ortodontista_id = ?", self.id],
+    Paciente.all(:conditions => ["clinica_id < 8 and ortodontista_id = ?", self.id],
                  :order => :nome,
                  :select => 'nome, id, mensalidade_de_ortodontia,data_da_suspensao_da_cobranca_de_orto,motivo_suspensao_cobranca_orto')
   end

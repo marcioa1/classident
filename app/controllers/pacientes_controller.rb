@@ -127,7 +127,7 @@ class PacientesController < ApplicationController
   def nomes_que_iniciam_com
     if params[:nome]
       if @clinica_atual.administracao?
-        @pacientes = Paciente.da_classident(:conditions=>["nome like ?", params[:nome] + '%'],:order=>:nome)
+        @pacientes = Paciente.all(:conditions=>["clinica_id < 8 and nome like ?", params[:nome] + '%'],:order=>:nome)
       else
         @pacientes = Paciente.all(:conditions=>["clinica_id= ? and nome like ?", session[:clinica_id].to_i, params[:nome] + '%'],:order=>:nome)
       end
