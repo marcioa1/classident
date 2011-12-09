@@ -118,7 +118,7 @@ class ChequesController < ApplicationController
           @cheques = Cheque.na_administracao.spc(@data_inicial,@data_final).
             das_clinicas(selecionadas).ordenado_por(params[:ordem])
         when params[:status]=="solucionado" 
-          @cheques = Cheque.na_administracao.solucionado(@data_inicial,@data_final).
+          @cheques = Cheque.na_administracao.solucionado_entre_datas(@data_inicial,@data_final).
             das_clinicas(selecionadas).ordenado_por(params[:ordem])
         when params[:status]=="devolvidos à clínica"
           @cheques = Cheque.devolvidos_a_clinica_entre_datas(@data_inicial,@data_final).

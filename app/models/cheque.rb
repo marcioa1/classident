@@ -64,6 +64,8 @@ class Cheque < ActiveRecord::Base
   named_scope :sem_segunda_devolucao, :conditions=>["data_segunda_devolucao IS NULL"]
   named_scope :sem_solucao, :conditions=>['data_solucao IS NULL']
   named_scope :solucionado, :conditions=>['data_solucao IS NOT NULL']
+  named_scope :solucionado_entre_datas, lambda{|data_inicial, data_final| 
+      {:conditions=>['data_solucao BETWEEN ? AND ? ' ,data_inciial, data_final]}}
   named_scope :spc, lambda{|data_inicial, data_final| 
       {:conditions=>["data_spc between ? and ?", data_inicial, data_final]}}
   named_scope :usados_para_pagamento, :conditions=>["pagamento_id IS NOT NULL"]
