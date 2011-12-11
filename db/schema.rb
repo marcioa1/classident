@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111205123500) do
+ActiveRecord::Schema.define(:version => 20111211113038) do
 
   create_table "abonos", :force => true do |t|
     t.date     "data"
@@ -19,6 +19,7 @@ ActiveRecord::Schema.define(:version => 20111205123500) do
     t.string   "observacao",  :limit => 64
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "clinica_id"
   end
 
   add_index "abonos", ["paciente_id"], :name => "index_abonos_on_paciente_id"
@@ -128,6 +129,8 @@ ActiveRecord::Schema.define(:version => 20111205123500) do
   end
 
   add_index "cheques", ["banco_id"], :name => "index_cheques_on_banco_id"
+  add_index "cheques", ["clinica_id", "numero", "agencia"], :name => "clinica_id"
+  add_index "cheques", ["clinica_id", "numero", "agencia"], :name => "clinica_id_numero_agencia"
   add_index "cheques", ["clinica_id"], :name => "index_cheques_on_clinica_id"
   add_index "cheques", ["data_entrega_administracao"], :name => "index_cheques_on_data_entrega_administracao"
   add_index "cheques", ["data_recebimento_na_administracao"], :name => "index_cheques_on_data_recebimento_na_administracao"
@@ -368,6 +371,7 @@ ActiveRecord::Schema.define(:version => 20111205123500) do
     t.string   "descricao_arquivo_morto"
   end
 
+  add_index "pacientes", ["clinica_id", "nome"], :name => "clinica_id"
   add_index "pacientes", ["clinica_id"], :name => "index_pacientes_on_clinica_id"
   add_index "pacientes", ["id"], :name => "index_pacientes_on_id"
   add_index "pacientes", ["indicacao_id"], :name => "index_pacientes_on_indicacao_id"
@@ -403,6 +407,7 @@ ActiveRecord::Schema.define(:version => 20111205123500) do
     t.string   "forma_de_pagamento"
   end
 
+  add_index "pagamentos", ["clinica_id", "sequencial"], :name => "clinica_id_sequencial"
   add_index "pagamentos", ["clinica_id"], :name => "index_pagamentos_on_clinica_id"
   add_index "pagamentos", ["conta_bancaria_id"], :name => "index_pagamentos_on_conta_bancaria_id"
   add_index "pagamentos", ["dentista_id"], :name => "index_pagamentos_on_dentista_id"

@@ -7,8 +7,19 @@ class AbonosController < ApplicationController
   # GET /abonos
   # GET /abonos.xml
   def index
-    @abonos = Abono.last(30)
-
+    if params[:datepicker]
+      @data_inicial = params[:datepicker].to_date
+    else
+      @data_inicial = primeiro_dia_do_mes
+    end
+    if params[:datepicker2]
+      @data_final = params[:datepicker2].to_date
+    else
+      @data_final = Date.today
+    end
+    @abonos = Abono.da_classident.entre_datas(@data_inicial, @data_final)
+    @abonos = [] if @abonos.nil?
+# debugger
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @abonos }
@@ -48,8 +59,8 @@ class AbonosController < ApplicationController
   # POST /abonos
   # POST /abonos.xml
   def create
-    @abono = Abono.new(params[:abono])
-
+    @abono            = Abono.new(params[:abono])
+    @abono.clinica_id = session[:clinica_id]
     respond_to do |format|
       if @abono.save
         flash[:notice] = 'Abono alterado com sucesso.'

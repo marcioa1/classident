@@ -5,7 +5,12 @@ class Abono < ActiveRecord::Base
   validates_length_of :observacao, :maximum => 20, :message => "Escreva a observação."
   validates_presence_of :data, :valor, :paciente_id
   
+  named_scope :da_classident, :conditions => "clinica_id < 8"
+  named_scope :entre_datas, lambda {|data_inicial, data_final| {:conditions => ["data between ? and ? ", data_inicial, data_final]}}
+  
   attr_accessor :data_br, :valor_real
+  
+  
   
   def valor_real
     self.valor.real
