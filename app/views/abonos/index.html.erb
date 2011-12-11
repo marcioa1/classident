@@ -26,7 +26,7 @@
   <tr>
     <td><%= abono.data.to_s_br %></td>
     <td><%= abono.paciente.clinica.nome %></td>
-    <td><%= abono.paciente.nome %></td>
+    <td><%= link_to abono.paciente.nome , abre_paciente_path(abono.paciente) %></td>
     <td><%= abono.valor.real %></td>
     <td><%= abono.observacao %></td>
     <td><%= abono.paciente.ortodontista && abono.paciente.ortodontista.nome %></td>
