@@ -42,6 +42,9 @@ class ChequesController < ApplicationController
       end
       redirect_to( session[:origem].present? ? session[:origem] : :back  ) 
     else
+      @bancos = Banco.all(:order=>:nome).collect{|obj| [obj.nome,obj.id]}
+      @destinacoes = Destinacao.all(:conditions=>["clinica_id = ?", session[:clinica_id]], :order=>:nome).collect{|d| [d.nome,d.id]}
+
       render :action => "edit" 
     end
   end

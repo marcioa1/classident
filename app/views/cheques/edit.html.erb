@@ -1,4 +1,10 @@
 <% content_for :main do %>
+<script>
+	$(function() {
+		$( ".datepicker" ).datepicker({ minDate: -20 });
+	});
+</script>
+
 <fieldset class="fieldset_50">
 <legend>Editando cheque ( <%= @cheque.id%> )</legend>
 

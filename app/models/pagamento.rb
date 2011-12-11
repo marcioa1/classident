@@ -11,7 +11,7 @@ class Pagamento < ActiveRecord::Base
   belongs_to :pagamento, :class_name => "Pagamento"
   
   validates_presence_of :data_de_pagamento, :message => " : obrigatória."
-  validate :verifica_quinzena
+  validate :verifica_quinzena, :valor_tem_que_ser_positivo
   validates_numericality_of :valor_pago, :message => " : deve ser numérico"
   
   named_scope :ao_protetico, lambda{|protetico_id| {:conditions=>["protetico_id = ?", protetico_id]}}
@@ -148,6 +148,11 @@ class Pagamento < ActiveRecord::Base
   def liberado_para_alteracao?
     reg = Alteracoe.find_by_tabela_and_id_liberado("pagamentos", self.id)
     reg && reg.data_correcao.nil?
+  end
+
+   def valor_tem_que_ser_positivo
+     errors.add(:valor, "não pode negativo") if
+      !valor.blank? and valor < 0
   end
 
 end

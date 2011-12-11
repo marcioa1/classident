@@ -9,9 +9,11 @@ class Cheque < ActiveRecord::Base
   
   validates_presence_of :banco, :on => :create, :message => "Não pode ser vazio"
   validates_presence_of :numero, :on => :create, :message => "Não pode ser vazio"
-  validates_presence_of :valor, :message => "can't be blank"
+  validates_presence_of :valor, :message => "Não pode ser vazio"
   validates_presence_of :bom_para,  :message => "Não pode ser vazio"
   validates_numericality_of :valor, :greater_then => 0, :message => "valor tem que ser maior que zero."
+  validate :bom_para_nao_pode_ser_15_dias_anterior
+  validate :valor_tem_que_ser_positivo
   
   # validate :valor_igual_ao_recebimento
   
@@ -368,4 +370,15 @@ class Cheque < ActiveRecord::Base
          :descricao => "#{current_user.nome} tornou este cheque disponível em #{Date.today} : ( id do pagamento anterior : #{pagamento_id})")
   end
 
+  private
+
+  def bom_para_nao_pode_ser_15_dias_anterior
+     errors.add(:bom_para, "não pode ser anterior a 15 dias") if
+      !bom_para.blank? and bom_para < (Date.today - 15.days)
+  end
+
+  def valor_tem_que_ser_positivo
+     errors.add(:valor, "não pode negativo") if
+      !valor.blank? and valor < 0
+  end
 end
