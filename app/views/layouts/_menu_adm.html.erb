@@ -27,6 +27,7 @@
       <li><%= link_to "Resumo anual - falta", "#" %></li>
       <li><%= link_to "Controle de exclusões", relatorio_de_exclusao_clinicas_path %></li>
       <li><%= link_to "Monitoramento de usuários", monitoramento_users_path %></li>
+      <li><%= link_to "Inconsistências", inconsistencias_clinicas_path if current_user.master? %></li>
     </ul>
   </li>
   <li><a href="#">Financeiro</a>

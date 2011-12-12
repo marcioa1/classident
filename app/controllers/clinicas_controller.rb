@@ -165,4 +165,15 @@ class ClinicasController < ApplicationController
     send_file fileName
   end
   
+  def inconsistencias
+    @tratamentos = []
+    @tratamentos_id = Tratamento.all(:conditions=>["data > ? and valor > 0 and excluido = ?", Date.today - 1.month, false], :select => "id")
+    @tratamentos_id.each do |id|
+      if !Debito.find_by_tratamento_id(id)
+        @tratamentos << Tratamento.find(id)
+      end
+    end
+    
+  end
+  
 end

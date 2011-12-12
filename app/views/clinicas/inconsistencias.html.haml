@@ -1,0 +1,16 @@
+- content_for :main do
+  %h3 Inconsistências
+  %table
+    %tr
+      %th ID
+      %th Data
+      %th Paciente
+      %th Valor
+      %th
+    - @tratamentos.each do |trat|
+      %tr
+        %td= trat.id
+        %td= trat.data.to_s_br
+        %td= link_to trat.paciente.nome, abre_paciente_path(trat.paciente), :target => :blank
+        %td{:align=>'right'}= trat.valor.real
+        %td= link_to "gerar débito", "#"
