@@ -114,7 +114,7 @@
         </fieldset>
 
         <div>
-            <%= check_box_tag :solucao, 1, checked=@cheque.solucionado? , options={:onclick=>"abre_solucionado();",   :disabled=>!@clinica_atual.administracao? }%> Solução
+          <%= check_box_tag :solucao, 1, checked=@cheque.solucionado? , options={:onclick=>"abre_solucionado();",   :disabled=>!@clinica_atual.administracao? }%> Solução
          </div>
        <fieldset>
 
@@ -133,7 +133,27 @@
             </div>
           </div>
         </fieldset>
+
+        <div>
+          <%= check_box_tag :arquivo_morto, 1, checked=@cheque.arquivo_morto? , options={:onclick=>"abre_arquivo_morto();",   :disabled=>!@clinica_atual.administracao? }%> Arquivo morto
+         </div>
+
+       <fieldset>
+         <% if @cheque.arquivo_morto? %>
+          <div id="arquivo_morto_fields" >
+        <% else %>
+          <div id="arquivo_morto_fields" style="<%= @cheque.arquivo_morto? ? '' : 'display:none;'%>">
+        <% end %>
+            <div>
+              <%= f.label 'Arquivo morto' %> :
+              <%= f.text_field :data_arquivo_morto_br , :size => 10, :class => 'datepicker'%>
+            </div>
+          </div>
+        </fieldset>
+
+
        </div>
+
 
 
   <% if @cheque.entregue_a_administracao? %>

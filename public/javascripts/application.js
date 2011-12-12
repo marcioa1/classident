@@ -99,6 +99,9 @@ function abre_spc(){
 function abre_solucionado(){
     $("#solucao_fields").toggle('blind', { percent: 0 },500);
 }
+function abre_arquivo_morto(){
+    $("#arquivo_morto_fields").toggle('blind', { percent: 0 },500);
+}
 function enviar_administracao(){
     var selecionados = "";
     var chk = $('input:checkbox');

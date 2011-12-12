@@ -12,7 +12,7 @@ class Cheque < ActiveRecord::Base
   validates_presence_of :valor, :message => "Não pode ser vazio"
   validates_presence_of :bom_para,  :message => "Não pode ser vazio"
   validates_numericality_of :valor, :greater_then => 0, :message => "valor tem que ser maior que zero."
-  validate :bom_para_nao_pode_ser_15_dias_anterior
+  # validate :bom_para_nao_pode_ser_15_dias_anterior
   validate :valor_tem_que_ser_positivo
   
   # validate :valor_igual_ao_recebimento
@@ -74,7 +74,7 @@ class Cheque < ActiveRecord::Base
   named_scope :vindo_da_clinica, lambda{|clinicas| {:conditions=>["clinica_id in (?)", clinicas]}}
   
   attr_accessor :valor_real, :bom_para_br, :data_segunda_devolucao_br, 
-                :data_spc_br, :data_solucao_br
+                :data_spc_br, :data_solucao_br, :data_arquivo_morto_br
   
   def bom_para_br
     self.bom_para.to_s_br
@@ -100,7 +100,6 @@ class Cheque < ActiveRecord::Base
   def valor_real
     self.valor.real
   end
-  
   def valor_real=(valor)
     self.valor = valor.gsub(".", "").sub(",",".")
   end
@@ -110,6 +109,13 @@ class Cheque < ActiveRecord::Base
   end
   def data_solucao_br=(valor)
     self.data_solucao = valor.to_date if Date.valid?(valor)  
+  end
+  
+  def data_arquivo_morto_br
+    self.data_arquivo_morto.to_s_br
+  end
+  def data_arquivo_morto_br=(valor)
+    self.data_arquivo_morto = valor.to_date if Date.valid?(valor)  
   end
 
   def valor_igual_ao_recebimento
