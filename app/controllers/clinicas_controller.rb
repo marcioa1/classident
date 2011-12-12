@@ -167,14 +167,16 @@ class ClinicasController < ApplicationController
   
   def inconsistencias
     @tratamentos = []
-    @tratamentos_id = Tratamento.all(:conditions=>["data > ? and valor > 0 and excluido = ?", Date.today - 1.month, false], :select => "id")
+    @tratamentos_id = Tratamento.all(:conditions=>["clinica_id < 8 and data > ? and valor > 0 and excluido = ?", Date.today - 1.month, false], :select => "id")
     @tratamentos_id.each do |id|
       if !Debito.find_by_tratamento_id(id)
         @tratamentos << Tratamento.find(id)
       end
     end
     
-    @recebimentos = Recebimento.all(:conditions=>["data > ? and valor <= 0 and data_de_exclusao IS NULL", Date.today - 1.month], :select => "id, paciente_id, clinica_id, data, valor")
+    @recebimentos = Recebimento.all(:conditions=>["clinica_id < 8 and data > ? and valor <= 0 and data_de_exclusao IS NULL", Date.today - 1.month], :select => "id, paciente_id, clinica_id, data, valor")
+    @pagamentos   = Pagamento.all(:conditions=>["clinica_id < 8 and data_de_pagamento > ? and valor_pago <= 0 and data_de_exclusao IS NULL", Date.today - 1.month], :select => "id, clinica_id, data_de_pagamento, valor_pago, tipo_pagamento_id")
+    
     
   end
   
