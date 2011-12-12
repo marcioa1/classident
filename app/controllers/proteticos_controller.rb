@@ -117,7 +117,7 @@ class ProteticosController < ApplicationController
   end  
   
   def trabalhos_por_clinica
-    @clinicas   = Clinica.todas.por_nome.collect{|obj| [obj.nome, obj.id.to_s]}.insert(0, '')
+    @clinicas   = Clinica.todas.da_classident.por_nome.collect{|obj| [obj.nome, obj.id.to_s]}.insert(0, '')
     @clinica    = Clinica.find(params[:clinica]) if params[:clinica]
     if params[:protetico]
       @protetico  = Protetico.find_by_nome(params[:protetico]) 

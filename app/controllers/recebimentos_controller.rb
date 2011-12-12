@@ -261,7 +261,7 @@ class RecebimentosController < ApplicationController
       params[:datepicker2] = fim.to_s_br
     end
     @formas_recebimento = FormasRecebimento.por_nome
-    @todas_as_clinicas = Clinica.todas.por_nome
+    @todas_as_clinicas = Clinica.todas.da_classident.por_nome
     selecionadas = ""
     @todas_as_clinicas.each() do |clinica|
       if params["clinica_#{clinica.id.to_s}"]

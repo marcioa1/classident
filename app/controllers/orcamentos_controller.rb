@@ -93,7 +93,7 @@ class OrcamentosController < ApplicationController
     @iniciado_por_dentista       = Array.new(10,0)
     @total_aberto_por_dentista   = Array.new(10,0)
     @total_iniciado_por_dentista = Array.new(10,0)
-    @clinicas = Clinica.todas
+    @clinicas = Clinica.todas.da_classident
     @clinicas.each do |clinica|
       em_aberto = Orcamento.em_aberto.entre_datas(@data_inicial, @data_final).da_clinica(clinica.id)
       iniciado  = Orcamento.iniciado.entre_datas(@data_inicial, @data_final).da_clinica(clinica.id)

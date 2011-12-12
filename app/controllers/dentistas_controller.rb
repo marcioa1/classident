@@ -30,7 +30,7 @@ class DentistasController < ApplicationController
 
   def new
     @dentista = Dentista.new
-    @clinicas = Clinica.todas.por_nome
+    @clinicas = Clinica.todas.da_classident.por_nome
   end
 
   def edit

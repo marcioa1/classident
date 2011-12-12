@@ -60,7 +60,7 @@ class ChequesController < ApplicationController
     session[:origem] = cheques_recebidos_cheques_path
     @destinacoes = Destinacao.all(:conditions=>["clinica_id = ?", session[:clinica_id]], :order=>:nome).collect{|d| [d.nome,d.id]}.insert(0,'')
 
-    @clinicas = Clinica.todas.por_nome if @clinica_atual.administracao?
+    @clinicas = Clinica.todas.da_classident.por_nome if @clinica_atual.administracao?
     if params[:datepicker] && Date.valid?(params[:datepicker])
       @data_inicial = params[:datepicker].to_date
     else
@@ -194,7 +194,7 @@ class ChequesController < ApplicationController
     else
       @cheques  = Cheque.vindo_da_clinica(params[:clinica]).entregues_a_administracao.nao_recebidos.por_valor
     end
-    @clinicas = Clinica.todas 
+    @clinicas = Clinica.todas.da_classident 
   end
   
   def registra_recebimento_de_cheques
