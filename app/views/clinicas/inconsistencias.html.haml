@@ -1,11 +1,13 @@
 - content_for :main do
   %h3 Inconsistências
+  Tratamentos finalizados sem débito
   %table
     %tr
-      %th ID
+      %th ID trat
       %th Data
       %th Paciente
       %th Valor
+      %th Clínica
       %th
     - @tratamentos.each do |trat|
       %tr
@@ -13,4 +15,24 @@
         %td= trat.data.to_s_br
         %td= link_to trat.paciente.nome, abre_paciente_path(trat.paciente), :target => :blank
         %td{:align=>'right'}= trat.valor.real
+        %td= trat.clinica.nome
         %td= link_to "gerar débito", "#"
+
+  %p
+  Recebimentos com valores negativos
+  %table
+    %tr
+      %th ID rec
+      %th Data
+      %th Paciente
+      %th Valor
+      %th Clínica
+      %th
+    - @recebimentos.each do |rec|
+      %tr
+        %td= rec.id
+        %td= rec.data.to_s_br
+        %td= link_to rec.paciente.nome, abre_paciente_path(rec.paciente), :target => :blank
+        %td= rec.valor.real
+        %td= rec.clinica.nome
+        %td

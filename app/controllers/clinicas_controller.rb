@@ -174,6 +174,8 @@ class ClinicasController < ApplicationController
       end
     end
     
+    @recebimentos = Recebimento.all(:conditions=>["data > ? and valor <= 0 and data_de_exclusao IS NULL", Date.today - 1.month], :select => "id, paciente_id, clinica_id, data, valor")
+    
   end
   
 end
