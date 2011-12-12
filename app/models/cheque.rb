@@ -301,7 +301,7 @@ class Cheque < ActiveRecord::Base
   def acompanhamentos
     result = ''
     self.acompanhamento_cheques.each do |a|
-      result += a.updated_at.to_s_br + " ( #{a.user.login} ) , " + a.descricao + "</br>"
+      result += a.updated_at.to_s_br + " ( #{a.user && a.user.login} ) , " + a.descricao + "</br>"
     end
     result
   end
