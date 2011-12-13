@@ -177,7 +177,15 @@ class ClinicasController < ApplicationController
     @recebimentos = Recebimento.all(:conditions=>["clinica_id < 8 and data > ? and valor <= 0 and data_de_exclusao IS NULL", Date.today - 1.month], :select => "id, paciente_id, clinica_id, data, valor")
     @pagamentos   = Pagamento.all(:conditions=>["clinica_id < 8 and data_de_pagamento > ? and valor_pago <= 0 and data_de_exclusao IS NULL", Date.today - 1.month], :select => "id, clinica_id, data_de_pagamento, valor_pago, tipo_pagamento_id")
     
-    
+  end
+
+  def pacientes_com_credito
+    @com_credito = []
+    pacientes_id = Paciente.all(:select => 'id', :conditions => ["clinica_id < 8"])
+    pacientes_id.each do |pac|
+      pac = Paciente.find(pac)
+      @com_credito << pac if pac.saldo > 0
+    end
   end
   
 end

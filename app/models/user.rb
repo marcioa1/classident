@@ -20,6 +20,14 @@ class User < ActiveRecord::Base
   def master?
     tipo_usuario.nivel==0
   end
+  
+  def administradora?
+    tipo_usuario.nivel==1
+  end
+
+  def secretaria?
+    tipo_usuario.nivel==2
+  end
 
   def pode_incluir_user
     tipo_usuario.nivel < 2

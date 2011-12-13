@@ -1,0 +1,12 @@
+- content_for :main do
+  %h3 Pacientes com crédito
+  %table
+    %tr
+      %th Clínica
+      %th Nome
+      %th Saldo
+    @com_credito.each do |pac|
+      %tr
+        %td= pac.clinica.nome
+        %td= pac.nome
+        %td= pac.saldo

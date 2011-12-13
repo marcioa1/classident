@@ -376,6 +376,11 @@ class Cheque < ActiveRecord::Base
          :descricao => "#{current_user.nome} tornou este cheque disponível em #{Date.today} : ( id do pagamento anterior : #{pagamento_id})")
   end
 
+  def pode_alterar?(user)
+    return false if user.secretaria? && self..recebido_pela_administracao
+    return false if self.usado_para_pagamento? || self.com_destinacao?
+  end
+ 
   private
 
   def bom_para_nao_pode_ser_15_dias_anterior

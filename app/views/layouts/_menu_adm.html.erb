@@ -28,6 +28,7 @@
       <li><%= link_to "Controle de exclusões", relatorio_de_exclusao_clinicas_path %></li>
       <li><%= link_to "Monitoramento de usuários", monitoramento_users_path %></li>
       <li><%= link_to "Inconsistências", inconsistencias_clinicas_path if current_user.master? %></li>
+      <li><%= link_to "Pacientes com crédito", pacientes_com_credito_clinicas_path if current_user.master? %></li>
     </ul>
   </li>
   <li><a href="#">Financeiro</a>
