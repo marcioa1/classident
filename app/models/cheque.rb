@@ -377,8 +377,9 @@ class Cheque < ActiveRecord::Base
   end
 
   def pode_alterar?(user)
-    return false if user.secretaria? && self..recebido_pela_administracao
+    return false if user.secretaria? && self.recebido_pela_administracao?
     return false if self.usado_para_pagamento? || self.com_destinacao?
+    true
   end
  
   private
