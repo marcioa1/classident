@@ -85,12 +85,12 @@ class Tratamento < ActiveRecord::Base
   
   def valor_dentista
     self.custo = 0 if self.custo.nil?
-    (self.valor - self.custo) * dentista.percentual / 100 
+    (self.valor_com_desconto - self.custo) * dentista.percentual / 100 
   end
   
   def valor_clinica
     self.custo = 0 if self.custo.nil?
-    (self.valor - self.custo) * (100 - dentista.percentual) / 100 
+    (self.valor_con_desconto - self.custo) * (100 - dentista.percentual) / 100 
   end
   
   def pode_excluir?
