@@ -165,7 +165,7 @@
     </p>
   <% end %>
   <p>
-    <%= f.submit 'Alterar' if @cheque.pode_alterar?  %>
+    <%= f.submit 'Alterar' if @cheque.pode_alterar?(current_user)  %>
   </p>
 <% end %>
 <%= render :partial => '/acompanhamento_cheques/show', :locals => {:cheque => @cheque } %>

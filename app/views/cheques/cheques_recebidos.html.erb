@@ -89,7 +89,7 @@
             "usado p/ pagamento, #{cheque.pagamento.tipo_pagamento.nome}"
           else
             link_to cheque.pagamento.tipo_pagamento.nome, '#', :onclick=>'javascript:abre_pagamento('+ cheque.pagamento_id.to_s + ')' 
-            if cheque.bom_para > cheque.pagamento.data_de_pagamento
+            if cheque.bom_para > cheque.pagamento.data_de_pagamento && current_user.login == 'fabiana'
               link_to "tornar disponivel", "#", :onclick=>'javascript:tornar_disponivel('+ cheque.id.to_s + ')'
             else
             link_to cheque.pagamento.tipo_pagamento.nome, "#", :onclick=>'javascript:abre_pagamento('+ cheque.pagamento_id.to_s + ')' 
@@ -122,7 +122,7 @@
         <td><%= cheque.historico %></td>
     <% end %>
 
-    <td><%= link_to 'alterar', edit_cheque_path(cheque), :class=>'ui-icon ui-icon-pencil' , :title=>'alterar'  %></td>
+    <td><%= link_to 'alterar', edit_cheque_path(cheque), :class=>'ui-icon ui-icon-pencil' , :title=>'alterar'  if cheque.pode_alterar?(current_user)%></td>
 
   </tr>
   <% total += cheque.valor %>
