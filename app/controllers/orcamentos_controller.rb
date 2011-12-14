@@ -38,7 +38,6 @@ class OrcamentosController < ApplicationController
     @orcamento.clinica_id                  = session[:clinica_id]
     if @orcamento.save
       Tratamento.associa_ao_orcamento(params[:tratamento_ids], @orcamento.id)
-      Debito.cria_debitos_do_orcamento(@orcamento.id) unless @orcamento.data_de_inicio.nil?
       redirect_to(abre_paciente_path(@orcamento.paciente_id)) 
     else
       @paciente  = Paciente.find(session[:paciente_id], :select=>'id,nome')
