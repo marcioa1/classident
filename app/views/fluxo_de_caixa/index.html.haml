@@ -75,7 +75,7 @@
             - total_de_credito_em_cheque += lancamento.valor
             %td &nbsp;
           - when "Recebimento" :
-            - if lancamento.formas_recebimento.nome.downcase =="dinheiro"
+            - if lancamento.formas_recebimento && lancamento.formas_recebimento.nome.downcase =="dinheiro"
               - if lancamento.paciente && lancamento.paciente.nome
                 %td
                   = lancamento.paciente.nome
