@@ -36,6 +36,7 @@
     <th>Situação</th>
     <% if @clinica_atual.administracao? %>
       <th>Clínica</th>
+      <th>Devolver p/ clínica</th>
     <% end %>
     <% @cheques.each do |cheque| %>
       <tr>
@@ -55,6 +56,9 @@
         </td>
         <% if @clinica_atual.administracao? %>
           <td><%= cheque.clinica.nome %></td>
+          <td>
+            <%= link_to 'devolver à clínica', "javascript:devolve_cheque_a_clinica(#{cheque.id})" if  cheque.recebido_na_administracao? %>
+          </td>
         <% end %>
       </tr>
     <% end %>
