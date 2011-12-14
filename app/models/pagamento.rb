@@ -31,7 +31,7 @@ class Pagamento < ActiveRecord::Base
   named_scope :tipos, lambda{|tipos| 
             {:conditions=>["tipo_pagamento_id in (?)", tipos]}}
   named_scope :nao_excluidos, :conditions=>["data_de_exclusao IS NULL"]
-  named_scope :nao_sendo_transferencia, :conditions =>["observacao NOT LIKE ? and data_de_pagamento < '2011-12-09' ", '%ransfer%']
+  named_scope :nao_sendo_transferencia, :conditions =>["observacao NOT LIKE ?  ", '%ransfer%']
   named_scope :pela_administracao, :conditions=>["pagamento_id IS NOT NULL"]
   named_scope :pela_conta_bancaria, lambda {|conta_bancaria_id| {:conditions=>["conta_bancaria_id = ? ", conta_bancaria_id]}}
   named_scope :por_data, :order=>:data_de_pagamento
