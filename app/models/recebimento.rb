@@ -33,7 +33,8 @@ class Recebimento < ActiveRecord::Base
   validates_numericality_of :valor, :greater_than => 0, :message => " tem que ser numérico maior que zero."
   validates_numericality_of :percentual_dentista, :message => "deve ser um número."
   validates_presence_of :observacao_exclusao, :if => :excluido?
-  validate :verifica_quinzena, :verifica_data_do_cheque, :valor_tem_que_ser_positivo
+  validate :verifica_quinzena, :verifica_data_do_cheque, 
+           :valor_tem_que_ser_positivo, :dinheiro_somente_hoje
   # validates_numericality_of :valor_segundo_paciente, :only => [:create, :update] , :message => "não é numérico"
   #   validates_numericality_of :valor_terceiro_paciente, :only => [:create, :update] , :message => "não é numérico"
   #   validates_numericality_of :valor_do_cheque, :only => [:create, :update] , :message => "não é numérico"
@@ -175,6 +176,11 @@ class Recebimento < ActiveRecord::Base
    def valor_tem_que_ser_positivo
      errors.add(:valor, "não pode negativo") if
       !valor.blank? and valor < 0
+  end
+
+  def dinheiro_somente_hoje
+     errors.add(:data, "não pode no futuro se o recebimento não for em cheque") if
+      !self.em_cheque? and self.data > Date.today
   end
 
 end
