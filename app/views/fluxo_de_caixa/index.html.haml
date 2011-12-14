@@ -98,7 +98,7 @@
                 - dados += "#{saldo_cheque.real};;"
               - total_de_credito_em_dinheiro += lancamento.valor
               %td &nbsp;
-            - elsif lancamento.formas_recebimento.nome.downcase =="cheque"
+            - elsif lancamento.formas_recebimento && lancamento.formas_recebimento.nome.downcase =="cheque"
               - if lancamento.paciente
                 %td
                   = lancamento.paciente.nome
