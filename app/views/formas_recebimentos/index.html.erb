@@ -15,7 +15,7 @@
     <td><%=h formas_recebimento.ativo ? 'sim' : 'não '%></td>
     <td><%=h formas_recebimento.tipo %></td>
     <td><%= link_to 'editar', edit_formas_recebimento_path(formas_recebimento) %></td>
-    <td><%= link_to 'apagar', formas_recebimento, :confirm => 'Tem certeza ?', :method => :delete %></td>
+    <td><%= link_to 'apagar', formas_recebimento, :confirm => 'Tem certeza ?', :method => :delete if 0==1 %></td>
   </tr>
 <% end %>
 </table>
