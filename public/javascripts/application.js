@@ -338,12 +338,13 @@ function verifica_valor_restante(){
     $("#pagamento_valor_restante_br").css('color', 'red');
     alert("A soma dos valores dos cheques selecionados é maior que o valor do pagamento.");
   }else {
-        $("#pagamento_valor_restante_Br").css('color', 'black');
+        $("#pagamento_valor_restante_br").css('color', 'black');
   }
 }
 function selecionou_cheque(elemento){
   if ($("#tr2_" + elemento)[0]) {
     $("#tr2_" + elemento).remove();
+    $("#cheque_"+elemento).attr("checked",false)
   } else {
     $("#selecionados table tbody").last().prepend("<tr id='tr2_" + elemento + "'>" + $("#tr_"+elemento).html() + "</tr>");
   }
