@@ -22,24 +22,24 @@
   </div>
   <div>
      <%= f.label :agencia %> : 
-     <%= f.text_field :agencia, :size=>7 %>
+     <%= f.text_field :agencia, :size=>7 , :disabled => !@cheque.pode_alterar?(current_user) %>
   </div>
   
   <div>
      <%= f.label :número_do_cheque %> : 
-     <%= f.text_field :numero, :size=>7 %>
+     <%= f.text_field :numero, :size=>7 , :disabled => !@cheque.pode_alterar?(current_user)%>
   </div>
   <div>
     <%= f.label :valor %> :
-    <%= f.text_field :valor_real, :size=>8, :disabled=> @cheque.para_mais_de_um_paciente? %>
+    <%= f.text_field :valor_real, :size=>8, :disabled=> @cheque.para_mais_de_um_paciente? ||  !@cheque.pode_alterar?(current_user) %>
   </div>
   <div>
     <%= f.label :bom_para %> :
-    <%= f.text_field :bom_para_br,  :size=>10, :class => 'datepicker' %>
+    <%= f.text_field :bom_para_br,  :size=>10, :class => 'datepicker', :disabled => !@cheque.pode_alterar?(current_user) %>
   </div>
   <div>
     <%= f.label :destinação %> :
-    <%= f.select :destinacao_id,  @destinacoes, :include_blank => true %>
+    <%= f.select :destinacao_id,  @destinacoes, :include_blank => true, :disabled => !@cheque.pode_alterar?(current_user) %>
   </div>
  <p>
     <%= check_box_tag :uma_devolucao, 1, checked=@cheque.devolvido_uma_vez? , options={ :onclick=>"abre_uma_devolucao();", :disabled=>!@clinica_atual.administracao? }%> devolvido uma vez
@@ -165,7 +165,7 @@
     </p>
   <% end %>
   <p>
-    <%= f.submit 'Alterar' if @cheque.pode_alterar?(current_user)  %>
+    <%= f.submit 'Alterar'   %>
   </p>
 <% end %>
 <%= render :partial => '/acompanhamento_cheques/show', :locals => {:cheque => @cheque } %>
