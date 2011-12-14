@@ -42,16 +42,17 @@ class User < ActiveRecord::Base
   end
   
   def horario_de_trabalho?
-    return true
+    # debugger
     wdia = Date.today.wday
+    hora_corrente = Time.current.strftime('%H%M').to_i
     case wdia
-      when 0: self.dia_da_semana_0 && Time.current.strftime('%H:%M') >= self.hora_de_inicio_0.strftime('%H:%M') && Time.current.strftime('%H:%M') <= self.hora_de_termino_0.strftime('%H:%M')
-      when 1: self.dia_da_semana_1 && Time.current.strftime('%H:%M') >= self.hora_de_inicio_1.strftime('%H:%M') && Time.current.strftime('%H:%M') <= self.hora_de_termino_1.strftime('%H:%M')
-      when 2: self.dia_da_semana_2 && Time.current.strftime('%H:%M') >= self.hora_de_inicio_2.strftime('%H:%M') && Time.current.strftime('%H:%M') <= self.hora_de_termino_2.strftime('%H:%M')
-      when 3: self.dia_da_semana_3 && Time.current.strftime('%H:%M') >= self.hora_de_inicio_3.strftime('%H:%M') && Time.current.strftime('%H:%M') <= self.hora_de_termino_3.strftime('%H:%M')
-      when 4: self.dia_da_semana_4 && Time.current.strftime('%H:%M') >= self.hora_de_inicio_4.strftime('%H:%M') && Time.current.strftime('%H:%M') <= self.hora_de_termino_4.strftime('%H:%M')
-      when 5: self.dia_da_semana_5 && Time.current.strftime('%H:%M') >= self.hora_de_inicio_5.strftime('%H:%M') && Time.current.strftime('%H:%M') <= self.hora_de_termino_5.strftime('%H:%M')
-      when 6: self.dia_da_semana_6 && Time.current.strftime('%H:%M') >= self.hora_de_inicio_6.strftime('%H:%M') && Time.current.strftime('%H:%M') <= self.hora_de_termino_6.strftime('%H:%M')
+      when 0: self.dia_da_semana_0 && hora_corrente >= self.hora_de_inicio_0.strftime('%H%M').to_i && hora_corrente <= self.hora_de_termino_0.strftime('%H%M').to_i
+      when 1: self.dia_da_semana_1 && hora_corrente >= self.hora_de_inicio_1.strftime('%H%M').to_i && hora_corrente <= self.hora_de_termino_1.strftime('%H%M').to_i
+      when 2: self.dia_da_semana_2 && hora_corrente >= self.hora_de_inicio_2.strftime('%H%M').to_i && hora_corrente <= self.hora_de_termino_2.strftime('%H%M').to_i
+      when 3: self.dia_da_semana_3 && hora_corrente >= self.hora_de_inicio_3.strftime('%H%M').to_i && hora_corrente <= self.hora_de_termino_3.strftime('%H%M').to_i
+      when 4: self.dia_da_semana_4 && hora_corrente >= self.hora_de_inicio_4.strftime('%H%M').to_i && hora_corrente <= self.hora_de_termino_4.strftime('%H%M').to_i
+      when 5: self.dia_da_semana_5 && hora_corrente >= self.hora_de_inicio_5.strftime('%H%M').to_i && hora_corrente <= self.hora_de_termino_5.strftime('%H%M').to_i
+      when 6: self.dia_da_semana_6 && hora_corrente >= self.hora_de_inicio_6.strftime('%H%M').to_i && hora_corrente <= self.hora_de_termino_6.strftime('%H%M').to_i
     end
   end
 
