@@ -38,7 +38,7 @@ class FluxoDeCaixaController < ApplicationController
       @cheques      = []
     end
 
-    @pagamentos   = Pagamento.da_clinica(session[:clinica_id]).no_dia(@fluxo.data).no_livro_caixa.nao_excluidos
+    @pagamentos   = Pagamento.da_clinica(session[:clinica_id]).no_dia(@fluxo.data).no_livro_caixa.nao_excluidos.nao_sendo_transferencia
     @lancamentos  = @recebimentos + @pagamentos + @entradas + @remessas + @cheques
     @entradas_adm = []
     # if @clinica_atual.administracao?
