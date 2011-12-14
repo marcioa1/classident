@@ -66,6 +66,11 @@ class TratamentosController < ApplicationController
     end
     
     if @tratamento.update_attributes(params[:tratamento])
+      if @tratamento.data.blank? && estava_terminado
+        @debito = @tratamento.debito
+        @debito.destroy
+        @tratamento.debito = nil
+      end
       if @tratamento.data.present? 
         if !estava_terminado
           @tratamento.finalizar(current_user, session[:clinica_id])
