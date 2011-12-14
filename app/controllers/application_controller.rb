@@ -8,6 +8,7 @@ class ApplicationController < ActionController::Base
   helper_method :current_user_session, :current_user
   before_filter :administracao
   before_filter :busca_clinica_atual, :busca_clinicas
+  before_filter :verifica_horario_de_trabalho
   
 
   def quinzena
@@ -171,11 +172,13 @@ class ApplicationController < ActionController::Base
     end
     
     def verifica_horario_de_trabalho
-      return true if current_user.master?
-      if !current_user.horario_de_trabalho?
-        current_user_session.destroy
-        flash[:notice] = "Volte no seu horário de trabalho !"
-        redirect_to root_path
+      if current_user
+        return true if current_user.master?
+        if !current_user.horario_de_trabalho?
+          current_user_session.destroy
+          flash[:notice] = "Volte no seu horário de trabalho !"
+          redirect_to root_path
+        end
       end
     end
     
