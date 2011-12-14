@@ -2,7 +2,7 @@
   <br/>
   Clínicas :  
   <% @dentista.clinicas.each() do |clinica| %>
-    <%= check_box_tag "aclinicas_#{clinica.id}",value= clinica.id,false %>  
+    <%= check_box_tag "aclinicas_#{clinica.id}",value= clinica.id,true %>  
     <%= clinica.nome %> &nbsp;&nbsp;
   <% end %>
 <% else %>
