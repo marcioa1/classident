@@ -47,7 +47,7 @@ class Dentista < ActiveRecord::Base
   end
   
   def busca_producao_de_ortodontia(inicio,fim)
-     resultado = Recebimento.all(:conditions =>["(data between ? and ?) and paciente_id in (?)",inicio,fim,self.pacientes_de_ortodontia ])
+     resultado = Recebimento.all(:conditions =>["data_de_exclusao IS NULL and (data between ? and ?) and paciente_id in (?)",inicio,fim,self.pacientes_de_ortodontia ])
   end
 
   def self.busca_dentistas(clinica_id)
