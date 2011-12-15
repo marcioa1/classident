@@ -185,13 +185,13 @@ class DentistasController < ApplicationController
       all = Tratamento.da_clinica(@clinicas_da_pesquisa).dentistas_entre_datas(@data_inicial,@data_final)
       @todos = []
       all.each do |den|
-        @todos << Dentista.find(den.dentista.id)
+        dentista =  Dentista.find(den.dentista.id) 
+        @todos << dentista if dentista.ativo?
       end
       @clinicas_da_pesquisa.each do |cli|
         Clinica.find(cli).ortodontistas.each do |orto|
           dentista = Dentista.find(orto)
-          puts dentista.nome
-          @todos << dentista
+          @todos << dentista if dentista.ativo?
         end
       end
       @todos.sort{|a,b| a[:nome] <=> b[:nome] }
