@@ -183,7 +183,7 @@ class Recebimento < ActiveRecord::Base
       !self.em_cheque? and self.data > Date.today
   end
   
-  private
+  # private
   # para impressão detalhada
   def descricao
     self.observacao
@@ -193,6 +193,6 @@ class Recebimento < ActiveRecord::Base
     0
   end
   def valor_dentista
-    
+    self.valor * self.percentual_dentista
   end
 end

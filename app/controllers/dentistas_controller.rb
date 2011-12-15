@@ -250,7 +250,7 @@ class DentistasController < ApplicationController
         items.each do |item|
           pdf.draw_text item.data.to_s_br, :at=>[2,y]
           pdf.draw_text item.paciente.nome.gsub(/[^a-z0-9.:,$ ]/i,'.'), :at => [60,y] 
-          pdf.draw_text item.descricao.gsub(/[^a-z0-9.:,$ ]/i,'.') , :at => [260, y]
+          pdf.draw_text item.descricao && item.descricao.gsub(/[^a-z0-9.:,$ ]/i,'.') , :at => [260, y]
           
           pdf.bounding_box([450, y+7], :width => 50, :height => 12) do
             pdf.text item.valor.real.to_s, :align => :right
@@ -266,7 +266,7 @@ class DentistasController < ApplicationController
           y -= 12
           total_valor += item.valor
           total_custo += item.custo
-          total_dentista += item.valor_dentista
+          total_dentista += item.valor_dentista if item.valor_dentista
         end
         pdf.horizontal_line 450, 500, :at => y+7
         pdf.horizontal_line 550, 600, :at => y+7
