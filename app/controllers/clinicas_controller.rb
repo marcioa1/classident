@@ -27,9 +27,11 @@ class ClinicasController < ApplicationController
     end
     @dentistas = Clinica.find(session[:clinica_id]).dentistas.por_nome
     @dentistas.each do |den|
-      mensal = den.producao_entre_datas(@data_inicial,@data_final)
-      if mensal.split("/")[1].to_f > 0.0
-        @valores << (mensal + "/" + den.nome + '/' + den.id.to_s)
+      if den.ativo?
+        mensal = den.producao_entre_datas(@data_inicial,@data_final)
+        if mensal.split("/")[1].to_f > 0.0
+          @valores << (mensal + "/" + den.nome + '/' + den.id.to_s)
+        end
       end
     end
     @titulo = "Produção entre datas : #{@data_inicial.to_s_br} e #{@data_final.to_s_br} "
