@@ -249,7 +249,7 @@ class DentistasController < ApplicationController
         end
         items.each do |item|
           pdf.draw_text item.data.to_s_br, :at=>[2,y]
-          pdf.draw_text item.paciente.nome, :at => [60,y] 
+          pdf.draw_text item.paciente.nome.gsub(/[^a-z0-9.:,$ ]/i,'.'), :at => [60,y] 
           pdf.draw_text item.descricao.gsub(/[^a-z0-9.:,$ ]/i,'.') , :at => [260, y]
           
           pdf.bounding_box([450, y+7], :width => 50, :height => 12) do

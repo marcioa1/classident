@@ -28,7 +28,7 @@ class Dentista < ActiveRecord::Base
     if self.ortodontista?
       producao_de_ortodontista = self.busca_producao_de_ortodontia(inicio,fim)
       producao_de_ortodontista.each do |prod|
-        valor += prod.valor.to_f
+        valor += prod.valor.to_f #* prod.percentual_dentista
       end
       puts self.nome + ' =>  ' + valor.real.to_s
     else
