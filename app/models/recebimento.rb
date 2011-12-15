@@ -182,5 +182,17 @@ class Recebimento < ActiveRecord::Base
      errors.add(:data, "não pode no futuro se o recebimento não for em cheque") if
       !self.em_cheque? and self.data > Date.today
   end
-
+  
+  private
+  # para impressão detalhada
+  def descricao
+    self.observacao
+  end
+  
+  def custo
+    0
+  end
+  def valor_dentista
+    
+  end
 end

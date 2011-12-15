@@ -23,11 +23,22 @@ class Dentista < ActiveRecord::Base
   end
   
   def producao_entre_datas(inicio,fim)
-    custo = Tratamento.sum(:custo,:conditions=>['dentista_id = ? and data between ? and ? and not excluido ', self.id, inicio, fim]).to_f
-    valor = Tratamento.sum(:valor,:conditions=>['dentista_id = ? and data between ? and ? and not excluido ', self.id, inicio, fim]).to_f
-    #FIXME
-    custo           = 0 if custo.nil?
-    valor           = 0 if valor.nil?
+    valor = 0
+    custo = 0
+    if self.ortodontista?
+      producao_de_ortodontista = self.busca_producao_de_ortodontia(inicio,fim)
+      producao_de_ortodontista.each do |prod|
+        valor += prod.valor.to_f
+      end
+      puts self.nome + ' =>  ' + valor.real.to_s
+    else
+      custo  = Tratamento.sum(:custo,:conditions=>['dentista_id = ? and data between ? and ? and not excluido ', self.id, inicio, fim]).to_f rescue 0
+      valor = 0
+      tratamentos = Tratamento.all(:conditions=>['dentista_id = ? and data between ? and ? and not excluido ', self.id, inicio, fim])
+      tratamentos.each do |trat|
+        valor += trat.valor
+      end
+    end
     self.percentual = 0 if self.percentual.nil?
     do_dentista     = (valor - custo ) * self.percentual / 100
     da_clinica      = valor - custo - do_dentista

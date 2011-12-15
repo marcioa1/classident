@@ -16,6 +16,7 @@ class Clinica < ActiveRecord::Base
   named_scope :administracao, :conditions=>["sigla = 'ad'"]
   named_scope :da_classident, :conditions=>['id < 8']
   named_scope :por_nome, :order=>:nome
+  named_scope :sem_administracao, :conditions=>["id <> 1"]
   named_scope :todas, :conditions=>["sigla <> 'ad'"]
 
  ADMINISTRACAO_ID   = 1 #Clinica.administracao.first.id
@@ -24,7 +25,7 @@ class Clinica < ActiveRecord::Base
   def ortodontistas
     result = []
     self.dentistas.each do |dentista|  
-      result << dentista if dentista.ortodontista
+      result << dentista if dentista.ortodontista && dentista.ativo?
     end
     result.sort! {|a,b| a.nome <=> b.nome}
   end  

@@ -176,7 +176,7 @@ class DentistasController < ApplicationController
       @data_inicial = params[:data_inicial].to_date if Date.valid?(params[:data_inicial])
       @data_final   = params[:data_final].to_date if Date.valid?(params[:data_final])
     end
-    @clinicas    = Clinica.da_classident
+    @clinicas    = Clinica.da_classident.sem_administracao
     @clinicas_da_pesquisa = []
     if Date.valid?(params[:data_inicial]) && Date.valid?(params[:data_final])
       @clinicas.each do |clinica|
@@ -186,6 +186,13 @@ class DentistasController < ApplicationController
       @todos = []
       all.each do |den|
         @todos << Dentista.find(den.dentista.id)
+      end
+      @clinicas_da_pesquisa.each do |cli|
+        Clinica.find(cli).ortodontistas.each do |orto|
+          dentista = Dentista.find(orto)
+          puts dentista.nome
+          @todos << dentista
+        end
       end
       @todos.sort{|a,b| a[:nome] <=> b[:nome] }
     else
@@ -235,7 +242,11 @@ class DentistasController < ApplicationController
         total_custo = 0
         total_dentista = 0
         y = 450
-        items = @dentista.busca_producao(@data_inicial, @data_final, params[:clinicas])
+        if @dentista.ortodontista?
+          items = @dentista.busca_producao_de_ortodontia(@data_inicial, @data_final)
+        else
+          items = @dentista.busca_producao(@data_inicial, @data_final, params[:clinicas])
+        end
         items.each do |item|
           pdf.draw_text item.data.to_s_br, :at=>[2,y]
           pdf.draw_text item.paciente.nome, :at => [60,y] 
