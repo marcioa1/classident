@@ -66,7 +66,7 @@ module ApplicationHelper
   end
   
   def botao_de_impressao(dados, clinica_id=session[:clinica_id], orientation='portrait')
-    capture_haml do
+    return capture_haml do
      form_tag imprime_path(:clinica_id=>clinica_id,:orientation=>orientation) do 
        text_field_tag :tabela, dados
        submit_tag "imprime"

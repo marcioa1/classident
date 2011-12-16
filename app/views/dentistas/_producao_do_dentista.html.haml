@@ -1,5 +1,4 @@
 #lista
-
   - dados = "#{@titulo}>Data;Paciente;Procedimento;Valor;Custo;Dentista>center;left;left;right;right;right;>" 
   %table{:class=>'tabela'}
     %tr
@@ -69,4 +68,7 @@
       %td{:align=>'right'}=total_dentista.real.to_s
       %td{:align=>'right'}=total_clinica.real.to_s
       - dados += ";;Total;#{total.real.to_s};#{total_custo.real.to_s};#{total_dentista.real.to_s}>"
-  = botao_de_impressao(dados)
+  - form_tag imprime_path(:clinica_id=> session[:clinica_id],:orientation=>'landscape') do 
+    = hidden_field_tag :tabela, dados
+    = submit_tag "imprime"
+
