@@ -43,6 +43,7 @@ class User < ActiveRecord::Base
   
   def horario_de_trabalho?
     # debugger
+    return true
     wdia = Date.today.wday
     hora_corrente = Time.current.strftime('%H%M').to_i
     case wdia
