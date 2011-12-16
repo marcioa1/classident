@@ -36,6 +36,21 @@ class Entrada < ActiveRecord::Base
   def remessa?(clinica_id)
     Clinica.find(clinica_id).administracao? ?  self.clinica_id == 1 && self.clinica_destino.id != 1 : self.clinica_id > 1 
   end
+
+
+  def na_quinzena?
+    primeira = Date.new(Date.today.year,Date.today.month,1)
+    segunda  = Date.new(Date.today.year,Date.today.month,16)
+    if Date.today >= segunda
+      self.data < segunda ? false : true
+    else
+      self.data < primeira ? false : true
+    end
+  end
+  
+  def pode_excluir?
+    self.na_quinzena?
+  end
   
   def nome_clinica_destino
     

@@ -45,8 +45,8 @@
         <%= link_to_function "confirma", "registra_confirmacao_de_movimentacao(#{mov.id})" if titulo.downcase != 'remessa'%>
       <% end %>
     </td>
-    <td><%= link_to 'editar', edit_entrada_path(mov), :class=>'ui-icon ui-icon-pencil' , :title=>'editar' if !mov.confirmada? %></td>
-    <td><%= link_to 'excluir', mov, :confirm => 'Tem certeza ?', :method => :delete , :class=>'ui-icon ui-icon-trash' , :title=>'excluir'if !mov.confirmada?%></td>
+    <td><%= link_to 'editar', edit_entrada_path(mov), :class=>'ui-icon ui-icon-pencil' , :title=>'editar' if !mov.confirmada? && mov.pode_excluir? %></td>
+    <td><%= link_to 'excluir', mov, :confirm => 'Tem certeza ?', :method => :delete , :class=>'ui-icon ui-icon-trash' , :title=>'excluir' if !mov.confirmada? && mov.pode_excluir? %></td>
   </tr>
 <% end %>
 </table>
