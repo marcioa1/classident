@@ -194,7 +194,7 @@ class DentistasController < ApplicationController
           @todos << dentista if dentista.ativo?
         end
       end
-      @todos.sort{|a,b| a[:nome] <=> b[:nome] }
+      @todos.sort!{|a,b| a[:nome] <=> b[:nome] }
     else
       @todos = []
       @erros = ''

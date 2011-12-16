@@ -25,12 +25,14 @@ class Dentista < ActiveRecord::Base
   def producao_entre_datas(inicio,fim)
     valor = 0
     custo = 0
+    do_dentista = 0
     if self.ortodontista?
       producao_de_ortodontista = self.busca_producao_de_ortodontia(inicio,fim)
       producao_de_ortodontista.each do |prod|
-        valor += prod.valor.to_f #* prod.percentual_dentista
+        debugger
+        valor += prod.valor.to_f
+        do_dentista += prod.valor.to_f * prod.percentual_dentista / 100
       end
-      puts self.nome + ' =>  ' + valor.real.to_s
     else
       custo  = Tratamento.sum(:custo,:conditions=>['dentista_id = ? and data between ? and ? and not excluido ', self.id, inicio, fim]).to_f rescue 0
       valor = 0
@@ -38,9 +40,9 @@ class Dentista < ActiveRecord::Base
       tratamentos.each do |trat|
         valor += trat.valor
       end
+      self.percentual = 0 if self.percentual.nil?
+      do_dentista     = (valor - custo ) * self.percentual / 100
     end
-    self.percentual = 0 if self.percentual.nil?
-    do_dentista     = (valor - custo ) * self.percentual / 100
     da_clinica      = valor - custo - do_dentista
     return self.percentual.to_s + "/" + valor.to_s + "/" + custo.to_s + "/" + do_dentista.to_s  + "/" + da_clinica.to_s
   end
@@ -58,7 +60,8 @@ class Dentista < ActiveRecord::Base
   end
   
   def busca_producao_de_ortodontia(inicio,fim)
-     resultado = Recebimento.all(:conditions =>["data_de_exclusao IS NULL and (data between ? and ?) and paciente_id in (?)",inicio,fim,self.pacientes_de_ortodontia ])
+     resultado = Recebimento.all(:conditions =>["data_de_exclusao IS NULL and (data between ? and ?) and paciente_id in (?)",inicio,fim,self.pacientes_de_ortodontia ],
+                                 :select => 'data, paciente_id, valor, percentual_dentista')
   end
 
   def self.busca_dentistas(clinica_id)
