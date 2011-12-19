@@ -89,8 +89,8 @@
     <%= f.select :orcamento_id, @tratamento.paciente.orcamentos.collect{ |o| [ o.numero, o.id]}.insert(0, '') %>
   </div>
   <div>
-    <%= f.submit "salvar e fechar" if (!@tratamento.data || (@tratamento.pode_alterar? || @tratamento.liberado_para_alteracao? )) && !@clinica_atual.administracao?%>
-    <%= f.submit "salvar e novo" if (@tratamento.id.nil? && (!@tratamento.data || (@tratamento.data + 15.days > Date.today ))) && !@clinica_atual.administracao?%>
+    <%= f.submit "salvar e fechar" if (!@tratamento.data || (@tratamento.pode_alterar? || @tratamento.liberado_para_alteracao? )) && current_user.secretaria? %>
+    <%= f.submit "salvar e novo" if (@tratamento.id.nil? && (!@tratamento.data || (@tratamento.data + 15.days > Date.today ))) && current_user.secretaria? %>
 
   </div>
 <% end %>

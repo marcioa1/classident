@@ -64,7 +64,7 @@
 
 </fieldset>
   <p>
-    <%= f.submit 'Salvar' %>
+    <%= f.submit 'Salvar' if current_user.secretaria? %>
   </p>
   
 <% end %>

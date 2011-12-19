@@ -64,7 +64,7 @@
     <%= f.text_field :sexo %>
   </p>
   <p>
-    <%= f.submit 'Alterar' %>
+    <%= f.submit 'Alterar' if current_user.secretaria? %>
   </p>
 <% end %>
 

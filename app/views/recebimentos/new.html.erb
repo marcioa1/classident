@@ -162,7 +162,7 @@
     </fieldset>
     </div>
     <p>
-      <%= f.submit 'salvar' %>
+      <%= f.submit 'salvar' if current_user.secretaria? %>
     </p>
   <% end %>
 
