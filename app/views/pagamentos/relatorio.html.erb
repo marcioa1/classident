@@ -154,6 +154,7 @@
 
 <%= link_to 'novo pagamento', new_pagamento_path  if current_user.pode_alterar_na_clinica?%> |  
   <%= link_de_impressao(dados, session[:clinica_id], 'portrait') %>
-
+  |
+  <%= link_to "impressão detalhada", impressao_detalhada_pagamentos_path(:pagamentos => @pagamentos.map(&:id).join(','),:data_inicial => @data_inicial, :data_final => @data_final) %>
 
 <% end %>

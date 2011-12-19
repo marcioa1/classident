@@ -15,5 +15,5 @@
     <%= f.text_field :observacao, :size=>40 %>
   </p>
   <p>
-    <%= f.submit 'gravar' if current_user.secretaria? %>
+    <%= f.submit 'gravar' if  current_user.master? %>
   </p>

@@ -219,4 +219,81 @@ class PagamentosController < ApplicationController
     @pagamentos_fora_do_livro_caixa = Pagamento.da_clinica(session[:clinica_id]).no_dia(Date.today).fora_do_livro_caixa.nao_excluidos
   end
   
+  def impressao_detalhada
+    # raise params[:pagamentos]
+    require 'prawn/core'
+    require "prawn/layout"
+ 
+    verify_existence_of_directory
+    @nome_da_clinica = Clinica.find(session[:clinica_id]).nome
+    @data_inicial = params[:data_inicial]
+    @data_final   = params[:data_final]
+    Prawn::Document.generate(File.join(Rails.root , "impressoes/#{session[:clinica_id]}/pagamento_detalhado.pdf"), 
+       :page_layout => :portrait) do |pdf|
+        pdf.repeat :all do
+          pdf.text "#{Time.current.to_s_br}", :align => :right, :size=>8, :vposition => 10
+          pdf.bounding_box [10, 680], :width  => pdf.bounds.width do
+            pdf.font "Helvetica"
+            pdf.text "#{@nome_da_clinica} - período #{@data_inicial.to_date.to_s_br} a #{@data_final.to_date.to_s_br}", :align => :center, :size => 14, :vposition => -20
+          end
+          pdf.horizontal_line 2, 850, :at => 660
+          pdf.stroke
+        end
+     pagamentos = params[:pagamentos].split(',')
+     y = 600
+     pagamentos.each do |pagamento|
+        @pagamento = Pagamento.find(pagamento.to_i)
+        pdf.font_size = 10
+        pdf.draw_text @pagamento.data_de_pagamento.to_s_br , :at=>[10,y]
+        pdf.draw_text @pagamento.tipo_pagamento.nome , :at=>[70,y]
+        pdf.draw_text @pagamento.observacao , :at=>[210,y]
+        pdf.bounding_box([500, y+7], :width => 50, :height => 12) do
+          pdf.text @pagamento.valor_pago.real.to_s, :align => :right
+        end
+
+        y -= 15
+        if @pagamento.cheques.present?
+          pdf.draw_text "Banco", :at=>[15,y]
+          pdf.draw_text "Agencia", :at=>[115,y]
+          pdf.draw_text "Número", :at=>[200,y]
+          pdf.draw_text "Paciente(s)", :at=>[250,y]
+          pdf.draw_text "Valor", :at=>[520,y]
+          y -= 15
+          if y < 50
+            pdf.start_new_page
+            y = 600
+            pdf.draw_text @pagamento.data_de_pagamento.to_s_br , :at=>[10,y]
+            pdf.draw_text @pagamento.tipo_pagamento.nome , :at=>[70,y]
+            pdf.draw_text @pagamento.observacao , :at=>[210,y]
+            pdf.bounding_box([500, y+7], :width => 50, :height => 12) do
+            pdf.text @pagamento.valor_pago.real.to_s, :align => :right
+            y -= 15
+        end
+
+          end
+
+
+          @pagamento.cheques.each do |cheque|
+            pdf.draw_text cheque.banco.nome, :at=>[15,y]
+            pdf.draw_text cheque.agencia, :at=>[115,y]
+            pdf.draw_text cheque.numero, :at=>[200,y]
+            pdf.draw_text cheque.nome_dos_pacientes, :at=>[250,y]
+            pdf.bounding_box([500, y+7], :width => 50, :height => 12) do
+              pdf.text cheque.valor.real.to_s, :align => :right
+            end
+            y -= 15
+          end
+        end
+        y -= 10
+        
+        if y < 50
+          pdf.start_new_page
+          y = 600
+        end
+      end
+    end
+    send_file File.join(RAILS_ROOT , "impressoes/#{session[:clinica_id]}/pagamento_detalhado.pdf")
+
+  end
+  
 end

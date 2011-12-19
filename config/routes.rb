@@ -58,7 +58,8 @@ ActionController::Routing::Routes.draw do |map|
 
   map.administracao "administracao", :controller=>"administracao", :action=>"index"
   map.salva_tab_do_paciente "salva_tab_do_paciente", :controller=>"administracao", :action=>"salva_tab_do_paciente"
-  map.resources :pagamentos, :collection=>{:pagamentos_de_hoje=>:get, :relatorio=>:get, :registra_pagamento_a_protetico=>:get},
+  map.resources :pagamentos, :collection=>{:pagamentos_de_hoje=>:get, :relatorio=>:get, 
+                :registra_pagamento_a_protetico=>:get, :impressao_detalhada=>:get},
                     :member => {:exclusao=>:get, :exclui=>:post}
   map.resources :precos
   map.resources :proteticos, :member=>{:abre=>:get, :pagamentos=>:get, :desativar=>:get}, 
