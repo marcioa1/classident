@@ -3,7 +3,7 @@ class CreateAcompanhamentoCheques < ActiveRecord::Migration
     create_table :acompanhamento_cheques do |t|
       t.references :cheque
       t.string     :origem, :limit=>1, :default => 'C'
-      t.string     :descricao, :limit => 120
+      t.string     :descricao
       t.references :user
 
       t.timestamps
