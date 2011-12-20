@@ -124,5 +124,19 @@ class Orcamento < ActiveRecord::Base
       self.valor_com_desconto = self.valor
     end
   end
+
+  def pode_excluir?
+    self.na_quinzena? && self.em_aberto?
+  end
+
+  def na_quinzena?
+    primeira = Date.new(Date.today.year,Date.today.month,1)
+    segunda  = Date.new(Date.today.year,Date.today.month,16)
+    if Date.today >= segunda
+      self.data < segunda ? false : true
+    else
+      self.data < primeira ? false : true
+    end
+  end
   
 end

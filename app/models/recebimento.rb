@@ -48,12 +48,6 @@ class Recebimento < ActiveRecord::Base
     else
       self.data < primeira ? false : true
     end
-    
-    # return false if self.data < segunda && Date.today >= segunda
-    # return true if self.data < segunda && Date.today < segunda
-    # return true if self.data >= segunda && Date.today >= segunda
-    # return true
-
   end
   
   def verifica_quinzena

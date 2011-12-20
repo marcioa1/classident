@@ -58,9 +58,10 @@ class OrcamentosController < ApplicationController
   end
 
   def destroy
+    paciente = @orcamento.paciente
     @orcamento.destroy
 
-    redirect_to(orcamentos_url) 
+    redirect_to(abre_paciente_path(paciente)) 
   end
   
   def relatorio
