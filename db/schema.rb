@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111211113038) do
+ActiveRecord::Schema.define(:version => 20111220114502) do
 
   create_table "abonos", :force => true do |t|
     t.date     "data"
@@ -191,20 +191,30 @@ ActiveRecord::Schema.define(:version => 20111211113038) do
   end
 
   add_index "debitos", ["paciente_id"], :name => "index_debitos_on_paciente_id"
+  add_index "debitos", ["tratamento_id"], :name => "tratamento_id"
 
   create_table "dentistas", :force => true do |t|
     t.string   "nome"
     t.string   "telefone"
     t.string   "celular"
-    t.boolean  "ativo",                                                     :default => true
+    t.boolean  "ativo",                                                       :default => true
     t.integer  "clinica_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "cro",           :limit => 12
-    t.string   "especialidade", :limit => 30
-    t.decimal  "percentual",                  :precision => 9, :scale => 2
+    t.string   "cro",             :limit => 12
+    t.string   "especialidade",   :limit => 30
+    t.decimal  "percentual",                    :precision => 9, :scale => 2
     t.integer  "sequencial"
-    t.boolean  "ortodontista",                                              :default => false
+    t.boolean  "ortodontista",                                                :default => false
+    t.string   "logradouro"
+    t.string   "numero"
+    t.string   "complemento"
+    t.string   "bairro"
+    t.string   "municipio"
+    t.string   "cep"
+    t.string   "data_nascimento"
+    t.string   "cpf"
+    t.string   "email"
   end
 
   add_index "dentistas", ["sequencial"], :name => "index_dentistas_on_sequencial"

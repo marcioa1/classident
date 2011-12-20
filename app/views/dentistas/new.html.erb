@@ -35,6 +35,39 @@
    &nbsp;&nbsp;&nbsp;
      <%= f.check_box :ortodontista %><%= f.label :ortodontista %>
   </p>
+  <div>
+    <%= f.label :logradouro %> : 
+    <%= f.text_field :logradouro, :size => 39 %> 
+  </div>
+  <div>
+    <%= f.label :número %> : 
+    <%= f.text_field :numero, :size => 9 %> 
+  </div>
+  <div>
+    <%= f.label :complemento %> : 
+    <%= f.text_field :complemento, :size => 9 %> 
+  </div>
+  <div>
+    <%= f.label :bairro %> : 
+    <%= f.text_field :bairro %> 
+  </div>
+  <div>
+    <%= f.label :município %> : 
+    <%= f.text_field :municipio %> 
+  </div>
+  <div>
+    <%= f.label :cep %> : 
+    <%= f.text_field :cep, :size => 9 %> 
+  </div>
+  <div>
+    <%= f.label :cpf %> : 
+    <%= f.text_field :cpf, :size => 15 %> 
+  </div>
+  <div>
+    <%= f.label :email %> : 
+    <%= f.text_field :email, :size => 49 %> 
+  </div>
+
 <fieldset>
     <legend>Clínicas onde atua :</legend>
     <% @clinicas.each() do |clinica| %>
