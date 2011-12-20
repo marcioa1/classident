@@ -65,6 +65,11 @@ class Recebimento < ActiveRecord::Base
     errors.add(:data, " do cheque anterior à data do recebimento") if self.em_cheque? && self.cheque.bom_para && self.cheque.bom_para < self.data
   end
   
+  def descricao
+    self.observacao
+  end
+
+  
   def valor_real
     self.valor.real
   end
@@ -186,9 +191,6 @@ class Recebimento < ActiveRecord::Base
   
   # private
   # para impressão detalhada
-  def descricao
-    self.observacao
-  end
   
   def custo
     0

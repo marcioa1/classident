@@ -10,7 +10,7 @@ jQuery(function() {
     $("#datepicker4").datepicker();
     $("#datepicker5").datepicker();
     $("#datepicker6").datepicker();
-    $(".datepicker").datepicker({ disabled: true, minDate: -15});
+    $(".datepicker").datepicker();
 });
 
 
