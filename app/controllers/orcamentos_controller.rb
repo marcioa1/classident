@@ -33,8 +33,9 @@ class OrcamentosController < ApplicationController
 
   def create
     @orcamento                             = Orcamento.new(params[:orcamento])
-    @orcamento.vencimento_primeira_parcela = params[:orcamento][:vencimento_primeira_parcela].to_date if Date.valid?(params[:orcamento][:vencimento_primeira_parcela])
-    @orcamento.data_de_inicio              = params[:orcamento][:data_de_inicio].to_date if Date.valid?(params[:orcamento][:data_de_inicio])
+    debugger
+    # @orcamento.vencimento_primeira_parcela = params[:orcamento][:vencimento_primeira_parcela].to_date if Date.valid?(params[:orcamento][:vencimento_primeira_parcela])
+    # @orcamento.data_de_inicio              = params[:orcamento][:data_de_inicio].to_date if Date.valid?(params[:orcamento][:data_de_inicio])
     @orcamento.clinica_id                  = session[:clinica_id]
     if @orcamento.save
       Tratamento.associa_ao_orcamento(params[:tratamento_ids], @orcamento.id)
@@ -47,6 +48,8 @@ class OrcamentosController < ApplicationController
   end
 
   def update
+    # @orcamento.vencimento_primeira_parcela = params[:orcamento][:vencimento_primeira_parcela].to_date if Date.valid?(params[:orcamento][:vencimento_primeira_parcela])
+    # @orcamento.data_de_inicio              = params[:orcamento][:data_de_inicio].to_date if Date.valid?(params[:orcamento][:data_de_inicio])
     if @orcamento.update_attributes(params[:orcamento])
       redirect_to(abre_paciente_path(@orcamento.paciente_id)) 
     else

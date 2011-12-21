@@ -36,7 +36,7 @@
 </div>
 <div>
   <%= f.label :data_de_inicio %>: 
-  <%= text_field_tag "orcamento[data_de_inicio]", @orcamento.data_de_inicio.to_s_br, :class=> 'datepicker',  :size=>10 , :on_change => "alert('trocou');"%>
+  <%= f.text_field :data_de_inicio_pt, :class=> 'datepicker',  :size=>10 , :on_change => "alert('trocou');"%>
 </div>
 <div>
   <%= f.label :número_de_parcelas %> :
@@ -44,7 +44,7 @@
 </div>
 <div>
   <%= f.label :vencto_primeira_parcela %> :
-  <%= text_field_tag "orcamento[vencimento_primeira_parcela]", @orcamento.vencimento_primeira_parcela.to_s_br, options = {:size=>10, :class=>'datepicker', :onchange => 'calcula_valor_da_parcela();'} %>
+  <%= f.text_field :vencimento_primeira_parcela_pt, options = {:size=>10, :class=>'datepicker', :onchange => 'calcula_valor_da_parcela();'} %>
 </div>  
 <div>
   <%= f.label :valor_da_parcela %> :

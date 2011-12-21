@@ -19,13 +19,28 @@ class Orcamento < ActiveRecord::Base
   validates_numericality_of :valor_da_parcela, :message=>'Valor deve ser numérico .'
   validates_presence_of :data, :valor_da_parcela
   
-  attr_accessor :data_pt, :valor_pt, :valor_com_desconto_pt, :valor_da_parcela_pt
+  attr_accessor :data_pt, :valor_pt, :valor_com_desconto_pt, :valor_da_parcela_pt,
+                :vencimento_primeira_parcela_pt, :data_de_inicio_pt
   
   def data_pt
     data_pt = self.data.to_s_br if Date.valid?(self.data)
   end
   def data_pt=(new_date)
     self.data = new_date.to_date if Date.valid?(new_date)
+  end
+  
+  def vencimento_primeira_parcela_pt
+    vencimento_primeira_parcela_pt = self.vencimento_primeira_parcela.to_s_br if Date.valid?(self.vencimento_primeira_parcela)
+  end
+  def vencimento_primeira_parcela_pt=(new_date)
+    self.vencimento_primeira_parcela = new_date.to_date if Date.valid?(new_date)
+  end
+
+  def data_de_inicio_pt
+    data_de_inicio_pt = self.data_de_inicio.to_s_br if Date.valid?(self.data_de_inicio)
+  end
+  def data_de_inicio_pt=(new_date)
+    self.data_de_inicio = new_date.to_date if Date.valid?(new_date)
   end
   
   def valor_pt
