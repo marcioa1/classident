@@ -96,7 +96,7 @@
             end
           end
         when cheque.status=~/destinação/ then
-           cheque.destinacao.nome
+           cheque.destinacao && cheque.destinacao.nome
         when cheque.arquivo_morto? then
           "arquivo morto em #{cheque.data_arquivo_morto.to_s_br}"
         when cheque.entregue_a_administracao? then 
