@@ -28,4 +28,7 @@
     %td{:aligm=>'right'}= total.real
     %td{:colspan=>4}
   - dados += ";;Total;#{total.real}; ; ; ;>"
-= link_de_impressao(dados,session[:clinica_id], 'landscape')
+- form_tag imprime_path(:clinica_id=>session[:clinica_id],:orientation=>'landscape') do 
+  = hidden_field_tag :tabela, dados
+  = submit_tag "imprime"
+
