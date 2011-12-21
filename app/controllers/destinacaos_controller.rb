@@ -43,7 +43,7 @@ class DestinacaosController < ApplicationController
 
   def destroy
     @destinacao = Destinacao.find(params[:id])
-    @destinacao.destroy
+    @destinacao.ativa = false
 
     redirect_to(destinacaos_url) 
   end

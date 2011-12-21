@@ -19,7 +19,7 @@ class ChequesController < ApplicationController
 
   def edit
     @bancos = Banco.all(:order=>:nome).collect{|obj| [obj.nome,obj.id]}
-    @destinacoes = Destinacao.all(:conditions=>["clinica_id = ?", session[:clinica_id]], :order=>:nome).collect{|d| [d.nome,d.id]}
+    @destinacoes = Destinacao.all(:conditions=>["clinica_id = ? and ativa = ?", session[:clinica_id], true], :order=>:nome).collect{|d| [d.nome,d.id]}
     # session[:origem] = edit_cheque_path(@cheque)
   end
 
@@ -43,7 +43,7 @@ class ChequesController < ApplicationController
       redirect_to( session[:origem].present? ? session[:origem] : :back  ) 
     else
       @bancos = Banco.all(:order=>:nome).collect{|obj| [obj.nome,obj.id]}
-      @destinacoes = Destinacao.all(:conditions=>["clinica_id = ?", session[:clinica_id]], :order=>:nome).collect{|d| [d.nome,d.id]}
+      @destinacoes = Destinacao.all(:conditions=>["clinica_id = ? and ativa = ?", session[:clinica_id], true], :order=>:nome).collect{|d| [d.nome,d.id]}
 
       render :action => "edit" 
     end
@@ -58,7 +58,7 @@ class ChequesController < ApplicationController
   def cheques_recebidos
     params[:ordem] = 'por_data' if params[:ordem].nil?
     session[:origem] = cheques_recebidos_cheques_path
-    @destinacoes = Destinacao.all(:conditions=>["clinica_id = ?", session[:clinica_id]], :order=>:nome).collect{|d| [d.nome,d.id]}.insert(0,'')
+    @destinacoes = Destinacao.all(:conditions=>["clinica_id = ? and ativa = ?", session[:clinica_id], true], :order=>:nome).collect{|d| [d.nome,d.id]}.insert(0,'')
 
     @clinicas = Clinica.todas.da_classident.por_nome if @clinica_atual.administracao?
     if params[:datepicker] && Date.valid?(params[:datepicker])

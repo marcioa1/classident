@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111220114502) do
+ActiveRecord::Schema.define(:version => 20111221193423) do
 
   create_table "abonos", :force => true do |t|
     t.date     "data"
@@ -212,7 +212,7 @@ ActiveRecord::Schema.define(:version => 20111220114502) do
     t.string   "bairro"
     t.string   "municipio"
     t.string   "cep"
-    t.string   "data_nascimento"
+    t.date     "data_nascimento"
     t.string   "cpf"
     t.string   "email"
   end
@@ -231,6 +231,7 @@ ActiveRecord::Schema.define(:version => 20111220114502) do
     t.integer  "clinica_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "ativa",                    :default => true
   end
 
   add_index "destinacaos", ["clinica_id"], :name => "index_destinacaos_on_clinica_id"
