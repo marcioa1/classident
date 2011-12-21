@@ -5,6 +5,7 @@
 <table>
   <tr>
     <th>Nome</th>
+    <th>Ativa</th>
     <th>&nbsp;</th>
     <th>&nbsp;</th>
     <th>&nbsp;</th>
@@ -13,6 +14,7 @@
 <% @destinacaos.each do |destinacao| %>
   <tr>
     <td><%= destinacao.nome %></td>
+    <td><%= sim_nao(destinacao.ativa) %></td>
     <td><%= link_to 'mostrar', destinacao %></td>
     <td><%= link_to 'editar', edit_destinacao_path(destinacao) %></td>
     <td><%= link_to 'excluir', destinacao, :confirm => 'Tem certeza?', :method => :delete %></td>
