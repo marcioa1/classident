@@ -5,7 +5,7 @@ class ContaBancariasController < ApplicationController
   before_filter :require_user
 
   def index
-    @conta_bancarias = ContaBancaria.all
+    @conta_bancarias = ContaBancaria.all(:order=>:nome)
   end
 
   def show
