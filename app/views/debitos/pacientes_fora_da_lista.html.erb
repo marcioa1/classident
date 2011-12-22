@@ -17,7 +17,7 @@
 <% dados = "#{@titulo}"%>
 <% @pacientes.each do |pac| %>
   <tr>
-    <td><%= pac.nome %></td>
+    <td><%= link_to pac.nome, abre_paciente_path(pac), :target=>:blank %></td>
     <td align='center'><%= pac.data_da_saida_da_lista_de_debitos.to_s_br %></td>
     <td><%= pac.motivo_sair_da_lista_de_debitos %></td>
   </tr>
