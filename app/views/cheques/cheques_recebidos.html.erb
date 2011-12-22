@@ -146,7 +146,11 @@
   </tr>
   <% dados += ";;Total :;;;#{total.real.to_s}; ;>"%>
 </table>
-  <%= link_de_impressao(dados, session[:clinica_id], 'landscape') %>
+  <% form_tag imprime_path(:clinica_id=>session[:clinica_id],:orientation=>'portrait') do %>
+    <%= hidden_field_tag :tabela, dados %>
+    <%=  submit_tag "imprime" %>  
+  <% end %>
+
 </div>
 <script type="text/javascript">
   function reverte_cheque(id){
