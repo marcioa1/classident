@@ -1,4 +1,7 @@
   <%= javascript_include_tag 'jquery.price_format.1.0.js' %>
+<div>
+  <%= render :partial => "tratamentos", :locals=>{:tratamentos => @orcamento.tratamentos}%>
+</div>
 
 <div>
   <%= f.hidden_field :paciente_id  %>

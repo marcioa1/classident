@@ -5,6 +5,7 @@
     %th= 'Descrição'
     %th= 'Valor'
     %th= 'Custos'
+  - total = 0
   - tratamentos.each do |trat|
     %tr
       %td= trat.dente
@@ -12,3 +13,8 @@
       %td= trat.descricao
       %td{:align=>:right}= trat.valor.real
       %td{:align=>:right}= trat.custo.real
+    - total += trat.valor
+  %tr
+    %td{:colspan=>3, :align=>:center}= "Total"
+    %td{:align=>:right}= total.real
+    %td{:colspan=>1} &nbsp;
