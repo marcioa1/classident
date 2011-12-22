@@ -73,7 +73,7 @@
       <%= f.text_field :data_prevista_da_devolucao_da_repeticao_pt, :size=>10, :class=>'datepicker' %>
     </div>
     <div>
-      <%= f.submit 'salvar' if current_user.secretaria? %>
+      <%= f.submit 'salvar' if current_user.secretaria?  || current_user.master?%>
       <%= link_to 'voltar', abre_paciente_path(@trabalho_protetico.paciente) %>
     </div>
   <% end %>

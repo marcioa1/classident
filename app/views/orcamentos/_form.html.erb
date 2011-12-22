@@ -52,7 +52,7 @@
 </div>
 <div id='parcelas'></div>
 <div>
-  <%= f.submit 'salvar' if current_user.secretaria? %>
+  <%= f.submit 'salvar' if current_user.secretaria? || current_user.master? %>
 </div>
 <script type='text/javascript'>
   $(calcula_valor_da_parcela());

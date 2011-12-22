@@ -18,7 +18,7 @@
     <%= f.text_field :descricao %>
   </p>
   <p>
-    <%= f.submit 'salvar' if current_user.secretaria? %>
+    <%= f.submit 'salvar' if current_user.secretaria? || current_user.master?  %>
   </p>
 <% end %>
 

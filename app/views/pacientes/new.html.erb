@@ -6,7 +6,7 @@
   <%= f.error_messages %>
   <%= render :partial=>'form' , :locals=>{:f=>f}%>
   <p>
-    <%= f.submit 'Criar' if current_user.secretaria?  %>
+    <%= f.submit 'Criar' if current_user.secretaria?  || current_user.master? %>
   </p>
 <% end %>
 

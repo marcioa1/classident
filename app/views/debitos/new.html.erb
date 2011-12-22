@@ -19,7 +19,7 @@
     <%= f.text_field :descricao, html_options={:size=>30, :class=>'txt' }%>
   </div>
   <div>
-    <%= f.submit 'salvar' if current_user.secretaria? %>&nbsp;&nbsp;<%= link_to 'voltar', :back %>
+    <%= f.submit 'salvar' if current_user.secretaria? || current_user.master? %>&nbsp;&nbsp;<%= link_to 'voltar', :back %>
   </div>
 <% end %>
 
