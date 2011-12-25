@@ -42,6 +42,9 @@
     <% else %>
       <th>Histórico</th>
     <% end %>
+    <% if params[:status] == 'disponíveis'%>
+      <th>&nbsp;</th>
+    <% end %>
     <th>&nbsp;</th>
   </tr>
   <% total = 0 %>
@@ -117,7 +120,11 @@
     </td>
     <td align='center'><%= cheque.data_recebimento_na_administracao.to_s_br %></td>
     <% if params[:status] == 'disponíveis'%>
-      <td>    <%= select_tag :destinacao_id,  options_for_select(@destinacoes), :id=>"destinacao_#{cheque.id}" %> <%= button_to_function "gravar", "grava_destinacao(#{cheque.id})"%></td>
+      <td>    <%= select_tag :destinacao_id,  options_for_select(@destinacoes), :id=>"destinacao_#{cheque.id}" %> <%= button_to_function "gravar", "grava_destinacao(#{cheque.id})"%>
+      </td>
+      <td>
+        <%= button_to_function "Cofre", "#"%>  
+      </td>
     <% else %>
         <td><%= cheque.historico %></td>
     <% end %>

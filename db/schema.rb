@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111221193423) do
+ActiveRecord::Schema.define(:version => 20111225114044) do
 
   create_table "abonos", :force => true do |t|
     t.date     "data"
@@ -126,6 +126,8 @@ ActiveRecord::Schema.define(:version => 20111221193423) do
     t.date     "data_caso_perdido"
     t.date     "data_envio_a_clinica"
     t.date     "data_recebido_da_administracao"
+    t.date     "data_entrega_ao_cofre"
+    t.date     "data_retorno_do_cofre"
   end
 
   add_index "cheques", ["banco_id"], :name => "index_cheques_on_banco_id"

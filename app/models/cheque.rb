@@ -39,8 +39,9 @@ class Cheque < ActiveRecord::Base
                 data_spc IS NULL and data_solucao IS NULL and data_arquivo_morto IS NULL and
                 data_recebimento_na_administracao IS NOT NULL 
                 and pagamento_id IS NULL
-                and destinacao_id IS NULL and
-                bom_para > '2011-01-01'"]
+                and destinacao_id IS NULL 
+                and data_entrega_ao_cofre IS NULL
+                and bom_para > '2011-01-01'"]
   named_scope :do_banco, lambda{|banco| {:conditions=>["banco_id = ?", banco]}}
   named_scope :do_valor, lambda{|valor| {:conditions=>["valor=?", valor]}}
   
@@ -52,13 +53,16 @@ class Cheque < ActiveRecord::Base
   named_scope :nao_excluidos, :conditions=>["data_de_exclusao IS NULL"]
   named_scope :nao_reapresentados, :conditions=>["data_reapresentacao IS NULL"]
   named_scope :nao_recebidos, :conditions=>["data_recebimento_na_administracao IS NULL"]  
+  named_scope :no_cofre, :conditions=>["data_entrega_ao_cofre IS NOT NULL"]
+  named_scope :ordenado_por, lambda {|ordem| {:order => ordem.to_sym}}
+  named_scope :por_bom_para, :order=>:bom_para
+  named_scope :por_valor, :order=>'valor desc'
   named_scope :reapresentados, lambda{|data_inicial, data_final| 
       {:conditions=>["data_reapresentacao between ? and ?", data_inicial, data_final]}}
   named_scope :recebidos_na_administracao, lambda{|data_inicial, data_final| 
           {:conditions=>["data_recebimento_na_administracao between ? and ?", data_inicial, data_final]}}
-  named_scope :ordenado_por, lambda {|ordem| {:order => ordem.to_sym}}
-  named_scope :por_bom_para, :order=>:bom_para
-  named_scope :por_valor, :order=>'valor desc'
+  named_scope :retirados_do_cofre_entre_datas lambda{|data_inicial, data_final| 
+          {:conditions=>["data_retorno_do_cofre between ? and ?", data_inicial, data_final]}}
   named_scope :recebidos_pela_clinica_entre_datas, lambda {|data_inicial, data_final|
                 {:conditions=>["data_recebido_da_administracao between ? and ? ", data_inicial, data_final]}}
   named_scope :menores_ou_igual_a, lambda{|valor| {:conditions=>["valor<=?", valor]}}
@@ -375,12 +379,127 @@ class Cheque < ActiveRecord::Base
          :user_id   => current_user.id, 
          :descricao => "#{current_user.nome} tornou este cheque disponível em #{Date.today} : ( id do pagamento anterior : #{pagamento_id})")
   end
+  
+  def coloca_no_cofre
+    self.update_attribute(:data_entrega_ao_cofre, Date.today)
+    self.update_attribute(:data_retorno_do_cofre, nil)
+    AcompanhamentoCheque.create(:cheque_id => self.id,
+         :origem    => clinica_id,
+         :user_id   => current_user.id, 
+         :descricao => "#{current_user.nome} colocou no cofre em #{Date.today}")
+  end
+
+  def retorna_do_cofre
+    self.update_attribute(:data_entrega_ao_cofre, nil)
+    self.update_attribute(:data_retorno_do_cofre, Date.today)
+    AcompanhamentoCheque.create(:cheque_id => self.id,
+         :origem    => clinica_id,
+         :user_id   => current_user.id, 
+         :descricao => "#{current_user.nome} retirou do cofre em #{Date.today}")
+  end
 
   def pode_alterar?(user)
     return true if user.master?
     return false if user.secretaria? && self.recebido_pela_administracao?
     return false if self.usado_para_pagamento? || self.com_destinacao?
     true
+  end
+  
+  
+  def self.pesquisa(status,data_inicial,data_final,selecionadas,clinica_atual, ordem)
+    if clinica_atual == Clinica::ADMINISTRACAO_ID
+      case
+        when status == 'todos' 
+          @cheques = Cheque.na_administracao.entre_datas(data_inicial,data_final).
+            nao_excluidos.das_clinicas(selecionadas).ordenado_por(ordem)
+        when status == 'disponíveis'
+          @cheques = Cheque.entre_datas(data_inicial,data_final).
+            disponiveis_na_administracao.nao_excluidos.das_clinicas(selecionadas).ordenado_por(ordem)
+        when status == 'devolvido 2 vezes' 
+          @cheques = Cheque.devolvido_duas_vezes_entre_datas(data_inicial,data_final).
+                     nao_excluidos.das_clinicas(selecionadas).ordenado_por(ordem)
+        when status == 'enviados à administração' 
+          @cheques = Cheque.enviados_a_administracao(data_inicial,data_final).
+            nao_recebidos.nao_excluidos.das_clinicas(selecionadas).ordenado_por(ordem)
+        when status == 'recebidos pela administração'
+          @cheques = Cheque.entre_datas(data_inicial,data_final).
+            na_administracao.nao_excluidos.das_clinicas(selecionadas).ordenado_por(ordem)
+        when status == 'usados para pagamento'
+          @cheques = Cheque.entre_datas(data_inicial,data_final).
+            na_administracao.usados_para_pagamento.das_clinicas(selecionadas).ordenado_por(ordem)
+        when status == 'devolvido' 
+          @cheques = Cheque.na_administracao.devolvidos(data_inicial,data_final).
+            das_clinicas(selecionadas).ordenado_por(ordem)
+        when status == 'destinação'
+          @cheques = Cheque.na_administracao.entre_datas(data_inicial,data_final).com_destinacao.
+            das_clinicas(selecionadas).ordenado_por(ordem)
+        when status == 'reapresentado'
+          @cheques = Cheque.na_administracao.reapresentados(data_inicial,data_final).
+            das_clinicas(selecionadas).ordenado_por(ordem)
+        when status=="spc"
+          @cheques = Cheque.na_administracao.spc(data_inicial,data_final).
+            das_clinicas(selecionadas).ordenado_por(ordem)
+        when status=="solucionado" 
+          @cheques = Cheque.na_administracao.solucionado_entre_datas(data_inicial,data_final).
+            das_clinicas(selecionadas).ordenado_por(ordem)
+        when status=="devolvidos à clínica"
+          @cheques = Cheque.devolvidos_a_clinica_entre_datas(data_inicial,data_final).
+            das_clinicas(selecionadas).ordenado_por(ordem)
+        when status=="recebidos pela clínica"
+          @cheques = Cheque.recebidos_pela_clinica_entre_datas(data_inicial,data_final).
+            das_clinicas(selecionadas).ordenado_por(ordem)
+        when status=="arquivo morto"
+          @cheques = Cheque.arquivo_morto_entre_datas(data_inicial,data_final).
+            das_clinicas(selecionadas).ordenado_por(ordem)
+        when status== "colocados no cofre"
+          @cheques = Cheque.no_cofre(data_inicial,data_final).
+            das_clinicas(selecionadas).ordenado_por(ordem)
+        when status== "retirados do cofre"
+          @cheques = Cheque.retirados_do_cofre_entre_datas(data_inicial,data_final).
+            da_clinica(session[:clinica_id]).ordenado_por(ordem)
+
+      end
+    else
+      case
+        when status == 'todos' 
+          @cheques = Cheque.da_clinica(session[:clinica_id]).
+            entre_datas(data_inicial,data_final).nao_excluidos.ordenado_por(ordem)
+        when status == 'disponíveis' 
+          @cheques = Cheque.da_clinica(session[:clinica_id]).entre_datas(data_inicial,data_final).
+            disponiveis_na_clinica.nao_excluidos.ordenado_por(ordem)
+        when status == 'devolvido 2 vezes' 
+          @cheques = Cheque.da_clinica(session[:clinica_id]).entre_datas(data_inicial,data_final).
+            devolvido_duas_vezes.nao_excluidos.ordenado_por(ordem)
+        when status == 'enviados à administração' 
+          @cheques = Cheque.da_clinica(session[:clinica_id]).enviados_a_administracao(data_inicial,data_final).
+            nao_recebidos.nao_excluidos.ordenado_por(ordem)
+        when status == 'recebidos pela administração' 
+          @cheques = Cheque.da_clinica(session[:clinica_id]).entre_datas(data_inicial,data_final).
+            na_administracao.nao_excluidos.ordenado_por(ordem)
+        when status == 'usados para pagamento' 
+          @cheques = Cheque.entre_datas(data_inicial,data_final).
+            da_clinica(session[:clinica_id]).usados_para_pagamento.ordenado_por(ordem)
+        when status == 'devolvido' 
+          @cheques = Cheque.da_clinica(session[:clinica_id]).devolvidos(data_inicial,data_final).ordenado_por(ordem)
+        when status == 'destinação' 
+          @cheques = Cheque.da_clinica(session[:clinica_id]).entre_datas(data_inicial,data_final).com_destinacao.ordenado_por(ordem)
+        when status == 'reapresentado' 
+          @cheques = Cheque.da_clinica(session[:clinica_id]).reapresentados(data_inicial,data_final).ordenado_por(ordem)
+        when status=="spc" 
+          @cheques = Cheque.da_clinica(session[:clinica_id]).spc(data_inicial,data_final).ordenado_por(ordem)
+        when status=="recebidos pela clínica" 
+          @cheques = Cheque.da_clinica(session[:clinica_id]).recebidos_pela_clinica_entre_datas(data_inicial,data_final).ordenado_por(ordem)
+        when status=="devolvidos à clínica"
+          @cheques = Cheque.devolvidos_a_clinica_entre_datas(data_inicial,data_final).
+            da_clinica(session[:clinica_id]).ordenado_por(ordem)
+        when status=="recebidos pela clínica"
+          @cheques = Cheque.recebidos_pela_clinica_entre_datas(data_inicial,data_final).
+            da_clinica(session[:clinica_id]).ordenado_por(ordem)
+        when status=="arquivo morto"
+          @cheques = Cheque.arquivo_morto_entre_datas(data_inicial,data_final).
+            da_clinica(session[:clinica_id]).ordenado_por(ordem)
+      end
+    end
   end
  
   private
