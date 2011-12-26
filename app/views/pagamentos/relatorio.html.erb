@@ -36,7 +36,7 @@
     </table>
     </td>
     <td>
-     Tipos de pagamento : <br/>
+     Tipos de pagamento : <%= text_field_tag :iniciais %> <%= button_to_function %><br/>
    <%= select_tag 'tipo_pagamento_id', options_for_select(@tipos_pagamento, params[:tipo_pagamento_id] ), :multiple=>true %>
 <a href="#" id="selecao" onclick="javascript:selecionar();">todos</a>   </td>
 <td>

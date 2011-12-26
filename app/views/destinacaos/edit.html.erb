@@ -1,7 +1,19 @@
-<h1>Editing destinacao</h1>
+<% content_for :main do%>
+
+<h3>Editando destinação</h3>
 
 <% form_for(@destinacao) do |f| %>
   <%= f.error_messages %>
+
+  <p>
+    <%= f.label :nome %><br />
+    <%= f.text_field :nome %>
+  </p>
+
+  <p>
+    <%= f.check_box :ativa %>
+    <%= f.label :ativo %>
+  </p>
 
   <p>
     <%= f.submit 'Alterar' %>
@@ -10,3 +22,5 @@
 
 <%= link_to 'Mostrar', @destinacao %> |
 <%= link_to 'Voltar', destinacaos_path %>
+
+<% end %>
