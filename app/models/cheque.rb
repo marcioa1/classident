@@ -456,48 +456,48 @@ class Cheque < ActiveRecord::Base
             das_clinicas(selecionadas).ordenado_por(ordem)
         when status== "retirados do cofre"
           @cheques = Cheque.retirados_do_cofre_entre_datas(data_inicial,data_final).
-            da_clinica(session[:clinica_id]).ordenado_por(ordem)
+            da_clinica(clinica_atual).ordenado_por(ordem)
 
       end
     else
       case
         when status == 'todos' 
-          @cheques = Cheque.da_clinica(session[:clinica_id]).
+          @cheques = Cheque.da_clinica(clinica_atual).
             entre_datas(data_inicial,data_final).nao_excluidos.ordenado_por(ordem)
         when status == 'disponíveis' 
-          @cheques = Cheque.da_clinica(session[:clinica_id]).entre_datas(data_inicial,data_final).
+          @cheques = Cheque.da_clinica(clinica_atual).entre_datas(data_inicial,data_final).
             disponiveis_na_clinica.nao_excluidos.ordenado_por(ordem)
         when status == 'devolvido 2 vezes' 
-          @cheques = Cheque.da_clinica(session[:clinica_id]).entre_datas(data_inicial,data_final).
+          @cheques = Cheque.da_clinica(clinica_atual).entre_datas(data_inicial,data_final).
             devolvido_duas_vezes.nao_excluidos.ordenado_por(ordem)
         when status == 'enviados à administração' 
-          @cheques = Cheque.da_clinica(session[:clinica_id]).enviados_a_administracao(data_inicial,data_final).
+          @cheques = Cheque.da_clinica(clinica_atual).enviados_a_administracao(data_inicial,data_final).
             nao_recebidos.nao_excluidos.ordenado_por(ordem)
         when status == 'recebidos pela administração' 
-          @cheques = Cheque.da_clinica(session[:clinica_id]).entre_datas(data_inicial,data_final).
+          @cheques = Cheque.da_clinica(clinica_atual).entre_datas(data_inicial,data_final).
             na_administracao.nao_excluidos.ordenado_por(ordem)
         when status == 'usados para pagamento' 
           @cheques = Cheque.entre_datas(data_inicial,data_final).
-            da_clinica(session[:clinica_id]).usados_para_pagamento.ordenado_por(ordem)
+            da_clinica(clinica_atual).usados_para_pagamento.ordenado_por(ordem)
         when status == 'devolvido' 
-          @cheques = Cheque.da_clinica(session[:clinica_id]).devolvidos(data_inicial,data_final).ordenado_por(ordem)
+          @cheques = Cheque.da_clinica(clinica_atual).devolvidos(data_inicial,data_final).ordenado_por(ordem)
         when status == 'destinação' 
-          @cheques = Cheque.da_clinica(session[:clinica_id]).entre_datas(data_inicial,data_final).com_destinacao.ordenado_por(ordem)
+          @cheques = Cheque.da_clinica(clinica_atual).entre_datas(data_inicial,data_final).com_destinacao.ordenado_por(ordem)
         when status == 'reapresentado' 
-          @cheques = Cheque.da_clinica(session[:clinica_id]).reapresentados(data_inicial,data_final).ordenado_por(ordem)
+          @cheques = Cheque.da_clinica(clinica_atual).reapresentados(data_inicial,data_final).ordenado_por(ordem)
         when status=="spc" 
-          @cheques = Cheque.da_clinica(session[:clinica_id]).spc(data_inicial,data_final).ordenado_por(ordem)
+          @cheques = Cheque.da_clinica(clinica_atual).spc(data_inicial,data_final).ordenado_por(ordem)
         when status=="recebidos pela clínica" 
-          @cheques = Cheque.da_clinica(session[:clinica_id]).recebidos_pela_clinica_entre_datas(data_inicial,data_final).ordenado_por(ordem)
+          @cheques = Cheque.da_clinica(clinica_atual).recebidos_pela_clinica_entre_datas(data_inicial,data_final).ordenado_por(ordem)
         when status=="devolvidos à clínica"
           @cheques = Cheque.devolvidos_a_clinica_entre_datas(data_inicial,data_final).
-            da_clinica(session[:clinica_id]).ordenado_por(ordem)
+            da_clinica(clinica_atual).ordenado_por(ordem)
         when status=="recebidos pela clínica"
           @cheques = Cheque.recebidos_pela_clinica_entre_datas(data_inicial,data_final).
-            da_clinica(session[:clinica_id]).ordenado_por(ordem)
+            da_clinica(clinica_atual).ordenado_por(ordem)
         when status=="arquivo morto"
           @cheques = Cheque.arquivo_morto_entre_datas(data_inicial,data_final).
-            da_clinica(session[:clinica_id]).ordenado_por(ordem)
+            da_clinica(clinica_atual).ordenado_por(ordem)
       end
     end
   end
