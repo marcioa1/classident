@@ -36,7 +36,7 @@
     </table>
     </td>
     <td>
-     Tipos de pagamento : <%= text_field_tag :iniciais %> <%= button_to_function %><br/>
+     Tipos de pagamento : <%= text_field_tag :iniciais %> <%= button_to_function "ok", "varre()"%><br/>
    <%= select_tag 'tipo_pagamento_id', options_for_select(@tipos_pagamento, params[:tipo_pagamento_id] ), :multiple=>true %>
 <a href="#" id="selecao" onclick="javascript:selecionar();">todos</a>   </td>
 <td>
@@ -157,4 +157,16 @@
   |
   <%= link_to "impressão detalhada", impressao_detalhada_pagamentos_path(:pagamentos => @pagamentos.map(&:id).join(','),:data_inicial => @data_inicial, :data_final => @data_final) %>
 
+<script type = "text/javascript">
+  function varre(){
+    termo = $("#iniciais").val();
+    console.log(termo);
+    $("#tipo_pagamento_id option").each(function(index){
+    
+      if ($(this).html().indexOf(termo) == 0){
+        $(this).attr('selected', 'selected');
+      }
+    });
+  }
+</script>
 <% end %>
