@@ -61,7 +61,7 @@ class Cheque < ActiveRecord::Base
       {:conditions=>["data_reapresentacao between ? and ?", data_inicial, data_final]}}
   named_scope :recebidos_na_administracao, lambda{|data_inicial, data_final| 
           {:conditions=>["data_recebimento_na_administracao between ? and ?", data_inicial, data_final]}}
-  named_scope :retirados_do_cofre_entre_datas lambda{|data_inicial, data_final| 
+  named_scope :retirados_do_cofre_entre_datas, lambda{|data_inicial, data_final| 
           {:conditions=>["data_retorno_do_cofre between ? and ?", data_inicial, data_final]}}
   named_scope :recebidos_pela_clinica_entre_datas, lambda {|data_inicial, data_final|
                 {:conditions=>["data_recebido_da_administracao between ? and ? ", data_inicial, data_final]}}

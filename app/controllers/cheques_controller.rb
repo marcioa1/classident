@@ -86,6 +86,7 @@ class ChequesController < ApplicationController
       end
     end
     @cheques = Cheque.pesquisa(params[:status], @data_inicial, @data_final, selecionadas, session[:clinica_id], params[:ordem])
+    @cheques = [] if @cheques.nil?
     @titulo  = "Lista de cheques entre #{@data_inicial.to_s_br}e #{@data_final.to_s_br} , #{params[:status]}"
   end
   

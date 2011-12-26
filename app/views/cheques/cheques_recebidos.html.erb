@@ -2,7 +2,9 @@
   <%= render :partial => '/layouts/include_senha' %>
 
   <h3>Cheques recebidos</h3>
-  <%= @cheques.size %> Cheques recebidos
+  <% if @cheques %>
+    <%= @cheques.size %> Cheques recebidos
+  <% end %>
 <% form_tag cheques_recebidos_cheques_path do %>
   <% if @clinica_atual.administracao? %>
     <p><%= render :partial =>'clinicas/opcoes', :locals => {:clinicas => @clinicas} %></p>
@@ -48,7 +50,7 @@
     <th>&nbsp;</th>
   </tr>
   <% total = 0 %>
-  <% for cheque in @cheques do %>
+  <% @cheques.each do |cheque| %>
     <tr class=<%=cheque.status_class%> id="tr_<%=cheque.id%>">
     <% if @clinica_atual.administracao? %>
       <% dados += "#{cheque.clinica.sigla};#{cheque.bom_para.to_s_br};#{cheque.nome_dos_pacientes};#{cheque.banco && cheque.banco.numero};#{cheque.numero}; #{cheque.valor.real};#{cheque.status}>" %>
