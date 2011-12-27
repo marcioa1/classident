@@ -184,7 +184,11 @@ class Cheque < ActiveRecord::Base
       when self.status=~/usado pgto/ then 
         self.pagamento.tipo_pagamento.nome
       when self.status=~/destinação/ then
-         self.destinacao.nome
+        if self.destinacao.present?
+          self.destinacao.nome
+        else
+          'destinação excluida'
+        end
       else self.status_resumido
     end
   end
