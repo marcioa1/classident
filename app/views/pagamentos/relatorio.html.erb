@@ -156,6 +156,8 @@
   <%= link_de_impressao(dados, session[:clinica_id], 'portrait') %>
   |
   <%= link_to "impressão detalhada", impressao_detalhada_pagamentos_path(:pagamentos => @pagamentos.map(&:id).join(','),:data_inicial => @data_inicial, :data_final => @data_final) %>
+  |
+  <%= link_to "impressão agrupada",impressao_agrupada_pagamentos_path(:pagamentos => @pagamentos.all(:order=>:tipo_pagamento_id).map(&:id).join(','),:data_inicial => @data_inicial, :data_final => @data_final) %>
 
 <script type = "text/javascript">
   function varre(){
