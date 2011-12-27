@@ -43,6 +43,6 @@
       %tr
         %td= pag.data_de_pagamento.to_s_br
         %td{:align => 'right'}= pag.valor_pago.real
-        %td= User.find(pag.usuario_exclusao).nome
+        %td= User.find(pag.usuario_exclusao).nome rescue ''
         %td= pag.data_de_exclusao.to_s_br
         %td= pag.observacao_exclusao
