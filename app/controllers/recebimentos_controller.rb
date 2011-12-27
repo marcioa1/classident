@@ -56,6 +56,7 @@ class RecebimentosController < ApplicationController
       else
         @cheque                 = monta_cheque
         @recebimento.cheque     = @cheque
+        @recebimento.errors.add(:valor, ' Este cheque está sem clínica associada.') if @cheque.clinica_id == 0
         @recebimento.errors.add(:banco, 'não pode ser branco') if !@cheque.banco.present?
         @recebimento.errors.add(:numero, 'do cheque não pode ser branco') if !@cheque.numero.present?
         @recebimento.errors.add(:valor, ' do cheque não pode ser branco') if !@cheque.valor.present?
@@ -161,6 +162,7 @@ class RecebimentosController < ApplicationController
       @cheque.numero          = params[:numero]
       @cheque.conta_corrente  = params[:conta_corrente]
       @cheque.valor           = params[:valor_cheque].gsub('.','').gsub(',','.')
+      @cheque.errors.add(:valor, ' Este cheque está sem clínica associada.') if @cheque.clinica_id == 0
       @cheque.errors.add(:banco, 'não pode ser branco') if !@recebimento.cheque.banco.present?
       @cheque.errors.add(:numero, 'do cheque não pode ser branco') if !@recebimento.cheque.numero.present?
       @cheque.errors.add(:valor, ' do cheque não pode ser branco') if !@recebimento.cheque.valor.present?
@@ -174,6 +176,7 @@ class RecebimentosController < ApplicationController
       @cheque.numero          = params[:numero]
       @cheque.conta_corrente  = params[:conta_corrente]
       @cheque.valor           = params[:valor_cheque].gsub('.','').gsub(',','.')
+      @cheque.errors.add(:valor, ' Este cheque está sem clínica associada.') if @cheque.clinica_id == 0
       @cheque.errors.add(:banco, 'não pode ser branco') if !@cheque.banco.present?
       @cheque.errors.add(:numero, 'do cheque não pode ser branco') if !@cheque.numero.present?
       @cheque.errors.add(:valor, ' do cheque não pode ser branco') if !@cheque.valor.present?
@@ -184,7 +187,6 @@ class RecebimentosController < ApplicationController
     end
     if @recebimento.update_attributes(params[:recebimento]) 
       @recebimento.verifica_fluxo_de_caixa
-      
       if @recebimento.em_cheque? && @recebimento.cheque
         @cheque.save
       end
