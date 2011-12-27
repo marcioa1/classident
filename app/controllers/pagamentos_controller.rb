@@ -125,24 +125,29 @@ class PagamentosController < ApplicationController
 
   def exclui 
     @pagamento                     = Pagamento.find(params[:id])
-    @pagamento.observacao_exclusao = params[:observacao_exclusao]
-    @pagamento.data_de_exclusao    = Time.current
-    @pagamento.usuario_exclusao    = current_user.id
-    @pagamento.verifica_fluxo_de_caixa
-    Pagamento.transaction do
-      cheques = @pagamento.cheques
-      cheques.each() do |cheque|
-        cheque.pagamento_id = nil
-        cheque.save
+    if params[:observacao_exclusao].blank?
+      @pagamento.errors.add(:observacao_exclusao, "Não pode estar vazio")
+      render :action => "exclusao"
+    else
+      @pagamento.observacao_exclusao = params[:observacao_exclusao]
+      @pagamento.data_de_exclusao    = Time.current
+      @pagamento.usuario_exclusao    = current_user.id
+      @pagamento.verifica_fluxo_de_caixa
+      Pagamento.transaction do
+        cheques = @pagamento.cheques
+        cheques.each() do |cheque|
+          cheque.pagamento_id = nil
+          cheque.save
+        end
+        @pagamento.trabalho_proteticos.each do |trab|
+          trab.pagamento_id = -1
+          trab.save
+        end
+        @pagamento.save
       end
-      @pagamento.trabalho_proteticos.each do |trab|
-        trab.pagamento_id = -1
-        trab.save
-      end
-      @pagamento.save
+      Alteracoe.retira_permissao_de_alteracao('pagamentos', @pagamento.id, current_user.id) if !@pagamento.na_quinzena?
+      redirect_to(session[:origem] || relatorio_pagamentos_path) 
     end
-    Alteracoe.retira_permissao_de_alteracao('pagamentos', @pagamento.id, current_user.id) if !@pagamento.na_quinzena?
-    redirect_to(session[:origem] || relatorio_pagamentos_path) 
   end
   
   def relatorio

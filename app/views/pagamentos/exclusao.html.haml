@@ -2,6 +2,8 @@
   %fieldset
     %legend Exclusão de pagamento
 
+    - if @pagamento.errors
+      = @pagamento.errors.full_messages
     %p
       Valor : 
       = @pagamento.valor_pago.real

@@ -39,6 +39,7 @@
       %th Usuário
       %th Data de exclusão
       %th Observação
+      %th Tipo de Pagamento
     -@pagamentos_excluidos.each do |pag|
       %tr
         %td= pag.data_de_pagamento.to_s_br
@@ -46,3 +47,4 @@
         %td= User.find(pag.usuario_exclusao).nome rescue pag.usuario_exclusao
         %td= pag.data_de_exclusao.to_s_br
         %td= pag.observacao_exclusao
+        %td= pag.tipo_pagamento.nome
