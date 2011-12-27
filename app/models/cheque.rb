@@ -423,43 +423,46 @@ class Cheque < ActiveRecord::Base
             nao_recebidos.nao_excluidos.das_clinicas(selecionadas).ordenado_por(ordem)
         when status == 'recebidos pela administração'
           @cheques = Cheque.entre_datas(data_inicial,data_final).
-            na_administracao.nao_excluidos.das_clinicas(selecionadas).ordenado_por(ordem)
+            na_administracao.nao_excluidos.das_clinicas(selecionadas).
+            ordenado_por(ordem)
         when status == 'usados para pagamento'
           @cheques = Cheque.entre_datas(data_inicial,data_final).
-            na_administracao.usados_para_pagamento.das_clinicas(selecionadas).ordenado_por(ordem)
+            na_administracao.usados_para_pagamento.das_clinicas(selecionadas).
+            ordenado_por(ordem).nao_excluidos
         when status == 'devolvido' 
           @cheques = Cheque.na_administracao.devolvidos(data_inicial,data_final).
-            das_clinicas(selecionadas).ordenado_por(ordem)
+            das_clinicas(selecionadas).ordenado_por(ordem).nao_excluidos
         when status == 'destinação'
           @cheques = Cheque.na_administracao.entre_datas(data_inicial,data_final).com_destinacao.
-            das_clinicas(selecionadas).ordenado_por(ordem)
+            das_clinicas(selecionadas).ordenado_por(ordem).nao_excluidos
         when status == 'reapresentado'
           @cheques = Cheque.na_administracao.reapresentados(data_inicial,data_final).
-            das_clinicas(selecionadas).ordenado_por(ordem)
+            das_clinicas(selecionadas).ordenado_por(ordem).nao_excluidos
         when status=="spc"
           @cheques = Cheque.na_administracao.spc(data_inicial,data_final).
-            das_clinicas(selecionadas).ordenado_por(ordem)
+            das_clinicas(selecionadas).ordenado_por(ordem).nao_excluidos
         when status=="solucionado" 
           @cheques = Cheque.na_administracao.solucionado_entre_datas(data_inicial,data_final).
-            das_clinicas(selecionadas).ordenado_por(ordem)
+            das_clinicas(selecionadas).ordenado_por(ordem).nao_excluidos
         when status=="devolvidos à clínica"
           @cheques = Cheque.devolvidos_a_clinica_entre_datas(data_inicial,data_final).
-            das_clinicas(selecionadas).ordenado_por(ordem)
+            das_clinicas(selecionadas).ordenado_por(ordem).nao_excluidos
         when status=="recebidos pela clínica"
           @cheques = Cheque.recebidos_pela_clinica_entre_datas(data_inicial,data_final).
-            das_clinicas(selecionadas).ordenado_por(ordem)
+            das_clinicas(selecionadas).ordenado_por(ordem).nao_excluidos
         when status=="arquivo morto"
           @cheques = Cheque.arquivo_morto_entre_datas(data_inicial,data_final).
-            das_clinicas(selecionadas).ordenado_por(ordem)
+            das_clinicas(selecionadas).ordenado_por(ordem).nao_excluidos
         when status== "colocados no cofre"
           @cheques = Cheque.no_cofre(data_inicial,data_final).
-            das_clinicas(selecionadas).ordenado_por(ordem)
+            das_clinicas(selecionadas).ordenado_por(ordem).nao_excluidos
         when status== "retirados do cofre"
           @cheques = Cheque.retirados_do_cofre_entre_datas(data_inicial,data_final).
-            da_clinica(clinica_atual).ordenado_por(ordem)
+            da_clinica(clinica_atual).ordenado_por(ordem).nao_excluidos
 
       end
     else
+      #Clínicas
       case
         when status == 'todos' 
           @cheques = Cheque.da_clinica(clinica_atual).
@@ -478,26 +481,31 @@ class Cheque < ActiveRecord::Base
             na_administracao.nao_excluidos.ordenado_por(ordem)
         when status == 'usados para pagamento' 
           @cheques = Cheque.entre_datas(data_inicial,data_final).
-            da_clinica(clinica_atual).usados_para_pagamento.ordenado_por(ordem)
+            da_clinica(clinica_atual).usados_para_pagamento.ordenado_por(ordem).nao_excluidos
         when status == 'devolvido' 
-          @cheques = Cheque.da_clinica(clinica_atual).devolvidos(data_inicial,data_final).ordenado_por(ordem)
+          @cheques = Cheque.da_clinica(clinica_atual).devolvidos(data_inicial,data_final).
+          ordenado_por(ordem).nao_excluidos
         when status == 'destinação' 
-          @cheques = Cheque.da_clinica(clinica_atual).entre_datas(data_inicial,data_final).com_destinacao.ordenado_por(ordem)
+          @cheques = Cheque.da_clinica(clinica_atual).entre_datas(data_inicial,data_final).
+          com_destinacao.ordenado_por(ordem).nao_excluidos
         when status == 'reapresentado' 
-          @cheques = Cheque.da_clinica(clinica_atual).reapresentados(data_inicial,data_final).ordenado_por(ordem)
+          @cheques = Cheque.da_clinica(clinica_atual).reapresentados(data_inicial,data_final).
+          ordenado_por(ordem).nao_excluidos
         when status=="spc" 
-          @cheques = Cheque.da_clinica(clinica_atual).spc(data_inicial,data_final).ordenado_por(ordem)
+          @cheques = Cheque.da_clinica(clinica_atual).spc(data_inicial,data_final).
+          ordenado_por(ordem).nao_excluidos
         when status=="recebidos pela clínica" 
-          @cheques = Cheque.da_clinica(clinica_atual).recebidos_pela_clinica_entre_datas(data_inicial,data_final).ordenado_por(ordem)
+          @cheques = Cheque.da_clinica(clinica_atual).recebidos_pela_clinica_entre_datas(data_inicial,data_final).
+          ordenado_por(ordem).nao_excluidos
         when status=="devolvidos à clínica"
           @cheques = Cheque.devolvidos_a_clinica_entre_datas(data_inicial,data_final).
-            da_clinica(clinica_atual).ordenado_por(ordem)
+            da_clinica(clinica_atual).ordenado_por(ordem).nao_excluidos
         when status=="recebidos pela clínica"
           @cheques = Cheque.recebidos_pela_clinica_entre_datas(data_inicial,data_final).
-            da_clinica(clinica_atual).ordenado_por(ordem)
+            da_clinica(clinica_atual).ordenado_por(ordem).nao_excluidos
         when status=="arquivo morto"
           @cheques = Cheque.arquivo_morto_entre_datas(data_inicial,data_final).
-            da_clinica(clinica_atual).ordenado_por(ordem)
+            da_clinica(clinica_atual).ordenado_por(ordem).nao_excluidos
       end
     end
   end
