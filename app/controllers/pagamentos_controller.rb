@@ -6,9 +6,9 @@ class PagamentosController < ApplicationController
   before_filter :salva_action_na_session
   before_filter :verifica_se_tem_senha
 
-  def index
-    @pagamentos = Pagamento.all
-  end
+  # def index
+  #   @pagamentos = Pagamento.all
+  # end
 
   def show
     @pagamento = Pagamento.find(params[:id])

@@ -10,9 +10,9 @@ class RecebimentosController < ApplicationController
   before_filter :verifica_se_tem_senha
   
   
-  def index
-    @recebimentos = Recebimento.all(:limit=> 50,:order => 'created_at desc')
-  end
+  # def index
+  #   @recebimentos = Recebimento.all(:limit=> 50,:order => 'created_at desc')
+  # end
 
   def show
   end
