@@ -148,31 +148,31 @@ class ChequesController < ApplicationController
     @bancos = Banco.por_nome.collect{|obj| [obj.numero.to_s + '-'+ obj.nome, obj.id.to_s]}
     @cheques = []
     # params[:ano] = Date.today.year if !params[:ano]
-    if params[:agencia].present? || params[:numero].present? || params[:valor].present? then
-      
+    if params[:agencia].present? || params[:numero].present? || params[:valor].present? 
+      if params[:agencia] && !params[:agencia].blank?
+        @cheques = Cheque.da_agencia(params[:agencia])
+      end
+      if params[:numero] && !params[:numero].blank?
+        @cheques = @cheques.com_numero(params[:numero])
+      end
+
       if @clinica_atual.administracao?
         if params[:banco] && !params[:banco].blank?
-          @cheques = Cheque.na_administracao.do_banco(params[:banco])#.entre_datas(data_inicial, data_final)
+          @cheques = @cheques.na_administracao.do_banco(params[:banco])#.entre_datas(data_inicial, data_final)
         else
-          @cheques = Cheque.na_administracao#.entre_datas(data_inicial, data_final)
+          @cheques = @cheques.na_administracao#.entre_datas(data_inicial, data_final)
         end
       else 
         if params[:banco] && !params[:banco].blank?
-          @cheques = Cheque.da_clinica(session[:clinica_id]).do_banco(params[:banco])#.entre_datas(data_inicial, data_final)
+          @cheques = @cheques.da_clinica(session[:clinica_id]).do_banco(params[:banco])#.entre_datas(data_inicial, data_final)
         else
-          @cheques = Cheque.da_clinica(session[:clinica_id])#.entre_datas(data_inicial, data_final)
+          @cheques = @cheques.da_clinica(session[:clinica_id])#.entre_datas(data_inicial, data_final)
         end
       end
       if params[:ano].present?
         data_inicial = params[:ano].to_s + '-01-01'
         data_final   = params[:ano].to_s + '-12-31'
         @cheques = @cheques.entre_datas(data_inicial, data_final)
-      end
-      if params[:agencia] && !params[:agencia].blank?
-        @cheques = @cheques.da_agencia(params[:agencia])
-      end
-      if params[:numero] && !params[:numero].blank?
-        @cheques = @cheques.com_numero(params[:numero])
       end
       @cheques = @cheques.do_valor(params[:valor].gsub(",",".")) if !params[:valor].blank?
     end

@@ -33,7 +33,6 @@ class OrcamentosController < ApplicationController
 
   def create
     @orcamento                             = Orcamento.new(params[:orcamento])
-    debugger
     # @orcamento.vencimento_primeira_parcela = params[:orcamento][:vencimento_primeira_parcela].to_date if Date.valid?(params[:orcamento][:vencimento_primeira_parcela])
     # @orcamento.data_de_inicio              = params[:orcamento][:data_de_inicio].to_date if Date.valid?(params[:orcamento][:data_de_inicio])
     @orcamento.clinica_id                  = session[:clinica_id]

@@ -410,7 +410,7 @@ class Cheque < ActiveRecord::Base
   end
   
   
-  def self.pesquisa(status,data_inicial,data_final,selecionadas,clinica_atual, ordem)
+  def self.pesquisa(status,data_inicial,data_final,selecionadas ,clinica_atual, ordem)
     if clinica_atual == Clinica::ADMINISTRACAO_ID
       case
         when status == 'todos' 

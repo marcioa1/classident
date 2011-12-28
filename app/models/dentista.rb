@@ -29,7 +29,6 @@ class Dentista < ActiveRecord::Base
     if self.ortodontista?
       producao_de_ortodontista = self.busca_producao_de_ortodontia(inicio,fim)
       producao_de_ortodontista.each do |prod|
-        debugger
         valor += prod.valor.to_f
         do_dentista += prod.valor.to_f * prod.percentual_dentista / 100
       end
