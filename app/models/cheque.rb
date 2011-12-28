@@ -48,7 +48,7 @@ class Cheque < ActiveRecord::Base
   named_scope :entre_datas, lambda{|data_inicial, data_final| 
       {:conditions=>["bom_para between ? and ?", data_inicial, data_final]}}
   named_scope :entregues_a_administracao, :conditions=>["data_entrega_administracao IS NOT NULL"]
-  named_scope :enviados_a_administracao, lambda{|inicio,fim| {:conditions=>["data_entrega_administracao IS NOT NULL and bom_para between ? and ? ", inicio, fim]}}
+  named_scope :enviados_a_administracao, lambda{|inicio,fim| {:conditions=>["data_entrega_administracao IS NOT NULL and data_entrega_administracao between ? and ? ", inicio, fim]}}
   named_scope :na_administracao, :conditions=>["data_recebimento_na_administracao IS NOT NULL"]
   named_scope :nao_excluidos, :conditions=>["data_de_exclusao IS NULL"]
   named_scope :nao_reapresentados, :conditions=>["data_reapresentacao IS NULL"]
