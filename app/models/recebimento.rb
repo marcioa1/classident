@@ -127,7 +127,7 @@ class Recebimento < ActiveRecord::Base
   end
   
   def liberado_para_alteracao?
-    reg = Alteracoe.find_by_tabela_and_id_liberado(self.class.table_name, self.id)
+    reg = Alteracoe.all(:conditions=>["tabela='#{self.class.table_name}' and id_liberado = #{self.id}"]).last
     reg && reg.data_correcao.nil?
   end
   
