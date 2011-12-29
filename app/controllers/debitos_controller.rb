@@ -82,6 +82,21 @@ class DebitosController < ApplicationController
     redirect_to :back
   end
   
+  def gerar_avulso
+    tratamento = Tratamento.find(params[:tratamento_id])
+    debito     = Debito.new
+    debito.data = tratamento.data
+    debito.valor = tratamento.valor_com_desconto
+    debito.tratamento_id = tratamento.id
+    debito.paciente_id = tratamento.paciente_id
+    debito.descricao = tratamento.descricao
+    if debito.save(:validate => false)
+      head :ok
+    else
+      head :bad_request
+    end
+  end
+  
   private
   
   def busca_corrente

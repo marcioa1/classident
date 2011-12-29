@@ -6,17 +6,19 @@
       %th ID trat
       %th Data
       %th Paciente
+      %th Descrição
       %th Valor
       %th Clínica
       %th
     - @tratamentos.each do |trat|
-      %tr
+      %tr{:id=>"tratamento_#{trat.id}"}
         %td= trat.id
         %td= trat.data.to_s_br
         %td= link_to trat.paciente.nome, abre_paciente_path(trat.paciente), :target => :blank
+        %td= trat.descricao
         %td{:align=>'right'}= trat.valor.real
         %td= trat.clinica.nome
-        %td= link_to "gerar débito", "#"
+        %td= link_to_function "gerar débito", "gerar_debito(#{trat.id})"
 
   %p
   Recebimentos com valores negativos
@@ -55,3 +57,14 @@
         %td= pag.valor_pago.real
         %td= pag.clinica.nome
         %td
+  :javascript
+    function gerar_debito(trat_id){
+      $.ajax({
+        url : "/debitos/gerar_avulso",
+        data: { tratamento_id :trat_id},
+        success : function(){
+          $("#tratamento_"+trat_id).remove();
+          alert("alterou com sucesso")
+        }
+      });
+    }

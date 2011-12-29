@@ -21,7 +21,8 @@ ActionController::Routing::Routes.draw do |map|
        :pacientes_com_credito => :get }
   map.resources :conta_bancarias
   map.resources :conversao, :collection=>{:cheque_adm => :get, :teste=>:get}
-  map.resources :debitos, :collection=>{:pacientes_em_debito=>:get, :pacientes_fora_da_lista=>:get},
+  map.resources :debitos, :collection=>{:pacientes_em_debito=>:get, :pacientes_fora_da_lista=>:get,
+                            :gerar_avulso => :get},
                           :member => {:cancela => :get}
   map.resources :dentistas, 
                   :member=>{:abre=>:get, :producao=>:get, :pagamento=>:get,
