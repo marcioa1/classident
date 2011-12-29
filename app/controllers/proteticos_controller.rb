@@ -137,7 +137,7 @@ class ProteticosController < ApplicationController
   end
   
   def pagamentos_feitos
-    @pagamentos = Pagamento.aos_proteticos.entre_datas(@data_inicial, @data_final).nao_excluido
+    @pagamentos = Pagamento.aos_proteticos.entre_datas(@data_inicial, @data_final).nao_excluidos
   end
   
   def busca_trabalhos_devolvidos
