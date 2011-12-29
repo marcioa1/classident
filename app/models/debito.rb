@@ -71,7 +71,8 @@ class Debito < ActiveRecord::Base
   end
   
   def liberado_para_alteracao?
-    reg = Alteracoe.find_by_tabela_and_id_liberado("tratamentos", self.tratamento_id)
+    return true if self.new_record?
+    reg = Alteracoe.all(:conditions=>["tabela='#{self.class.table_name}' and id_liberado = #{self.id}"]).last
     reg && reg.data_correcao.nil?
   end
 
