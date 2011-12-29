@@ -248,6 +248,10 @@ class DentistasController < ApplicationController
           items = @dentista.busca_producao(@data_inicial, @data_final, params[:clinicas])
         end
         items.each do |item|
+          if y < 20
+            pdf.start_new_page
+            y = 450
+          end
           pdf.draw_text item.data.to_s_br, :at=>[2,y]
           pdf.draw_text item.paciente.nome.gsub(/[^a-z0-9.:,$ ]/i,'.'), :at => [60,y] 
           pdf.draw_text item.descricao && item.descricao.gsub(/[^a-z0-9.:,$ ]/i,'.') , :at => [260, y]
