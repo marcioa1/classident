@@ -147,36 +147,41 @@ class ChequesController < ApplicationController
   def pesquisa
     @bancos = Banco.por_nome.collect{|obj| [obj.numero.to_s + '-'+ obj.nome, obj.id.to_s]}
     @cheques = []
+    scope_valor   = ""
+    scope_banco   = ""
+    scope_agencia = ""
+    scope_numero  = ""
+    scope_data    = ""
+    scope_clinica = ""
     # params[:ano] = Date.today.year if !params[:ano]
-    if params[:agencia].present? || params[:numero].present? || params[:valor].present? 
-
-      if @clinica_atual.administracao?
-        if params[:banco] && !params[:banco].blank?
-          @cheques = Cheques.do_banco(params[:banco])#.entre_datas(data_inicial, data_final)
-        else
-          @cheques = Cheques#.entre_datas(data_inicial, data_final)
-        end
-      else 
-        if params[:banco] && !params[:banco].blank?
-          @cheques = @cheques.da_clinica(session[:clinica_id]).do_banco(params[:banco])#.entre_datas(data_inicial, data_final)
-        else
-          @cheques = @cheques.da_clinica(session[:clinica_id])#.entre_datas(data_inicial, data_final)
-        end
+      if !params[:valor].blank?
+        scope_valor = ".do_valor(#{params[:valor].gsub(",",".")})"
       end
       if params[:agencia] && !params[:agencia].blank?
-        @cheques = @cheques.da_agencia(params[:agencia])
+        scope_agencia = ".da_agencia(#{params[:agencia]})"
       end
       if params[:numero] && !params[:numero].blank?
-        @cheques = @cheques.com_numero(params[:numero])
+        scope_numero = ".com_numero(#{params[:numero]})"
       end
-
+      if params[:banco] && !params[:banco].blank?
+        scope_banco = ".do_banco(#{params[:banco]})"
+      end
       if params[:ano].present?
         data_inicial = params[:ano].to_s + '-01-01'
         data_final   = params[:ano].to_s + '-12-31'
-        @cheques = @cheques.entre_datas(data_inicial, data_final)
+        scope_data   = ".entre_datas('#{data_inicial}', '#{data_final}')"
       end
-      @cheques = @cheques.do_valor(params[:valor].gsub(",",".")) if !params[:valor].blank?
-    end
+      if session[:clinica_id] != Clinica::ADMINISTRACAO_ID
+        scope_clinica = ".da_clinica(#{session[:clinica_id]})"
+      end
+      scope_geral = scope_agencia + scope_numero + scope_banco + 
+                    scope_data + scope_clinica + scope_valor
+      # raise scope_geral
+      if scope_geral.blank?
+        @cheques = []
+      else
+        @cheques = eval("Cheque"+scope_geral)
+      end
   end
   
   def confirma_recebimento_na_administracao
