@@ -140,7 +140,7 @@ class PagamentosController < ApplicationController
           cheque.save!
         end
         @pagamento.trabalho_proteticos.each do |trab|
-          trab.pagamento_id = -1
+          trab.pagamento_id = nil
           trab.save!
         end
         @pagamento.save!
