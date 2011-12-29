@@ -175,12 +175,12 @@ class ChequesController < ApplicationController
         scope_clinica = ".da_clinica(#{session[:clinica_id]})"
       end
       scope_geral = scope_agencia + scope_numero + scope_banco + 
-                    scope_data + scope_clinica + scope_valor
+                    scope_data  + scope_valor
       # raise scope_geral
       if scope_geral.blank?
         @cheques = []
       else
-        @cheques = eval("Cheque"+scope_geral)
+        @cheques = eval("Cheque"+scope_geral+scope_clinica)
       end
   end
   
