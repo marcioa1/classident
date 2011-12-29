@@ -86,3 +86,8 @@ function cancelar_liberacao(id){
      }
    });
 }
+
+function todos_os_trabalhos(){
+    $("table input").attr("checked", true);
+    $("#valor").html($.trim($("#total").html()));
+}

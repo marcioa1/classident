@@ -33,7 +33,7 @@
       Dentista
     %th
       Selecionar p/ pagto <br/>
-      = check_box_tag :todos, '1', false,  options={:onclick => 'todos();'}
+      = check_box_tag :todos, '1', false,  options={:onclick => 'todos_os_trabalhos();'}
       todos
   - total = 0.0
   - @trabalhos_devolvidos.each do |trab|
@@ -57,8 +57,3 @@
     %td{:colspan=>3} &nbsp;
   - dados += "; ; ; ; Total;#{total.real}; ; ;>"
 = link_de_impressao(dados,session[:clinica_id],'landscape')
-:javascript
-  function todos(){
-    $("table input").attr("checked", true);
-    $("#valor").html($.trim($("#total").html());
-  }
