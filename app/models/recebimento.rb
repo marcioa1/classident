@@ -190,6 +190,6 @@ class Recebimento < ActiveRecord::Base
     0
   end
   def valor_dentista
-    self.valor * self.percentual_dentista
+    self.valor * self.percentual_dentista / 100
   end
 end

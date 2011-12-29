@@ -137,13 +137,13 @@ class PagamentosController < ApplicationController
         cheques = @pagamento.cheques
         cheques.each() do |cheque|
           cheque.pagamento_id = nil
-          cheque.save
+          cheque.save!
         end
         @pagamento.trabalho_proteticos.each do |trab|
           trab.pagamento_id = -1
-          trab.save
+          trab.save!
         end
-        @pagamento.save
+        @pagamento.save!
       end
       Alteracoe.retira_permissao_de_alteracao('pagamentos', @pagamento.id, current_user.id) if !@pagamento.na_quinzena?
       redirect_to(session[:origem] || relatorio_pagamentos_path) 

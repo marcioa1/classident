@@ -87,7 +87,7 @@ class ProteticosController < ApplicationController
   end
   
   def pagamentos
-    @pagamentos = Pagamento.ao_protetico(@protetico.id).entre_datas(params[:data_inicial].to_date, params[:data_final].to_date)
+    @pagamentos = Pagamento.ao_protetico(@protetico.id).entre_datas(params[:data_inicial].to_date, params[:data_final].to_date).nao_excluidos
     render :partial => 'tabela_de_pagamentos', :locals=>{:pagamentos => @pagamentos}
   end
   

@@ -152,9 +152,9 @@ class ChequesController < ApplicationController
 
       if @clinica_atual.administracao?
         if params[:banco] && !params[:banco].blank?
-          @cheques = Cheques.na_administracao.do_banco(params[:banco])#.entre_datas(data_inicial, data_final)
+          @cheques = Cheques.do_banco(params[:banco])#.entre_datas(data_inicial, data_final)
         else
-          @cheques = Cheques.na_administracao#.entre_datas(data_inicial, data_final)
+          @cheques = Cheques#.entre_datas(data_inicial, data_final)
         end
       else 
         if params[:banco] && !params[:banco].blank?
