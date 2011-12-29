@@ -442,7 +442,7 @@ function calcula_valor_da_parcela(){
   $.ajax({
     url  : '/orcamentos/monta_tabela_de_parcelas',
     type :'GET', 
-    data : { numero_de_parcelas:numero, valor_da_parcela:valor, data_primeira_parcela:$('#orcamento_vencimento_primeira_parcela').val()},
+    data : { numero_de_parcelas:numero, valor_da_parcela:valor, data_primeira_parcela:$('#orcamento_vencimento_primeira_parcela_pt').val()},
     success :function(data){
       $('#parcelas').replaceWith(data);
     }
