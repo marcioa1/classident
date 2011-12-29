@@ -269,7 +269,7 @@ class PagamentosController < ApplicationController
         pdf.font_size = 10
         pdf.draw_text @pagamento.data_de_pagamento.to_s_br , :at=>[10,y]
         pdf.draw_text @pagamento.tipo_pagamento.nome , :at=>[70,y]
-        pdf.draw_text @pagamento.observacao , :at=>[210,y]
+        pdf.draw_text @pagamento.observacao.gsub(/[^a-z0-9.:,$ ]/i,'.') , :at=>[210,y]
         pdf.bounding_box([500, y+7], :width => 50, :height => 12) do
           pdf.text @pagamento.valor_pago.real.to_s, :align => :right
         end
