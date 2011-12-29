@@ -158,7 +158,7 @@ class ChequesController < ApplicationController
         scope_valor = ".do_valor(#{params[:valor].gsub(",",".")})"
       end
       if params[:agencia] && !params[:agencia].blank?
-        scope_agencia = ".da_agencia(#{params[:agencia]})"
+        scope_agencia = ".da_agencia('#{params[:agencia]}')"
       end
       if params[:numero] && !params[:numero].blank?
         scope_numero = ".com_numero(#{params[:numero]})"
