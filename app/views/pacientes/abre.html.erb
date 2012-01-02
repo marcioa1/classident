@@ -1,24 +1,28 @@
 <% content_for :main do %>
-  <div id="tabs">
-    <ul>
-        <li><a href="#tratamento"><span>Tratamento</span></a></li>
-        <li><a href="#orcamento"><span>Orçamento</span></a></li>
-        <li><a href="#cadastro"><span>Cadastro</span></a></li>
-        <li><a href="#extrato"><span>Extrato</span></a></li>
-        <li><a href="#alta"><span>Alta</span></a></li>
-        <li><a href="#protetico"><span>Protético</span></a></li>
-    </ul>
-    <div id="tratamento"><%= render :partial=>"tratamento"  %></div>
-    <div id="orcamento"> <%= render :partial=>'orcamento' %>   </div>
-    <div id="cadastro">  <%= render :partial=>"edit"  %>      </div>
-    <div id="extrato">
-      <span id="table_extrato">
-        <%= render :partial=>"extrato" %>
-      </span>
+  <% if current_user.dentista? %>
+    <%= render :partial=>"tratamento"  %>
+  <% else %>
+    <div id="tabs">
+      <ul>
+          <li><a href="#tratamento"><span>Tratamento</span></a></li>
+          <li><a href="#orcamento"><span>Orçamento</span></a></li>
+          <li><a href="#cadastro"><span>Cadastro</span></a></li>
+          <li><a href="#extrato"><span>Extrato</span></a></li>
+          <li><a href="#alta"><span>Alta</span></a></li>
+          <li><a href="#protetico"><span>Protético</span></a></li>
+      </ul>
+      <div id="tratamento"><%= render :partial=>"tratamento"  %></div>
+      <div id="orcamento"> <%= render :partial=>'orcamento' %>   </div>
+      <div id="cadastro">  <%= render :partial=>"edit"  %>      </div>
+      <div id="extrato">
+        <span id="table_extrato">
+          <%= render :partial=>"extrato" %>
+        </span>
+      </div>
+      <div id="alta">      <%= render :partial=>"alta" %>       </div>
+      <div id="protetico"> <%= render :partial=>"protetico" %>  </div>
     </div>
-    <div id="alta">      <%= render :partial=>"alta" %>       </div>
-    <div id="protetico"> <%= render :partial=>"protetico" %>  </div>
-  </div>
+  <% end %>
   <script type="text/javascript">
     $(document).ready(function() {
       $("#tabs").tabs({

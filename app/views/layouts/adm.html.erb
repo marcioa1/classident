@@ -47,14 +47,13 @@
           | <%= link_to "logout", logout_path %>
         </div> <!-- login -->
         <div id="header-bottomm">
-
-          <div class="menu">
-            <% if @clinica_atual.administracao? %>
-              <%= render :partial=>"layouts/menu_adm" %>
-            <% else %>
-              <%= render :partial=>"layouts/menu_clinica" %>
-            <% end %>
-          </div>
+            <div class="menu">
+              <% if @clinica_atual.administracao? %>
+                <%= render :partial=>"layouts/menu_adm" %>
+              <% else %>
+                <%= render :partial=>"layouts/menu_clinica" %>
+              <% end %>
+            </div>
         </div> <!-- header-bottom -->
       </div> <!-- header -->
     <div id="main">

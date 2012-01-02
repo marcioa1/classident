@@ -28,6 +28,10 @@ class User < ActiveRecord::Base
   def secretaria?
     tipo_usuario.nivel==2
   end
+  
+  def dentista?
+    tipo_usuario.nivel==4
+  end
 
   def pode_incluir_user
     tipo_usuario.nivel < 2
@@ -42,7 +46,6 @@ class User < ActiveRecord::Base
   end
   
   def horario_de_trabalho?
-    # debugger
     wdia = Date.today.wday
     hora_corrente = Time.current.strftime('%H%M').to_i
     case wdia
@@ -65,7 +68,6 @@ class User < ActiveRecord::Base
   end
   
   def pode_alterar_na_clinica?
-   true
-    # self.tipo_usuario.nivel == 2
+    self.secretaria? || self.master?
   end
 end

@@ -1,50 +1,60 @@
-<ul>
-  <li><a href= "#">Cadastro</a>
-    <ul>
-      <li><%= link_to "Tabelas", tabelas_path %></li>
-      <li><%= link_to "Dentistas", dentistas_path %></li>
-      <li><%= link_to "Protéticos", proteticos_path %></li>
-      <li><%= link_to "Destinações", destinacaos_path %></li>
-    </ul>
-  </li>
-  <li><a href="#">Clínica</a>
-    <ul>
-      <li><%= link_to "Produção entre datas", producao_entre_datas_clinicas_path %> </li>
-      <li><%= link_to "Produção anual" , producao_anual_clinicas_path %></li>
-      <li><%= link_to "Orçamentos elaborados", relatorio_orcamentos_path %></li>
-      <li><%= link_to "Relatório de protético", relatorio_proteticos_path %></li>
-      <li><%= link_to "Relatório de alta", relatorio_alta_clinicas_path %></li>
-      <li><%= link_to "Retorno no mês", retorno_altas_path %></li>
-      <li><%= link_to "Abandono de tratamento", abandono_de_tratamento_clinicas_path %></li>
-      <li><%= link_to "Pacientes de ortodontia", pacientes_de_ortodontia_clinicas_path %></li>
-      <li><%= link_to "Mala direta", mala_direta_clinicas_path %></li>
-      <li><%= link_to "Arquivo morto", arquivo_morto_pacientes_path %></li>
-    </ul>
-  </li>
-  <li><a href="#">Paciente</a>
-    <ul>
-    <% if !session[:paciente_id].nil? %>
-      <li><%= link_to session[:paciente_nome] , abre_paciente_path(:id=>session[:paciente_id])%></li>
-    <% end %>
-      <li><%= link_to "Novo paciente", new_paciente_path if current_user.pode_alterar_na_clinica?%></li>
-      <li><%= link_to "Pesquisa paciente", pesquisa_pacientes_path %></li>
-    </ul>
-  </li>
-<li><a href="#">Financeiro</a>
-    <ul>
-      <li><%= link_to "Recebimentos", relatorio_recebimentos_path %></li>
-      <li><%= link_to "Entradas no mês", entradas_no_mes_recebimentos_path %></li>
-      <li><%= link_to "Fluxo de caixa", fluxo_de_caixa_path %></li>
-      <li><%= link_to "Pagamentos (novo e relatório)", relatorio_pagamentos_path %></li>
-      <li><%= link_to "Pagamentos de hoje", pagamentos_de_hoje_pagamentos_path %></li>
-      <li><%= link_to "Tipo de pagamento", tipo_pagamentos_path %></li>
-      <li><%= link_to "Lista de Cheques", cheques_recebidos_cheques_path %></li>
-      <li><%= link_to "Pesquisa cheque", pesquisa_cheques_path %></li>
-      <li><%= link_to "Entrada/Remessa de dinheiro", entradas_path %></li>
-      <li><%= link_to "Pacientes em débito", pacientes_em_debito_debitos_path %></li>
-      <li><%= link_to "Pacientes fora da lista de débito", pacientes_fora_da_lista_debitos_path %></li>
-      <li><%= link_to "Fechamento de mês", fechamento_mes_clinicas_path %></li>
+<% if current_user.dentista? %>
+  <ul>
+    <li><a href="#">Paciente</a>
+      <ul>
+        <li><%= link_to "Pesquisa paciente", pesquisa_pacientes_path %></li>
+      </ul>
+    </li>
+  </ul>
+<% else %>
+  <ul>
+    <li><a href= "#">Cadastro</a>
+      <ul>
+        <li><%= link_to "Tabelas", tabelas_path %></li>
+        <li><%= link_to "Dentistas", dentistas_path %></li>
+        <li><%= link_to "Protéticos", proteticos_path %></li>
+        <li><%= link_to "Destinações", destinacaos_path %></li>
+      </ul>
+    </li>
+    <li><a href="#">Clínica</a>
+      <ul>
+        <li><%= link_to "Produção entre datas", producao_entre_datas_clinicas_path %> </li>
+        <li><%= link_to "Produção anual" , producao_anual_clinicas_path %></li>
+        <li><%= link_to "Orçamentos elaborados", relatorio_orcamentos_path %></li>
+        <li><%= link_to "Relatório de protético", relatorio_proteticos_path %></li>
+        <li><%= link_to "Relatório de alta", relatorio_alta_clinicas_path %></li>
+        <li><%= link_to "Retorno no mês", retorno_altas_path %></li>
+        <li><%= link_to "Abandono de tratamento", abandono_de_tratamento_clinicas_path %></li>
+        <li><%= link_to "Pacientes de ortodontia", pacientes_de_ortodontia_clinicas_path %></li>
+        <li><%= link_to "Mala direta", mala_direta_clinicas_path %></li>
+        <li><%= link_to "Arquivo morto", arquivo_morto_pacientes_path %></li>
+      </ul>
+    </li>
+    <li><a href="#">Paciente</a>
+      <ul>
+      <% if !session[:paciente_id].nil? %>
+        <li><%= link_to session[:paciente_nome] , abre_paciente_path(:id=>session[:paciente_id])%></li>
+      <% end %>
+        <li><%= link_to "Novo paciente", new_paciente_path if current_user.pode_alterar_na_clinica?%></li>
+        <li><%= link_to "Pesquisa paciente", pesquisa_pacientes_path %></li>
+      </ul>
+    </li>
+  <li><a href="#">Financeiro</a>
+      <ul>
+        <li><%= link_to "Recebimentos", relatorio_recebimentos_path %></li>
+        <li><%= link_to "Entradas no mês", entradas_no_mes_recebimentos_path %></li>
+        <li><%= link_to "Fluxo de caixa", fluxo_de_caixa_path %></li>
+        <li><%= link_to "Pagamentos (novo e relatório)", relatorio_pagamentos_path %></li>
+        <li><%= link_to "Pagamentos de hoje", pagamentos_de_hoje_pagamentos_path %></li>
+        <li><%= link_to "Tipo de pagamento", tipo_pagamentos_path %></li>
+        <li><%= link_to "Lista de Cheques", cheques_recebidos_cheques_path %></li>
+        <li><%= link_to "Pesquisa cheque", pesquisa_cheques_path %></li>
+        <li><%= link_to "Entrada/Remessa de dinheiro", entradas_path %></li>
+        <li><%= link_to "Pacientes em débito", pacientes_em_debito_debitos_path %></li>
+        <li><%= link_to "Pacientes fora da lista de débito", pacientes_fora_da_lista_debitos_path %></li>
+        <li><%= link_to "Fechamento de mês", fechamento_mes_clinicas_path %></li>
 
-    </ul>
-  </li>
-</ul>
+      </ul>
+    </li>
+  </ul>
+<% end %>
