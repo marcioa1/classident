@@ -88,6 +88,7 @@ class Pagamento < ActiveRecord::Base
   end
   
   def verifica_quinzena
+    return true if current_user.master?
     errors.add(:data_de_pagamento, "não pode ser fora da quinzena.") if
       !self.na_quinzena? && self.em_dinheiro?# < Date.today  
   end
