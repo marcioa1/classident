@@ -155,7 +155,7 @@ class PagamentosController < ApplicationController
     params[:livro_caixa] = 'ambos' if params[:livro_caixa].nil?
     params[:modo]     = 'todos' if params[:modo].nil?
     session[:origem]  = '/pagamentos/relatorio'
-    @tipos_pagamento  = TipoPagamento.da_clinica(session[:clinica_id]).por_nome.collect{|obj| [obj.nome, obj.id.to_s]}
+    @tipos_pagamento  = TipoPagamento.da_clinica(session[:clinica_id]).por_nome.ativos.collect{|obj| [obj.nome, obj.id.to_s]}
     @contas_bancarias = ContaBancaria.all(:order=>'nome').collect{|obj| [obj.nome, obj.id.to_s]}.insert(0, '')
 
     if params[:datepicker] && Date.valid?(params[:datepicker])
