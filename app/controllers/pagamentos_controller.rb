@@ -119,6 +119,9 @@ class PagamentosController < ApplicationController
       flash[:notice] = 'Pagamento alterado com sucesso.'
       redirect_to(session[:origem] || relatorio_pagamentos_path) 
     else
+      @tipos_pagamento  = TipoPagamento.ativos.por_nome.collect{|obj| [obj.nome, obj.id]}
+      @contas_bancarias = ContaBancaria.all(:order=>:nome).collect{|obj| [obj.nome, obj.id]}.insert(0,'')
+
       render :action => "edit" 
     end
   end
