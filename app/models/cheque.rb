@@ -41,6 +41,7 @@ class Cheque < ActiveRecord::Base
                 and pagamento_id IS NULL
                 and destinacao_id IS NULL 
                 and data_entrega_ao_cofre IS NULL
+                and data_envio_a_clinica IS NULL
                 and bom_para > '2011-01-01'"]
   named_scope :do_banco, lambda{|banco| {:conditions=>["banco_id = ?", banco]}}
   named_scope :do_valor, lambda{|valor| {:conditions=>["valor=?", valor]}}
