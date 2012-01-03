@@ -61,7 +61,7 @@ class PagamentosController < ApplicationController
         total_cheque += cheque.valor
       end
       @pagamento.valor_terceiros = total_cheque
-      if @pagamento.save
+      if @pagamento.save(!current_user.master?)
         @pagamento.verifica_fluxo_de_caixa
         if !session[:trabalho_protetico_id].nil?
           ids = session[:trabalho_protetico_id].split(",")
@@ -93,8 +93,8 @@ class PagamentosController < ApplicationController
 
   def update
     @pagamento = Pagamento.find(params[:id])
-
-    if @pagamento.update_attributes(params[:pagamento])
+    @pagamento.attributes = params[:pagamento]
+    if @pagamento.save (!current_user.master?)
       cheques_anteriores = @pagamento.cheques.map(&:id)
       ids = params[:cheques_ids].split(",")
       # retira os cheques usados num primeiro pagamento que nõa fazer 
