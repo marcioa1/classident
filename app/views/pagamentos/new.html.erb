@@ -81,7 +81,7 @@
     <% end %>
     <%= hidden_field_tag :cheques_ids %>
     <p>
-      <%= f.submit 'Criar' if current_user.pode_alterar_na_clinica? %>
+      <%= f.submit 'Criar' if current_user.pode_alterar_na_clinica? || siossion[:clinica_id] == Clinica::ADMINISTRACAO_ID %>
     </p>
 
   <% end %>
