@@ -24,7 +24,8 @@ class Recebimento < ActiveRecord::Base
   named_scope :nao_excluidos, :conditions=>["data_de_exclusao IS NULL"]
      
   named_scope :com_problema, :include=>:cheque, :conditions => ['cheques.data_reapresentacao IS NULL and cheques.data_primeira_devolucao IS NOT NULL']
-
+  named_scope :sem_problema, :include=>:cheque, :conditions => ['cheques.data_primeira_devolucao IS NULL or '+
+        ' (cheques.data_primeira_devolucao IS NOT NULL and cheques.data_reapresentacao IS NOT NULL amd cheques.data_segunda_devolucao IS NULL)']
   attr_accessor :valor_real, :data_pt_br
   attr_reader :descricao
   #, :valor_segundo_paciente, :valor_terceiro_paciente, :valor_do_cheque
