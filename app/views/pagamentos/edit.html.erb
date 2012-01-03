@@ -57,7 +57,7 @@
   <%= hidden_field_tag :cheques_ids, @ids_cheques %>
 
   <p>
-    <%= f.submit 'alterar' if current_user.pode_alterar_na_clinica? %>
+    <%= f.submit 'alterar' if session[:clinica_id] == Clinica::ADMINISTRACAO_ID || current_user.pode_alterar_na_clinica? %>
   </p>
 <% end %>
 <%= render :partial=>"cheques/disponiveis", :locals => {:pagamento => @pagamento }%>
