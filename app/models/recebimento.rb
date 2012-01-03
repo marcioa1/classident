@@ -9,23 +9,23 @@ class Recebimento < ActiveRecord::Base
   FORMATO_VALIDO_BR  	=  	/^([R|r]\$\s*)?(([+-]?\d{1,3}(\.?\d{3})*))?(\,\d{0,2})?$/
   
   
-  named_scope :por_data, :order=>:data
+  named_scope :por_data, :order=>'recebimentos.data'
   named_scope :entre_datas, lambda{|inicio,fim| 
        {:conditions=>["recebimentos.data >= ? and recebimentos.data <= ?", inicio,fim]}}
   named_scope :da_clinica, lambda{|clinica_id| {:conditions=>["clinica_id=?", clinica_id]}}
   named_scope :das_clinicas, lambda{|clinicas| 
-       {:conditions=>["clinica_id in (?)", clinicas]}}
+       {:conditions=>["recebimentos.clinica_id in (?)", clinicas]}}
   named_scope :em_cheque, :conditions=>['cheque_id IS NOT NULL']
   named_scope :excluidos, :conditions=>["data_de_exclusao IS NOT NULL"]
   named_scope :nas_formas, lambda{|formas| 
        {:conditions=>["formas_recebimento_id in (?)", formas]}}
   named_scope :no_dia, lambda{|dia| 
        {:conditions=>["data = ?",dia]}} 
-  named_scope :nao_excluidos, :conditions=>["data_de_exclusao IS NULL"]
+  named_scope :nao_excluidos, :conditions=>["recebimentos.data_de_exclusao IS NULL"]
      
   named_scope :com_problema, :include=>:cheque, :conditions => ['cheques.data_reapresentacao IS NULL and cheques.data_primeira_devolucao IS NOT NULL']
   named_scope :sem_problema, :include=>:cheque, :conditions => ['cheques.data_primeira_devolucao IS NULL or '+
-        ' (cheques.data_primeira_devolucao IS NOT NULL and cheques.data_reapresentacao IS NOT NULL amd cheques.data_segunda_devolucao IS NULL)']
+        ' (cheques.data_primeira_devolucao IS NOT NULL and cheques.data_reapresentacao IS NOT NULL and cheques.data_segunda_devolucao IS NULL)']
   attr_accessor :valor_real, :data_pt_br
   attr_reader :descricao
   #, :valor_segundo_paciente, :valor_terceiro_paciente, :valor_do_cheque
