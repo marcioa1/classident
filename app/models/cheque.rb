@@ -68,6 +68,7 @@ class Cheque < ActiveRecord::Base
                 {:conditions=>["data_recebido_da_administracao between ? and ? ", data_inicial, data_final]}}
   named_scope :menores_ou_igual_a, lambda{|valor| {:conditions=>["valor<=?", valor]}}
   named_scope :menores_que, lambda{|valor| {:conditions=>["valor<?", valor]}}
+  named_scope :sem_problema, :conditions => [""]
   named_scope :sem_segunda_devolucao, :conditions=>["data_segunda_devolucao IS NULL"]
   named_scope :sem_solucao, :conditions=>['data_solucao IS NULL']
   named_scope :solucionado, :conditions=>['data_solucao IS NOT NULL']

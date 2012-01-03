@@ -280,7 +280,7 @@ class RecebimentosController < ApplicationController
        das_clinicas(selecionadas.split(",").to_a).
        entre_datas(inicio,fim).
        nas_formas(formas_selecionadas.split(",").to_a).
-       nao_excluidos
+       disponiveis_na_administracao
     @titulo = "Recebimento das clínicas entre #{inicio.to_s_br} e #{fim.to_s_br}"
   end
   
