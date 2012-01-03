@@ -35,5 +35,9 @@
   <% dados += "#{orca.data.to_s_br[0..5]+orca.data.to_s_br[8..9]};#{orca.paciente.nome};#{orca.paciente.telefones};#{orca.dentista.nil? ? '' : orca.dentista.nome };#{orca.valor_com_desconto.real};#{orca.estado}>"%>
 <% end %>
 </table>
-<%= link_de_impressao(dados,session[:clinica_id],'landscape') %>
+<% form_tag imprime_path(:clinica_id=>session[:clinica_id],:orientation=>'landscape') do %>
+   <%= hidden_field_tag :tabela, dados %>
+   <%= submit_tag "imprime" %>
+ <% end %>
+
 <% end %>
