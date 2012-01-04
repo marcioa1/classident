@@ -102,11 +102,11 @@ function desenha_numero_dos_dentes(){
     saida = saida + "<td><a href='#' onClick='escolheu_dente(" + ind + ");' class='botao_dente'>" + ind + "</a>";
   }
   saida = saida + "</tr><tr>";
-  for (ind=41; ind < 49; ind = ind + 1){
+  for (ind=48; ind > 40; ind = ind - 1){
     saida = saida + "<td><a href='#' onClick='escolheu_dente(" + ind + ");' class='botao_dente'>" + ind + "</a>";
   }
   saida = saida + "<td> &nbsp; </td>";
-  for (ind=38; ind > 30; ind = ind - 1){
+  for (ind=31; ind < 39; ind = ind + 1){
     saida = saida + "<td><a href='#' onClick='escolheu_dente(" + ind + ");' class='botao_dente'>" + ind + "</a>";
   }
   saida = saida + "</tr>"
