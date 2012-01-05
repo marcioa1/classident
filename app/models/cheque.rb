@@ -387,19 +387,37 @@ class Cheque < ActiveRecord::Base
   end
   
   def envia_ao_cofre
-    self.update_attribute(:data_entrega_ao_cofre, Date.today)
+    self.update_attribute(:data_envio_ao_cofre, Date.today)
     self.update_attribute(:data_entrada_no_cofre, nil)
     self.update_attribute(:data_saida_do_cofre, nil)
-    self.update_attribute(:data_retorno_do_cofre, nil)
+    self.update_attribute(:data_recebimento_do_cofre, nil)
     AcompanhamentoCheque.create(:cheque_id => self.id,
          :origem    => clinica_id,
          :user_id   => current_user.id, 
-         :descricao => "#{current_user.nome} colocou no cofre em #{Date.today}")
+         :descricao => "#{current_user.nome} enviou ao cofre em #{Date.today}")
   end
 
-  def retorna_do_cofre
-    self.update_attribute(:data_entrega_ao_cofre, nil)
-    self.update_attribute(:data_retorno_do_cofre, Date.today)
+  def entra_no_cofre
+    self.update_attribute(:data_entrada_no_cofre, Date.today)
+    self.update_attribute(:data_saida_do_cofre, nil)
+    self.update_attribute(:data_recebimento_do_cofre, nil)
+    AcompanhamentoCheque.create(:cheque_id => self.id,
+         :origem    => clinica_id,
+         :user_id   => current_user.id, 
+         :descricao => "#{current_user.nome} entrou no cofre em #{Date.today}")
+  end
+
+  def sai_do_cofre
+    self.update_attribute(:data_saida_do_cofre, Date.today)
+    self.update_attribute(:data_recebimento_do_cofre, nil)
+    AcompanhamentoCheque.create(:cheque_id => self.id,
+         :origem    => clinica_id,
+         :user_id   => current_user.id, 
+         :descricao => "#{current_user.nome} saiu do cofre em #{Date.today}")
+  end
+
+  def recebe_do_cofre
+    self.update_attribute(:data_recebimento_do_cofre, Date.today)
     AcompanhamentoCheque.create(:cheque_id => self.id,
          :origem    => clinica_id,
          :user_id   => current_user.id, 

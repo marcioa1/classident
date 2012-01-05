@@ -227,6 +227,16 @@ class ChequesController < ApplicationController
     head :ok
   end
 
+  def entra_no_cofre
+    @cheque.entra_no_cofre(session[:clinica_id], current_user)
+    head :ok
+  end
+
+  def sai_do_cofre
+    @cheque.sai_do_cofre(session[:clinica_id], current_user)
+    head :ok
+  end
+
 
   def coloca_no_cofre
     @cheque.colocar_no_cofre(session[:clinica_id], current_user)
