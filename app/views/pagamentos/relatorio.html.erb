@@ -161,7 +161,7 @@
   <% form_tag impressao_detalhada_pagamentos_path(:pagamentos => @pagamentos.map(&:id).join(','),:data_inicial => @data_inicial, :data_final => @data_final) do %>
     <%= submit_tag "impressão detalhada" %>
   <% end %>
-  <% form_tag impressao_agrupada_pagamentos_path(:pagamentos => @pagamentos.all(:order=>:tipo_pagamento_id).map(&:id).join(','),:data_inicial => @data_inicial, :data_final => @data_final) do %>
+  <% form_tag impressao_agrupada_pagamentos_path(:pagamentos => @pagamentos.all(:order=>:tipo_pagamento_id).map(&:id).join(','),:data_inicial => @data_inicial, :data_final => @data_final) do  %>
     <%= submit_tag "impressão agrupada" %>
   <% end %>
 
