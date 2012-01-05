@@ -386,8 +386,10 @@ class Cheque < ActiveRecord::Base
          :descricao => "#{current_user.nome} tornou este cheque disponível em #{Date.today} : ( id do pagamento anterior : #{pagamento_id})")
   end
   
-  def coloca_no_cofre
+  def envia_ao_cofre
     self.update_attribute(:data_entrega_ao_cofre, Date.today)
+    self.update_attribute(:data_entrada_no_cofre, nil)
+    self.update_attribute(:data_saida_do_cofre, nil)
     self.update_attribute(:data_retorno_do_cofre, nil)
     AcompanhamentoCheque.create(:cheque_id => self.id,
          :origem    => clinica_id,

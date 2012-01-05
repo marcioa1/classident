@@ -78,8 +78,10 @@ class ChequesController < ApplicationController
     @status = lista_de_status.split(",")
     
     if @clinica_atual.administracao?
-      @status << ["colocados no cofre"]
-      @status << ["retirados do cofre"]
+      @status << ["enviados ao cofre"]
+      @status << ["recebidos no cofre"]
+      @status << ["devolvidos pelo cofre"]
+      @status << ["recebidos do cofre p/ adm"]
       selecionadas = []
       @clinicas.each do |clinica|
         selecionadas << clinica.id if params["clinica_#{clinica.id}".to_sym]
@@ -220,6 +222,12 @@ class ChequesController < ApplicationController
     head :ok
   end
   
+  def envia_ao_cofre
+    @cheque.envia_ao_cofre(session[:clinica_id], current_user)
+    head :ok
+  end
+
+
   def coloca_no_cofre
     @cheque.colocar_no_cofre(session[:clinica_id], current_user)
     head :ok

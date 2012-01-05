@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111225114044) do
+ActiveRecord::Schema.define(:version => 20111122142426) do
 
   create_table "abonos", :force => true do |t|
     t.date     "data"
@@ -189,7 +189,6 @@ ActiveRecord::Schema.define(:version => 20111225114044) do
     t.datetime "updated_at"
     t.date     "data_de_exclusao"
     t.integer  "clinica_id"
-    t.boolean  "cancelado",                                                    :default => false
   end
 
   add_index "debitos", ["paciente_id"], :name => "index_debitos_on_paciente_id"
@@ -199,23 +198,23 @@ ActiveRecord::Schema.define(:version => 20111225114044) do
     t.string   "nome"
     t.string   "telefone"
     t.string   "celular"
-    t.boolean  "ativo",                                                       :default => true
+    t.boolean  "ativo",                                                        :default => true
     t.integer  "clinica_id"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "cro",             :limit => 12
     t.string   "especialidade",   :limit => 30
-    t.decimal  "percentual",                    :precision => 9, :scale => 2
+    t.decimal  "percentual",                     :precision => 9, :scale => 2
     t.integer  "sequencial"
-    t.boolean  "ortodontista",                                                :default => false
+    t.boolean  "ortodontista",                                                 :default => false
     t.string   "logradouro"
-    t.string   "numero"
-    t.string   "complemento"
-    t.string   "bairro"
-    t.string   "municipio"
-    t.string   "cep"
+    t.string   "numero",          :limit => 40
+    t.string   "complemento",     :limit => 40
+    t.string   "bairro",          :limit => 120
+    t.string   "municipio",       :limit => 120
     t.date     "data_nascimento"
-    t.string   "cpf"
+    t.string   "cep",             :limit => 9
+    t.string   "cpf",             :limit => 14
     t.string   "email"
   end
 
@@ -233,7 +232,7 @@ ActiveRecord::Schema.define(:version => 20111225114044) do
     t.integer  "clinica_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "ativa",                    :default => true
+    t.integer  "ativa",      :limit => 1
   end
 
   add_index "destinacaos", ["clinica_id"], :name => "index_destinacaos_on_clinica_id"
