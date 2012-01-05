@@ -25,14 +25,14 @@
   </div>
   <div>
     <%= f.label :percentual %> : 
-    <%= f.text_field :percentual, :size=>4 %> %
+    <%= f.text_field :percentual, :size=>4, :disabled => !current_user.master? && !current_user.administradora? %> %
   </div>
-  <p>
-    <%= f.check_box :ativo %>
-    <%= f.label :ativo %>
-    &nbsp;&nbsp;&nbsp;
-     <%= f.check_box :ortodontista %><%= f.label :ortodontista %>
-  </p>
+    <p>
+      <%= f.check_box :ativo , :disabled => !current_user.master? && !current_user.administradora? %>
+      <%= f.label :ativo %>
+      &nbsp;&nbsp;&nbsp;
+       <%= f.check_box :ortodontista, :disabled => !current_user.master? && !current_user.administradora? %><%= f.label :ortodontista %>
+    </p>
   <div>
     <%= f.label :logradouro %> : 
     <%= f.text_field :logradouro, :size => 39 %> 
@@ -66,15 +66,17 @@
     <%= f.text_field :email, :size => 49 %> 
   </div>
   
-  <fieldset>
-    <legend>Clínicas onde atua :</legend>
-    <% @clinicas.each() do |clinica| %>
-      <%= check_box_tag "clinica_#{clinica.id}", clinica.id, checked=@dentista.clinicas.include?(clinica) %>  
-    <%= clinica.nome %><br/>
-    <% end %>
-  </fieldset>
+  <% if current_user.master? || current_user.administradora?%>
+    <fieldset>
+      <legend>Clínicas onde atua :</legend>
+      <% @clinicas.each() do |clinica| %>
+        <%= check_box_tag "clinica_#{clinica.id}", clinica.id, checked=@dentista.clinicas.include?(clinica) %>  
+      <%= clinica.nome %><br/>
+      <% end %>
+    </fieldset>
+  <% end %>
   <p>
-    <%= f.submit 'alterar' if @clinica_atual.administracao? %>
+    <%= f.submit 'alterar'  %>
   </p>
 <% end %>
 </fieldset><br/>
