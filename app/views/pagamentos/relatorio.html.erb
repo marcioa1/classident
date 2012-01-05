@@ -108,7 +108,7 @@
         <%= pagamento.conta_bancaria && pagamento.conta_bancaria.nome %>
         <%= ' - '%>
         <%= pagamento.numero_do_cheque %>
-        <% dados += "#{pagamento.numero_do_cheque};" %>
+        <% dados += "#{pagamento.conta_bancaria && pagamento.conta_bancaria.nome} - #{pagamento.numero_do_cheque};" %>
       <% else %>
         <% dados += " ;"%>
       <% end %>
