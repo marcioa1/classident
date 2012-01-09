@@ -201,6 +201,7 @@ class PagamentosController < ApplicationController
     if params[:conta_bancaria_id] && !params[:conta_bancaria_id].blank?
       @pagamentos = @pagamentos.pela_conta_bancaria(params[:conta_bancaria_id])
     end
+    @pagamentos = @pagamentos.nao_excluidos
     # raise params[:livro_caixa].inspect
   end
    

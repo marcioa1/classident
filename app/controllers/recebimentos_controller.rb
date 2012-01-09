@@ -75,7 +75,7 @@ class RecebimentosController < ApplicationController
           @recebimento2.observacao            = params[:observacao_paciente_2]
           @recebimento2.formas_recebimento_id = @recebimento.formas_recebimento_id
           @recebimento2.data                  = @recebimento.data
-          @recebimento2.clinica_id            = params[:clinica_id].to_i
+          @recebimento2.clinica_id            = session[:clinica_id].to_i
           @recebimento2.cheque                = @cheque
           if !@recebimento2.valid?
             @recebimento.errors.add("Dados do segundo paciente estão inválidos.")
@@ -93,7 +93,7 @@ class RecebimentosController < ApplicationController
           @recebimento3.observacao            = params[:observacao_paciente_3]
           @recebimento3.formas_recebimento_id = @recebimento.formas_recebimento_id
           @recebimento3.data                  = @recebimento.data
-          @recebimento3.clinica_id            = params[:clinica_id].to_i
+          @recebimento3.clinica_id            = session[:clinica_id].to_i
           @recebimento3.cheque                = @cheque
           if !@recebimento3.valid?
             @recebimento.errors.add(:data, "Dados do terceiro paciente estão inválidos.")
@@ -113,6 +113,7 @@ class RecebimentosController < ApplicationController
         @recebimento.verifica_fluxo_de_caixa
         (2..params[:numero_de_cheques].to_i).each do |num|
           outro_cheque             = @cheque.clone
+          outro_cheque             = @recebimento.clinica_id
           outro_cheque.bom_para    = @cheque.bom_para + (num-1).month
           outro_cheque.numero      = @cheque.numero
           (1..num-1).each do |suc|
