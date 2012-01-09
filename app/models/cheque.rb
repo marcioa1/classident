@@ -457,16 +457,16 @@ class Cheque < ActiveRecord::Base
             ordenado_por(ordem).nao_excluidos
         when status == 'devolvido' 
           @cheques = Cheque.na_administracao.devolvidos(data_inicial,data_final).
-            das_clinicas(selecionadas).ordenado_por(ordem).nao_excluidos
+            das_clinicas(selecionadas).ordenado_por(ordem).nao_excluidos.sem_solucao
         when status == 'destinação'
           @cheques = Cheque.na_administracao.entre_datas(data_inicial,data_final).com_destinacao.
             das_clinicas(selecionadas).ordenado_por(ordem).nao_excluidos
         when status == 'reapresentado'
           @cheques = Cheque.na_administracao.reapresentados(data_inicial,data_final).
-            das_clinicas(selecionadas).ordenado_por(ordem).nao_excluidos
+            das_clinicas(selecionadas).ordenado_por(ordem).nao_excluidos.sem_solucao
         when status=="spc"
           @cheques = Cheque.na_administracao.spc(data_inicial,data_final).
-            das_clinicas(selecionadas).ordenado_por(ordem).nao_excluidos
+            das_clinicas(selecionadas).ordenado_por(ordem).nao_excluidos.sem_solucao
         when status=="solucionado" 
           @cheques = Cheque.na_administracao.solucionado_entre_datas(data_inicial,data_final).
             das_clinicas(selecionadas).ordenado_por(ordem).nao_excluidos
@@ -510,16 +510,16 @@ class Cheque < ActiveRecord::Base
             da_clinica(clinica_atual).usados_para_pagamento.ordenado_por(ordem).nao_excluidos
         when status == 'devolvido' 
           @cheques = Cheque.da_clinica(clinica_atual).devolvidos(data_inicial,data_final).
-          ordenado_por(ordem).nao_excluidos
+          ordenado_por(ordem).nao_excluidos.sem_solucao
         when status == 'destinação' 
           @cheques = Cheque.da_clinica(clinica_atual).entre_datas(data_inicial,data_final).
           com_destinacao.ordenado_por(ordem).nao_excluidos
         when status == 'reapresentado' 
           @cheques = Cheque.da_clinica(clinica_atual).reapresentados(data_inicial,data_final).
-          ordenado_por(ordem).nao_excluidos
+          ordenado_por(ordem).nao_excluidos.sem_solucao
         when status=="spc" 
           @cheques = Cheque.da_clinica(clinica_atual).spc(data_inicial,data_final).
-          ordenado_por(ordem).nao_excluidos
+          ordenado_por(ordem).nao_excluidos.sem_solucao
         when status=="recebidos pela clínica" 
           @cheques = Cheque.da_clinica(clinica_atual).recebidos_pela_clinica_entre_datas(data_inicial,data_final).
           ordenado_por(ordem).nao_excluidos

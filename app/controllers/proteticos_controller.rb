@@ -147,7 +147,7 @@ class ProteticosController < ApplicationController
   end
   
   def busca_trabalhos_liberados
-    if params[:data_inicial_liberacao]
+    if params[:data_inicial_liberacao] && Date.valid?(params[:data_inicial_liberacao])
       @data_inicial_liberacao = params[:data_inicial_liberacao].to_date + 1.second
       @data_final_liberacao   = params[:data_final_liberacao].to_date + 1.day - 1.second
     else
