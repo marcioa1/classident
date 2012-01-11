@@ -42,7 +42,8 @@ class FluxoDeCaixaController < ApplicationController
       @cheques      = Cheque.enviados_a_administracao(@fluxo.data,@fluxo.data).nao_excluidos.da_clinica(session[:clinica_id]) - cheques_recebimentos
     end
 
-    @pagamentos   = Pagamento.da_clinica(session[:clinica_id]).no_dia(@fluxo.data).no_livro_caixa.nao_excluidos.nao_sendo_transferencia
+    @pagamentos   = Pagamento.da_clinica(session[:clinica_id]).no_dia(@fluxo.data).
+                    no_livro_caixa.nao_excluidos.nao_sendo_transferencia
     @lancamentos  = @recebimentos + @pagamentos + @entradas + @remessas + @cheques
     @entradas_adm = []
     # if @clinica_atual.administracao?
