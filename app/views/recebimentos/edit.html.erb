@@ -70,8 +70,8 @@
     </tr>
     <tr>
       <td align='right'><%= label_tag :segundo_paciente %> : </td>
-      <td><%= text_field_tag :segundo_paciente, @segundo_paciente.nome, :size=>30 %>
-        <%= hidden_field_tag :id_segundo_paciente , @segundo_paciente.id %> 
+      <td><%= text_field_tag :segundo_paciente, @segundo_paciente && @segundo_paciente.nome, :size=>30 %>
+        <%= hidden_field_tag :id_segundo_paciente , @segundo_paciente && @segundo_paciente.id %> 
         <%= link_to "pesquisar", "#" , :onclick=>"busca_pacientes_que_iniciam_com('segundo_paciente')"%>
       </td>
     </tr>
@@ -86,7 +86,7 @@
     </tr>
     <tr>
       <td align='right'><%= label_tag :valor %> : </td>
-      <td><%= text_field_tag :valor_paciente_2 , @segundo_recebimento.valor.real, :size=>10 %></td>
+      <td><%= text_field_tag :valor_paciente_2 , @segundo_recebiento && @segundo_recebimento.valor.real, :size=>10 %></td>
     </tr>
     <tr>
       <td align='right'><%= label_tag :observação %> : </td>
@@ -111,7 +111,7 @@
       </tr>
     <tr>
       <td align='right'><%= label_tag :valor %> : </td>
-      <td><%= text_field_tag :valor_paciente_3 , @terceiro_recebimento.valor.real, :size=>10 %></td>
+      <td><%= text_field_tag :valor_paciente_3 , @terceiro_paciente && @terceiro_recebimento.valor.real, :size=>10 %></td>
     </tr>
     <tr>
       <td align='right'><%= label_tag :observação %> : </td>
