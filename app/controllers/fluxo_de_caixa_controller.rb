@@ -35,7 +35,11 @@ class FluxoDeCaixaController < ApplicationController
       @remessas     = Entrada.da_clinica(session[:clinica_id]).entrada_na_administracao.do_dia(@data).nao_e_resolucao_de_cheque
       # @remessas     = Entrada.remessas(@data, session[:clinica_id]) || []
       @recebimentos = Recebimento.da_clinica(session[:clinica_id]).no_dia(@fluxo.data).nao_excluidos #.nas_formas(FormasRecebimento.dinheiro_ou_cheque)
-      @cheques      = []
+      cheques_recebimentos = []
+      @recebimentos.each do |rec|
+        cheques_recebimentos << rec.cheque if rec.cheque
+      end
+      @cheques      = Cheque.enviados_a_administracao(@fluxo.data,@fluxo.data).nao_excluidos.da_clinica(session[:clinica_id]) - cheques_recebimentos
     end
 
     @pagamentos   = Pagamento.da_clinica(session[:clinica_id]).no_dia(@fluxo.data).no_livro_caixa.nao_excluidos.nao_sendo_transferencia

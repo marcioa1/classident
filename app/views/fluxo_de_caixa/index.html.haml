@@ -67,12 +67,20 @@
             %td &nbsp;
             %td &nbsp;
             %td &nbsp;
-            %td{ :align=> 'right'}= lancamento.valor.real
-            %td &nbsp;
-            -saldo_cheque += lancamento.valor
-            %td{ :align => "right" }
-              = #saldo_cheque.real
-            - total_de_credito_em_cheque += lancamento.valor
+            - if lancamento.entregue_a_administracao?
+              %td &nbsp;
+              %td{ :align=> 'right'}= lancamento.valor.real
+              -saldo_cheque -= lancamento.valor
+              %td{ :align => "right" }
+                = saldo_cheque.real
+              - total_de_debito_em_cheque += lancamento.valor
+            - else
+              %td{ :align=> 'right'}= lancamento.valor.real
+              %td &nbsp;
+              -saldo_cheque += lancamento.valor
+              %td{ :align => "right" }
+                = saldo_cheque.real
+              - total_de_credito_em_cheque += lancamento.valor
             %td &nbsp;
           - when "Recebimento" :
             - if lancamento.formas_recebimento && lancamento.formas_recebimento.nome.downcase =="dinheiro"
@@ -111,7 +119,7 @@
               %td{ :align => "right" }
                 = saldo_dinheiro.real
                 - dados += "#{saldo_dinheiro.real};"
-              - if lancamento.cheque && lancamento.cheque.recebido_pela_administracao?
+              - if lancamento.cheque && ( lancamento.cheque.entregue_a_administracao? || lancamento.cheque.recebido_pela_administracao? )
                 %td{:align => 'right'}= lancamento.valor.real
                 - dados += "#{lancamento.valor.real};"
                 %td{ :align => "right", :style => "color: red;" }
