@@ -15,7 +15,7 @@ class FluxoDeCaixaController < ApplicationController
     end
     if params[:data]
       @data = params[:data].to_date
-      if @fluxo.data > params[:data].to_date
+      if @fluxo.data > params[:data].to_date && (@fluxo.data - params[:data].to_date).days < 2.days
         @fluxo = FluxoDeCaixa.voltar_para_a_data(params[:data].to_date, session[:clinica_id])
       else
         @fluxo = FluxoDeCaixa.avancar_um_dia(session[:clinica_id],
