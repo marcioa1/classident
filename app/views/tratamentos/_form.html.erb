@@ -80,7 +80,7 @@
     <%= f.label :dentista %> :
     <%= f.select :dentista_id, @dentistas, :include_blank=>true, :class=>'txt' %>
   </div>
-  <% unless current_user.dentista? %>
+  <% unless current_user.dentista? || current_user.administradora? %>
   <div>
     <%= f.label :data_de_término %> :
     <%= f.text_field :data_termino_br, :class => 'datepicker', :size=>10     %>

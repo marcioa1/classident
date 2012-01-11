@@ -76,7 +76,7 @@
         - if tratamento.data.to_s_br.blank?
           - if tratamento.pode_finalizar?
             %span{ :id => "finalizar_#{tratamento.id.to_s}" }
-              = link_to "finalizar", "#", :onclick=>'finalizar_tratamento(' + tratamento.id.to_s + ')' if !current_user.dentista?
+              = link_to "finalizar", "#", :onclick=>'finalizar_tratamento(' + tratamento.id.to_s + ')' if !current_user.dentista? && !current_user.administradora?
           - else
             custo não lançado
         - else
