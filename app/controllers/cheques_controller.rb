@@ -163,10 +163,10 @@ class ChequesController < ApplicationController
         scope_agencia = ".da_agencia('#{params[:agencia]}')"
       end
       if params[:numero] && !params[:numero].blank?
-        scope_numero = ".com_numero(#{params[:numero]})"
+        scope_numero = ".com_numero('#{params[:numero]}')"
       end
       if params[:banco] && !params[:banco].blank?
-        scope_banco = ".do_banco(#{params[:banco]})"
+        scope_banco = ".do_banco('#{params[:banco]}')"
       end
       if params[:ano].present?
         data_inicial = params[:ano].to_s + '-01-01'
