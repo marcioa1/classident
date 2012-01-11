@@ -183,6 +183,17 @@
     });
   }
 
+  function enviar_de_volta_a_administracao(id){
+    alert("vair retornar");
+    $.ajax({
+      url: "/cheques/" + id + "/envia_a_administracao",
+      type: 'GET',
+      success: function(){
+        $("#tr_"+id).remove();
+      }
+    });
+  }
+
   function tornar_disponivel(id){
     if (confirm("Tem certeza de que quer tornar este cheque disponível ?")){
       $.ajax({
@@ -191,19 +202,8 @@
         success: function(){
           $("#tr_"+id).remove();
         }
-      
       });
     }
-  }
-
-  function enviar_de_volta_a_administracao(id){
-    $.ajax({
-      url: "/cheques/" + id + "/envia_a_administracao",
-      type: 'GET',
-      success: function(){
-        $("#tr_"+id).remove();
-      }
-    });
   }
 
   function envia_ao_cofre(id){
@@ -214,7 +214,8 @@
         $("#tr_"+id).remove();
       }
     });
-
+  }
+ 
   function entra_no_cofre(id){
     $.ajax({
       url: "/cheques/" + id + "/entra_no_cofre",
