@@ -535,6 +535,14 @@ class Cheque < ActiveRecord::Base
       end
     end
   end
+  
+  def tem_dois_pacientes?
+    self.recebimentos.size == 2
+  end
+
+  def tem_tres_pacientes?
+    self.recebimentos.size == 3
+  end
  
   private
 

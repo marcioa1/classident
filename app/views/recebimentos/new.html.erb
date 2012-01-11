@@ -8,10 +8,11 @@
           maxRows: 5,
           select: function(event,ui){
             nome = ui.item.value;
+            alert('vai calcular a diferença');
             $("#segundo_paciente").val(nome);
             busca_id(2);
             diferenca = parseFloat($('#valor_do_cheque').val().replace(".","").replace(",",".")) - parseFloat($("#recebimento_valor_real").val().replace(".","").replace(",","."));
-            // alert(diferenca)
+             alert(diferenca);
             $('#valor_segundo_paciente').val(diferenca);
           }
         });
@@ -108,7 +109,7 @@
         <td align='right'><%= label_tag :segundo_paciente %> : </td>
         <td>
           <div class="ui-widget">
-            <input id="paciente_2" size="40" class="ui-autocomplete-input" onblur="busca_id(2);">
+            <input id="paciente_2" size="40" class="ui-autocomplete-input">
           </div>
           <%= hidden_field_tag :paciente_id_2, params[:paciente_id_2] %> 
         
@@ -136,7 +137,7 @@
       <tr>
         <td align='right'><%= label_tag :terceiro_paciente %> : </td>
         <td><div class="ui-widget">
-          <input id="paciente_3" size="40" class="ui-autocomplete-input" onblur="busca_id(3);">
+          <input id="paciente_3" size="40" class="ui-autocomplete-input" onblur="obusca_id(3);">
         </div>
         <%= hidden_field_tag :paciente_id_3, params[:paciente_id_3] %> 
         </td>

@@ -36,6 +36,10 @@ class RecebimentosController < ApplicationController
   end
 
   def edit
+    @segundo_paciente     = nil
+    @terceito_paciente    = nil
+    @segundo_recebimento  = nil
+    @terceiro_recebimento = nil
     @cheque    = @recebimento.cheque
     @paciente  = @recebimento.paciente
     if @recebimento.cheque.nil?
@@ -43,6 +47,18 @@ class RecebimentosController < ApplicationController
                                        :bom_para => @recebimento.data, 
                                        :valor => @recebimento.valor) 
       @recebimento.cheque = @cheque
+    else
+      if @cheque
+        if @cheque.tem_tres_pacientes?
+          @segundo_paciente     = (@cheque.recebimentos - @recebimento.to_a)[0].paciente
+          @segundo_recebimento  = (@cheque.recebimentos - @recebimento.to_a)[0]
+          @terceiro_paciente    = (@cheque.recebimentos - @recebimento.to_a)[1].paciente
+          @terceiro_recebimento = (@cheque.recebimentos - @recebimento.to_a)[1]
+        elsif @cheque.tem_dois_pacientes?
+          @segundo_paciente = (@cheque.recebimentos - @recebimento.to_a)[0].paciente
+          @segundo_recebimento  = (@cheque.recebimentos - @recebimento.to_a)[0]
+        end
+      end
     end
   end
 
