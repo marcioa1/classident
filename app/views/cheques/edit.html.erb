@@ -88,7 +88,7 @@
         <% end %>
         <div>
           <%= f.label :data_da_segunda_devolução %>
-        <%= text_field_tag :data_segunda_devolucao_br, @cheque.data_segunda_devolucao_br, :size=>10%>
+        <%= f.text_field :data_segunda_devolucao_br, :size=>10, :class=>'datepicker'%>
         </div>
         <div>
 		<%= f.label :motivo %>    
