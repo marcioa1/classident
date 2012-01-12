@@ -1,6 +1,29 @@
   <% content_for :main do %>
 
   <script type="text/javascript">
+  
+    function busca_id_pelo_nome_2(nome){
+      $.ajax({
+        url  : "/pacientes/busca_id_do_paciente",
+        type : 'GET',
+        data : {nome: nome},
+        success : function(data){
+          $('#paciente_id_2').val(data);
+        }
+      });  
+    }
+
+    function busca_id_pelo_nome_3(nome){
+      $.ajax({
+        url  : "/pacientes/busca_id_do_paciente",
+        type : 'GET',
+        data : {nome: nome},
+        success : function(data){
+          $('#paciente_id_3').val(data);
+        }
+      });  
+    }
+    
     $(function() {
         $("#paciente_2").autocomplete({
           source: "pesquisa_nomes",
@@ -9,7 +32,7 @@
           select: function(event,ui){
             nome = ui.item.value;
             $("#segundo_paciente").val(nome);
-            busca_id(2);
+            busca_id_pelo_nome_2(nome);
             diferenca = parseFloat($('#valor_do_cheque').val().replace(".","").replace(",",".")) - parseFloat($("#recebimento_valor_real").val().replace(".","").replace(",","."));
             $('#valor_segundo_paciente').val(diferenca);
           }
@@ -24,7 +47,8 @@
             select: function(event,ui){
               nome = ui.item.value;
               $("#segundo_paciente").val(nome);
-              busca_id(3);
+              busca_id_pelo_nome_3(nome);
+
               diferenca = parseFloat($('#valor_do_cheque').val()) - parseFloat($("#recebimento_valor_real").val()) - parseFloat($('#valor_segundo_paciente').val());
               $('#valor_terceiro_paciente').val(diferenca);
             }
