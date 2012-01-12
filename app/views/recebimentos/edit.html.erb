@@ -72,7 +72,7 @@
       <td align='right'><%= label_tag :segundo_paciente %> : </td>
       <td>
         <div class="ui-widget">
-            <input id="paciente_2" size="40" class="ui-autocomplete-input" value= "<%= @segundo_paciente.nome%>" disabled="true">
+            <input id="paciente_2" size="40" class="ui-autocomplete-input" value= "<%= @segundo_paciente && @segundo_paciente.nome %>" disabled="true">
           </div>
         <%= hidden_field_tag :id_segundo_paciente , @segundo_paciente && @segundo_paciente.id %> 
       </td>
