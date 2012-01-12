@@ -63,7 +63,6 @@ class RecebimentosController < ApplicationController
   end
 
   def create
-    #FIXME reescrever, método muito grande
     @recebimento      = Recebimento.new(params[:recebimento])
     @recebimento.percentual_dentista = 0 if @recebimento.percentual_dentista.nil?
     if @recebimento.em_cheque?
@@ -82,7 +81,7 @@ class RecebimentosController < ApplicationController
       end
       if params[:paciente_id_2].present?
         if !Recebimento::FORMATO_VALIDO_BR.match(params[:valor_segundo_paciente])
-          @recebimento.errors.add("Formato do valor do segundo paciente ")
+          @recebimento.errors.add(:Valor, "Formato do valor do segundo paciente ")
         else
           @recebimento2                       = Recebimento.new
           @recebimento2.percentual_dentista   = @recebimento.percentual_dentista
@@ -94,7 +93,7 @@ class RecebimentosController < ApplicationController
           @recebimento2.clinica_id            = session[:clinica_id].to_i
           @recebimento2.cheque                = @cheque
           if !@recebimento2.valid?
-            @recebimento.errors.add("Dados do segundo paciente estão inválidos.")
+            @recebimento.errors.add(:valor, "Dados do segundo paciente estão inválidos.")
           end
         end
       end
@@ -165,13 +164,16 @@ class RecebimentosController < ApplicationController
   end
 
   def update
+    @cheque_anterior = nil
     if !@recebimento.pode_alterar?
       @recebimento.errors.add(:data, " : não pode ser anterior à quinzena")
     elsif @recebimento.em_cheque? && @recebimento.cheque
-      # @recebimento.data_pr_br             = params[:datepicker].to_date
-      # @recebimento.valor_real             = params[:recebimento_valor_real]
-      @recebimento.observacao             = params[:observacao]
-      @cheque                             = @recebimento.cheque
+      if @recebimento.cheque
+        @cheque          = @recebimento.cheque
+      else
+        @cheque = Cheque.new
+      end
+      @cheque_anterior        = @cheque
       @cheque.clinica_id      = @recebimento.clinica_id
       @cheque.bom_para        = params[:bom_para_br].to_date
       @cheque.banco_id        = params[:banco]
@@ -183,20 +185,6 @@ class RecebimentosController < ApplicationController
       @cheque.errors.add(:banco, 'não pode ser branco') if !@recebimento.cheque.banco.present?
       @cheque.errors.add(:numero, 'do cheque não pode ser branco') if !@recebimento.cheque.numero.present?
       @cheque.errors.add(:valor, ' do cheque não pode ser branco') if !@recebimento.cheque.valor.present?
-    elsif @recebimento.em_cheque? && @recebimento.cheque.nil?
-      @cheque = Cheque.new
-      @recebimento.observacao = params[:observacao]
-      @cheque.clinica_id      = @recebimento.clinica_id
-      @cheque.bom_para        = params[:bom_para_br].to_date
-      @cheque.banco_id        = params[:banco]
-      @cheque.agencia         = params[:agencia]
-      @cheque.numero          = params[:numero]
-      @cheque.conta_corrente  = params[:conta_corrente]
-      @cheque.valor           = params[:valor_cheque].gsub('.','').gsub(',','.')
-      @cheque.errors.add(:valor, ' Este cheque está sem clínica associada.') if @cheque.clinica_id == 0
-      @cheque.errors.add(:banco, 'não pode ser branco') if !@cheque.banco.present?
-      @cheque.errors.add(:numero, 'do cheque não pode ser branco') if !@cheque.numero.present?
-      @cheque.errors.add(:valor, ' do cheque não pode ser branco') if !@cheque.valor.present?
       @cheque.save
       @recebimento.cheque = @cheque
     else
@@ -204,8 +192,9 @@ class RecebimentosController < ApplicationController
     end
     if @recebimento.update_attributes(params[:recebimento]) 
       @recebimento.verifica_fluxo_de_caixa
-      if @recebimento.em_cheque? && @recebimento.cheque
-        @cheque.save
+      if @cheque.tem_dois_pacientes? || @cheque.tem_tres_pacientes?
+        valores     = @cheque.recebimentos.map(&:valor)
+        observacoes = @cheque.recebimentos.map(&:observacao)
       end
       Alteracoe.retira_permissao_de_alteracao('recebimentos', @recebimento.id, current_user.id) if !@recebimento.na_quinzena?
       #TODO fazer redirect_to back votlar para a presquisa feita com dados

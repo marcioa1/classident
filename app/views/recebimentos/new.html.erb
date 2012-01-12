@@ -8,11 +8,9 @@
           maxRows: 5,
           select: function(event,ui){
             nome = ui.item.value;
-            alert('vai calcular a diferença');
             $("#segundo_paciente").val(nome);
             busca_id(2);
             diferenca = parseFloat($('#valor_do_cheque').val().replace(".","").replace(",",".")) - parseFloat($("#recebimento_valor_real").val().replace(".","").replace(",","."));
-             alert(diferenca);
             $('#valor_segundo_paciente').val(diferenca);
           }
         });

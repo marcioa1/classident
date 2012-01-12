@@ -70,9 +70,11 @@
     </tr>
     <tr>
       <td align='right'><%= label_tag :segundo_paciente %> : </td>
-      <td><%= text_field_tag :segundo_paciente, @segundo_paciente && @segundo_paciente.nome, :size=>30 %>
+      <td>
+        <div class="ui-widget">
+            <input id="paciente_2" size="40" class="ui-autocomplete-input" value= "<%= @segundo_paciente.nome%>" disabled="true">
+          </div>
         <%= hidden_field_tag :id_segundo_paciente , @segundo_paciente && @segundo_paciente.id %> 
-        <%= link_to "pesquisar", "#" , :onclick=>"busca_pacientes_que_iniciam_com('segundo_paciente')"%>
       </td>
     </tr>
     <tr id='linha_segundo_paciente' style='display:none;'>
@@ -86,20 +88,20 @@
     </tr>
     <tr>
       <td align='right'><%= label_tag :valor %> : </td>
-      <td><%= text_field_tag :valor_paciente_2 , @segundo_recebiento && @segundo_recebimento.valor.real, :size=>10 %></td>
+      <td><%= text_field_tag :valor_paciente_2 , @segundo_recebimento && @segundo_recebimento.valor.real, :size=>10, :disabled=>true %></td>
     </tr>
     <tr>
       <td align='right'><%= label_tag :observação %> : </td>
-      <td><%= text_field_tag :observacao_paciente_2 , @segundo_recebimento && @segundo_recebimento.observacao, :size=>30 %></td>
+      <td><%= text_field_tag :observacao_paciente_2 , @segundo_recebimento && @segundo_recebimento.observacao, :size=>30, :disabled=>true %></td>
     </tr>
     <tr>
       <td colspan="2"><hr></td>
     </tr>
     <tr>
       <td align='right'><%= label_tag :terceiro_paciente %> : </td>
-      <td><%= text_field_tag :terceiro_paciente, @terceiro_paciente && @terceiro_paciente.nome, :size=>30 %>
+      <td><%= text_field_tag :terceiro_paciente, @terceiro_paciente && @terceiro_paciente.nome, :size=>30, :disabled=>true %>
         <%= hidden_field_tag :id_terceiro_paciente , @terceiro_paciente && @terceiro_paciente.id %>
-        <%= link_to "pesquisar", "#" , :onclick=>"busca_pacientes_que_iniciam_com('terceiro_paciente')"%></td>
+      </td>
     </tr>
      <tr id='linha_terceiro_paciente' style='display:none;'>
         <td>&nbsp;</td>
@@ -111,11 +113,11 @@
       </tr>
     <tr>
       <td align='right'><%= label_tag :valor %> : </td>
-      <td><%= text_field_tag :valor_paciente_3 , @terceiro_paciente && @terceiro_recebimento.valor.real, :size=>10 %></td>
+      <td><%= text_field_tag :valor_paciente_3 , @terceiro_paciente && @terceiro_recebimento.valor.real, :size=>10, :disabled=>true %></td>
     </tr>
     <tr>
       <td align='right'><%= label_tag :observação %> : </td>
-      <td><%= text_field_tag :observacao_paciente_3 , @terceiro_recebimento && @terceiro_recebimento.observacao, :size=>30 %></td>
+      <td><%= text_field_tag :observacao_paciente_3 , @terceiro_recebimento && @terceiro_recebimento.observacao, :size=>30, :disabled=>true %></td>
     </tr>
   </table>
  
