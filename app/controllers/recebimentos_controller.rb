@@ -192,7 +192,7 @@ class RecebimentosController < ApplicationController
     end
     if @recebimento.update_attributes(params[:recebimento]) 
       @recebimento.verifica_fluxo_de_caixa
-      if @cheque.tem_dois_pacientes? || @cheque.tem_tres_pacientes?
+      if @cheque && @cheque.tem_dois_pacientes? || @cheque.tem_tres_pacientes?
         valores     = @cheque.recebimentos.map(&:valor)
         observacoes = @cheque.recebimentos.map(&:observacao)
       end
