@@ -36,5 +36,5 @@
 
 <br />
 
-<%= link_to 'Novo tipo de pagamento', new_tipo_pagamento_path if current_user.pode_alterar_na_clinica? %>
+<%= link_to 'Novo tipo de pagamento', new_tipo_pagamento_path if current_user.pode_alterar_na_clinica? || (@clinica_atual.administracao?  && current_user.administradora?) %>
 <% end %>
