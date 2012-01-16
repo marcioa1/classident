@@ -11,7 +11,7 @@
         <td>
           <% cheques = "" %>
           <% pg.cheques.each do |cq| %>
-            <% cheques = cheques + cq.banco.nome +  " | " + cq.numero + " | " + cq.recebimento.paciente.nome + " | " + cq.valor.real.to_s + "<br/>" %>
+            <% cheques = cheques + cq.banco.nome +  " | " + cq.numero + " | " + cq.nome_dos_pacientes + " | " + cq.valor.real.to_s + "<br/>" %>
           <% end %>
           <%= cheques %>
         </td>
