@@ -34,7 +34,8 @@
             $("#segundo_paciente").val(nome);
             busca_id_pelo_nome_2(nome);
             diferenca = parseFloat($('#valor_do_cheque').val().replace(".","").replace(",",".")) - parseFloat($("#recebimento_valor_real").val().replace(".","").replace(",","."));
-            $('#valor_segundo_paciente').val(diferenca);
+            diferenca_str = diferenca + ""
+            $('#valor_segundo_paciente').val(diferenca_str.replace('.',','));
           }
         });
       });
@@ -50,7 +51,8 @@
               busca_id_pelo_nome_3(nome);
 
               diferenca = parseFloat($('#valor_do_cheque').val()) - parseFloat($("#recebimento_valor_real").val()) - parseFloat($('#valor_segundo_paciente').val());
-              $('#valor_terceiro_paciente').val(diferenca);
+              diferenca_str = diferenca + ""
+              $('#valor_terceiro_paciente').val(diferenca_str.replace('.',','));
             }
           });
         });
