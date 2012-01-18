@@ -24,7 +24,7 @@
     </tr>
     <% total = Array.new(5, 0)%>
     <% @todos.each do |dentista| %>
-      <% val = dentista.producao_entre_datas(@data_inicial,@data_final).split("/")%>
+      <% val = dentista.producao_entre_datas(@data_inicial,@data_final, session[:clinica_id]).split("/")%>
 		  <% if val[1].to_f != 0.0 %>
 	      <tr>
 	        <td><%= link_to dentista.nome, abre_dentista_path(dentista.id) %>

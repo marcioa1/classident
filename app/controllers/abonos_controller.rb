@@ -19,7 +19,6 @@ class AbonosController < ApplicationController
     end
     @abonos = Abono.da_classident.entre_datas(@data_inicial, @data_final)
     @abonos = [] if @abonos.nil?
-# debugger
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @abonos }

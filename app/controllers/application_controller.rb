@@ -72,7 +72,6 @@ class ApplicationController < ActionController::Base
   #    # else
   #    #   data < primeira ? false : true
   #    # end
-  #    debugger
   #    (date.today - data).days > 25 ? false : true
   #  end
   

@@ -71,6 +71,10 @@ class EntradasController < ApplicationController
   end
   
   def na_administracao
+    debugger
+    @data_inicial = params[:datepicker].to_date if params[:datepicker]
+    @data_final   = params[:datepicker2].to_date if params[:datepicker2]
+      
     @entradas = Entrada.entrada_na_administracao.entre_datas(@data_inicial, @data_final)
   end
   

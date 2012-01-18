@@ -22,7 +22,7 @@ class Dentista < ActiveRecord::Base
     return valor #self.percentual.to_s + "/" + valor.to_s + "/" + custo.to_s + "/" + do_dentista.to_s  + "/" + da_clinica.to_s
   end
   
-  def producao_entre_datas(inicio,fim)
+  def producao_entre_datas(inicio,fim,clinica_id)
     valor = 0
     custo = 0
     do_dentista = 0
@@ -33,11 +33,11 @@ class Dentista < ActiveRecord::Base
         do_dentista += prod.valor.to_f * prod.percentual_dentista / 100
       end
     else
-      custo  = Tratamento.sum(:custo,:conditions=>['dentista_id = ? and data between ? and ? and not excluido ', self.id, inicio, fim]).to_f rescue 0
+      custo  = Tratamento.sum(:custo,:conditions=>['dentista_id = ? and data between ? and ? and not excluido and clinica_id = ? ', self.id, inicio, fim, clinica_id]).to_f rescue 0
       valor = 0
-      tratamentos = Tratamento.all(:conditions=>['dentista_id = ? and data between ? and ? and not excluido ', self.id, inicio, fim])
+      tratamentos = Tratamento.all(:conditions=>['dentista_id = ? and data between ? and ? and not excluido and clinica_id = ?', self.id, inicio, fim, clinica_id])
       tratamentos.each do |trat|
-        valor += trat.valor
+        valor += trat.valor_com_desconto
       end
       self.percentual = 0 if self.percentual.nil?
       do_dentista     = (valor - custo ) * self.percentual / 100
@@ -55,7 +55,7 @@ class Dentista < ActiveRecord::Base
   end
   
   def busca_producao(inicio,fim,clinicas)
-    resultado = Tratamento.do_dentista(id).por_data.entre(inicio, fim).da_clinica(clinicas)
+    resultado = Tratamento.do_dentista(id).por_data.entre(inicio, fim).da_clinica(clinicas).nao_excluido
   end
   
   def busca_producao_de_ortodontia(inicio,fim)

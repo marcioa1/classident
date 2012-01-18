@@ -1,7 +1,7 @@
 class ClinicasController < ApplicationController
   
   layout "adm"
-  before_filter :require_master_user, :only =>[:relatorio_de_exclusao]
+  # before_filter :require_master_user, :only =>[:relatorio_de_exclusao]
   before_filter :salva_action_na_session
   before_filter :verifica_se_tem_senha
   
@@ -28,7 +28,7 @@ class ClinicasController < ApplicationController
     @dentistas = Clinica.find(session[:clinica_id]).dentistas.por_nome
     @dentistas.each do |den|
       if den.ativo?
-        mensal = den.producao_entre_datas(@data_inicial,@data_final)
+        mensal = den.producao_entre_datas(@data_inicial,@data_final, session[:clinica_id])
         if mensal.split("/")[1].to_f > 0.0
           @valores << (mensal + "/" + den.nome + '/' + den.id.to_s)
         end
