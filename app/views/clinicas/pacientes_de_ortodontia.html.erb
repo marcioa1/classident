@@ -10,14 +10,16 @@
     <th>Motivo suspensão cobrança</th>
   </tr>
   <% @pacientes.each do |pac| %>
-    <tr>
-      <td><%= link_to pac.nome, abre_paciente_path(pac.id) %></td>
-      <td><%= pac.ortodontista.nome unless pac.ortodontista.nil?%></td>
-      <td align='right'><%= pac.mensalidade_de_ortodontia.real %></td>
-      <td><%= pac.data_da_suspensao_da_cobranca_de_orto.to_s_br unless pac.data_da_suspensao_da_cobranca_de_orto.nil? %></td>
-      <td><%= pac.motivo_suspensao_cobranca_orto unless pac.motivo_suspensao_cobranca_orto.nil?%></td>
-    </tr>
-    <% dados += "#{pac.nome};#{pac.ortodontista.nome  unless pac.ortodontista.nil?};#{pac.mensalidade_de_ortodontia.real.to_s};#{pac.data_da_suspensao_da_cobranca_de_orto.to_s_br unless  pac.data_da_suspensao_da_cobranca_de_orto.nil?};#{pac.motivo_suspensao_cobranca_orto unless pac.motivo_suspensao_cobranca_orto.nil?}>" %>
+    <% if pac.ortodontista && pac.ortodontista.ativo? %>
+      <tr>
+        <td><%= link_to pac.nome, abre_paciente_path(pac.id) %></td>
+        <td><%= pac.ortodontista.nome unless pac.ortodontista.nil?%></td>
+        <td align='right'><%= pac.mensalidade_de_ortodontia.real %></td>
+        <td><%= pac.data_da_suspensao_da_cobranca_de_orto.to_s_br unless pac.data_da_suspensao_da_cobranca_de_orto.nil? %></td>
+        <td><%= pac.motivo_suspensao_cobranca_orto unless pac.motivo_suspensao_cobranca_orto.nil?%></td>
+      </tr>
+      <% dados += "#{pac.nome};#{pac.ortodontista.nome  unless pac.ortodontista.nil?};#{pac.mensalidade_de_ortodontia.real.to_s};#{pac.data_da_suspensao_da_cobranca_de_orto.to_s_br unless  pac.data_da_suspensao_da_cobranca_de_orto.nil?};#{pac.motivo_suspensao_cobranca_orto unless pac.motivo_suspensao_cobranca_orto.nil?}>" %>
+    <% end %>
   <% end %>
 </table>
 <%= link_de_impressao(dados)%>

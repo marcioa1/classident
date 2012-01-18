@@ -70,7 +70,7 @@
             - if lancamento.entregue_a_administracao?
               %td &nbsp;
               %td{ :align=> 'right'}= lancamento.valor.real
-              -saldo_cheque -= lancamento.valor
+              - saldo_cheque -= lancamento.valor
               %td{ :align => "right" }
                 = saldo_cheque.real
               - total_de_debito_em_cheque += lancamento.valor

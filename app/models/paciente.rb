@@ -124,8 +124,16 @@ class Paciente < ActiveRecord::Base
     return total
   end
   
+  def total_de_abonos
+    total = 0
+    abonos.each() do |abono|
+      total += abono.valor #unless abono.excluido?
+    end
+    return total
+  end
+  
   def saldo
-    total_de_credito-total_de_debito
+    total_de_credito-total_de_debito+total_de_abonos
   end
   
   def gera_codigo(clinica_id)
