@@ -1,4 +1,4 @@
-class Cheque < ActiveRecord::Base
+  class Cheque < ActiveRecord::Base
   acts_as_audited
   has_many   :recebimentos
   belongs_to :banco
@@ -40,7 +40,7 @@ class Cheque < ActiveRecord::Base
                 data_recebimento_na_administracao IS NOT NULL 
                 and pagamento_id IS NULL
                 and destinacao_id IS NULL 
-                and data_entrega_ao_cofre IS NULL
+                and (data_envio_ao_cofre IS NULL or (data_envio_ao_cofre IS NOT NULL and data_recebimento_do_cofre IS NOT NULL))
                 and data_envio_a_clinica IS NULL
                 and bom_para > '2011-01-01'"]
   named_scope :do_banco, lambda{|banco| {:conditions=>["banco_id = ?", banco]}}
@@ -54,7 +54,10 @@ class Cheque < ActiveRecord::Base
   named_scope :nao_excluidos, :conditions=>["data_de_exclusao IS NULL"]
   named_scope :nao_reapresentados, :conditions=>["data_reapresentacao IS NULL"]
   named_scope :nao_recebidos, :conditions=>["data_recebimento_na_administracao IS NULL"]  
-  named_scope :no_cofre, :conditions=>["data_entrega_ao_cofre IS NOT NULL"]
+  named_scope :enviado_ao_cofre, :conditions=>["data_envio_ao_cofre IS NOT NULL and data_entrada_no_cofre IS NULL"]
+  named_scope :recebidos_no_cofre, :conditions=>["data_entrada_no_cofre IS NOT NULL and data_saida_do_cofre IS NULL"]
+  named_scope :devolvidos_pelo_cofre, :conditions=>["data_saida_do_cofre IS NOT NULL and data_recebimento_do_cofre IS NULL"]
+  named_scope :recebidos_do_cofre, :conditions=>["data_recebimento_do_cofre IS NOT NULL"]
   named_scope :ordenado_por, lambda {|ordem| {:order => ordem.to_sym}}
   named_scope :por_bom_para, :order=>:bom_para
   named_scope :por_valor, :order=>'valor desc'
@@ -139,6 +142,10 @@ class Cheque < ActiveRecord::Base
     return "solucionado" unless !solucionado?
     return "arquivo morto" unless !arquivo_morto?
     return "SPC" unless !spc?
+    return "enviado ao cofre" if enviado_ao_cofre?
+    return "no cofre" if entrou_no_cofre?
+    return "saiu do cofre" if saiu_do_cofre?
+    return "voltou do cofre" if recebeu_do_cofre?
     return "devolvido duas vezes em " + data_segunda_devolucao.to_s_br unless !devolvido_duas_vezes? 
     return "reapresentado em " + data_reapresentacao.to_s_br unless !reapresentado?
     return "devolvido uma vez em " + data_primeira_devolucao.to_s_br unless !devolvido_uma_vez?
@@ -159,6 +166,10 @@ class Cheque < ActiveRecord::Base
     return "devolv.: " + data_primeira_devolucao.to_s_br unless !devolvido_uma_vez?
     return "pgto adm" if usado_para_pagamento? and recebido_pela_administracao?
     return "pgto clí" if usado_para_pagamento? and !recebido_pela_administracao?
+    return "env. cofre" if enviado_ao_cofre?
+    return "no cofre" if entrou_no_cofre?
+    return "saiu do cofre" if saiu_do_cofre?
+    return "voltou do cofre" if recebeu_do_cofre?
     return "destinação" if com_destinacao?
     return "receb. adm" if recebido_pela_administracao?
     return "enviado adm" if entregue_a_administracao?
@@ -254,7 +265,28 @@ class Cheque < ActiveRecord::Base
   def recebido_pela_clinica?
     self.data_recebido_da_administracao.present?
   end
-    
+  
+  def enviado_ao_cofre?
+    self.data_envio_ao_cofre.present? && self.data_entrada_no_cofre.nil?
+  end
+
+  def entrou_no_cofre?
+    self.data_entrada_no_cofre.present? && self.data_saida_do_cofre.nil?
+  end
+  
+  def saiu_do_cofre?
+    self.data_saida_do_cofre.present? && self.data_recebimento_do_cofre.nil?
+  end
+  
+  def recebeu_do_cofre?
+    self.data_recebimento_do_cofre.present?
+  end
+  
+  def na_administracao?
+    self.data_recebimento_na_administracao.present? && self.data_envio_ao_cofre.nil? &&
+    self.data_entrada_no_cofre.nil? && self.data_saida_do_cofre.nil?
+  end
+  
   def limpo?
     return true if solucionado?
     return false if devolvido_duas_vezes? and !solucionado?
@@ -386,40 +418,40 @@ class Cheque < ActiveRecord::Base
          :descricao => "#{current_user.nome} tornou este cheque disponível em #{Date.today} : ( id do pagamento anterior : #{pagamento_id})")
   end
   
-  def envia_ao_cofre
+  def envia_ao_cofre(current_user)
     self.update_attribute(:data_envio_ao_cofre, Date.today)
     self.update_attribute(:data_entrada_no_cofre, nil)
     self.update_attribute(:data_saida_do_cofre, nil)
     self.update_attribute(:data_recebimento_do_cofre, nil)
     AcompanhamentoCheque.create(:cheque_id => self.id,
-         :origem    => clinica_id,
+         :origem    => Clinica::ADMINISTRACAO_ID,
          :user_id   => current_user.id, 
          :descricao => "#{current_user.nome} enviou ao cofre em #{Date.today}")
   end
 
-  def entra_no_cofre
+  def entra_no_cofre(current_user)
     self.update_attribute(:data_entrada_no_cofre, Date.today)
     self.update_attribute(:data_saida_do_cofre, nil)
     self.update_attribute(:data_recebimento_do_cofre, nil)
     AcompanhamentoCheque.create(:cheque_id => self.id,
-         :origem    => clinica_id,
+         :origem    => Clinica::ADMINISTRACAO_ID,
          :user_id   => current_user.id, 
          :descricao => "#{current_user.nome} entrou no cofre em #{Date.today}")
   end
 
-  def sai_do_cofre
+  def sai_do_cofre(current_user)
     self.update_attribute(:data_saida_do_cofre, Date.today)
     self.update_attribute(:data_recebimento_do_cofre, nil)
     AcompanhamentoCheque.create(:cheque_id => self.id,
-         :origem    => clinica_id,
+         :origem    => Clinica::ADMINISTRACAO_ID,
          :user_id   => current_user.id, 
          :descricao => "#{current_user.nome} saiu do cofre em #{Date.today}")
   end
 
-  def recebe_do_cofre
+  def recebe_do_cofre(current_user)
     self.update_attribute(:data_recebimento_do_cofre, Date.today)
     AcompanhamentoCheque.create(:cheque_id => self.id,
-         :origem    => clinica_id,
+         :origem    => Clinica::ADMINISTRACAO_ID,
          :user_id   => current_user.id, 
          :descricao => "#{current_user.nome} retirou do cofre em #{Date.today}")
   end
@@ -479,12 +511,18 @@ class Cheque < ActiveRecord::Base
         when status=="arquivo morto"
           @cheques = Cheque.arquivo_morto_entre_datas(data_inicial,data_final).
             das_clinicas(selecionadas).ordenado_por(ordem).nao_excluidos
-        when status== "colocados no cofre"
-          @cheques = Cheque.no_cofre(data_inicial,data_final).
+        when status== "enviados ao cofre"
+          @cheques = Cheque.enviados_ao_cofre(data_inicial,data_final).
             das_clinicas(selecionadas).ordenado_por(ordem).nao_excluidos
-        when status== "retirados do cofre"
-          @cheques = Cheque.retirados_do_cofre_entre_datas(data_inicial,data_final).
-            da_clinica(clinica_atual).ordenado_por(ordem).nao_excluidos
+        when status== "recebidos no cofre"
+          @cheques = Cheque.recebidos_no_cofre(data_inicial,data_final).
+            das_clinicas(selecionadas).ordenado_por(ordem).nao_excluidos
+        when status== "devolvidos pelo cofre"
+          @cheques = Cheque.devolvidos_pelo_cofre(data_inicial,data_final).
+            das_clinicas(selecionadas).ordenado_por(ordem).nao_excluidos
+        when status== "recebidos do cofre p/ adm"
+          @cheques = Cheque.recebidos_do_cofre(data_inicial,data_final).
+            das_clinicas(selecionadas).ordenado_por(ordem).nao_excluidos
 
       end
     else

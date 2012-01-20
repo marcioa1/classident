@@ -15,8 +15,8 @@ ActiveRecord::Schema.define(:version => 20111122142426) do
     t.date     "data"
     t.integer  "user_id"
     t.integer  "paciente_id"
-    t.decimal  "valor",                     :precision => 8, :scale => 2
-    t.string   "observacao",  :limit => 64
+    t.decimal  "valor",                      :precision => 8, :scale => 2
+    t.string   "observacao",  :limit => 128
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "clinica_id"

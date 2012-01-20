@@ -171,6 +171,7 @@ class ApplicationController < ActionController::Base
     end
     
     def verifica_horario_de_trabalho
+      return true
       if current_user
         return true if current_user.master?
         if !current_user.horario_de_trabalho?

@@ -7,7 +7,8 @@ class ChequesController < ApplicationController
   before_filter :verifica_se_tem_senha
   before_filter :find_current, :only => [:grava_destinacao, :show, :edit, :udpate,
                       :destroy, :reverte_cheque, :recebe_da_administracao,
-                      :devolve_a_clinica, :tornar_disponivel, :envia_a_administracao]
+                      :devolve_a_clinica, :tornar_disponivel, :envia_a_administracao,
+                      :envia_ao_cofre, :entra_no_cofre, :sai_do_cofre, :recebe_do_cofre]
 
   def index
     @cheques = Cheque.all
@@ -223,23 +224,23 @@ class ChequesController < ApplicationController
   end
   
   def envia_ao_cofre
-    @cheque.envia_ao_cofre(session[:clinica_id], current_user)
+    @cheque.envia_ao_cofre(current_user)
     head :ok
   end
 
   def entra_no_cofre
-    @cheque.entra_no_cofre(session[:clinica_id], current_user)
+    @cheque.entra_no_cofre(current_user)
     head :ok
   end
 
   def sai_do_cofre
-    @cheque.sai_do_cofre(session[:clinica_id], current_user)
+    @cheque.sai_do_cofre(current_user)
     head :ok
   end
 
 
-  def coloca_no_cofre
-    @cheque.colocar_no_cofre(session[:clinica_id], current_user)
+  def recebe_do_cofre
+    @cheque.recebe_do_cofre(current_user)
     head :ok
   end
 

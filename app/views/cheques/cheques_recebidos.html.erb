@@ -114,7 +114,13 @@
           else
             link_to "enviado à clínica em #{cheque.data_envio_a_clinica.to_s_br}. Receber", "javascript:recebe_cheque_devolvido(#{cheque.id});"
           end
-        when cheque.recebido_pela_administracao? then
+        when cheque.enviado_ao_cofre? && current_user.master?
+          link_to_function "confirma recebimento", "entra_no_cofre(#{cheque.id})"
+        when cheque.entrou_no_cofre? && current_user.master?
+          link_to_function "devolve à adm", "sai_do_cofre(#{cheque.id})"
+        when cheque.saiu_do_cofre?
+          link_to_function "recebe do cofre", "recebe_do_cofre(#{cheque.id})"
+        when cheque.recebido_pela_administracao? && cheque.na_administracao? then
           link_to 'devolver à clínica', "javascript:devolve_cheque_a_clinica(#{cheque.id})" if @clinica_atual.administracao?
        else cheque.status_resumido
     end %>
@@ -125,7 +131,7 @@
       <td>    <%= select_tag :destinacao_id,  options_for_select(@destinacoes), :id=>"destinacao_#{cheque.id}" %> <%= button_to_function "gravar", "grava_destinacao(#{cheque.id})"%>
       </td>
       <td>
-        <%= button_to_function "Cofre", "#"%>  
+        <%= button_to_function "Cofre", "envia_ao_cofre(#{cheque.id})"%>  
       </td>
     <% else %>
         <td><%= cheque.historico %></td>
