@@ -283,8 +283,8 @@
   end
   
   def na_administracao?
-    self.data_recebimento_na_administracao.present? && self.data_envio_ao_cofre.nil? &&
-    self.data_entrada_no_cofre.nil? && self.data_saida_do_cofre.nil?
+    self.data_recebimento_na_administracao.present? && (self.data_envio_ao_cofre.nil? || (
+      self.data_envio_ao_cofre.present? && self.data_recebimento_do_cofre.present?))
   end
   
   def limpo?
