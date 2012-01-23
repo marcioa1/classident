@@ -110,7 +110,8 @@ class TrabalhoProtetico < ActiveRecord::Base
   end
   
   def to_s
-    self.paciente.nome + ", " + self.observacoes + ", R$ " + self.valor.real.to_s
+    self.paciente.nome + ", " + (self.tabela_protetico && self.tabela_protetico.descricao) + 
+      " - " + self.observacoes + ", R$ " + self.valor.real.to_s
   end
 
 end
