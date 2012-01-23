@@ -50,8 +50,8 @@ class ItemTabelasController < ApplicationController
       flash[:notice] = 'ItemTabela criado com sucesso.'
       redirect_to(item_tabelas_path(:tabela_id=>@item_tabela.tabela_id)) 
     else
-      @tabela = Tabela.find(params[:tabela_id])
-      @item_tabela = ItemTabela.new
+      flash[:notice] = "ItemTabela erro. #{@item_tabela.errors.full_messages}"
+      @tabela = Tabela.find(@item_tabela.tabela_id)
       @item_tabela.tabela_id = @tabela.id
       @descricao_condutas = DescricaoConduta.all.collect{|obj| [obj.descricao, obj.id]}
       
@@ -75,7 +75,7 @@ class ItemTabelasController < ApplicationController
     @item_tabela.ativo = false
 
     @item_tabela.save
-    redirect_to(item_tabelas_url) 
+    redirect_to(item_tabelas_url(:tabela_id=>@item_tabela.tabela_id)) 
   end
   
   def grava_precos

@@ -2,7 +2,7 @@
 <fieldset>
     <legend>Novo item da tabela <%= @tabela.nome %></legend>
 <% form_for(@item_tabela) do |f| %>
-  <%= f.error_messages %>
+    <%= f.error_messages %>
 
     <%= f.hidden_field :tabela_id %>
   <p>
