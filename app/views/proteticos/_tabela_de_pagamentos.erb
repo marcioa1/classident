@@ -17,9 +17,24 @@
           <%= cheques %>
         </td>
         <td>
+            <table border=0>
+              <tr>
+                <th>Paciente</th>
+                <th>Descrição</th>
+                <th>Observação</th>
+                <th>Valor</th>
+                <th>Dt Devol.</th>
+              </tr>
           <% pg.trabalho_proteticos.each do |trab| %>
-            <%= trab.to_s %><br />
+              <tr>
+                <td><%= trab.paciente.nome%></td>
+                <td><%= trab.tabela_protetico && trab.tabela_protetico.descricao %></td>
+                <td><%= trab.observacoes %></td>
+                <td align = 'right'><%= trab.valor.real %></td>
+                <td><%= trab.data_de_devolucao.to_s_br%></td>
+              </tr>
           <% end %>
+            </table>
         </td>
       </tr>
     <% end %>
