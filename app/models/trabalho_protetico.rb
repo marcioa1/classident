@@ -108,5 +108,9 @@ class TrabalhoProtetico < ActiveRecord::Base
   def liberado_para_pagamento?
     self.liberado_para_pagamento
   end
+  
+  def to_s
+    self.paciente.nome + ", " + self.observacoes + ", R$ " + self.valor.real.to_s
+  end
 
 end

@@ -3,6 +3,7 @@
       <th width="120px">Data</th>
       <th width="120px">Valor</th>
       <th width="250px">Cheques</th>
+      <th>Detalhes</th>
     </tr>
     <% pagamentos.each do |pg| %>
       <tr>
@@ -14,6 +15,11 @@
             <% cheques = cheques + cq.banco.nome +  " | " + cq.numero + " | " + cq.nome_dos_pacientes + " | " + cq.valor.real.to_s + "<br/>" %>
           <% end %>
           <%= cheques %>
+        </td>
+        <td>
+          <% pg.trabalho_proteticos.each do |trab| %>
+            <%= trab.to_s %><br />
+          <% end %>
         </td>
       </tr>
     <% end %>
