@@ -2,7 +2,7 @@ class Abono < ActiveRecord::Base
   
   belongs_to :paciente
   
-  validates_length_of :observacao, :maximum => 20, :message => "Escreva a observação."
+  validates_length_of :observacao, :maximum => 255, :message => "Escreva a observação."
   validates_presence_of :data, :valor, :paciente_id
   
   named_scope :da_classident, :conditions => "clinica_id < 8"
