@@ -54,7 +54,7 @@
   named_scope :nao_excluidos, :conditions=>["data_de_exclusao IS NULL"]
   named_scope :nao_reapresentados, :conditions=>["data_reapresentacao IS NULL"]
   named_scope :nao_recebidos, :conditions=>["data_recebimento_na_administracao IS NULL"]  
-  named_scope :enviado_ao_cofre, :conditions=>["data_envio_ao_cofre IS NOT NULL and data_entrada_no_cofre IS NULL"]
+  named_scope :enviados_ao_cofre, :conditions=>["data_envio_ao_cofre IS NOT NULL and data_entrada_no_cofre IS NULL"]
   named_scope :recebidos_no_cofre, :conditions=>["data_entrada_no_cofre IS NOT NULL and data_saida_do_cofre IS NULL"]
   named_scope :devolvidos_pelo_cofre, :conditions=>["data_saida_do_cofre IS NOT NULL and data_recebimento_do_cofre IS NULL"]
   named_scope :recebidos_do_cofre, :conditions=>["data_recebimento_do_cofre IS NOT NULL"]
