@@ -5,7 +5,7 @@ class PacientesController < ApplicationController
   before_filter :busca_tabelas
   
   def index
-    @pacientes = Paciente.da_classident
+    # @pacientes = Paciente.da_classident
   end
 
   def show
@@ -239,7 +239,7 @@ class PacientesController < ApplicationController
       @paciente.tratamentos.each do |trat|
         if numero.nil? || (trat.orcamento && (numero.to_i == trat.orcamento.numero))
           pdf.draw_text trat.dente, :at => [30, y]
-          pdf.draw_text trat.descricao.gsub(/[^a-z0-9.:,$áéíóúãõ˜eç\/\- ]/i,'.'), :at => [ 60, y]
+          pdf.draw_text trat.descricao && trat.descricao.gsub(/[^a-z0-9.:,$áéíóúãõ˜eç\/\- ]/i,'.'), :at => [ 60, y]
           if trat.valor.present?
             pdf.bounding_box([180, y+7], :width => 50, :height => 12) do
               pdf.text trat.valor.real.to_s, :align => :right
