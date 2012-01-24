@@ -5,6 +5,7 @@ class PacientesController < ApplicationController
   before_filter :busca_tabelas
   
   def index
+    #
     # @pacientes = Paciente.da_classident
   end
 
