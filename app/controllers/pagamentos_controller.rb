@@ -94,7 +94,7 @@ class PagamentosController < ApplicationController
   def update
     @pagamento = Pagamento.find(params[:id])
     @pagamento.attributes = params[:pagamento]
-    if @pagamento.save (!current_user.master?)
+    if @pagamento.save(!current_user.master?)
       cheques_anteriores = @pagamento.cheques.map(&:id)
       ids = params[:cheques_ids].split(",")
       # retira os cheques usados num primeiro pagamento que nõa fazer 
@@ -174,18 +174,6 @@ class PagamentosController < ApplicationController
     @pagamentos = Pagamento.da_clinica(session[:clinica_id]).nao_excluidos.por_data.entre_datas(@data_inicial, @data_final).tipos(params[:tipo_pagamento_id])
     @titulo = "Pagamento entre #{@data_inicial.to_s_br} e #{@data_final.to_s_br} "
 
-    if params[:modo] != 'todos'
-      if params[:modo] == 'dinheiro'
-        @pagamentos = @pagamentos.em_dinheiro 
-        @titulo+= " em dinheiro"
-      elsif params[:modo] == 'cheque classident'
-        @pagamentos = @pagamentos.com_cheque_da_classident
-        @titulo += "em cheque da classident"
-      elsif params[:modo] == 'cheque paciente'
-        @pagamentos = @pagamentos.com_cheque_de_paciente 
-        @titulo += " com cheque de paciente"
-      end
-    end
     if params[:livro_caixa] == 'sim'
       @pagamentos = @pagamentos.no_livro_caixa
       @titulo += " no livro caixa"
@@ -201,8 +189,22 @@ class PagamentosController < ApplicationController
     if params[:conta_bancaria_id] && !params[:conta_bancaria_id].blank?
       @pagamentos = @pagamentos.pela_conta_bancaria(params[:conta_bancaria_id])
     end
-    @pagamentos = @pagamentos.nao_excluidos
-    # raise params[:livro_caixa].inspect
+
+
+    if params[:modo] != 'todos'
+      if params[:modo] == 'dinheiro'
+        @pagamentos = @pagamentos.em_dinheiro 
+        debugger
+        @pagamentos.delete_if{|pag| pag.modo_de_pagamento.downcase != "dinheiro"}
+        @titulo+= " em dinheiro"
+      elsif params[:modo] == 'cheque classident'
+        @pagamentos = @pagamentos.com_cheque_da_classident
+        @titulo += "em cheque da classident"
+      elsif params[:modo] == 'cheque paciente'
+        @pagamentos = @pagamentos.com_cheque_de_paciente 
+        @titulo += " com cheque de paciente"
+      end
+    end
   end
    
   def registra_pagamento_a_protetico
