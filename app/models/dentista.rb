@@ -35,7 +35,7 @@ class Dentista < ActiveRecord::Base
     else
       custo  = Tratamento.sum(:custo,:conditions=>['dentista_id = ? and data between ? and ? and not excluido and clinica_id = ? ', self.id, inicio, fim, clinica_id]).to_f rescue 0
       valor = 0.0
-      tratamentos = Tratamento.all(:conditions=>['dentista_id = ? and data between ? and ? and not excluido and clinica_id = ?', self.id, inicio, fim, clinica_id])
+      tratamentos = Tratamento.all(:conditions=>['dentista_id = ? and data between ? and ? and not excluido and clinica_id in (?)', self.id, inicio, fim, clinica_id])
       tratamentos.each do |trat|
         valor += trat.valor_com_desconto
       end
