@@ -127,6 +127,10 @@ class Recebimento < ActiveRecord::Base
     self.na_quinzena? || self.liberado_para_alteracao?
   end
   
+  def com_problema?
+    self.cheque && self.cheque.com_problema?
+  end
+  
   def liberado_para_alteracao?
     return true if self.new_record?
     reg = Alteracoe.all(:conditions=>["tabela='#{self.class.table_name}' and id_liberado = #{self.id}"]).last
