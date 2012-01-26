@@ -177,12 +177,12 @@ class Recebimento < ActiveRecord::Base
    
    def valor_tem_que_ser_positivo
      errors.add(:valor, "não pode negativo") if
-      !valor.blank? and valor < 0
+      valor.present? && valor.to_i < 0
   end
 
   def dinheiro_somente_hoje
      errors.add(:data, "não pode no futuro se o recebimento não for em cheque") if
-      !self.em_cheque? and self.data > Date.today
+      !self.em_cheque? && self.data > Date.today
   end
   
   # private
