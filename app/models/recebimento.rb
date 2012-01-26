@@ -177,7 +177,7 @@ class Recebimento < ActiveRecord::Base
    
    def valor_tem_que_ser_positivo
      errors.add(:valor, "não pode negativo") if
-      valor.present? && valor.to_i < 0
+      valor.present? && valor < 0
   end
 
   def dinheiro_somente_hoje
