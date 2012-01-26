@@ -113,7 +113,7 @@ class Pagamento < ActiveRecord::Base
   end
   
   def pode_alterar?
-    na_quinzena? || self.liberado_para_alteracao?
+    na_quinzena? || self.liberado_para_alteracao? || self.created_at.to_date == Date.today
   end
   
   def na_quinzena?
