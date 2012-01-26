@@ -119,7 +119,7 @@ class ClinicasController < ApplicationController
         fluxo          = FluxoDeCaixa.saldo_na_data(data_inicial).da_clinica(session[:clinica_id])
         @abertura[mes] = fluxo.first.saldo_em_dinheiro if !fluxo.empty?
         total          = Pagamento.da_clinica(session[:clinica_id]).entre_datas(data_inicial,data_final).
-        no_livro_caixa.nao_excluidos.sum('valor_pago')
+        no_livro_caixa.nao_excluidos.em_dinheiro.sum('valor_pago')
         terceiros      = Pagamento.da_clinica(session[:clinica_id]).entre_datas(data_inicial,data_final).
         no_livro_caixa.nao_excluidos.sum('valor_terceiros')
         @pagamento[mes]   = total - terceiros
