@@ -57,8 +57,9 @@ class DebitosController < ApplicationController
     @em_debito = []
     @tabelas   = Tabela.ativas.por_nome.da_clinica(session[:clinica_id])
     @pacientes.each do |pac|
+      puts pac.nome
       if params['tabela_' + pac.tabela_id.to_s]
-        @em_debito << pac if pac.em_debito?
+        @em_debito << pac if pac.em_debito? && !pac.sair_da_lista_de_debitos?
       end
     end
     @titulo = "Pacientes em débito da clínica #{@clinica_atual.nome}"
