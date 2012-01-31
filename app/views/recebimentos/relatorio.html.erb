@@ -74,6 +74,9 @@
       </tr>
     </table>
     <% end %>
-    <%= link_de_impressao(dados, session[:clinica_id], 'landscape')%>
+    <% form_tag imprime_path(:clinica_id=>session[:clinica_id],:orientation=>'landscape') do %>
+      <%= text_field_tag :tabela, dados %>
+      <%= submit_tag "imprime" %>
+    <% end %>
 
   <% end %>
