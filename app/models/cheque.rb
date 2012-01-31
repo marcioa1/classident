@@ -41,7 +41,7 @@
                 and pagamento_id IS NULL
                 and destinacao_id IS NULL 
                 and (data_envio_ao_cofre IS NULL or (data_envio_ao_cofre IS NOT NULL and data_recebimento_do_cofre IS NOT NULL))
-                and data_envio_a_clinica IS NULL
+                and (data_envio_a_clinica IS NULL || (data_envio_a_clinica < data_recebimento_na_administracao))
                 and bom_para > '2011-01-01'"]
   named_scope :do_banco, lambda{|banco| {:conditions=>["banco_id = ?", banco]}}
   named_scope :do_valor, lambda{|valor| {:conditions=>["valor=?", valor]}}
