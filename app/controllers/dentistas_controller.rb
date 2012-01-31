@@ -191,7 +191,7 @@ class DentistasController < ApplicationController
       @clinicas_da_pesquisa.each do |cli|
         Clinica.find(cli).ortodontistas.each do |orto|
           dentista = Dentista.find(orto)
-          @todos << dentista if dentista.ativo?
+          @todos << dentista if dentista.ativo? && !@todos.include?(orto)
         end
       end
       @todos.sort!{|a,b| a[:nome] <=> b[:nome] }
