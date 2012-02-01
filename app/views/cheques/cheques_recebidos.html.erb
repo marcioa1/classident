@@ -73,7 +73,13 @@
          <% if cheque.entregue_a_administracao? %>
            <%= link_to "Receber",  "javascript:confirma_recebimento_de_cheque(#{cheque.id})"%>
          <% else %>
-          <%= cheque.data_recebimento_na_administracao.to_s_br %>
+         <% if params[:status] ==  "enviados ao cofre" %>
+           <%= cheque.data_envio_ao_cofre.to_s_br %>
+         <% elsif params[:status] ==  "devolvidos pelo cofre" %>
+           <%= cheque.data_saida_do_cofre.to_s_br %>
+          <% else %>
+            <%= cheque.data_recebimento_na_administracao.to_s_br %>
+         <% end %>
          <% end %>
       </td>
     <% else %>

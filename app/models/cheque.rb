@@ -54,10 +54,10 @@
   named_scope :nao_excluidos, :conditions=>["data_de_exclusao IS NULL"]
   named_scope :nao_reapresentados, :conditions=>["data_reapresentacao IS NULL"]
   named_scope :nao_recebidos, :conditions=>["data_recebimento_na_administracao IS NULL"]  
-  named_scope :enviados_ao_cofre, :conditions=>["data_envio_ao_cofre IS NOT NULL and data_entrada_no_cofre IS NULL"]
-  named_scope :recebidos_no_cofre, :conditions=>["data_entrada_no_cofre IS NOT NULL and data_saida_do_cofre IS NULL"]
-  named_scope :devolvidos_pelo_cofre, :conditions=>["data_saida_do_cofre IS NOT NULL and data_recebimento_do_cofre IS NULL"]
-  named_scope :recebidos_do_cofre, :conditions=>["data_recebimento_do_cofre IS NOT NULL"]
+  named_scope :enviados_ao_cofre, lambda{|inicio,fim| {:conditions=>["data_envio_ao_cofre IS NOT NULL and data_envio_ao_cofre BETWEEN ? AND ?", inicio, fim]}}
+  named_scope :recebidos_no_cofre, lambda{|inicio,fim| {:conditions=>["data_entrada_no_cofre IS NOT NULL and data_entrada_no_cofre BETWEEN ? and ?", inicio, fim]}}
+  named_scope :devolvidos_pelo_cofre, lambda{|inicio,fim| {:conditions=>["data_saida_do_cofre IS NOT NULL and data_saida_do_cofre BETWEEN  and ?", inicio, fim]}}
+  named_scope :recebidos_do_cofre, lambda{|inicio,fim| {:conditions=>["data_recebimento_do_cofre IS NOT NULL and data_recebimento_do_cofre BETWEEN ? and ? ", inicio, fim]}}
   named_scope :ordenado_por, lambda {|ordem| {:order => ordem.to_sym}}
   named_scope :por_bom_para, :order=>:bom_para
   named_scope :por_valor, :order=>'valor desc'
@@ -374,7 +374,7 @@
     AcompanhamentoCheque.create(:cheque_id => self.id,
          :origem    => clinica_id,
          :user_id   => current_user.id, 
-         :descricao => "#{current_user.nome} enviou o cheque à administração em #{Date.today}")
+         :descricao => "#{current_user.nome} enviou o cheque à administração em #{Date.today.to_s_br}")
   end
   
   def confirma_recebimento_na_administracao(clinica_id, current_user)    
@@ -382,7 +382,7 @@
     AcompanhamentoCheque.create(:cheque_id => self.id,
          :origem    => clinica_id,
          :user_id   => current_user.id, 
-         :descricao => "#{current_user.nome} confirmou o recebimento em #{Date.today}")
+         :descricao => "#{current_user.nome} confirmou o recebimento em #{Date.today.to_s_br}")
   end
   
   def devolve_a_clinica(clinica_id, current_user)
@@ -390,7 +390,7 @@
     AcompanhamentoCheque.create(:cheque_id => self.id,
          :origem    => clinica_id,
          :user_id   => current_user.id, 
-         :descricao => "#{current_user.nome} devolveu à clínica em #{Date.today}")
+         :descricao => "#{current_user.nome} devolveu à clínica em #{Date.today.to_s_br}")
   end
   
   def recebe_da_administracao(clinica_id, current_user)
@@ -398,7 +398,7 @@
     AcompanhamentoCheque.create(:cheque_id => self.id,
          :origem    => clinica_id,
          :user_id   => current_user.id, 
-         :descricao => "#{current_user.nome} recebeu da administração em #{Date.today}")
+         :descricao => "#{current_user.nome} recebeu da administração em #{Date.today.to_s_br}")
   end
 
   def registra_destinacao(clinica_id, current_user, destinacao_id)
@@ -406,7 +406,7 @@
     AcompanhamentoCheque.create(:cheque_id => self.id,
          :origem    => clinica_id,
          :user_id   => current_user.id, 
-         :descricao => "#{current_user.nome} destinou o cheque em #{Date.today}")
+         :descricao => "#{current_user.nome} destinou o cheque em #{Date.today.to_s_br}")
   end
 
   def registra_disponivel(clinica_id, current_user)
@@ -415,7 +415,7 @@
     AcompanhamentoCheque.create(:cheque_id => self.id,
          :origem    => clinica_id,
          :user_id   => current_user.id, 
-         :descricao => "#{current_user.nome} tornou este cheque disponível em #{Date.today} : ( id do pagamento anterior : #{pagamento_id})")
+         :descricao => "#{current_user.nome} tornou este cheque disponível em #{Date.today.to_s_br} : ( id do pagamento anterior : #{pagamento_id})")
   end
   
   def envia_ao_cofre(current_user)
@@ -426,7 +426,7 @@
     AcompanhamentoCheque.create(:cheque_id => self.id,
          :origem    => Clinica::ADMINISTRACAO_ID,
          :user_id   => current_user.id, 
-         :descricao => "#{current_user.nome} enviou ao cofre em #{Date.today}")
+         :descricao => "#{current_user.nome} enviou ao cofre em #{Date.today.to_s_br}")
   end
 
   def entra_no_cofre(current_user)
@@ -436,7 +436,7 @@
     AcompanhamentoCheque.create(:cheque_id => self.id,
          :origem    => Clinica::ADMINISTRACAO_ID,
          :user_id   => current_user.id, 
-         :descricao => "#{current_user.nome} entrou no cofre em #{Date.today}")
+         :descricao => "#{current_user.nome} entrou no cofre em #{Date.today.to_s_br}")
   end
 
   def sai_do_cofre(current_user)
@@ -445,7 +445,7 @@
     AcompanhamentoCheque.create(:cheque_id => self.id,
          :origem    => Clinica::ADMINISTRACAO_ID,
          :user_id   => current_user.id, 
-         :descricao => "#{current_user.nome} saiu do cofre em #{Date.today}")
+         :descricao => "#{current_user.nome} saiu do cofre em #{Date.today.to_s_br}")
   end
 
   def recebe_do_cofre(current_user)
@@ -453,7 +453,7 @@
     AcompanhamentoCheque.create(:cheque_id => self.id,
          :origem    => Clinica::ADMINISTRACAO_ID,
          :user_id   => current_user.id, 
-         :descricao => "#{current_user.nome} retirou do cofre em #{Date.today}")
+         :descricao => "#{current_user.nome} retirou do cofre em #{Date.today.to_s_br}")
   end
 
   def pode_alterar?(user)
@@ -465,7 +465,7 @@
   
   
   def self.pesquisa(status,data_inicial,data_final,selecionadas ,clinica_atual, ordem)
-    if clinica_atual == Clinica::ADMINISTRACAO_ID
+    if clinica_atual.to_i == Clinica::ADMINISTRACAO_ID
       case
         when status == 'todos' 
           @cheques = Cheque.na_administracao.entre_datas(data_inicial,data_final).
