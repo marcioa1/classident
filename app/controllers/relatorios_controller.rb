@@ -59,7 +59,6 @@ class RelatoriosController < ApplicationController
         end
       end
       bounding_box [2, devy - 50], :width  => bounds.width do
-        debugger
         table([header] + items  , :header => true) do
             # style(row(0), :background_color => 'ff00ff')
           row(0).style(:font_style => :bold, :background_color => 'cccccc')
