@@ -16,6 +16,7 @@
   %table{:class=>'tabela'}
     %tr
       %th Data do lançamento
+      %th Paciente
       %th{:width=>80} Valor
       %th Usuário
       %th Data de exclusão
@@ -24,6 +25,7 @@
     -@recebimentos_excluidos.each do |rec|
       %tr
         %td= rec.data.to_s_br
+        %td= rec.paciente.nome
         %td{:align => 'right'}= rec.valor.real
         - user = User.find(rec.usuario_exclusao) if rec.usuario_exclusao
         %td= user && user.nome 
