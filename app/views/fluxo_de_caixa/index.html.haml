@@ -236,8 +236,8 @@
             - total_de_credito_em_dinheiro += lancamento.valor.abs
           %td &nbsp;
           %td &nbsp;
-          %td &nbsp;
-          %td &nbsp;
+          %td{ :align => "right" }
+            = saldo_cheque.real
           %td &nbsp;
           - dados += ";;;;;"
         - else
@@ -269,7 +269,6 @@
             %td &nbsp;
             - dados += ";;;;"
       - dados += ">"
-      - #raise dados.inspect
     %tr
       %td= 'Saldo de fechamento'
       %td{ :align=>'right' }= total_de_credito_em_dinheiro.real

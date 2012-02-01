@@ -77,7 +77,7 @@
     </table>
     <% end %>
     <% form_tag imprime_path(:clinica_id=>session[:clinica_id],:orientation=>'landscape') do %>
-      <%= text_field_tag :tabela, dados %>
+      <%= hidden_field_tag :tabela, dados %>
       <%= submit_tag "imprime" %>
     <% end %>
 

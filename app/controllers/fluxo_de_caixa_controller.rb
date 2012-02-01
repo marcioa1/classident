@@ -40,6 +40,16 @@ class FluxoDeCaixaController < ApplicationController
         cheques_recebimentos << rec.cheque if rec.cheque
       end
       @cheques      = Cheque.enviados_a_administracao(@fluxo.data,@fluxo.data).nao_excluidos.da_clinica(session[:clinica_id]) - cheques_recebimentos
+      
+      cheques_recebidos = Cheque.da_clinica(session[:clinica_id]).entre_datas(@fluxo.data,@fluxo.data).nao_excluidos
+      cheques_recebidos.each do |chq|
+        chq.recebimentos.each do |rec|
+          @recebimentos << rec if !@recebimentos.include?(rec)
+        end
+      end
+      @recebimentos.delete_if{|r| r.em_cheque? && (r.cheque.bom_para< @fluxo.data || r.cheque.bom_para > @fluxo.data)}
+
+      
     end
 
     @pagamentos   = Pagamento.da_clinica(session[:clinica_id]).no_dia(@fluxo.data).
