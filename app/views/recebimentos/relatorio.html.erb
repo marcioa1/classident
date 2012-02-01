@@ -28,7 +28,9 @@
     <% total = 0 %>
     <% @recebimentos.each do |recebimento| %>
     <tr >
-      <td align="center"><%=h recebimento.data.to_s_br %></td>
+      <td align="center"><%=h recebimento.em_cheque? ? recebimento.cheque.bom_para.to_s_br  : recebimento.data.to_s_br %>
+        <%= "(*)" if recebimento.em_cheque? && recebimento.cheque.bom_para != recebimento.data %>  
+      </td>
       <td><%=h recebimento.paciente.nome %></td>
       <td align="right"><%=h number_to_currency(recebimento.valor.to_f, :unit=>'') %></td>
       <td><%=h recebimento.observacao %></td>

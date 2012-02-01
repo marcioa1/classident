@@ -245,6 +245,14 @@ class RecebimentosController < ApplicationController
                 por_data.entre_datas(@data_inicial, @data_final).
                 nas_formas(formas_selecionadas.split(",").to_a).
                 nao_excluidos
+ #     debugger
+      @cheques = Cheque.da_clinica(session[:clinica_id]).entre_datas(@data_inicial, @data_final)
+      @cheques.each do |chq|
+        chq.recebimentos.each do |rec|
+          @recebimentos << rec if !@recebimentos.include?(rec)
+        end
+      end
+      @recebimentos.delete_if{|r| r.em_cheque? && (r.cheque.bom_para< @data_inicial || r.cheque.bom_para > @data_final)}
       @recebimentos_excluidos = Recebimento.da_clinica(session[:clinica_id]).
                            por_data.entre_datas(@data_inicial, @data_final).
                            nas_formas(formas_selecionadas.split(",").to_a).
