@@ -55,11 +55,12 @@ class RelatoriosController < ApplicationController
       data = items.flatten
       items.each do |it|
         it.each_with_index do |st,index|
-          it[index] = st.gsub(/[^a-z0-9.:,$áéíóúãõ˜eç\/\- ]/i,'.')
+          it[index] = st.gsub(/[^a-z0-9.:,$ ]/i,'.')
         end
       end
       bounding_box [2, devy - 50], :width  => bounds.width do
-        table([header] + items , :header => true) do
+        debugger
+        table([header] + items  , :header => true) do
             # style(row(0), :background_color => 'ff00ff')
           row(0).style(:font_style => :bold, :background_color => 'cccccc')
           tr[2].split(';').each_with_index do |al,index|
