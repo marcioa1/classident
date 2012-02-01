@@ -1,6 +1,8 @@
 = content_for :main do
   %h3
     Relatorio de exclusão
+  - dados = "Controle de Exclusão>Data lançamento;Paciente;Valor;Usuário;Data de exclusão;Observação;Cheque>center;left;right;left;center;left;left;>"
+
   - form_tag relatorio_de_exclusao_clinicas_path() do
     %div
       Clínicas :
@@ -32,6 +34,16 @@
         %td= rec.data_de_exclusao.to_s_br
         %td= rec.observacao_exclusao
         %td= rec.cheque.observacao if rec.cheque.present?
+        - dados += "#{rec.data.to_s_br};#{rec.paciente.nome};#{rec.valor.real.to_s};#{user && user.nome};#{rec.data_de_exclusao.to_s_br};#{rec.observacao_exclusao};"
+        - if rec.cheque.present?
+          - dados += "#{rec.cheque.observacao};>"
+        - else
+          - dados += "; ;>"
+  %p
+  - form_tag imprime_path(:clinica_id=>params[:clinica_id],:orientation=>'landscape') do 
+    = hidden_field_tag :tabela, dados
+    = submit_tag "imprime"
+
   %p
   %h4 Pagamentos
   %table{:class=>'tabela'}
