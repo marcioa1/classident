@@ -71,19 +71,19 @@ class Paciente < ActiveRecord::Base
   end
   
   def data_suspensao_da_cobranca_de_orto_br
-    self.data_suspensao_da_cobranca_de_orto_br = data_suspensao_da_cobranca_de_orto.to_s_br if data_suspensao_da_cobranca_de_orto_br
+    self.data_da_suspensao_da_cobranca_de_orto.to_s_br if self.data_da_suspensao_da_cobranca_de_orto
   end
   
-  def data_suspensao_da_cobranca_de_orto_br=(data)
-    self.data_suspensao_da_cobranca_de_orto = data_suspensao_da_cobranca_de_orto_br.to_date if Date.valid?(data_suspensao_da_cobranca_de_orto_br)
+  def data_suspensao_da_cobranca_de_orto_br=(value)
+    self.data_da_suspensao_da_cobranca_de_orto = value if Date.valid?(value)
   end
   
   def data_da_saida_da_lista_de_debitos_br
     self.data_da_saida_da_lista_de_debitos.to_s_br if self.data_da_saida_da_lista_de_debitos
   end
   
-  def data_da_saida_da_lista_de_debitos_br=(data)
-    self.data_da_saida_da_lista_de_debitos = data_da_saida_da_lista_de_debitos_br.to_date if Date.valid?(data_da_saida_da_lista_de_debitos)
+  def data_da_saida_da_lista_de_debitos_br=(value)
+    self.data_da_saida_da_lista_de_debitos = value.to_date if Date.valid?(value)
   end
   
   #validates_uniqueness_of :codigo

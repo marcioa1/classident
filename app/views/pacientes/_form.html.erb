@@ -75,7 +75,7 @@
 	    <tr><td align='right'><%= f.label 'Suspender cobrança de orto a partir de'%> : </td>
 		     <td>    
       		<% if current_user.master? %>
-        		<%= text_field_tag :datepicker3, @paciente.data_da_suspensao_da_cobranca_de_orto, :size=>8 %>
+        		<%= f.text_field :data_suspensao_da_cobranca_de_orto_br, :size=>10, :class => :datepicker %>
           <% else %>
             <%= @paciente.data_da_suspensao_da_cobranca_de_orto &&  @paciente.data_da_suspensao_da_cobranca_de_orto.to_s_br %>
          <% end %> 
@@ -105,7 +105,7 @@
     <p>
       <%= f.label :data_da_saída_da_lista_de_débitos %> :
       <% if current_user.master?  %>
-        <%= text_field_tag :datepicker4, @paciente.data_da_saida_da_lista_de_debitos.to_s_br , :size=>10 %>
+        <%= f.text_field :data_da_saida_da_lista_de_debitos_br, :size=>10, :class => :datepicker%>
       <% else %>
         <%= @paciente.data_da_saida_da_lista_de_debitos.to_s_br %>
       <% end %>
