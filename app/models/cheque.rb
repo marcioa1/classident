@@ -54,6 +54,7 @@
   named_scope :entregues_a_administracao, :conditions=>["data_entrega_administracao IS NOT NULL"]
   named_scope :enviados_a_administracao, lambda{|inicio,fim| {:conditions=>["data_entrega_administracao between ? and ? ", inicio, fim]}}
   named_scope :na_administracao, :conditions=>["data_recebimento_na_administracao IS NOT NULL"]
+  named_scope :nao_devolvido_duas_vezes, :conditions=>["data_segunda_devolucao IS NULL"]
   named_scope :nao_excluidos, :conditions=>["data_de_exclusao IS NULL"]
   named_scope :nao_reapresentados, :conditions=>["data_reapresentacao IS NULL"]
   named_scope :nao_recebidos, :conditions=>["data_recebimento_na_administracao IS NULL"]  
@@ -502,7 +503,8 @@
             das_clinicas(selecionadas).ordenado_por(ordem).nao_excluidos
         when status == 'reapresentado'
           @cheques = Cheque.na_administracao.reapresentados(data_inicial,data_final).
-            das_clinicas(selecionadas).ordenado_por(ordem).nao_excluidos.sem_solucao.nao_spc
+            das_clinicas(selecionadas).ordenado_por(ordem).nao_excluidos.sem_solucao.
+            nao_spc.nao_devolvido_duas_vezes
         when status=="spc"
           @cheques = Cheque.na_administracao.spc(data_inicial,data_final).
             das_clinicas(selecionadas).ordenado_por(ordem).nao_excluidos.sem_solucao
