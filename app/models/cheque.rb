@@ -1,3 +1,6 @@
+#TODO status na clinica atualizar o extato dos cheques
+
+
   class Cheque < ActiveRecord::Base
   acts_as_audited
   has_many   :recebimentos
@@ -141,6 +144,7 @@
   
   
   def status
+    # debugger
     return "solucionado" unless !solucionado?
     return "arquivo morto" unless !arquivo_morto?
     return "SPC" unless !spc?
@@ -154,8 +158,9 @@
     return "usado pgto na adm" if usado_para_pagamento? and recebido_pela_administracao?
     return "usado pgto na clínica" if usado_para_pagamento? and !recebido_pela_administracao?
     return "com destinação" if com_destinacao?
-    return "disponível" unless !sem_devolucao? 
     return "recebido pela adm" if recebido_pela_administracao?
+    return "Na adm" if recebido_pela_administracao?
+    return "disponível" unless !sem_devolucao? && !enviado_a_administacao?
     return "entregue à adm" if entregue_a_administracao?
   end
   
