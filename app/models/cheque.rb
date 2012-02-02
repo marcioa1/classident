@@ -146,20 +146,20 @@
   
   def status
     # debugger
-    return "solucionado" unless !solucionado?
-    return "arquivo morto" unless !arquivo_morto?
+    return "solucionado em #{self.data_solucao.to_s_br}" unless !solucionado?
+    return "arquivo morto em #{self.data_arquivo_morto.so_s_br}" unless !arquivo_morto?
     return "SPC" unless !spc?
-    return "enviado ao cofre" if enviado_ao_cofre?
-    return "no cofre" if entrou_no_cofre?
-    return "saiu do cofre" if saiu_do_cofre?
-    return "voltou do cofre" if recebeu_do_cofre?
-    return "devolvido duas vezes em " + data_segunda_devolucao.to_s_br unless !devolvido_duas_vezes? 
-    return "reapresentado em " + data_reapresentacao.to_s_br unless !reapresentado?
-    return "devolvido uma vez em " + data_primeira_devolucao.to_s_br unless !devolvido_uma_vez?
+    return "enviado ao cofre em #{self.data_envio_ao_cofre.to_s_br}" if enviado_ao_cofre?
+    return "no cofre em #{self.data_entrada_no_cofre.to_s_br}" if entrou_no_cofre?
+    return "saiu do cofre em #{self.data_saida_do_cofre.to_s_br}" if saiu_do_cofre?
+    return "voltou do cofre em #{self.data_recebimento_do_cofre.to_s_br}" if recebeu_do_cofre?
+    return "devolvido duas vezes em #{self.data_segunda_devolucao.to_s_br}" unless !devolvido_duas_vezes? 
+    return "reapresentado em #{self.data_reapresentacao.to_s_br}" unless !reapresentado?
+    return "devolvido uma vez em #{self.data_primeira_devolucao.to_s_br}" unless !devolvido_uma_vez?
     return "usado pgto na adm" if usado_para_pagamento? and recebido_pela_administracao?
     return "usado pgto na clínica" if usado_para_pagamento? and !recebido_pela_administracao?
     return "com destinação" if com_destinacao?
-    return "recebido pela adm" if recebido_pela_administracao?
+    return "recebido pela adm em #{self.data_recebimento_na_administracao.to_s_br}" if recebido_pela_administracao?
     return "Na adm" if recebido_pela_administracao?
     return "disponível" unless !sem_devolucao? && !enviado_a_administacao?
     return "entregue à adm" if entregue_a_administracao?
