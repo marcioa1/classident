@@ -58,7 +58,7 @@
   named_scope :nao_spc, :conditions=>["data_spc IS NULL"]
   named_scope :enviados_ao_cofre, lambda{|inicio,fim| {:conditions=>["data_envio_ao_cofre IS NOT NULL and data_envio_ao_cofre BETWEEN ? AND ?", inicio, fim]}}
   named_scope :recebidos_no_cofre, lambda{|inicio,fim| {:conditions=>["data_entrada_no_cofre IS NOT NULL and data_entrada_no_cofre BETWEEN ? and ?", inicio, fim]}}
-  named_scope :devolvidos_pelo_cofre, lambda{|inicio,fim| {:conditions=>["data_saida_do_cofre IS NOT NULL and data_saida_do_cofre BETWEEN  and ?", inicio, fim]}}
+  named_scope :devolvidos_pelo_cofre, lambda{|inicio,fim| {:conditions=>["data_saida_do_cofre IS NOT NULL and data_saida_do_cofre BETWEEN  ? and ?", inicio, fim]}}
   named_scope :recebidos_do_cofre, lambda{|inicio,fim| {:conditions=>["data_recebimento_do_cofre IS NOT NULL and data_recebimento_do_cofre BETWEEN ? and ? ", inicio, fim]}}
   named_scope :ordenado_por, lambda {|ordem| {:order => ordem.to_sym}}
   named_scope :por_bom_para, :order=>:bom_para
