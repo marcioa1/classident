@@ -491,13 +491,13 @@
             ordenado_por(ordem).nao_excluidos
         when status == 'devolvido' 
           @cheques = Cheque.na_administracao.devolvidos(data_inicial,data_final).
-            das_clinicas(selecionadas).ordenado_por(ordem).nao_excluidos.sem_solucao
+            das_clinicas(selecionadas).ordenado_por(ordem).nao_excluidos.sem_solucao.nao_spc
         when status == 'destinação'
           @cheques = Cheque.na_administracao.entre_datas(data_inicial,data_final).com_destinacao.
             das_clinicas(selecionadas).ordenado_por(ordem).nao_excluidos
         when status == 'reapresentado'
           @cheques = Cheque.na_administracao.reapresentados(data_inicial,data_final).
-            das_clinicas(selecionadas).ordenado_por(ordem).nao_excluidos.sem_solucao
+            das_clinicas(selecionadas).ordenado_por(ordem).nao_excluidos.sem_solucao.nao_spc
         when status=="spc"
           @cheques = Cheque.na_administracao.spc(data_inicial,data_final).
             das_clinicas(selecionadas).ordenado_por(ordem).nao_excluidos.sem_solucao
