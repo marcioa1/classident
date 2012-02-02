@@ -297,6 +297,14 @@ class RecebimentosController < ApplicationController
        nas_formas(formas_selecionadas.split(",").to_a).
        sem_problema.
        nao_excluidos
+    @cheques = Cheque.da_clinica(session[:clinica_id]).entre_datas(inicio, fim).nao_excluidos
+    @cheques.each do |chq|
+      chq.recebimentos.each do |rec|
+        @recebimentos << rec if !@recebimentos.include?(rec)
+      end
+    end
+    @recebimentos.delete_if{|r| r.em_cheque? && (r.cheque.bom_para< inicio || r.cheque.bom_para > fim)}
+
     @titulo = "Recebimento das clínicas entre #{inicio.to_s_br} e #{fim.to_s_br}"
   end
   
