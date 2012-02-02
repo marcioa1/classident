@@ -55,6 +55,7 @@
   named_scope :nao_reapresentados, :conditions=>["data_reapresentacao IS NULL"]
   named_scope :nao_recebidos, :conditions=>["data_recebimento_na_administracao IS NULL"]  
   named_scope :nao_solucionados, :conditions=>["data_solucao IS NULL"]
+  named_scope :nao_spc, :conditions=>["data_spc IS NULL"]
   named_scope :enviados_ao_cofre, lambda{|inicio,fim| {:conditions=>["data_envio_ao_cofre IS NOT NULL and data_envio_ao_cofre BETWEEN ? AND ?", inicio, fim]}}
   named_scope :recebidos_no_cofre, lambda{|inicio,fim| {:conditions=>["data_entrada_no_cofre IS NOT NULL and data_entrada_no_cofre BETWEEN ? and ?", inicio, fim]}}
   named_scope :devolvidos_pelo_cofre, lambda{|inicio,fim| {:conditions=>["data_saida_do_cofre IS NOT NULL and data_saida_do_cofre BETWEEN  and ?", inicio, fim]}}
@@ -476,7 +477,7 @@
             disponiveis_na_administracao.nao_excluidos.das_clinicas(selecionadas).ordenado_por(ordem)
         when status == 'devolvido 2 vezes' 
           @cheques = Cheque.devolvido_duas_vezes_entre_datas(data_inicial,data_final).
-                     nao_excluidos.das_clinicas(selecionadas).ordenado_por(ordem).nao_solucionados
+                     nao_excluidos.das_clinicas(selecionadas).ordenado_por(ordem).nao_solucionados.nao_spc
         when status == 'enviados à administração' 
           @cheques = Cheque.enviados_a_administracao(data_inicial,data_final).
             nao_recebidos.nao_excluidos.das_clinicas(selecionadas).ordenado_por(ordem)
