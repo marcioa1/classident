@@ -161,7 +161,7 @@
     return "com destinação" if com_destinacao?
     return "recebido pela adm em #{self.data_recebimento_na_administracao.to_s_br}" if recebido_pela_administracao?
     return "Na adm" if recebido_pela_administracao?
-    return "disponível" unless !sem_devolucao? && !enviado_a_administacao?
+    return "disponível" unless !sem_devolucao? && !enviado_a_administracao?
     return "entregue à adm" if entregue_a_administracao?
   end
   

@@ -64,17 +64,6 @@ class ApplicationController < ActionController::Base
     Date.new(Date.today.year, Date.today.month, 1)
   end
   
-  # def na_quinzena?(data)
-  #    # primeira = Date.new(Date.today.year,Date.today.month,1)
-  #    # segunda  = Date.new(Date.today.year,Date.today.month,16)
-  #    # if Date.today >= segunda
-  #    #   data < segunda ? false : true
-  #    # else
-  #    #   data < primeira ? false : true
-  #    # end
-  #    (date.today - data).days > 25 ? false : true
-  #  end
-  
   def na_quinzena?(data)
     if data
       # return  (Date.today - data).days > 25.days ? false : true
