@@ -8,7 +8,7 @@ class ClinicasController < ApplicationController
   def selecionou_clinica
     session[:clinica_id] = params[:clinica_id]
     @clinica_atual       = Clinica.busca_clinica(params[:clinica_id])
-    Debito.verifica_debitos_de_ortodontia(session[:clinica_id]) unless @clinica_atual.administracao?
+    # Debito.verifica_debitos_de_ortodontia(session[:clinica_id]) unless @clinica_atual.administracao?
     expire_fragment "cabecalho_#{current_user.id}"
     if @clinica_atual.administracao?
       redirect_to administracao_path
