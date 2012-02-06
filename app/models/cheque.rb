@@ -147,7 +147,7 @@
   def status
     # debugger
     return "solucionado em #{self.data_solucao.to_s_br}" unless !solucionado?
-    return "arquivo morto em #{self.data_arquivo_morto.so_s_br}" unless !arquivo_morto?
+    return "arquivo morto em #{self.data_arquivo_morto.to_s_br}" unless !arquivo_morto?
     return "SPC" unless !spc?
     return "enviado ao cofre em #{self.data_envio_ao_cofre.to_s_br}" if enviado_ao_cofre?
     return "no cofre em #{self.data_entrada_no_cofre.to_s_br}" if entrou_no_cofre?
