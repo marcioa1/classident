@@ -122,7 +122,7 @@
           end
         when cheque.enviado_ao_cofre? && current_user.master?
           link_to_function "confirma recebimento", "entra_no_cofre(#{cheque.id})"
-        when cheque.enviado_ao_cofre && current_user.administradora?
+        when cheque.enviado_ao_cofre? && current_user.administradora?
           link_to_function "reverter", "reverte_do_cofre(#{cheque.id})"
         when cheque.entrou_no_cofre? && current_user.master?
           link_to_function "devolve à adm", "sai_do_cofre(#{cheque.id})"

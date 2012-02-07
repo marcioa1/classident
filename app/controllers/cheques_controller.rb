@@ -8,7 +8,8 @@ class ChequesController < ApplicationController
   before_filter :find_current, :only => [:grava_destinacao, :show, :edit, :udpate,
                       :destroy, :reverte_cheque, :recebe_da_administracao,
                       :devolve_a_clinica, :tornar_disponivel, :envia_a_administracao,
-                      :envia_ao_cofre, :entra_no_cofre, :sai_do_cofre, :recebe_do_cofre]
+                      :envia_ao_cofre, :entra_no_cofre, :sai_do_cofre, 
+                      :recebe_do_cofre, :reverte_do_cofre]
 
   def index
     @cheques = Cheque.all
@@ -243,7 +244,7 @@ class ChequesController < ApplicationController
     head :ok
   end
 
-  def revert_do_cofre
+  def reverte_do_cofre
     @cheque.reverte_do_cofre(current_user)
     head :ok
   end
