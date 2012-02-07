@@ -463,6 +463,14 @@
          :user_id   => current_user.id, 
          :descricao => "#{current_user.nome} retirou do cofre em #{Date.today.to_s_br}")
   end
+  
+  def reverte_do_cofre(current_user)
+    self.update_attribute(:data_envio_ao_cofre, nil)
+    AcompanhamentoCheque.create(:cheque_id => self.id,
+         :origem    => Clinica::ADMINISTRACAO_ID,
+         :user_id   => current_user.id, 
+         :descricao => "#{current_user.nome} reverteu entrefa ao cofre em #{Date.today.to_s_br}")
+  end
 
   def pode_alterar?(user)
     return true if user.master?

@@ -238,12 +238,16 @@ class ChequesController < ApplicationController
     head :ok
   end
 
-
   def recebe_do_cofre
     @cheque.recebe_do_cofre(current_user)
     head :ok
   end
 
+  def revert_do_cofre
+    @cheque.reverte_do_cofre(current_user)
+    head :ok
+  end
+  
   def find_current
     puts "----------------------"
     puts "passou pelo find_current"

@@ -13,7 +13,8 @@ ActionController::Routing::Routes.draw do |map|
                    :recebe_da_administracao => :get, :confirma_recebimento_na_administracao => :get,
                    :grava_destinacao => :get, :tornar_disponivel => :get,
                    :envia_a_administracao => :get, :envia_ao_cofre => :get,
-                   :entra_no_cofre => :get, :sai_do_cofre => :get, :recebe_do_cofre => :get}
+                   :entra_no_cofre => :get, :sai_do_cofre => :get, :recebe_do_cofre => :get,
+                   :reverte_do_cofre => :get}
                 
   map.resource :clinicas, :collection=>{:producao_entre_datas=>:get, :producao_anual=>:get,
        :relatorio_alta=>:get, :abandono_de_tratamento=>:get, :pacientes_de_ortodontia =>:get,
