@@ -259,7 +259,7 @@
   end
   
   def usado_para_pagamento?
-    pagamento_id.present?
+    self.pagamento_id.present? && self.pagamento_id > 0
   end
   
   def com_destinacao?
