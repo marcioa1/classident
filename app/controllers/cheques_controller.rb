@@ -1,6 +1,6 @@
 class ChequesController < ApplicationController
 
-  layout "adm", :except => :show
+  layout "adm", :except => :showit
   
   before_filter :require_user
   before_filter :salva_action_na_session
