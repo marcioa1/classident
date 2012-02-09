@@ -34,7 +34,7 @@
         %td= rec.data_de_exclusao.to_s_br
         %td= rec.observacao_exclusao
         %td= rec.cheque.observacao if rec.cheque.present?
-        - dados += "#{rec.data.to_s_br};#{rec.paciente.nome};#{rec.valor.real.to_s};#{user && user.nome};#{rec.data_de_exclusao.to_s_br};#{rec.observacao_exclusao.gsub(";","-")};"
+        - dados += "#{rec.data.to_s_br};#{rec.paciente.nome};#{rec.valor.real.to_s};#{user && user.nome};#{rec.data_de_exclusao.to_s_br};#{rec.observacao_exclusao && rec.observacao_exclusao.gsub(";","-")};"
         - if rec.cheque.present?
           - dados += "#{rec.cheque.observacao.gsub(";","-")};>"
         - else
