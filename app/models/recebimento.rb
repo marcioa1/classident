@@ -99,8 +99,8 @@ class Recebimento < ActiveRecord::Base
 
   def em_cheque?
     return false if self.formas_recebimento_id.nil?
-    forma = FormasRecebimento.find(self.formas_recebimento_id)
-    return false if forma.nil?
+    forma = FormasRecebimento.find(self.formas_recebimento_id) rescue -1
+    return false if forma.is_a?(Fixnum) && forma < 0
     forma.nome.downcase=="cheque" ? true : false
   end
   
