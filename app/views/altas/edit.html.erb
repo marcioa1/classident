@@ -1,12 +1,26 @@
-<h1>Editing alta</h1>
+<% content_for :main do %>
+<h3>Editando alta</h3>
 
+<fieldset>
+  <legend>Paciente <%= @alta.paciente.nome %></legend>
 <% form_for(@alta) do |f| %>
   <%= f.error_messages %>
+  <p>
+    <%= f.label :data %> :
+    <%= f.text_field :data_inicio_br, :size=>10, :class => 'datepicker' %>
+  </p>
+  <p>
+    <%= f.label :observação %> :
+    <%= f.text_field :observacao %>
+  </p>
 
+  <p>
+    <%= f.label :data_de_término %> :
+    <%= f.text_field :data_termino_br, :size=>10, :class => 'datepicker' %>
+  </p>
   <p>
     <%= f.submit 'Alterar' %>
   </p>
 <% end %>
-
-<%= link_to 'Show', @alta %> |
-<%= link_to 'Back', altas_path %>
+</fieldset>
+<% end %>

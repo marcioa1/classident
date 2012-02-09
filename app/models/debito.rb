@@ -60,11 +60,13 @@ class Debito < ActiveRecord::Base
     if MensalidadeOrtodontia.mudou_de_mes(clinica_id)
       pacientes = Paciente.da_clinica(clinica_id).cobranca_de_ortodontia_ativa
       pacientes.each do |paciente|
-        Debito.create(:paciente_id => paciente.id, 
+        if !paciente.em_alta?
+          Debito.create(:paciente_id => paciente.id, 
                        :valor       => paciente.mensalidade_de_ortodontia,
                        :descricao   => "Ortodontia ref #{(I18n.t 'date.month_names')[2]} / #{Date.today.year}",
                        :clinica_id  => clinica_id,
                        :data        => Date.today)
+        end
       end
       MensalidadeOrtodontia.registra_novo_mes(clinica_id)
     end

@@ -9,6 +9,24 @@ class Alta < ActiveRecord::Base
   named_scope :entre_datas, lambda{|inicio,fim| {:conditions=>['data_inicio between ? and ?', inicio, fim]}}
   named_scope :a_retornar, lambda{|mes,ano| {:conditions=>['MONTH(data_termino) = ? and YEAR(data_termino)=?', mes,ano]}}
   
+  attr_accessor :data_termino_br, :data_inicio_br
+
+  def data_inicio_br
+    self.data_inicio.to_s_br if self.data_inicio
+  end
+  def data_inicio_br=(value)
+    self.data_inicio = nil if value.blank?
+    self.data_inicio = value.to_date if Date.valid?(value)
+  end
+  
+  def data_termino_br
+    self.data_termino.to_s_br if self.data_termino
+  end
+  def data_termino_br=(value)
+    self.data_termino = nil if value.blank?
+    self.data_termino = value.to_date if Date.valid?(value)
+  end
+  
   def self.verifica_alta_automatica(user, clinica, tratamento)
     if !tratamento.paciente.em_alta?
       if Tratamento.do_paciente(tratamento.paciente_id).nao_excluido.nao_feito.empty?

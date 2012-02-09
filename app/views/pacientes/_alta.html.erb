@@ -7,6 +7,7 @@
 	<th width="130px">Usuário</th>
 	<th>Término</th>
 	<th width="130px">Por</th>
+	<th>&nbsp;</th>
   </tr>
 
 <% @paciente.altas.each do |alta| %>
@@ -16,6 +17,7 @@
 	<td><%= alta.user.login %></td>
     <td><%= alta.data_termino.to_s_br unless alta.data_termino.nil? %></td>
     <td><%= alta.user_termino.login unless alta.user_termino.nil? %></td>
+    <td><%= link_to "editar", edit_alta_path(alta), :class => 'ui-icon ui-icon-pencil' %></td>
   </tr>
 <% end %>
 </table>

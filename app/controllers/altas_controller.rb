@@ -34,10 +34,15 @@ class AltasController < ApplicationController
 
   def update
     @alta = Alta.find(params[:id])
+    if @alta.data_termino
+      @alta.user_termino_id = current_user.id
+    else
+      @alta.user_id     = current_user.id
+    end
 
     if @alta.update_attributes(params[:alta])
       flash[:notice] = 'Alta alterado com sucesso.'
-      redirect_to(@alta) 
+      redirect_to(abre_paciente_path(@alta.paciente)) 
     else
       render :action => "edit" 
     end
