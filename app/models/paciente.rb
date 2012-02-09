@@ -75,7 +75,11 @@ class Paciente < ActiveRecord::Base
   end
   
   def data_suspensao_da_cobranca_de_orto_br=(value)
-    self.data_da_suspensao_da_cobranca_de_orto = value.to_date if Date.valid?(value)
+    if value.blank? 
+      self.data_da_suspensao_da_cobranca_de_orto = nil
+    else
+      self.data_da_suspensao_da_cobranca_de_orto = value.to_date if Date.valid?(value)
+    end
   end
   
   def data_da_saida_da_lista_de_debitos_br
