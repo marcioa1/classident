@@ -27,7 +27,7 @@
   - saldo         = 0.0
   - total_debito  = 0.0
   - total_credito = 0.0
-  - @paciente.extrato.each do |lancamento|
+  - @paciente.reload.extrato.each do |lancamento|
     %tr{ :class=>"#{lancamento.is_a?(Abono) ? 'abono': lancamento.is_a?(Debito) ? lancamento.cancelado? ? 'cancelado' : 'debito' : ''}"}
       - if lancamento.is_a? Abono
         - total_credito += lancamento.valor
