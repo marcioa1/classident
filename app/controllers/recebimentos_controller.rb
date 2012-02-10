@@ -245,13 +245,16 @@ class RecebimentosController < ApplicationController
                 por_data.entre_datas(@data_inicial, @data_final).
                 nas_formas(formas_selecionadas.split(",").to_a).
                 nao_excluidos
-      @cheques = Cheque.da_clinica(session[:clinica_id]).entre_datas(@data_inicial, @data_final).nao_excluidos
-      @cheques.each do |chq|
-        chq.recebimentos.each do |rec|
-          @recebimentos << rec if !@recebimentos.include?(rec)
+      @recebimentos.delete_if{|r| r.em_cheque? && (r.cheque.bom_para< @data_inicial || r.cheque.bom_para > @data_final)}
+      forma_cheque = FormasRecebimento.cheque
+      if formas_selecionadas.include?(forma_cheque.id.to_s)
+        @cheques = Cheque.da_clinica(session[:clinica_id]).entre_datas(@data_inicial, @data_final).nao_excluidos
+        @cheques.each do |chq|
+          chq.recebimentos.each do |rec|
+            @recebimentos << rec if !@recebimentos.include?(rec)
+          end
         end
       end
-      @recebimentos.delete_if{|r| r.em_cheque? && (r.cheque.bom_para< @data_inicial || r.cheque.bom_para > @data_final)}
       @recebimentos_excluidos = Recebimento.da_clinica(session[:clinica_id]).
                            por_data.entre_datas(@data_inicial, @data_final).
                            nas_formas(formas_selecionadas.split(",").to_a).
