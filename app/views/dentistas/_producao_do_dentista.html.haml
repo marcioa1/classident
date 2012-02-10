@@ -48,7 +48,7 @@
       %tr
         %td= o.data.to_s_br
         %td= o.paciente.nome
-        %td ortodontia
+        %td ortodontia ref mês  #{(I18n.t 'date.month_names')[o.data.month]}
         %td{:align=>'right'}= o.valor.real
         %td &nbsp;
         %td{:align=>'right'}= o.valor_do_ortodontista.real

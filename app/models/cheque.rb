@@ -167,6 +167,7 @@
   end
   
   def status_resumido
+    return "excluido" if self.excluido?
     return "arq morto" unless !arquivo_morto?
     return "solucionado" unless !solucionado?
     return "SPC" unless !spc?
