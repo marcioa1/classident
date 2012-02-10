@@ -146,6 +146,7 @@
   
   def status
     # debugger
+    return "excluido em #{self.data_de_exclusao.to_s_br}" if self.excluido?
     return "solucionado em #{self.data_solucao.to_s_br}" unless !solucionado?
     return "arquivo morto em #{self.data_arquivo_morto.to_s_br}" unless !arquivo_morto?
     return "SPC" unless !spc?
