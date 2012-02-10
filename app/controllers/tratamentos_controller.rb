@@ -27,8 +27,9 @@ class TratamentosController < ApplicationController
       @tratamento.dente       = dente
       @tratamento.clinica_id  = session[:clinica_id]
       @tratamento.excluido    = false
-      if @tratamento.save 
-        @tratamento.finalizar(current_user, session[:clinica_id]) if @tratamento.data
+      if @tratamento.save
+        debugger 
+        @tratamento.finalizar(current_user, session[:clinica_id]) if @tratamento.data && @tratamento.pode_finalizar?
       else
         erro = true
       end
@@ -64,43 +65,51 @@ class TratamentosController < ApplicationController
     if Date.valid?(params[:data_de_termino]) 
       @tratamento.data   = params[:data_de_termino].to_date
     end
-    
-    if @tratamento.update_attributes(params[:tratamento])
-      if @tratamento.data.blank? && estava_terminado
-        @debito = @tratamento.debito
-        @debito.destroy
-        @tratamento.debito = nil
-      end
-      if @tratamento.data.present? 
-        if !estava_terminado
-          @tratamento.finalizar(current_user, session[:clinica_id])
-        else
-          # alterar débito
-          @debito = Debito.find_by_tratamento_id(@tratamento.id)
-          if @debito.nil? 
-            @debito = Debito.new      
-            @debito.paciente_id   = @tratamento.paciente_id
-            @debito.tratamento_id = @tratamento.id
-            @debito.clinica_id    = session[:clinica_id]
-          end
-          @debito.descricao = @tratamento.descricao
-          @debito.valor     = @tratamento.valor_com_desconto
-          @debito.data      = @tratamento.data
-          @debito.save
-        end
-        
-        # Alta.verifica_alta_automatica(current_user, session[:clinica_id], @tratamento)
-      end
-      Alteracoe.retira_permissao_de_alteracao('tratamentos', @tratamento.id, current_user.id) if !@tratamento.na_quinzena?
-      redirect_to(abre_paciente_path(:id=>@tratamento.paciente_id)) 
-    else
+    if !@tratamento.pode_finalizar? and @tratamento.data.present?
+      flash[:error] = "Falta lançar o custo de protético para este item"
       @paciente               = @tratamento.paciente
-
       @items = @tratamento.paciente.tabela.item_tabelas.
-        collect{|obj| [obj.codigo + " - " + obj.descricao,obj.id]}
+          collect{|obj| [obj.codigo + " - " + obj.descricao,obj.id]}
       @dentistas = @clinica_atual.dentistas.ativos.collect{|obj| [obj.nome,obj.id]}
-
       render :action => "edit" 
+    else
+      if @tratamento.update_attributes(params[:tratamento])
+        if @tratamento.data.blank? && estava_terminado
+          @debito = @tratamento.debito
+          @debito.destroy
+          @tratamento.debito = nil
+        end
+        if @tratamento.data.present? 
+          if !estava_terminado
+            @tratamento.finalizar(current_user, session[:clinica_id])
+          else
+            # alterar débito
+            @debito = Debito.find_by_tratamento_id(@tratamento.id)
+            if @debito.nil? 
+              @debito = Debito.new      
+              @debito.paciente_id   = @tratamento.paciente_id
+              @debito.tratamento_id = @tratamento.id
+              @debito.clinica_id    = session[:clinica_id]
+            end
+            @debito.descricao = @tratamento.descricao
+            @debito.valor     = @tratamento.valor_com_desconto
+            @debito.data      = @tratamento.data
+            @debito.save
+          end
+        
+          Alta.verifica_alta_automatica(current_user, session[:clinica_id], @tratamento)
+        end
+        Alteracoe.retira_permissao_de_alteracao('tratamentos', @tratamento.id, current_user.id) if !@tratamento.na_quinzena?
+        redirect_to(abre_paciente_path(:id=>@tratamento.paciente_id)) 
+      else
+        @paciente               = @tratamento.paciente
+
+        @items = @tratamento.paciente.tabela.item_tabelas.
+          collect{|obj| [obj.codigo + " - " + obj.descricao,obj.id]}
+        @dentistas = @clinica_atual.dentistas.ativos.collect{|obj| [obj.nome,obj.id]}
+
+        render :action => "edit" 
+      end
     end
   end
   

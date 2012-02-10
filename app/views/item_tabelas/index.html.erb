@@ -13,16 +13,18 @@
     <th>Dias de retorno</th>
     <th>Custo de protético</th>
     <th>&nbsp;</th>
+    <th>&nbsp;</th>
   </tr>
 
 <% @item_tabelas.each do |item_tabela| %>
   <tr>
     <td><%=h item_tabela.codigo %></td>
-    <td><%= link_to item_tabela.descricao, edit_item_tabela_path(item_tabela) %></td>
+    <td><%= item_tabela.descricao %></td>
     <td align='right'><%=h item_tabela.preco.real %></td>
     <td><%=h sim_nao(item_tabela.ativo) %></td>
     <td align='center'><%= item_tabela.dias_de_retorno %></td>
     <td align='center'><%= sim_nao(item_tabela.tem_custo_de_protetico?) %></td>
+    <td><%= link_to "Editar", edit_item_tabela_path(item_tabela), :class=>"ui-icon ui-icon-pencil"%></td>
     <td><%= link_to 'Excluir', item_tabela, :confirm => 'Tem certeza?', :method => :delete, :class => 'ui-icon ui-icon-trash', :title=>'Excluir'  %></td>
     
   </tr>
