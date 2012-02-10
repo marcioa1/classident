@@ -98,7 +98,7 @@ class Tratamento < ActiveRecord::Base
   end
   
   def pode_alterar?
-    na_quinzena?
+    na_quinzena? || self.created_at.to_date == Date.today
   end
   
   def na_quinzena?

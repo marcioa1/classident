@@ -120,7 +120,7 @@ class Recebimento < ActiveRecord::Base
   end
   
   def pode_alterar?
-    self.na_quinzena? || self.liberado_para_alteracao?
+    self.na_quinzena? || self.liberado_para_alteracao? || self.created_at.to_date == Date.today
   end
   
   def pode_excluir?
