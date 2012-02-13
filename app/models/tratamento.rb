@@ -138,7 +138,7 @@ class Tratamento < ActiveRecord::Base
         self.orcamento.data_de_inicio = self.data
       end
     end
-    if paciente.em_alta?
+    if self.paciente.em_alta?
       alta                 = paciente.altas.last(:order=>:id)
       alta.data_termino    = Time.now
       alta.user_termino_id = user
