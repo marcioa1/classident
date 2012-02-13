@@ -28,7 +28,7 @@
     - @producao.each() do |tratamento|
       %tr
         %td{:align=>'center'}=tratamento.data.to_s_br
-        %td=tratamento.paciente.nome
+        %td=tratamento.paciente && tratamento.paciente.nome
         %td=tratamento.descricao
         %td{:align=>'right'}=tratamento.valor_com_desconto.real.to_s
         %td{:align=>'right'}=tratamento.custo.real.to_s

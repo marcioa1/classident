@@ -24,6 +24,7 @@ class Tratamento < ActiveRecord::Base
   named_scope :sem_orcamento, :conditions=>["orcamento_id IS NULL"]
   named_scope :ultima_data, lambda{|data| {:conditions=>['data <= ?', data ], :limit=>1, :order=>'data DESC'}}
   
+  validates_presence_of :paciente, :message => "Tratamento sem paciente associado"
   validates_presence_of :descricao, :message => "não pode ser vazio."
   validates_presence_of :dentista,  :message => "não pode ser vazio."
   validate :data_nao_pode_ser_futura
