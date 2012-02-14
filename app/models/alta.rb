@@ -37,7 +37,7 @@ class Alta < ActiveRecord::Base
         alta.user_id     = user
         alta.clinica_id  = clinica
         if tratamento.item_tabela && tratamento.item_tabela.dias_de_retorno > 0
-          alda.data_termino = Date.today + tratamento.item_tabela.dias_de_retorno.days
+          alta.data_termino = Date.today + tratamento.item_tabela.dias_de_retorno.days
         else
           alta.data_termino = Date.today + 6.months
         end
