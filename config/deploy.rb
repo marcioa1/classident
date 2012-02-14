@@ -42,8 +42,8 @@ set :application, "classident"
 
 # the url for your repository
 
-set :repository, "https://marcioa1@bitbucket.org/marcioa1/classident.git"
-# "git://github.com/marcioa1/classident.git"
+# set :repository, "https://marcioa1@bitbucket.org/marcioa1/classident.git"
+set :repositiry,  "git://github.com/marcioa1/classident.git"
 
 
 
