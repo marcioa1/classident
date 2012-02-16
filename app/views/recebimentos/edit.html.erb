@@ -46,24 +46,24 @@
     <tr>
       <td align='right'><%= label_tag :banco %> : </td>
       <td>
-        <%= select_tag :banco, options_for_select(@bancos.insert(0, ''), @recebimento.cheque.banco_id) %>
+        <%= select_tag :banco, options_for_select(@bancos.insert(0, ''), @recebimento.em_cheque? ? @recebimento.cheque.banco_id : -1) %>
       </td>
     </tr>
     <tr>
       <td align='right'><%= label_tag :agencia %> :</td>
-      <td>   <%= text_field_tag :agencia, (@cheque.nil? ? '' : @cheque.agencia), :size=>8 %></td>
+      <td>   <%= text_field_tag :agencia, (@recebimento.cheque.nil? ? '' : @recebimento.cheque.agencia), :size=>8 %></td>
     </tr>
     <tr>
       <td align='right'><%= label_tag :número %> : </td>
-      <td><%= text_field_tag :numero, (@cheque.nil? ? '':  @cheque.numero),:size=>7 %></td>
+      <td><%= text_field_tag :numero, (@recebimento.cheque.nil? ? '':  @recebimento.cheque.numero),:size=>7 %></td>
     </tr>
     <tr>
       <td align='right'><%= label_tag :valor_do_cheque %> : </td>
-      <td><%= text_field_tag :valor_cheque, (@cheque.nil? ? '' : @cheque.valor.real), :size=>8%></td>
+      <td><%= text_field_tag :valor_cheque, (@recebimento.cheque.nil? ? '' : @recebimento.cheque.valor.real), :size=>8%></td>
     </tr>
     <tr>
       <td align='right'><%= f.label :bom_para %> : </td>
-      <td><%= text_field_tag :bom_para_br, @cheque.bom_para_br , :size=>10, :class => 'datepicker' %></td>
+      <td><%= text_field_tag :bom_para_br, @recebimento.em_cheque? ? @recebimento.cheque.bom_para_br : "", :size=>10, :class => 'datepicker' %></td>
     </tr>
     <tr>
       <td colspan="2"><hr></td>

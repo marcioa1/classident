@@ -421,6 +421,6 @@ color: #00008B; background-color: #ADD8E6; border: 1px outset #00008B;
 .menu ul li a:hover ul li a:hover {background-color:#90b7e5; text-decoration:none;color:#F5F5F5;} /*Color subcells hovering mode*/
 
 .tabela_scroll{
-  height   :20em;
+  height   :13em;
   overflow :auto;
 }

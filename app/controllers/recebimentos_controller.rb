@@ -40,26 +40,19 @@ class RecebimentosController < ApplicationController
     @terceito_paciente    = nil
     @segundo_recebimento  = nil
     @terceiro_recebimento = nil
-    @cheque    = @recebimento.cheque
-    @paciente  = @recebimento.paciente
-    if @recebimento.cheque.nil?
-      @cheque             = Cheque.new(:clinica_id => session[:clinica_id], 
-                                       :bom_para => @recebimento.data, 
-                                       :valor => @recebimento.valor) 
-      @recebimento.cheque = @cheque
-    else
-      if @cheque
-        if @cheque.tem_tres_pacientes?
-          @segundo_paciente     = (@cheque.recebimentos - @recebimento.to_a)[0].paciente
-          @segundo_recebimento  = (@cheque.recebimentos - @recebimento.to_a)[0]
-          @terceiro_paciente    = (@cheque.recebimentos - @recebimento.to_a)[1].paciente
-          @terceiro_recebimento = (@cheque.recebimentos - @recebimento.to_a)[1]
-        elsif @cheque.tem_dois_pacientes?
-          @segundo_paciente = (@cheque.recebimentos - @recebimento.to_a)[0].paciente
-          @segundo_recebimento  = (@cheque.recebimentos - @recebimento.to_a)[0]
-        end
+    if @recebimento.em_cheque?
+      @cheque    = @recebimento.cheque
+      if @cheque.tem_tres_pacientes?
+        @segundo_paciente     = (@cheque.recebimentos - @recebimento.to_a)[0].paciente
+        @segundo_recebimento  = (@cheque.recebimentos - @recebimento.to_a)[0]
+        @terceiro_paciente    = (@cheque.recebimentos - @recebimento.to_a)[1].paciente
+        @terceiro_recebimento = (@cheque.recebimentos - @recebimento.to_a)[1]
+      elsif @cheque.tem_dois_pacientes?
+        @segundo_paciente = (@cheque.recebimentos - @recebimento.to_a)[0].paciente
+        @segundo_recebimento  = (@cheque.recebimentos - @recebimento.to_a)[0]
       end
     end
+    @paciente  = @recebimento.paciente
   end
 
   def create
@@ -164,51 +157,63 @@ class RecebimentosController < ApplicationController
   end
 
   def update
-    redirect_to(abre_paciente_path(:id=>@recebimento.paciente_id)) 
-
-    # @cheque_anterior = nil
-    # if !@recebimento.pode_alterar?
-    #   @recebimento.errors.add(:data, " : não pode ser anterior à quinzena")
-    # elsif @recebimento.em_cheque? && @recebimento.cheque
-    #   if @recebimento.cheque
-    #     @cheque          = @recebimento.cheque
-    #   else
-    #     @cheque = Cheque.new
-    #   end
-    #   @cheque_anterior        = @cheque
-    #   @cheque.clinica_id      = @recebimento.clinica_id
-    #   @cheque.bom_para        = params[:bom_para_br].to_date
-    #   @cheque.banco_id        = params[:banco]
-    #   @cheque.agencia         = params[:agencia]
-    #   @cheque.numero          = params[:numero]
-    #   @cheque.conta_corrente  = params[:conta_corrente]
-    #   @cheque.valor           = params[:valor_cheque].gsub('.','').gsub(',','.')
-    #   @cheque.errors.add(:valor, ' Este cheque está sem clínica associada.') if @cheque.clinica_id == 0
-    #   @cheque.errors.add(:banco, 'não pode ser branco') if !@recebimento.cheque.banco.present?
-    #   @cheque.errors.add(:numero, 'do cheque não pode ser branco') if !@recebimento.cheque.numero.present?
-    #   @cheque.errors.add(:valor, ' do cheque não pode ser branco') if !@recebimento.cheque.valor.present?
-    #   @cheque.save
-    #   @recebimento.cheque = @cheque
-    # else
-    #    @recebimento.cheque = nil
-    # end
-    # if @recebimento.update_attributes(params[:recebimento]) 
-    #   @recebimento.verifica_fluxo_de_caixa
-    #   if @cheque && @cheque.tem_dois_pacientes? || @cheque.tem_tres_pacientes?
-    #     valores     = @cheque.recebimentos.map(&:valor)
-    #     observacoes = @cheque.recebimentos.map(&:observacao)
-    #   end
-    #   Alteracoe.retira_permissao_de_alteracao('recebimentos', @recebimento.id, current_user.id) if !@recebimento.na_quinzena?
-    #   #TODO fazer redirect_to back votlar para a presquisa feita com dados
-    #   # redirect_to :back
-    #   redirect_to(abre_paciente_path(:id=>@recebimento.paciente_id)) 
-    # else
-    #     @cheque    = @recebimento.cheque
-    #     @paciente  = @recebimento.paciente
-    #     @recebimento.cheque = Cheque.new if @recebimento.cheque.nil?
-    #     busca_bancos_e_forma_de_recebimento
-    #   render :action => "edit" 
-    # end
+    # redirect_to(abre_paciente_path(:id=>@recebimento.paciente_id)) 
+debugger
+    @cheque          = nil
+    @cheque_anterior = nil
+    if !@recebimento.pode_alterar?
+      @recebimento.errors.add(:data, " : não pode ser anterior à quinzena")
+      if @recebimento.em_cheque?
+        if @recebimento.cheque
+          @cheque    = @recebimento.cheque if @recebimento.cheque
+        else
+          @recebimento.cheque = Cheque.new if @recebimento.cheque.nil?
+        end
+      end
+      @paciente  = @recebimento.paciente
+      busca_bancos_e_forma_de_recebimento
+      render :action => "edit" 
+    elsif @recebimento.em_cheque? 
+         if @recebimento.cheque
+            @cheque          = @recebimento.cheque
+          else
+            @cheque = Cheque.new
+          end
+          debugger
+          @cheque_anterior        = @cheque
+          @cheque.clinica_id      = @recebimento.clinica_id
+          @cheque.bom_para        = params[:bom_para_br].to_date
+          @cheque.banco_id        = params[:banco]
+          @cheque.agencia         = params[:agencia]
+          @cheque.numero          = params[:numero]
+          @cheque.conta_corrente  = params[:conta_corrente]
+          @cheque.valor           = params[:valor_cheque].gsub('.','').gsub(',','.')
+          @cheque.errors.add(:valor, ' Este cheque está sem clínica associada.') if @cheque.clinica_id == 0
+          @cheque.errors.add(:banco, 'não pode ser branco') if !@recebimento.cheque.banco.present?
+          @cheque.errors.add(:numero, 'do cheque não pode ser branco') if !@recebimento.cheque.numero.present?
+          @cheque.errors.add(:valor, ' do cheque não pode ser branco') if !@recebimento.cheque.valor.present?
+          @cheque.save
+          @recebimento.cheque = @cheque
+    else
+       @recebimento.cheque = nil
+    end
+    if @recebimento.update_attributes(params[:recebimento]) 
+      @recebimento.verifica_fluxo_de_caixa
+      if @recebimento.em_cheque?  && (@cheque.tem_dois_pacientes? || @cheque.tem_tres_pacientes?)
+        valores     = @cheque.recebimentos.map(&:valor)
+        observacoes = @cheque.recebimentos.map(&:observacao)
+      end
+      Alteracoe.retira_permissao_de_alteracao('recebimentos', @recebimento.id, current_user.id) if !@recebimento.na_quinzena?
+      #TODO fazer redirect_to back votlar para a presquisa feita com dados
+      # redirect_to :back
+      redirect_to(abre_paciente_path(:id=>@recebimento.paciente_id)) 
+    else
+        @cheque    = @recebimento.cheque
+        @paciente  = @recebimento.paciente
+        @recebimento.cheque = Cheque.new if @recebimento.cheque.nil?
+        busca_bancos_e_forma_de_recebimento
+      render :action => "edit" 
+    end
   end
 
   def destroy
