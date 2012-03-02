@@ -59,8 +59,12 @@ class Dentista < ActiveRecord::Base
   end
   
   def busca_producao_de_ortodontia(inicio,fim)
-     resultado = Recebimento.all(:conditions =>["data_de_exclusao IS NULL and (data between ? and ?) and paciente_id in (?)",inicio,fim,self.pacientes_de_ortodontia ],
-                                 :select => 'data, paciente_id, valor, percentual_dentista, observacao')
+    em_dinheiro = Recebimento.all(:conditions =>["cheque_id IS NULL and data_de_exclusao IS NULL and (data between ? and ?) and paciente_id in (?)",inicio,fim,self.pacientes_de_ortodontia ],
+                                 :select => 'data, paciente_id, valor, percentual_dentista, observacao') 
+    em_cheque   = Recebimento.all(:joins => "INNER JOIN cheques ON cheques.id = recebimentos.cheque_id",
+                                  :conditions =>["recebimentos.data_de_exclusao IS NULL and (recebimentos.data between ? and ?) and recebimentos.paciente_id in (?)",inicio,fim,self.pacientes_de_ortodontia ],
+                                  :select => 'recebimentos.data, recebimentos.paciente_id, recebimentos.valor, percentual_dentista, observacao')
+    em_dinheiro + em_cheque                            
   end
 
   def self.busca_dentistas(clinica_id)
