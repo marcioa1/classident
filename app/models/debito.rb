@@ -63,7 +63,7 @@ class Debito < ActiveRecord::Base
         if !paciente.em_alta?
           Debito.create(:paciente_id => paciente.id, 
                        :valor       => paciente.mensalidade_de_ortodontia,
-                       :descricao   => "Ortodontia ref #{(I18n.t 'date.month_names')[2]} / #{Date.today.year}",
+                       :descricao   => "Ortodontia ref #{(I18n.t 'date.month_names')[Date.today.month]} / #{Date.today.year}",
                        :clinica_id  => clinica_id,
                        :data        => Date.today)
         end
